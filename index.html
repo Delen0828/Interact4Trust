@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alien Plant Growth Lab - Prediction Study</title>
+    
+    <!-- jsPsych CSS -->
+    <link href="node_modules/jspsych/css/jspsych.css" rel="stylesheet" type="text/css" />
+    
+    <!-- Custom CSS -->
+    <link href="src/styles/experiment.css" rel="stylesheet" type="text/css" />
+    
+    <!-- D3.js -->
+    <script src="node_modules/d3/dist/d3.min.js"></script>
+    
+    <!-- jsPsych -->
+    <script src="node_modules/jspsych/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-html-button-response/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-instructions/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-survey-likert/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-fullscreen/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-call-function/dist/index.browser.min.js"></script>
+    
+    <!-- Custom Plugins -->
+    <script src="src/plugins/jspsych-plant-cultivation.js"></script>
+    <script src="src/plugins/jspsych-trust-survey.js"></script>
+    <script>
+        console.log('jsPsychPlantCultivation:', typeof jsPsychPlantCultivation);
+        console.log('jsPsychTrustSurvey:', typeof jsPsychTrustSurvey);
+    </script>
+    
+    <!-- Utility Scripts -->
+    <script src="src/utils/predictionGenerator.js"></script>
+    <script src="src/utils/greenhouseManager.js"></script>
+    <script src="src/utils/dataFetcher.js"></script>
+    
+    <!-- Configuration -->
+    <script src="src/config.js"></script>
+    
+    <!-- Sophisticated Alien Plant Growth Data -->
+    <script src="src/stimuli/plantGrowthData.js"></script>
+</head>
+<body>
+    <div id="jspsych-target"></div>
+    
+    <!-- Main Experiment Script -->
+    <script src="src/experiment.js"></script>
+</body>
+</html>

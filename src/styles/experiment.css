@@ -1,0 +1,1033 @@
+/* Custom styles for the experiment */
+
+:root {
+    --primary-color: #2563eb;
+    --success-color: #22c55e;  /* Enhanced green from example */
+    --danger-color: #dc2626;
+    --warning-color: #f59e0b;
+    --background-color: #f9fafb;
+    --text-color: #111827;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --alien-accent: #8b5cf6;
+    --purple-primary: #a855f7;  /* From sophisticated example */
+    --purple-light-1: #c084fc;
+    --purple-light-2: #d8b4fe;
+    --purple-light-3: #e9d5ff;
+    --purple-light-4: #f3e8ff;
+    --white: #ffffff;
+    --grid-color: #e5e7eb;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--background-color) 0%, #f3f4f6 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Enhanced Plant Cultivation Plugin Styles with Sophisticated Patterns */
+.plant-cultivation-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.cultivation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.cultivation-header h2 {
+    color: var(--alien-accent);
+    font-size: 24px;
+    margin: 0;
+}
+
+.greenhouse-status {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.greenhouse-status span {
+    padding: 5px 10px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.chart-container {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 450px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15);
+    transform: translateY(-1px);
+}
+
+.cultivation-controls {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.direction-select {
+    width: 150px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    background: white;
+    cursor: pointer;
+}
+
+.action-select option[value="cultivate"] {
+    color: var(--success-color);
+}
+
+.action-select option[value="prune"] {
+    color: var(--danger-color);
+}
+
+.action-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.action-input-container .input-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.action-input-container label {
+    font-weight: 500;
+    min-width: 90px;
+}
+
+.action-input-container input[type="number"] {
+    width: 150px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.action-input-container span {
+    color: #6b7280;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 5px;
+    transition: all 0.3s ease;
+}
+
+.error-message.hidden {
+    display: none;
+}
+
+/* Legacy support for cultivation input containers */
+.resource-input-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.resource-input-container label {
+    font-weight: 500;
+}
+
+#resource-input {
+    width: 120px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#cultivation-value {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.confirm-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-color);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.confirm-btn:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.confirm-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.feedback-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.feedback-overlay.hidden {
+    display: none;
+}
+
+.feedback-content h3 {
+    margin-top: 0;
+    color: var(--text-color);
+}
+
+.feedback-content .profit {
+    color: var(--success-color);
+    font-weight: bold;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.feedback-content .loss {
+    color: var(--danger-color);
+    font-weight: bold;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Trust Survey Plugin Styles */
+.trust-survey-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.survey-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.survey-header h2 {
+    color: var(--alien-accent);
+    margin-bottom: 10px;
+}
+
+.greenhouse-change {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.greenhouse-change.positive {
+    background: #dcfce7;
+    color: var(--success-color);
+}
+
+.greenhouse-change.negative {
+    background: #fee2e2;
+    color: var(--danger-color);
+}
+
+.survey-instructions {
+    background: #f3f4f6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.survey-instructions .highlight {
+    color: var(--alien-accent);
+    font-weight: 500;
+}
+
+.questions-container {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.question-block {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.question-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.question-prompt {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.scale-container {
+    position: relative;
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.scale-points {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.scale-point-container {
+    flex: 1;
+    position: relative;
+}
+
+.scale-point {
+    width: 100%;
+    padding: 15px 5px;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.scale-point:hover {
+    border-color: var(--alien-accent);
+    background: #f3f0ff;
+}
+
+.scale-point.selected {
+    background: var(--alien-accent);
+    color: white;
+    border-color: var(--alien-accent);
+}
+
+.scale-point.was-previous {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.point-value {
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.previous-marker {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.scale-point.pulse {
+    animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.change-indicator {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.change-value {
+    color: #6b7280;
+}
+
+.change-value.increase {
+    color: var(--success-color);
+}
+
+.change-value.decrease {
+    color: var(--danger-color);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--alien-accent);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 20px;
+}
+
+.submit-btn:hover {
+    background: #7c3aed;
+}
+
+/* Instruction and Information Screens */
+.welcome-screen,
+.consent-form,
+.instructions,
+.condition-intro,
+.condition-summary,
+.debrief {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.welcome-screen:hover,
+.consent-form:hover,
+.instructions:hover,
+.condition-intro:hover,
+.condition-summary:hover,
+.debrief:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.stimuli-explanation {
+    text-align: left;
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    border-radius: 8px;
+    border: 1px solid var(--purple-primary);
+}
+
+.stimuli-explanation h3 {
+    color: var(--purple-primary);
+    margin-bottom: 15px;
+}
+
+.stimuli-explanation ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.stimuli-explanation li {
+    margin: 8px 0;
+}
+
+.stimuli-summary {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    padding: 12px;
+    margin: 15px 0;
+    color: var(--primary-color);
+    font-size: 14px;
+}
+
+.welcome-screen h1 {
+    color: var(--alien-accent);
+    margin-bottom: 20px;
+}
+
+.consent-form h2,
+.instructions h2,
+.condition-intro h2,
+.condition-summary h2,
+.debrief h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+.consent-form ul,
+.instructions ul {
+    text-align: left;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.instructions ol {
+    text-align: left;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.debug-info {
+    margin-top: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #92400e;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stimuli-info {
+    margin-top: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--primary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pattern-info {
+    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    border: 1px solid var(--purple-primary);
+    color: #7c2d12;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+/* Enhanced Chart SVG Styles from Sophisticated Example */
+.grid line {
+    stroke: var(--grid-color);
+    stroke-opacity: 0.3;
+    shape-rendering: crispEdges;
+    stroke-dasharray: 2,2;
+}
+
+.grid path {
+    stroke-width: 0;
+}
+
+.axis {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.axis path,
+.axis line {
+    stroke: var(--border-color);
+}
+
+.axis text {
+    fill: var(--text-secondary);
+}
+
+.historical-line {
+    fill: none;
+    stroke: var(--success-color);
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.historical-dot {
+    fill: var(--success-color);
+    transition: all 0.3s ease;
+}
+
+.current-dot {
+    fill: var(--success-color);
+    stroke: var(--white);
+    stroke-width: 2;
+}
+
+.prediction-dot {
+    stroke: var(--white);
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.aggregation-line {
+    stroke: var(--purple-primary);
+    stroke-width: 2.5;
+    stroke-dasharray: 5,3;
+    transition: all 0.3s ease;
+}
+
+.aggregation-dot {
+    fill: var(--purple-primary);
+    stroke: var(--white);
+    stroke-width: 2;
+}
+
+.alternatives-group {
+    transition: opacity 0.3s ease;
+}
+
+.alternative-line {
+    stroke-dasharray: 3,2;
+    transition: all 0.3s ease;
+}
+
+.alternative-dot {
+    stroke: var(--white);
+    transition: all 0.3s ease;
+}
+
+.ground-truth-line {
+    stroke: var(--success-color);
+    stroke-width: 3;
+    transition: all 0.3s ease;
+}
+
+.ground-truth-dot {
+    fill: var(--success-color);
+    stroke: var(--white);
+    stroke-width: 2;
+}
+
+/* Pattern-specific hover effects for chart container */
+.chart-container[data-pattern="agreement"] {
+    border-left: 4px solid rgba(34, 197, 94, 0.5);
+}
+
+.chart-container[data-pattern="polarization"] {
+    border-left: 4px solid rgba(239, 68, 68, 0.5);
+}
+
+.chart-container[data-pattern="risk_of_loss"] {
+    border-left: 4px solid rgba(245, 158, 11, 0.5);
+}
+
+.chart-container[data-pattern="chance_of_gain"] {
+    border-left: 4px solid rgba(59, 130, 246, 0.5);
+}
+
+.chart-container[data-pattern="ambiguous_spread"] {
+    border-left: 4px solid rgba(107, 114, 128, 0.5);
+}
+
+/* Combined Cultivation and Trust Plugin Styles */
+.combined-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.experiment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.experiment-header h2 {
+    color: var(--alien-accent);
+    font-size: 24px;
+    margin: 0;
+}
+
+.main-content {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.cultivation-panel {
+    flex: 1.2;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.trust-panel {
+    flex: 0.8;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    max-height: 650px;
+    overflow-y: auto;
+}
+
+.trust-panel h3 {
+    color: var(--alien-accent);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.trust-instructions {
+    background: #f3f4f6;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.trust-instructions .highlight {
+    color: var(--alien-accent);
+    font-weight: 500;
+}
+
+.trust-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.trust-question {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.trust-question:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.trust-question .question-prompt {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.trust-question .scale-container {
+    position: relative;
+}
+
+.trust-question .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.trust-question .scale-points {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.trust-question .scale-point {
+    flex: 1;
+    padding: 8px 2px;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    min-width: 35px;
+}
+
+.trust-question .scale-point:hover {
+    border-color: var(--alien-accent);
+    background: #f3f0ff;
+}
+
+.trust-question .scale-point.selected {
+    background: var(--alien-accent);
+    color: white;
+    border-color: var(--alien-accent);
+}
+
+.trust-question .scale-point.was-previous {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.trust-question .point-value {
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.trust-question .previous-marker {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #6b7280;
+    font-size: 10px;
+}
+
+.submit-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.confirm-all-btn {
+    padding: 15px 40px;
+    background: var(--alien-accent);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.confirm-all-btn:hover:not(:disabled) {
+    background: #7c3aed;
+}
+
+.confirm-all-btn:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.feedback-sections {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.feedback-cultivation,
+.feedback-trust {
+    flex: 1;
+}
+
+.feedback-cultivation h4,
+.feedback-trust h4 {
+    margin-top: 0;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 1400px) {
+    .chart-container {
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .cultivation-panel,
+    .trust-panel {
+        flex: 1;
+    }
+    
+    .trust-panel {
+        max-height: none;
+    }
+    
+    .cultivation-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 900px) {
+    .chart-container {
+        padding: 15px;
+        min-height: 350px;
+    }
+    
+    .debug-info,
+    .stimuli-info,
+    .pattern-info {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .plant-cultivation-container,
+    .trust-survey-container,
+    .combined-container {
+        padding: 10px;
+    }
+    
+    .cultivation-header,
+    .experiment-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .greenhouse-status {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .greenhouse-status span {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+    
+    .decision-buttons {
+        flex-direction: column;
+    }
+    
+    .scale-points {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .scale-point {
+        min-width: 60px;
+    }
+    
+    .chart-container {
+        padding: 10px;
+        min-height: 300px;
+    }
+    
+    .welcome-screen,
+    .consent-form,
+    .instructions,
+    .condition-intro,
+    .condition-summary,
+    .debrief {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .stimuli-explanation {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .stimuli-explanation h3 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-container {
+        min-height: 250px;
+        padding: 8px;
+    }
+    
+    .cultivation-header h2 {
+        font-size: 18px;
+    }
+    
+    .greenhouse-status {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .debug-info,
+    .stimuli-info {
+        font-size: 11px;
+        padding: 6px;
+    }
+    
+    .stimuli-explanation {
+        padding: 12px;
+    }
+    
+    .stimuli-explanation li {
+        font-size: 13px;
+        margin: 6px 0;
+    }
+}
+
+/* Animation and Transition Enhancements */
+.chart-wrapper {
+    transition: all 0.3s ease;
+}
+
+.chart-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+}
+
+.prediction-dot,
+.historical-dot,
+.alternative-dot {
+    transition: all 0.3s ease;
+}
+
+.prediction-dot:hover,
+.historical-dot:hover,
+.alternative-dot:hover {
+    r: 6;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Sophisticated Pattern Indicators */
+.pattern-trend-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 4px;
+}
+
+.pattern-trend-indicator.increase {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: var(--success-color);
+    border: 1px solid #22c55e;
+}
+
+.pattern-trend-indicator.decrease {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: var(--danger-color);
+    border: 1px solid #dc2626;
+}
+
+.pattern-trend-indicator.stable {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}

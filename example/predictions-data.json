@@ -1,0 +1,226 @@
+{
+  "historical": [
+    {
+      "time": 0,
+      "value": 100
+    },
+    {
+      "time": 1,
+      "value": 102.1
+    },
+    {
+      "time": 2,
+      "value": 101.3
+    },
+    {
+      "time": 3,
+      "value": 103.2
+    },
+    {
+      "time": 4,
+      "value": 102.4
+    },
+    {
+      "time": 5,
+      "value": 101.8
+    },
+    {
+      "time": 6,
+      "value": 103.7
+    },
+    {
+      "time": 7,
+      "value": 102.1
+    },
+    {
+      "time": 8,
+      "value": 100.9
+    },
+    {
+      "time": 9,
+      "value": 102.5
+    }
+  ],
+  "cases": {
+    "increase_agreement": {
+      "trend": "increase",
+      "pattern": "agreement",
+      "aggregation": 107.5,
+      "alternatives": [
+        107.68,
+        107.57,
+        107.07,
+        107.67,
+        107.52
+      ]
+    },
+    "increase_polarization": {
+      "trend": "increase",
+      "pattern": "polarization",
+      "aggregation": 107.5,
+      "alternatives": [
+        119.5,
+        115.5,
+        107.5,
+        99.5,
+        95.5
+      ]
+    },
+    "increase_risk_of_loss": {
+      "trend": "increase",
+      "pattern": "risk_of_loss",
+      "aggregation": 107.5,
+      "alternatives": [
+        122.8,
+        121.8,
+        121.3,
+        112.8,
+        58.8
+      ]
+    },
+    "increase_chance_of_gain": {
+      "trend": "increase",
+      "pattern": "chance_of_gain",
+      "aggregation": 107.5,
+      "alternatives": [
+        139.7,
+        100.2,
+        99.7,
+        99.2,
+        98.7
+      ]
+    },
+    "increase_ambiguous_spread": {
+      "trend": "increase",
+      "pattern": "ambiguous_spread",
+      "aggregation": 107.5,
+      "alternatives": [
+        111.02,
+        107.82,
+        105.42,
+        103.82,
+        109.42
+      ]
+    },
+    "decrease_agreement": {
+      "trend": "decrease",
+      "pattern": "agreement",
+      "aggregation": 97.5,
+      "alternatives": [
+        97.06,
+        97.05,
+        98.01,
+        98.11,
+        97.27
+      ]
+    },
+    "decrease_polarization": {
+      "trend": "decrease",
+      "pattern": "polarization",
+      "aggregation": 97.5,
+      "alternatives": [
+        109.5,
+        105.5,
+        97.5,
+        89.5,
+        85.5
+      ]
+    },
+    "decrease_risk_of_loss": {
+      "trend": "decrease",
+      "pattern": "risk_of_loss",
+      "aggregation": 97.5,
+      "alternatives": [
+        109.7,
+        107.7,
+        105.7,
+        104.7,
+        59.7
+      ]
+    },
+    "decrease_chance_of_gain": {
+      "trend": "decrease",
+      "pattern": "chance_of_gain",
+      "aggregation": 97.5,
+      "alternatives": [
+        135.3,
+        88.8,
+        88.3,
+        87.8,
+        87.3
+      ]
+    },
+    "decrease_ambiguous_spread": {
+      "trend": "decrease",
+      "pattern": "ambiguous_spread",
+      "aggregation": 97.5,
+      "alternatives": [
+        101.02,
+        97.82,
+        95.42,
+        93.82,
+        99.42
+      ]
+    },
+    "stable_agreement": {
+      "trend": "stable",
+      "pattern": "agreement",
+      "aggregation": 102.81,
+      "alternatives": [
+        102.23,
+        103.49,
+        102.76,
+        103.05,
+        102.52
+      ]
+    },
+    "stable_polarization": {
+      "trend": "stable",
+      "pattern": "polarization",
+      "aggregation": 102.31,
+      "alternatives": [
+        114.31,
+        110.31,
+        102.31,
+        94.31,
+        90.31
+      ]
+    },
+    "stable_risk_of_loss": {
+      "trend": "stable",
+      "pattern": "risk_of_loss",
+      "aggregation": 102.84,
+      "alternatives": [
+        114.84,
+        112.84,
+        110.84,
+        108.84,
+        66.84
+      ]
+    },
+    "stable_chance_of_gain": {
+      "trend": "stable",
+      "pattern": "chance_of_gain",
+      "aggregation": 102.63,
+      "alternatives": [
+        137.23,
+        94.73,
+        94.23,
+        93.73,
+        93.23
+      ]
+    },
+    "stable_ambiguous_spread": {
+      "trend": "stable",
+      "pattern": "ambiguous_spread",
+      "aggregation": 102.27,
+      "alternatives": [
+        105.79,
+        102.59,
+        100.19,
+        98.59,
+        104.19
+      ]
+    }
+  }
+}
