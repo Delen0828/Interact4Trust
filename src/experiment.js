@@ -43,7 +43,7 @@ function buildTimeline() {
                 <h1>Welcome to the Alien Plant Growth Study</h1>
                 <p>You are about to participate in a plant cultivation simulation using growth data from alien plants.</p>
                 <p>Your goal is to maximize your greenhouse resources while evaluating growth prediction models.</p>
-                <p>You will start with 10,000 ${ExperimentConfig.greenhouse.resourceUnit} of growth resources.</p>
+                <p>You will start with 10 ${ExperimentConfig.greenhouse.resourceUnit} of growth resources.</p>
                 <p>The experiment will take approximately 30-40 minutes.</p>
             </div>
         `,
@@ -277,17 +277,21 @@ function addConditionContent() {
                     return;
                 }
                 
-                const currentHeight = data.growth_data.heights[data.growth_data.heights.length - 1];
-                
-                if (data.action === 'cultivate') {
-                    greenhouseManager.cultivate(data.plants, 100);
-                } else if (data.action === 'prune') {
-                    greenhouseManager.prune(data.plants, 100);
+                // Update greenhouse state with the actual result from trial (resource persistence)
+                if (data.greenhouse_after) {
+                    console.log('=== UPDATING GREENHOUSE STATE ===');
+                    console.log('Previous greenhouse resources:', greenhouseManager.greenhouse.resources);
+                    console.log('New resources from trial:', data.greenhouse_after.resources);
+                    
+                    // Update the greenhouse manager with the new resource state
+                    greenhouseManager.greenhouse.resources = data.greenhouse_after.resources;
+                    greenhouseManager.greenhouse.totalValue = data.greenhouse_after.totalValue;
+                    
+                    console.log('Updated greenhouse resources:', greenhouseManager.greenhouse.resources);
+                    console.log('================================');
+                } else {
+                    console.warn('No greenhouse_after data found in trial, resources may not persist correctly');
                 }
-                
-                // Update greenhouse value with ground truth from sophisticated patterns
-                const groundTruth = data.predictions.groundTruth || currentHeight * 1.02;
-                greenhouseManager.updateValue(groundTruth, trial);
                 
                 // Log stimuli pattern information
                 if (ExperimentConfig.debug.enabled && data.predictions.metadata) {

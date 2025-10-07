@@ -150,7 +150,7 @@ const ExperimentConfig = {
     
     // Greenhouse settings
     greenhouse: {
-        initialResources: 10000,
+        initialResources: 10,
         resourceUnit: 'units',  // Growth resource units
         maxPlantsPerAction: 100,
         cultivationCostRate: 0.001  // 0.1% cultivation cost

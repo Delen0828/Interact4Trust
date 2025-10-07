@@ -72,7 +72,7 @@ var jsPsychPlantCultivation = (function (jsPsych) {
                         <h2>Alien Plant Growth Lab - ${trial.growth_data.plantName || `Plant #${trial.growth_data.plantIndex || trial.trial}`}</h2>
                         <div class="greenhouse-status">
                             <span>Resources: ${trial.greenhouse.resources.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</span>
-                            <span>Round: ${trial.round}/10</span>
+                            <span>Round: ${trial.round}/15</span>
                         </div>
                         ${debugInfo}
                     </div>
@@ -182,32 +182,41 @@ var jsPsychPlantCultivation = (function (jsPsych) {
                 response.plants = currentAction.plants;
                 response.rt = rt;
 
-                // Calculate action outcome
+                // Calculate action outcome using new formula: (Actual growth - last growth) * resource user bet
                 const currentHeight = trial.growth_data.heights[trial.growth_data.heights.length - 1];
                 const groundTruth = trial.predictions.groundTruth;
                 const cultivationCost = currentAction.resourceAmount * ExperimentConfig.greenhouse.cultivationCostRate;
+                
+                // New calculation: (Actual growth - last growth) * resource amount bet
+                const growthChange = groundTruth - currentHeight;
+                const gainLoss = growthChange * currentAction.resourceAmount;
+                response.yield_result = gainLoss - cultivationCost;
+                
+                // Update greenhouse resources (subtract initial resource bet, add yield result)
+                const resourcesAfterBet = trial.greenhouse.resources - currentAction.resourceAmount;
+                response.greenhouse_after = {
+                    resources: resourcesAfterBet + response.yield_result,
+                    totalValue: resourcesAfterBet + response.yield_result
+                };
+                
+                // Console logging for debugging
+                console.log('=== ACTION OUTCOME CALCULATION ===');
+                console.log('Action:', response.action);
+                console.log('Current height (last growth):', currentHeight);
+                console.log('Ground truth (actual growth):', groundTruth);
+                console.log('Growth change:', growthChange);
+                console.log('Resource amount bet:', currentAction.resourceAmount);
+                console.log('Gain/Loss before cost:', gainLoss);
+                console.log('Cultivation cost:', cultivationCost);
+                console.log('Net yield result:', response.yield_result);
+                console.log('Resources before bet:', trial.greenhouse.resources);
+                console.log('Resources after bet:', resourcesAfterBet);
+                console.log('Final resources:', response.greenhouse_after.resources);
+                console.log('=================================')
 
-                if (response.action === 'cultivate') {
-                    // Cultivate: gain when height increases
-                    const growthChange = groundTruth - currentHeight;
-                    response.yield_result = (currentAction.plants * growthChange * 10) - cultivationCost;
-                    response.greenhouse_after = {
-                        resources: trial.greenhouse.resources + response.yield_result,
-                        totalValue: trial.greenhouse.resources + response.yield_result
-                    };
-                } else if (response.action === 'prune') {
-                    // Prune: gain when height decreases
-                    const growthChange = currentHeight - groundTruth;
-                    response.yield_result = (currentAction.plants * growthChange * 10) - cultivationCost;
-                    response.greenhouse_after = {
-                        resources: trial.greenhouse.resources + response.yield_result,
-                        totalValue: trial.greenhouse.resources + response.yield_result
-                    };
-                }
-
-                // Show feedback if enabled
+                // Show result popup if enabled
                 if (trial.show_feedback) {
-                    this.showFeedback(response, groundTruth, () => {
+                    this.showResultPopup(response, groundTruth, currentHeight, () => {
                         this.endTrial(display_element, response, trial);
                     });
                 } else {
@@ -470,36 +479,53 @@ var jsPsychPlantCultivation = (function (jsPsych) {
                             .attr('stroke-width', 0.5);
                     });
                 
-                    // Add invisible hover area over the chart for interaction (only if we have alternatives)
-                    const hoverArea = svg.append('rect')
-                        .attr('class', 'hover-area')
-                        .attr('x', margin.left)
-                        .attr('y', margin.top)
-                        .attr('width', chartWidth)
-                        .attr('height', chartHeight)
-                        .attr('fill', 'transparent')
+                    // Create invisible thicker path for hover detection on aggregation line only
+                    const aggregateHoverPath = predictionsGroup.append('path')
+                        .datum(aggregateData)
+                        .attr('class', 'aggregate-hover-target')
+                        .attr('fill', 'none')
+                        .attr('stroke', 'transparent')
+                        .attr('stroke-width', 15) // Thicker for easier hover targeting
+                        .attr('pointer-events', 'stroke')
+                        .attr('d', d3.line()
+                            .x((d, i) => xScale(aggregateDates[i]))
+                            .y(d => yScale(d))
+                        );
+                    
+                    // Make aggregation dot hoverable too
+                    const aggregateDot = aggregateGroup.select('.prediction-dot')
+                        .style('cursor', 'pointer')
                         .attr('pointer-events', 'all');
                     
-                    // Add hover event handlers for sophisticated pattern interaction
-                    hoverArea
-                        .on('mouseenter', function() {
-                            // Hide aggregate, show alternatives with smooth transition
-                            aggregateGroup.transition()
-                                .duration(300)
-                                .style('opacity', 0);
-                            alternativeGroup.transition()
-                                .duration(300)
-                                .style('opacity', 1);
-                        })
-                        .on('mouseleave', function() {
-                            // Show aggregate, hide alternatives with smooth transition
-                            alternativeGroup.transition()
-                                .duration(300)
-                                .style('opacity', 0);
-                            aggregateGroup.transition()
-                                .duration(300)
-                                .style('opacity', 1);
-                        });
+                    // Add hover event handlers for aggregation line and dot only
+                    const showAlternatives = function() {
+                        // Hide aggregate, show alternatives with smooth transition
+                        aggregateGroup.transition()
+                            .duration(300)
+                            .style('opacity', 0);
+                        alternativeGroup.transition()
+                            .duration(300)
+                            .style('opacity', 1);
+                    };
+                    
+                    const hideAlternatives = function() {
+                        // Show aggregate, hide alternatives with smooth transition
+                        alternativeGroup.transition()
+                            .duration(300)
+                            .style('opacity', 0);
+                        aggregateGroup.transition()
+                            .duration(300)
+                            .style('opacity', 1);
+                    };
+                    
+                    // Attach events to both the hover path and the dot
+                    aggregateHoverPath
+                        .on('mouseenter', showAlternatives)
+                        .on('mouseleave', hideAlternatives);
+                        
+                    aggregateDot
+                        .on('mouseenter', showAlternatives)
+                        .on('mouseleave', hideAlternatives);
                 } else {
                     // No alternatives available, just show the single prediction
                     console.log('Single prediction in alternative mode:', aggregateValue);
@@ -517,15 +543,17 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             // Labels
             svg.append('text')
                 .attr('transform', 'rotate(-90)')
-                .attr('y', margin.left / 2)
+                .attr('y', margin.left / 3)
                 .attr('x', -(height / 2))
                 .attr('text-anchor', 'middle')
+                .style('font-size', '12px')
                 .text('Plant Height (mm)');
 
             svg.append('text')
                 .attr('x', width / 2)
-                .attr('y', height - margin.bottom / 2)
+                .attr('y', height - margin.bottom / 3)
                 .attr('text-anchor', 'middle')
+                .style('font-size', '12px')
                 .text('Date');
 
             // Enhanced legend with pattern information
@@ -583,10 +611,36 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             }
         }
 
-        showFeedback(response, groundTruth, callback) {
+        showResultPopup(response, groundTruth, currentHeight, callback) {
             const overlay = document.querySelector('#feedback-overlay');
-            const yieldClass = response.yield_result >= 0 ? 'profit' : 'loss';
-            const yieldText = response.yield_result >= 0 ? 'Resource Gain' : 'Resource Loss';
+            
+            // Calculate gain/loss using the formula: (Actual growth - last growth) * resource user bet
+            const previousHeight = currentHeight;
+            const actualGrowth = groundTruth;
+            const growthChange = actualGrowth - previousHeight;
+            const resourceBet = response.resource_amount;
+            const gainLoss = growthChange * resourceBet;
+            
+            // Calculate cultivation cost
+            const cultivationCost = resourceBet * ExperimentConfig.greenhouse.cultivationCostRate;
+            const netGainLoss = gainLoss - cultivationCost;
+            
+            // Debug logging for calculation parameters
+            console.log('=== RESULT POPUP CALCULATION ===');
+            console.log('Previous height (last growth):', previousHeight);
+            console.log('Actual growth (current):', actualGrowth);
+            console.log('Growth change (actual - previous):', growthChange);
+            console.log('Resource bet by user:', resourceBet);
+            console.log('Gain/Loss formula: (actual - previous) * resource_bet');
+            console.log('Gain/Loss calculation:', `(${actualGrowth} - ${previousHeight}) * ${resourceBet} = ${gainLoss}`);
+            console.log('Cultivation cost:', cultivationCost);
+            console.log('Net gain/loss after cost:', netGainLoss);
+            console.log('Resources before action:', response.greenhouse_before.resources);
+            console.log('Resources after action:', response.greenhouse_after.resources);
+            console.log('================================');
+            
+            const yieldClass = netGainLoss >= 0 ? 'profit' : 'loss';
+            const yieldText = netGainLoss >= 0 ? 'Net Gain' : 'Net Loss';
             
             const actionDescription = response.action === 'cultivate' ? 
                 `You cultivated ${response.plants} plants with ${response.resource_amount.toFixed(0)} resources` :
@@ -599,11 +653,18 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             overlay.innerHTML = `
                 <div class="feedback-content">
                     <h3>Growth Outcome</h3>
-                    <p><strong>Actual Growth Height:</strong> ${groundTruth.toFixed(1)} mm</p>
+                    <p><strong>Previous Growth:</strong> ${previousHeight.toFixed(1)} mm</p>
+                    <p><strong>Actual Growth:</strong> ${actualGrowth.toFixed(1)} mm</p>
+                    <p><strong>Change in Growth:</strong> ${growthChange >= 0 ? '+' : ''}${growthChange.toFixed(1)} mm</p>
                     ${patternInfo}
                     <p>${actionDescription}</p>
-                    <p class="${yieldClass}"><strong>${yieldText}:</strong> ${Math.abs(response.yield_result).toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
-                    <p><strong>New Resources:</strong> ${response.greenhouse_after.resources.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
+                    <div class="calculation-breakdown">
+                        <p><strong>Calculation:</strong></p>
+                        <p>Gain/Loss = (${actualGrowth.toFixed(1)} - ${previousHeight.toFixed(1)}) × ${resourceBet} = ${gainLoss.toFixed(0)}</p>
+                        <p>Cultivation Cost = ${cultivationCost.toFixed(0)}</p>
+                        <p class="${yieldClass}"><strong>${yieldText}:</strong> ${Math.abs(netGainLoss).toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
+                    </div>
+                    <p><strong>Remaining Resources:</strong> ${response.greenhouse_after.resources.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
                 </div>
             `;
             
@@ -681,8 +742,20 @@ var jsPsychPlantCultivation = (function (jsPsych) {
                 stimuli_index: trial.predictions?.metadata?.stimuliIndex || 0,
                 stimuli_description: trial.predictions?.description || 'no description',
                 pattern_id: trial.predictions?.patternId || 'unknown',
-                display_format: trial.condition?.displayFormat || 'unknown'
+                display_format: trial.condition?.displayFormat || 'unknown',
+                // Include greenhouse state for resource persistence
+                greenhouse_before: response.greenhouse_before,
+                greenhouse_after: response.greenhouse_after
             };
+
+            console.log('=== TRIAL DATA SAVED ===');
+            console.log('Trial:', trial.trial || trial.round);
+            console.log('Action:', response.action);
+            console.log('Resource amount:', response.resource_amount);
+            console.log('Yield result:', response.yield_result);
+            console.log('Greenhouse before:', response.greenhouse_before);
+            console.log('Greenhouse after:', response.greenhouse_after);
+            console.log('========================');
 
             // End trial
             this.jsPsych.finishTrial(trial_data);
