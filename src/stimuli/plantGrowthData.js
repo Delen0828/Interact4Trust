@@ -1,124 +1,155 @@
+// Load generated data from data.json
+const generatedData = {
+    "historical": {
+        "increase": [
+            { "time": 0, "value": 47.5 },
+            { "time": 1, "value": 49.41 },
+            { "time": 2, "value": 69.07 },
+            { "time": 3, "value": 74.75 },
+            { "time": 4, "value": 62.46 },
+            { "time": 5, "value": 73.37 },
+            { "time": 6, "value": 89.8 },
+            { "time": 7, "value": 94.59 },
+            { "time": 8, "value": 98.4 },
+            { "time": 9, "value": 98.65 }
+        ],
+        "decrease": [
+            { "time": 0, "value": 152.99 },
+            { "time": 1, "value": 147.08 },
+            { "time": 2, "value": 147.33 },
+            { "time": 3, "value": 137.54 },
+            { "time": 4, "value": 124.91 },
+            { "time": 5, "value": 129.23 },
+            { "time": 6, "value": 120.65 },
+            { "time": 7, "value": 120.15 },
+            { "time": 8, "value": 102.2 },
+            { "time": 9, "value": 94.09 }
+        ],
+        "stable": [
+            { "time": 0, "value": 105.39 },
+            { "time": 1, "value": 103.32 },
+            { "time": 2, "value": 109.92 },
+            { "time": 3, "value": 107.94 },
+            { "time": 4, "value": 95.39 },
+            { "time": 5, "value": 95.09 },
+            { "time": 6, "value": 90.97 },
+            { "time": 7, "value": 93.71 },
+            { "time": 8, "value": 101.05 },
+            { "time": 9, "value": 103.01 }
+        ]
+    }
+};
+
 // Alien plant growth data with sophisticated prediction patterns
 const AlienPlantData = {
-    // Base historical growth data (scaled from example data to plant heights)
-    historical: [
-        { time: 0, value: 100.0 },
-        { time: 1, value: 102.1 },
-        { time: 2, value: 101.3 },
-        { time: 3, value: 103.2 },
-        { time: 4, value: 102.4 },
-        { time: 5, value: 101.8 },
-        { time: 6, value: 103.7 },
-        { time: 7, value: 102.1 },
-        { time: 8, value: 100.9 },
-        { time: 9, value: 102.5 }
-    ],
+    // Trend-specific historical growth data (from generated data)
+    historical: generatedData.historical,
     
-    // 15 sophisticated prediction patterns (5 patterns × 3 trends)
+    // 15 sophisticated prediction patterns (5 patterns × 3 trends) - Updated with generated data
     patterns: {
         "increase_agreement": {
             trend: "increase",
             pattern: "agreement",
-            aggregation: 107.5,
-            alternatives: [107.68, 107.57, 107.07, 107.67, 107.52],
+            aggregation: 118.65,
+            alternatives: [129.72, 94.22, 132.05, 128.8, 108.46],
             description: "Models mostly agree on growth increase"
         },
         "increase_polarization": {
             trend: "increase",
             pattern: "polarization",
-            aggregation: 107.5,
-            alternatives: [119.5, 115.5, 107.5, 99.5, 95.5],
+            aggregation: 128.4,
+            alternatives: [168.4, 158.4, 128.4, 98.4, 88.4],
             description: "Models split between high and low growth predictions"
         },
         "increase_risk_of_loss": {
             trend: "increase",
             pattern: "risk_of_loss",
-            aggregation: 107.5,
-            alternatives: [122.8, 121.8, 121.3, 112.8, 58.8],
+            aggregation: 120.4,
+            alternatives: [145.7, 144.7, 144.2, 135.7, 31.7],
             description: "Mostly positive predictions with one severe decline risk"
         },
         "increase_chance_of_gain": {
             trend: "increase",
             pattern: "chance_of_gain",
-            aggregation: 107.5,
-            alternatives: [139.7, 100.2, 99.7, 99.2, 98.7],
+            aggregation: 121.46,
+            alternatives: [175.26, 108.76, 108.26, 107.76, 107.26],
             description: "One model predicts exceptional growth opportunity"
         },
         "increase_ambiguous_spread": {
             trend: "increase",
             pattern: "ambiguous_spread",
-            aggregation: 107.5,
-            alternatives: [111.02, 107.82, 105.42, 103.82, 109.42],
+            aggregation: 116.67,
+            alternatives: [174.27, 118.27, 90.27, 74.27, 126.27],
             description: "Models show varied growth predictions without clear pattern"
         },
         "decrease_agreement": {
             trend: "decrease",
             pattern: "agreement",
-            aggregation: 97.5,
-            alternatives: [97.06, 97.05, 98.01, 98.11, 97.27],
+            aggregation: 74.09,
+            alternatives: [69.52, 63.83, 85.9, 62.76, 88.45],
             description: "Models mostly agree on growth decline"
         },
         "decrease_polarization": {
             trend: "decrease",
             pattern: "polarization",
-            aggregation: 97.5,
-            alternatives: [109.5, 105.5, 97.5, 89.5, 85.5],
+            aggregation: 71.84,
+            alternatives: [111.84, 101.84, 71.84, 41.84, 31.84],
             description: "Models split between growth and decline predictions"
         },
         "decrease_risk_of_loss": {
             trend: "decrease",
             pattern: "risk_of_loss",
-            aggregation: 97.5,
-            alternatives: [109.7, 107.7, 105.7, 104.7, 59.7],
+            aggregation: 74.2,
+            alternatives: [99.5, 98.5, 98.0, 89.5, -14.5],
             description: "Mostly positive predictions with one severe decline risk"
         },
         "decrease_chance_of_gain": {
             trend: "decrease",
             pattern: "chance_of_gain",
-            aggregation: 97.5,
-            alternatives: [135.3, 88.8, 88.3, 87.8, 87.3],
+            aggregation: 76.77,
+            alternatives: [130.57, 64.07, 63.57, 63.07, 62.57],
             description: "One model predicts exceptional growth despite declining trend"
         },
         "decrease_ambiguous_spread": {
             trend: "decrease",
             pattern: "ambiguous_spread",
-            aggregation: 97.5,
-            alternatives: [101.02, 97.82, 95.42, 93.82, 99.42],
+            aggregation: 76.3,
+            alternatives: [133.9, 77.9, 49.9, 33.9, 85.9],
             description: "Models show varied decline predictions without clear pattern"
         },
         "stable_agreement": {
             trend: "stable",
             pattern: "agreement",
-            aggregation: 102.81,
-            alternatives: [102.23, 103.49, 102.76, 103.05, 102.52],
+            aggregation: 103.01,
+            alternatives: [112.26, 94.38, 99.1, 93.99, 115.33],
             description: "Models agree on stable growth with minimal change"
         },
         "stable_polarization": {
             trend: "stable",
             pattern: "polarization",
-            aggregation: 102.31,
-            alternatives: [114.31, 110.31, 102.31, 94.31, 90.31],
+            aggregation: 94.09,
+            alternatives: [134.09, 124.09, 94.09, 64.09, 54.09],
             description: "Models split between growth and decline despite stable average"
         },
         "stable_risk_of_loss": {
             trend: "stable",
             pattern: "risk_of_loss",
-            aggregation: 102.84,
-            alternatives: [114.84, 112.84, 110.84, 108.84, 66.84],
+            aggregation: 95.8,
+            alternatives: [121.1, 120.1, 119.6, 111.1, 7.1],
             description: "Mostly stable predictions with one severe decline risk"
         },
         "stable_chance_of_gain": {
             trend: "stable",
             pattern: "chance_of_gain",
-            aggregation: 102.63,
-            alternatives: [137.23, 94.73, 94.23, 93.73, 93.23],
+            aggregation: 99.03,
+            alternatives: [152.83, 86.33, 85.83, 85.33, 84.83],
             description: "One model predicts exceptional growth opportunity"
         },
         "stable_ambiguous_spread": {
             trend: "stable",
             pattern: "ambiguous_spread",
-            aggregation: 102.27,
-            alternatives: [105.79, 102.59, 100.19, 98.59, 104.19],
+            aggregation: 99.04,
+            alternatives: [156.64, 100.64, 72.64, 56.64, 108.64],
             description: "Models show varied stable predictions without clear pattern"
         }
     },
@@ -127,6 +158,23 @@ const AlienPlantData = {
 };
 
 // Helper functions for alien plant data
+
+// Get historical data by trend
+function getHistoricalDataByTrend(trend) {
+    if (AlienPlantData.historical[trend]) {
+        return AlienPlantData.historical[trend];
+    }
+    
+    // Fallback to stable trend if trend not found
+    console.warn(`Trend '${trend}' not found, falling back to 'stable'`);
+    return AlienPlantData.historical.stable;
+}
+
+// Get default historical data (uses stable trend for backward compatibility)
+function getDefaultHistoricalData() {
+    return AlienPlantData.historical.stable;
+}
+
 function generateDates(numDays) {
     const dates = [];
     const today = new Date();
@@ -143,7 +191,6 @@ function generateDates(numDays) {
 function extendHistoricalData(baseData, days) {
     // Extend the base historical data to create full growth timeline
     const extended = [...baseData];
-    const lastValue = baseData[baseData.length - 1].value;
     
     for (let i = baseData.length; i < days; i++) {
         // Small random variations around the last value
@@ -192,9 +239,10 @@ const StimuliPatterns = {
             return null;
         }
         
-        const currentHeight = AlienPlantData.historical[AlienPlantData.historical.length - 1].value;
+        // Get trend-specific historical data
+        const historicalData = getHistoricalDataByTrend(pattern.trend);
         
-        // Use pattern data as ground truth (first alternative is most likely)
+        // Use pattern data as ground truth (aggregation is the expected value)
         const groundTruth = pattern.aggregation;
         
         return {
@@ -204,7 +252,8 @@ const StimuliPatterns = {
             description: pattern.description,
             displayFormat: displayFormat,
             values: displayFormat === 'aggregation' ? [pattern.aggregation] : pattern.alternatives,
-            probabilities: displayFormat === 'aggregation' ? [1.0] : [1.0, 0.8, 0.6, 0.4, 0.2]
+            probabilities: displayFormat === 'aggregation' ? [1.0] : [1.0, 0.8, 0.6, 0.4, 0.2],
+            historicalData: historicalData // Include trend-specific historical data
         };
     }
 };
@@ -242,12 +291,24 @@ function shuffleArray(array) {
 }
 
 // Function to get growth data for a specific round
-function getGrowthDataForRound(plantIndex, round) {
+function getGrowthDataForRound(plantIndex, round, stimuliPatternId = null) {
     // Generate dates for historical data
     const dates = generateDates(10 + round);
     
+    // Determine which trend to use based on stimuli pattern
+    let trend = 'stable'; // default
+    if (stimuliPatternId) {
+        const pattern = AlienPlantData.patterns[stimuliPatternId];
+        if (pattern && pattern.trend) {
+            trend = pattern.trend;
+        }
+    }
+    
+    // Get trend-specific historical data
+    const baseHistoricalData = getHistoricalDataByTrend(trend);
+    
     // Extend historical data for this timeline
-    const extendedData = extendHistoricalData(AlienPlantData.historical, 10 + round);
+    const extendedData = extendHistoricalData(baseHistoricalData, 10 + round);
     const heights = extendedData.map(d => d.value);
     
     return {
@@ -255,7 +316,8 @@ function getGrowthDataForRound(plantIndex, round) {
         plantName: `Plant #${plantIndex}`,
         dates: dates,
         heights: heights,
-        growth_rates: heights.map((h, i) => i > 0 ? ((h - heights[i-1]) / heights[i-1]) * 100 : 0)
+        growth_rates: heights.map((h, i) => i > 0 ? ((h - heights[i-1]) / heights[i-1]) * 100 : 0),
+        trend: trend // Include trend information for reference
     };
 }
 
@@ -312,6 +374,8 @@ if (typeof module !== 'undefined' && module.exports) {
         SimplifiedStimuliAssignment,
         getGrowthDataForRound,
         getPredictionForRound,
-        getCurrentStimuliInfo
+        getCurrentStimuliInfo,
+        getHistoricalDataByTrend,
+        getDefaultHistoricalData
     };
 }

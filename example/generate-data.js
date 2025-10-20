@@ -3,10 +3,49 @@
 
 const fs = require('fs');
 
-// Generate fixed realistic historical data (no randomness for consistency)
-function generateHistoricalData() {
-    // Predefined realistic data with ups and downs, ending neutrally
-    const values = [100, 102.1, 101.3, 103.2, 102.4, 101.8, 103.7, 102.1, 100.9, 102.5];
+// Generate historical data with trend
+function generateHistoricalData(trend = 'stable') {
+    const values = [];
+    const numPoints = 10;
+    let startValue, endValue, centerValue;
+    
+    // Define trend parameters
+    switch(trend) {
+        case 'increase':
+            startValue = 60 + Math.random() * 10; // 60-70 range
+            endValue = 95 + Math.random() * 10;   // 95-105 range
+            break;
+        case 'decrease':
+            startValue = 130 + Math.random() * 10; // 130-140 range
+            endValue = 95 + Math.random() * 10;    // 95-105 range
+            break;
+        case 'stable':
+            centerValue = 100;
+            startValue = centerValue;
+            endValue = centerValue;
+            break;
+    }
+    
+    // Generate values with trend
+    for (let i = 0; i < numPoints; i++) {
+        let baseValue;
+        
+        if (trend === 'stable') {
+            // Stable trend: fluctuate around center with controlled variance
+            const variance = 5; // ±5 from center
+            baseValue = centerValue + (Math.random() - 0.5) * 2 * variance;
+        } else {
+            // Linear interpolation between start and end values
+            const progress = i / (numPoints - 1);
+            baseValue = startValue + (endValue - startValue) * progress;
+            
+            // Add realistic noise (smaller variance for trending data)
+            const noise = (Math.random() - 0.5) * 6; // ±3 noise
+            baseValue += noise;
+        }
+        
+        values.push(parseFloat(baseValue.toFixed(2)));
+    }
     
     const data = values.map((value, index) => ({
         time: index,
@@ -19,7 +58,7 @@ function generateHistoricalData() {
 // Generate prediction data for a specific trend and pattern
 function generatePredictions(currentPrice, trend, pattern) {
     const trendStrength = 5;
-    let aggregationValue;
+    let aggregationValue = currentPrice;
     
     // Calculate aggregation based on trend
     switch(trend) {
@@ -36,89 +75,52 @@ function generatePredictions(currentPrice, trend, pattern) {
     
     // Generate alternatives based on pattern
     let alternatives = [];
-    
+    let noiseLevel=10
     switch(pattern) {
         case 'agreement':
             // All predictions cluster tightly around aggregation
             for (let i = 0; i < 5; i++) {
-                const deviation = (Math.random() - 0.5) * 1.5; // Small deviation
+                const deviation = (Math.random() - 0.5) * 2 * noiseLevel; // Small deviation
                 alternatives.push(aggregationValue + deviation);
             }
             break;
             
         case 'polarization':
             // EXTREME split - very dramatic polarization
-            alternatives = [
-                aggregationValue + 12,  // Very high prediction
-                aggregationValue + 8,   // High prediction  
+            alternatives = [ 
+                aggregationValue + 40,  // Very high prediction
+                aggregationValue + 30,   // High prediction  
                 aggregationValue,       // At aggregation
-                aggregationValue - 8,   // Low prediction
-                aggregationValue - 12   // Very low prediction
+                aggregationValue - 30,   // Low prediction
+                aggregationValue - 40   // Very low prediction
             ];
             break;
             
         case 'risk_of_loss':
             // Most predictions cluster ABOVE aggregation, with 1 extreme outlier showing risk
-            if (trend === 'increase') {
-                // Follow user's example pattern
                 alternatives = [
-                    aggregationValue + 15.3,  // High prediction
-                    aggregationValue + 14.3,  // High prediction  
-                    aggregationValue + 13.8,  // High prediction
-                    aggregationValue + 5.3,   // Moderate prediction
-                    aggregationValue - 48.7   // EXTREME OUTLIER: Risk of severe loss
+                    aggregationValue + 25.3,  // High prediction
+                    aggregationValue + 24.3,  // High prediction  
+                    aggregationValue + 23.8,  // High prediction
+                    aggregationValue + 15.3,   // Moderate prediction
+                    aggregationValue - 88.7   // EXTREME OUTLIER: Risk of severe loss
                 ];
-            } else if (trend === 'decrease') {
-                alternatives = [
-                    aggregationValue + 5,     // Above the downward trend (contrarian optimism)
-                    aggregationValue + 3,     // Above the downward trend
-                    aggregationValue + 1,     // Slightly above trend
-                    aggregationValue,         // At trend
-                    aggregationValue - 45     // EXTREME OUTLIER: Risk of catastrophic loss
-                ];
-            } else { // stable
-                alternatives = [
-                    aggregationValue + 8,     // Above stable trend
-                    aggregationValue + 6,     // Above stable trend
-                    aggregationValue + 4,     // Above stable trend
-                    aggregationValue + 2,     // Slightly above
-                    aggregationValue - 40     // EXTREME OUTLIER: Risk of major loss
-                ];
-            }
             break;
             
         case 'chance_of_gain':
             // Most predictions cluster BELOW/AT aggregation, with 1 extreme outlier showing chance of gain
-            if (trend === 'decrease') {
                 alternatives = [
                     aggregationValue + 45,    // EXTREME OUTLIER: Chance of major gain (contrarian)
-                    aggregationValue - 1.5,   // Following downward trend
-                    aggregationValue - 2,     // Following downward trend
-                    aggregationValue - 2.5,   // Following downward trend
-                    aggregationValue - 3      // Following downward trend
+                    aggregationValue - 21.5,   // Following downward trend
+                    aggregationValue - 22,     // Following downward trend
+                    aggregationValue - 22.5,   // Following downward trend
+                    aggregationValue - 23      // Following downward trend
                 ];
-            } else if (trend === 'increase') {
-                alternatives = [
-                    aggregationValue + 40,    // EXTREME OUTLIER: Chance of extraordinary gain
-                    aggregationValue + 0.5,   // Following upward trend
-                    aggregationValue,         // At trend
-                    aggregationValue - 0.5,   // Conservative
-                    aggregationValue - 1      // More conservative
-                ];
-            } else { // stable
-                alternatives = [
-                    aggregationValue + 42,    // EXTREME OUTLIER: Chance of major gain
-                    aggregationValue - 0.5,   // Slightly down from stable
-                    aggregationValue - 1,     // Slightly down
-                    aggregationValue - 1.5,   // More down
-                    aggregationValue - 2      // Conservative down
-                ];
-            }
             break;
             
         case 'ambiguous_spread':
             // Wide scatter around aggregation
-            const spread = 8;
+            const spread = 40;
             alternatives = [
                 aggregationValue + spread * 0.6,
                 aggregationValue + spread * 0.2,
@@ -142,10 +144,6 @@ function generatePredictions(currentPrice, trend, pattern) {
 
 // Generate all data
 function generateAllData() {
-    // Generate shared historical data
-    const historicalData = generateHistoricalData();
-    const currentPrice = historicalData[historicalData.length - 1].value;
-    
     const trends = ['increase', 'decrease', 'stable'];
     const patterns = ['agreement', 'polarization', 'risk_of_loss', 'chance_of_gain', 'ambiguous_spread'];
     
@@ -154,10 +152,11 @@ function generateAllData() {
     // Add header
     csvRows.push('case_id,trend,pattern,time,value,type,alternative_index');
     
-    // Add historical data for all cases (shared)
+    // Add historical data for all cases
     trends.forEach(trend => {
         patterns.forEach(pattern => {
             const caseId = `${trend}_${pattern}`;
+            const historicalData = generateHistoricalData(trend);
             historicalData.forEach(point => {
                 csvRows.push(`${caseId},${trend},${pattern},${point.time},${point.value},historical,`);
             });
@@ -168,6 +167,8 @@ function generateAllData() {
     trends.forEach(trend => {
         patterns.forEach(pattern => {
             const caseId = `${trend}_${pattern}`;
+            const historicalData = generateHistoricalData(trend);
+            const currentPrice = historicalData[historicalData.length - 1].value;
             const predictions = generatePredictions(currentPrice, trend, pattern);
             
             // Add aggregation prediction
@@ -190,21 +191,26 @@ console.log('Generated predictions-data.csv successfully!');
 
 // Also create a simpler format for easy loading
 function generateSimpleFormat() {
-    const historicalData = generateHistoricalData();
-    const currentPrice = historicalData[historicalData.length - 1].value;
-    
     const trends = ['increase', 'decrease', 'stable'];
     const patterns = ['agreement', 'polarization', 'risk_of_loss', 'chance_of_gain', 'ambiguous_spread'];
     
     const data = {
-        historical: historicalData,
+        historical: {},
         cases: {}
     };
     
     trends.forEach(trend => {
         patterns.forEach(pattern => {
             const caseId = `${trend}_${pattern}`;
+            const historicalData = generateHistoricalData(trend);
+            const currentPrice = historicalData[historicalData.length - 1].value;
             const predictions = generatePredictions(currentPrice, trend, pattern);
+            
+            // Store historical data for each trend
+            if (!data.historical[trend]) {
+                data.historical[trend] = historicalData;
+            }
+            
             data.cases[caseId] = {
                 trend: trend,
                 pattern: pattern,

@@ -51,11 +51,11 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             // Initialize trial data
             const start_time = performance.now();
             let response = {
-                action: null,
-                plants: 0,
+                predicted_height: null,
+                actual_height: null,
+                prediction_error: null,
                 greenhouse_before: {...trial.greenhouse},
-                greenhouse_after: null,
-                yield_result: 0
+                greenhouse_after: null
             };
 
             // Create main container with debug info
@@ -82,23 +82,12 @@ var jsPsychPlantCultivation = (function (jsPsych) {
                     <div class="cultivation-controls">
                         <div class="action-input-container">
                             <div class="input-row">
-                                <label for="action-type">Action:</label>
-                                <select id="action-type" class="action-select">
-                                    <option value="">Select Action</option>
-                                    <option value="cultivate">CULTIVATE (Expect Growth)</option>
-                                    <option value="prune">PRUNE (Expect Decline)</option>
-                                </select>
+                                <label for="predicted-height">Predicted Plant Height:</label>
+                                <input type="number" id="predicted-height" min="0" max="200" step="0.1" placeholder="Enter predicted height (0-200)">
                             </div>
-                            
-                            <div class="input-row">
-                                <label for="resource-amount">Resource Amount:</label>
-                                <input type="number" id="resource-amount" min="0" step="1" value="0" placeholder="Enter resource units">
-                                <span id="plant-count"></span>
-                            </div>
-                            
                         </div>
                         
-                        <button id="confirm-action" class="confirm-btn" disabled>Confirm Action</button>
+                        <button id="confirm-action" class="confirm-btn" disabled>Confirm Prediction</button>
                     </div>
                     
                     <div id="feedback-overlay" class="feedback-overlay hidden"></div>
@@ -111,36 +100,24 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             this.drawChart(trial.growth_data, trial.predictions, trial.condition);
 
             // Setup event handlers
-            const actionType = display_element.querySelector('#action-type');
-            const resourceInput = display_element.querySelector('#resource-amount');
-            const plantCount = display_element.querySelector('#plant-count');
+            const predictedHeightInput = display_element.querySelector('#predicted-height');
             const actionContainer = display_element.querySelector('.action-input-container');
             const confirmBtn = display_element.querySelector('#confirm-action');
 
-            // Update action display and validation
-            const updateAction = () => {
-                const action = actionType.value;
-                const resourceAmount = parseFloat(resourceInput.value) || 0;
-                const currentHeight = trial.growth_data.heights[trial.growth_data.heights.length - 1];
-                const maxResources = trial.greenhouse.resources;
+            // Update validation
+            const updateValidation = () => {
+                const predictedHeight = parseFloat(predictedHeightInput.value) || 0;
                 
-                // Calculate plants from resource amount
-                const plants = resourceAmount > 0 ? Math.floor(resourceAmount / 100) : 0;
-                plantCount.textContent = plants > 0 ? `(${plants} plants)` : '';
-                
-                // Validate resource amount against available resources - create/remove error message dynamically
+                // Validate predicted height range (0-200) - create/remove error message dynamically
                 let existingError = actionContainer.querySelector('.error-message');
                 
-                if (resourceAmount > 0 && resourceAmount > maxResources) {
+                if (predictedHeight < 0 || predictedHeight > 200) {
                     // Create error message if it doesn't exist
                     if (!existingError) {
                         const errorDiv = document.createElement('div');
                         errorDiv.className = 'error-message';
-                        errorDiv.textContent = `Maximum available: ${maxResources.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}`;
+                        errorDiv.textContent = 'Predicted height must be between 0 and 200';
                         actionContainer.appendChild(errorDiv);
-                    } else {
-                        // Update existing error message
-                        existingError.textContent = `Maximum available: ${maxResources.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}`;
                     }
                 } else {
                     // Remove error message if it exists
@@ -149,70 +126,47 @@ var jsPsychPlantCultivation = (function (jsPsych) {
                     }
                 }
                 
-                // Enable confirm button if action is selected and resource amount is valid
-                const hasValidAction = action && resourceAmount > 0 && resourceAmount <= maxResources;
-                confirmBtn.disabled = !hasValidAction;
+                // Enable confirm button if predicted height is within valid range
+                const hasValidPrediction = predictedHeight >= 0 && predictedHeight <= 200 && predictedHeightInput.value !== '';
+                confirmBtn.disabled = !hasValidPrediction;
             };
 
-            // Get current action details
-            const getCurrentAction = () => {
-                const action = actionType.value;
-                const resourceAmount = parseFloat(resourceInput.value) || 0;
-                const plants = resourceAmount > 0 ? Math.floor(resourceAmount / 100) : 0;
+            // Get current prediction
+            const getCurrentPrediction = () => {
+                const predictedHeight = parseFloat(predictedHeightInput.value) || 0;
                 
                 return {
-                    action: action || null,
-                    resourceAmount: resourceAmount,
-                    plants: plants
+                    predictedHeight: predictedHeight
                 };
             };
 
             // Event handlers
-            actionType.addEventListener('change', updateAction);
-            resourceInput.addEventListener('input', updateAction);
+            predictedHeightInput.addEventListener('input', updateValidation);
 
             // Confirm action handler
             confirmBtn.addEventListener('click', () => {
                 const end_time = performance.now();
                 const rt = Math.round(end_time - start_time);
                 
-                const currentAction = getCurrentAction();
-                response.action = currentAction.action;
-                response.resource_amount = currentAction.resourceAmount;
-                response.plants = currentAction.plants;
+                const currentPrediction = getCurrentPrediction();
+                response.predicted_height = currentPrediction.predictedHeight;
                 response.rt = rt;
 
-                // Calculate action outcome using new formula: (Actual growth - last growth) * resource user bet
+                // Store the actual outcome for comparison
                 const currentHeight = trial.growth_data.heights[trial.growth_data.heights.length - 1];
                 const groundTruth = trial.predictions.groundTruth;
-                const cultivationCost = currentAction.resourceAmount * ExperimentConfig.greenhouse.cultivationCostRate;
+                response.actual_height = groundTruth;
+                response.prediction_error = Math.abs(currentPrediction.predictedHeight - groundTruth);
                 
-                // New calculation: (Actual growth - last growth) * resource amount bet
-                const growthChange = groundTruth - currentHeight;
-                const gainLoss = growthChange * currentAction.resourceAmount;
-                response.yield_result = gainLoss - cultivationCost;
-                
-                // Update greenhouse resources (subtract initial resource bet, add yield result)
-                const resourcesAfterBet = trial.greenhouse.resources - currentAction.resourceAmount;
-                response.greenhouse_after = {
-                    resources: resourcesAfterBet + response.yield_result,
-                    totalValue: resourcesAfterBet + response.yield_result
-                };
+                // No resource management for prediction task
+                response.greenhouse_after = trial.greenhouse;
                 
                 // Console logging for debugging
-                console.log('=== ACTION OUTCOME CALCULATION ===');
-                console.log('Action:', response.action);
-                console.log('Current height (last growth):', currentHeight);
-                console.log('Ground truth (actual growth):', groundTruth);
-                console.log('Growth change:', growthChange);
-                console.log('Resource amount bet:', currentAction.resourceAmount);
-                console.log('Gain/Loss before cost:', gainLoss);
-                console.log('Cultivation cost:', cultivationCost);
-                console.log('Net yield result:', response.yield_result);
-                console.log('Resources before bet:', trial.greenhouse.resources);
-                console.log('Resources after bet:', resourcesAfterBet);
-                console.log('Final resources:', response.greenhouse_after.resources);
-                console.log('=================================')
+                console.log('=== PREDICTION OUTCOME ===');
+                console.log('Predicted height:', currentPrediction.predictedHeight);
+                console.log('Actual height:', groundTruth);
+                console.log('Prediction error:', response.prediction_error);
+                console.log('==========================')
 
                 // Show result popup if enabled
                 if (trial.show_feedback) {
@@ -227,8 +181,8 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             // Initialize confirm button state
             confirmBtn.disabled = true;
             
-            // Initialize action display
-            updateAction();
+            // Initialize validation
+            updateValidation();
         }
 
         drawChart(growthData, predictions, condition) {
@@ -590,7 +544,7 @@ var jsPsychPlantCultivation = (function (jsPsych) {
             
             // Show prediction type based on condition
             const predictionText = condition.displayFormat === 'alternative' ? 
-                'Predictions (hover to see all)' : 'Prediction';
+                'Predictions' : 'Prediction';
             legend.append('text')
                 .attr('x', 25).attr('y', 25)
                 .text(predictionText);
@@ -614,57 +568,29 @@ var jsPsychPlantCultivation = (function (jsPsych) {
         showResultPopup(response, groundTruth, currentHeight, callback) {
             const overlay = document.querySelector('#feedback-overlay');
             
-            // Calculate gain/loss using the formula: (Actual growth - last growth) * resource user bet
             const previousHeight = currentHeight;
             const actualGrowth = groundTruth;
-            const growthChange = actualGrowth - previousHeight;
-            const resourceBet = response.resource_amount;
-            const gainLoss = growthChange * resourceBet;
+            const predictedHeight = response.predicted_height;
+            const predictionError = response.prediction_error;
             
-            // Calculate cultivation cost
-            const cultivationCost = resourceBet * ExperimentConfig.greenhouse.cultivationCostRate;
-            const netGainLoss = gainLoss - cultivationCost;
+            // Debug logging for prediction parameters
+            console.log('=== RESULT POPUP PREDICTION ===');
+            console.log('Previous height:', previousHeight);
+            console.log('Predicted height:', predictedHeight);
+            console.log('Actual growth:', actualGrowth);
+            console.log('Prediction error:', predictionError);
+            console.log('===============================');
             
-            // Debug logging for calculation parameters
-            console.log('=== RESULT POPUP CALCULATION ===');
-            console.log('Previous height (last growth):', previousHeight);
-            console.log('Actual growth (current):', actualGrowth);
-            console.log('Growth change (actual - previous):', growthChange);
-            console.log('Resource bet by user:', resourceBet);
-            console.log('Gain/Loss formula: (actual - previous) * resource_bet');
-            console.log('Gain/Loss calculation:', `(${actualGrowth} - ${previousHeight}) * ${resourceBet} = ${gainLoss}`);
-            console.log('Cultivation cost:', cultivationCost);
-            console.log('Net gain/loss after cost:', netGainLoss);
-            console.log('Resources before action:', response.greenhouse_before.resources);
-            console.log('Resources after action:', response.greenhouse_after.resources);
-            console.log('================================');
-            
-            const yieldClass = netGainLoss >= 0 ? 'profit' : 'loss';
-            const yieldText = netGainLoss >= 0 ? 'Net Gain' : 'Net Loss';
-            
-            const actionDescription = response.action === 'cultivate' ? 
-                `You cultivated ${response.plants} plants with ${response.resource_amount.toFixed(0)} resources` :
-                `You pruned ${response.plants} plants with ${response.resource_amount.toFixed(0)} resources`;
-            
-            // Add pattern information to feedback if available and debug is enabled
-            const patternInfo = ExperimentConfig.debug.showStimuliInfo && response.predictions ? 
-                `<p class="pattern-info"><strong>Pattern:</strong> ${response.predictions.pattern || 'unknown'} - ${response.predictions.trend || 'unknown'}</p>` : '';
+            const accuracyClass = predictionError <= 10 ? 'good-prediction' : predictionError <= 25 ? 'okay-prediction' : 'poor-prediction';
+            const accuracyText = predictionError <= 10 ? 'Excellent!' : predictionError <= 25 ? 'Good!' : 'Needs improvement';
             
             overlay.innerHTML = `
                 <div class="feedback-content">
-                    <h3>Growth Outcome</h3>
-                    <p><strong>Previous Growth:</strong> ${previousHeight.toFixed(1)} mm</p>
+                    <h3>Prediction Outcome</h3>
+                    <p><strong>Your Prediction:</strong> ${predictedHeight.toFixed(1)} mm</p>
                     <p><strong>Actual Growth:</strong> ${actualGrowth.toFixed(1)} mm</p>
-                    <p><strong>Change in Growth:</strong> ${growthChange >= 0 ? '+' : ''}${growthChange.toFixed(1)} mm</p>
-                    ${patternInfo}
-                    <p>${actionDescription}</p>
-                    <div class="calculation-breakdown">
-                        <p><strong>Calculation:</strong></p>
-                        <p>Gain/Loss = (${actualGrowth.toFixed(1)} - ${previousHeight.toFixed(1)}) × ${resourceBet} = ${gainLoss.toFixed(0)}</p>
-                        <p>Cultivation Cost = ${cultivationCost.toFixed(0)}</p>
-                        <p class="${yieldClass}"><strong>${yieldText}:</strong> ${Math.abs(netGainLoss).toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
-                    </div>
-                    <p><strong>Remaining Resources:</strong> ${response.greenhouse_after.resources.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
+                    <p><strong>Prediction Error:</strong> ${predictionError.toFixed(1)} mm</p>
+                    <p class="${accuracyClass}"><strong>Accuracy:</strong> ${accuracyText}</p>
                 </div>
             `;
             
@@ -750,11 +676,9 @@ var jsPsychPlantCultivation = (function (jsPsych) {
 
             console.log('=== TRIAL DATA SAVED ===');
             console.log('Trial:', trial.trial || trial.round);
-            console.log('Action:', response.action);
-            console.log('Resource amount:', response.resource_amount);
-            console.log('Yield result:', response.yield_result);
-            console.log('Greenhouse before:', response.greenhouse_before);
-            console.log('Greenhouse after:', response.greenhouse_after);
+            console.log('Predicted height:', response.predicted_height);
+            console.log('Actual height:', response.actual_height);
+            console.log('Prediction error:', response.prediction_error);
             console.log('========================');
 
             // End trial

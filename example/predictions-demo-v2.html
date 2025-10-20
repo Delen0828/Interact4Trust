@@ -176,10 +176,10 @@
             
             // Add historical dots (last 3)
             g.selectAll('.historical-dot')
-                .data(historicalData.slice(-3))
+                .data(historicalData.slice(-10))
                 .enter().append('circle')
                 .attr('class', 'historical-dot')
-                .attr('cx', (d, i) => xScale(historicalData.length - 3 + i))
+                .attr('cx', (d, i) => xScale(historicalData.length - 10 + i))
                 .attr('cy', d => yScale(d.value))
                 .attr('r', 3)
                 .attr('fill', config.colors.historical);
@@ -274,9 +274,11 @@
             // Calculate global Y scale extent
             let allValues = [];
             
-            // Add historical values
-            data.historical.forEach(point => {
-                allValues.push(point.value);
+            // Add historical values from all trends
+            Object.values(data.historical).forEach(historicalData => {
+                historicalData.forEach(point => {
+                    allValues.push(point.value);
+                });
             });
             
             // Add all predictions
@@ -300,7 +302,7 @@
                     const caseId = `${trend}_${pattern}`;
                     const caseData = {
                         ...data.cases[caseId],
-                        historical: data.historical
+                        historical: data.historical[trend]  // Use trend-specific historical data
                     };
                     createChart(container, caseData, globalYScale);
                 });
