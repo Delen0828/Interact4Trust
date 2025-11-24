@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Prediction Visualization Conditions</title>
+    <title>Air Quality Prediction Visualization Conditions</title>
     
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -49,12 +49,55 @@
         .legend {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
             margin-bottom: 20px;
             padding: 15px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .opacity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid #e9ecef;
+        }
+
+        .opacity-slider {
+            width: 100px;
+            height: 20px;
+        }
+
+        .opacity-label {
+            font-size: 12px;
+            color: #6c757d;
+            min-width: 120px;
+        }
+
+        .date-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid #e9ecef;
+        }
+
+        .date-select {
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .date-label {
+            font-size: 12px;
+            color: #6c757d;
+            min-width: 80px;
         }
 
         .legend-item {
@@ -77,9 +120,9 @@
         .visualization-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
             gap: 20px;
-            height: 80vh;
+            height: 120vh;
         }
 
         .condition-panel {
@@ -121,23 +164,28 @@
 
         /* Condition-specific styling */
         .condition-1 .condition-title {
-            color: #007bff;
-            border-bottom-color: #007bff;
+            color: black;
+            border-bottom-color: black;
         }
 
         .condition-2 .condition-title {
-            color: #dc3545;
-            border-bottom-color: #dc3545;
+            color: black;
+            border-bottom-color: black;
         }
 
         .condition-3 .condition-title {
-            color: #ffc107;
-            border-bottom-color: #ffc107;
+            color: black;
+            border-bottom-color: black;
         }
 
         .condition-4 .condition-title {
-            color: #28a745;
-            border-bottom-color: #28a745;
+            color: black;
+            border-bottom-color: black;
+        }
+
+        .condition-5 .condition-title {
+            color: black;
+            border-bottom-color: black;
         }
 
         /* Chart styling */
@@ -163,14 +211,13 @@
 
         .historical-line {
             fill: none;
-            stroke: #6c757d;
             stroke-width: 2;
         }
 
         .prediction-line {
             fill: none;
             stroke-width: 2;
-            opacity: 0.4;
+            opacity: 0.2;
         }
 
         .aggregated-line {
@@ -196,8 +243,14 @@
         @media (max-width: 768px) {
             .visualization-grid {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(4, 350px);
+                grid-template-rows: repeat(5, 350px);
                 height: auto;
+            }
+            
+            /* Reset grid positioning for mobile */
+            .condition-panel {
+                grid-column: auto !important;
+                grid-row: auto !important;
             }
         }
     </style>
@@ -205,57 +258,88 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Stock Prediction Visualization Conditions</h1>
+            <h1>Air Quality Prediction Visualization Conditions</h1>
             <p>Comparing four different methods of presenting prediction uncertainty</p>
         </div>
 
         <div class="legend">
-            <div class="legend-item">
+            <!-- <div class="legend-item">
                 <div class="legend-line legend-historical"></div>
                 <span>Historical Data</span>
-            </div>
+            </div> -->
             <div class="legend-item">
                 <div class="legend-line legend-stock-a"></div>
-                <span>Stock A</span>
+                <span>City A</span>
             </div>
             <div class="legend-item">
                 <div class="legend-line legend-stock-b"></div>
-                <span>Stock B</span>
+                <span>City B</span>
+            </div>
+            
+            <div class="opacity-control">
+                <span class="opacity-label">Alternative Lines:</span>
+                <input type="range" id="alternativeOpacitySlider" class="opacity-slider" 
+                       min="0.1" max="1" step="0.1" value="0.2">
+                <span id="alternativeOpacityValue">0.2</span>
+            </div>
+            
+            <div class="opacity-control">
+                <span class="opacity-label">Shade Opacity:</span>
+                <input type="range" id="shadeOpacitySlider" class="opacity-slider" 
+                       min="0.1" max="1" step="0.1" value="0.2">
+                <span id="shadeOpacityValue">0.2</span>
+            </div>
+            
+            <div class="date-control">
+                <span class="date-label">Start Date:</span>
+                <select id="dateSelect" class="date-select">
+                    <option value="01/01">01/01</option>
+                    <option value="05/01" selected>05/01</option>
+                </select>
             </div>
         </div>
 
         <div class="visualization-grid">
-            <!-- Condition 1: Aggregated Only -->
-            <div class="condition-panel condition-1">
-                <div class="condition-title">Condition 1: Aggregated Only</div>
+            <!-- Condition 1: Baseline (Row 1, spans both columns) -->
+            <div class="condition-panel condition-1" style="grid-column: 1 / -1; grid-row: 1;">
+                <div class="condition-title">Condition 1: Baseline</div>
                 <div class="condition-description">Shows only aggregated prediction lines</div>
                 <div class="chart-container">
                     <svg id="chart-1" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 2: Alternative Only -->
-            <div class="condition-panel condition-2">
-                <div class="condition-title">Condition 2: Alternative Only</div>
-                <div class="condition-description">Shows only individual alternative predictions</div>
+            <!-- Condition 2: PI Plot (Row 2, Column 1) -->
+            <div class="condition-panel condition-2" style="grid-column: 1; grid-row: 2;">
+                <div class="condition-title">Condition 2: PI Plot</div>
+                <div class="condition-description">Shows aggregated prediction with confidence bounds</div>
                 <div class="chart-container">
                     <svg id="chart-2" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 3: Aggregate + Alternative -->
-            <div class="condition-panel condition-3">
-                <div class="condition-title">Condition 3: Aggregate + Alternative</div>
+            <!-- Condition 3: Ensemble Plot (Row 2, Column 2) -->
+            <div class="condition-panel condition-3" style="grid-column: 2; grid-row: 2;">
+                <div class="condition-title">Condition 3: Ensemble Plot</div>
                 <div class="condition-description">Shows both aggregated and alternative predictions</div>
                 <div class="chart-container">
                     <svg id="chart-3" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 4: Hover on Detail -->
-            <div class="condition-panel condition-4">
-                <div class="condition-title">Condition 4: Hover on Detail</div>
-                <div class="condition-description">Aggregated by default, hover to reveal alternatives</div>
+            <!-- Condition 5: PI Plot + Hover (Row 3, Column 1) -->
+            <div class="condition-panel condition-5" style="grid-column: 1; grid-row: 3;">
+                <div class="condition-title">Condition 5: PI Plot + Hover</div>
+                <div class="condition-description">PI plot with hover to reveal individual predictions</div>
+                <div class="chart-container">
+                    <svg id="chart-5" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 4: Ensemble + Hover (Row 3, Column 2) -->
+            <div class="condition-panel condition-4" style="grid-column: 2; grid-row: 3;">
+                <div class="condition-title">Condition 4: Ensemble + Hover</div>
+                <div class="condition-description">Aggregated by default, hover to reveal alterfnatives</div>
                 <div class="chart-container">
                     <svg id="chart-4" class="chart-svg" width="400" height="300"></svg>
                 </div>
@@ -278,47 +362,44 @@
 
         // Global variables for data
         let stockData = {};
+        let originalStockData = {}; // Store original unfiltered data
         let globalYScale = null;
         let sampledScenarios = [];
         let realTimeAggregated = {};
+        let confidenceBounds = {}; // Store confidence bounds data
+        let currentStartDate = '05/01'; // Default start date
 
-        // Load and process data
-        d3.json('synthetic_stock_data.json').then(function(rawData) {
-            // Process the data
-            processData(rawData.data);
-            
-            // Create all visualizations
-            createAllCharts();
-        }).catch(function(error) {
-            console.error('Error loading data:', error);
-            // Add error message to page
-            document.querySelector('.visualization-grid').innerHTML = 
-                '<div style="grid-column: 1/-1; text-align: center; color: red;">Error loading data. Please ensure synthetic_stock_data.json is available.</div>';
-        });
 
         function processData(data) {
-            // Separate data by stock
+            // Store original data
             const stockA = data.filter(d => d.stock === 'A');
             const stockB = data.filter(d => d.stock === 'B');
+            originalStockData.A = stockA;
+            originalStockData.B = stockB;
 
-            // Get all available scenarios from prediction data
-            const allScenarios = [...new Set(data
-                .filter(d => d.series === 'prediction')
-                .map(d => d.scenario)
-            )];
-            
-            console.log('Available scenarios:', allScenarios);
-            
-            // Random sample 5 scenarios out of 10
-            sampledScenarios = sampleScenarios(allScenarios, 5);
-            console.log('Sampled scenarios:', sampledScenarios);
+            // Get all available scenarios from prediction data (only once)
+            if (sampledScenarios.length === 0) {
+                const allScenarios = [...new Set(data
+                    .filter(d => d.series === 'prediction')
+                    .map(d => d.scenario)
+                )];
+                
+                console.log('Available scenarios:', allScenarios);
+                
+                // Random sample 5 scenarios out of 10
+                sampledScenarios = sampleScenarios(allScenarios, 5);
+                console.log('Sampled scenarios:', sampledScenarios);
+            }
 
-            // Process each stock
-            stockData.A = processStockData(stockA);
-            stockData.B = processStockData(stockB);
+            // Process each stock with current date filter
+            stockData.A = processStockData(originalStockData.A);
+            stockData.B = processStockData(originalStockData.B);
             
             // Calculate real-time aggregated data from sampled scenarios
             calculateRealTimeAggregation(data);
+            
+            // Calculate confidence bounds from sampled scenarios
+            confidenceBounds = calculateConfidenceBounds(data);
 
             // Debug log
             console.log('Processed data:', stockData);
@@ -391,10 +472,60 @@
             });
         }
 
+        // Calculate confidence bounds from sampled scenarios
+        function calculateConfidenceBounds(data) {
+            const confidenceBounds = {};
+            
+            ['A', 'B'].forEach(stock => {
+                // Filter prediction data for this stock and sampled scenarios
+                const predictionData = data.filter(d => 
+                    d.stock === stock && 
+                    d.series === 'prediction' && 
+                    sampledScenarios.includes(d.scenario)
+                );
+                
+                // Group by date
+                const groupedByDate = {};
+                predictionData.forEach(item => {
+                    if (!groupedByDate[item.date]) {
+                        groupedByDate[item.date] = [];
+                    }
+                    groupedByDate[item.date].push(item.price);
+                });
+                
+                // Calculate min/max bounds for each date
+                const boundsData = [];
+                Object.keys(groupedByDate).sort().forEach(date => {
+                    const prices = groupedByDate[date];
+                    const minPrice = Math.min(...prices);
+                    const maxPrice = Math.max(...prices);
+                    const meanPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+                    
+                    boundsData.push({
+                        date: new Date(date),
+                        min: minPrice,
+                        max: maxPrice,
+                        mean: meanPrice
+                    });
+                });
+                
+                confidenceBounds[stock] = boundsData;
+                console.log(`Confidence bounds for stock ${stock}:`, boundsData.length, 'data points');
+            });
+            
+            return confidenceBounds;
+        }
+
         function processStockData(stockData) {
+            // Filter historical data based on start date
+            const startYear = 2025;
+            const [startMonth, startDay] = currentStartDate.split('/').map(Number);
+            const filterDate = new Date(startYear, startMonth - 1, startDay);
+            
             const historical = stockData
                 .filter(d => d.series === 'historical')
                 .map(d => ({ date: new Date(d.date), price: d.price }))
+                .filter(d => d.date >= filterDate)
                 .sort((a, b) => a.date - b.date);
 
             // Filter alternatives to only include sampled scenarios
@@ -413,16 +544,19 @@
 
         function createAllCharts() {
             // Condition 1: Aggregated Only
-            createChart('chart-1', { showAggregated: true, showAlternatives: false, hover: false });
+            createChart('chart-1', { showAggregated: true, showAlternatives: false, showConfidenceBounds: false, hover: false });
 
-            // Condition 2: Alternative Only
-            createChart('chart-2', { showAggregated: false, showAlternatives: true, hover: false });
+            // Condition 2: PI Plot
+            createChart('chart-2', { showAggregated: true, showAlternatives: false, showConfidenceBounds: true, hover: false });
 
-            // Condition 3: Aggregate + Alternative
-            createChart('chart-3', { showAggregated: true, showAlternatives: true, hover: false });
+            // Condition 3: Ensemble Plot
+            createChart('chart-3', { showAggregated: true, showAlternatives: true, showConfidenceBounds: false, hover: false });
 
             // Condition 4: Hover on Detail
-            createChart('chart-4', { showAggregated: true, showAlternatives: true, hover: true });
+            createChart('chart-4', { showAggregated: true, showAlternatives: true, showConfidenceBounds: false, hover: true });
+
+            // Condition 5: PI Plot + Hover
+            createChart('chart-5', { showAggregated: true, showAlternatives: true, showConfidenceBounds: true, hover: true });
         }
 
         function createChart(svgId, options) {
@@ -479,6 +613,18 @@
                 .attr("class", "axis")
                 .call(d3.axisLeft(yScale));
 
+            // Add vertical line at 06/01
+            const verticalLineDate = new Date('2025-06-01');
+            g.append("line")
+                .attr("class", "vertical-reference-line")
+                .attr("x1", xScale(verticalLineDate))
+                .attr("x2", xScale(verticalLineDate))
+                .attr("y1", 0)
+                .attr("y2", height)
+                .attr("stroke", "#999")
+                .attr("stroke-width", 1)
+                .attr("opacity", 0.8);
+
             // Draw historical lines for both stocks
             const line = d3.line()
                 .x(d => xScale(d.date))
@@ -489,18 +635,66 @@
             g.append("path")
                 .datum(stockData.A.historical)
                 .attr("class", "historical-line")
+                .attr("stroke", config.colors.stockA)
                 .attr("d", line);
 
             // Stock B historical  
             g.append("path")
                 .datum(stockData.B.historical)
                 .attr("class", "historical-line")
+                .attr("stroke", config.colors.stockB)
                 .attr("d", line);
 
             // Removed all dots as requested
 
             // Prediction lines and interactions
             const predictionGroup = g.append("g").attr("class", "predictions");
+
+            // PI Plot: Draw confidence bounds first (under aggregated lines)
+            if (options.showConfidenceBounds && confidenceBounds) {
+                ['A', 'B'].forEach((stock, i) => {
+                    const color = i === 0 ? config.colors.stockA : config.colors.stockB;
+                    const lastHistorical = stockData[stock].historical[stockData[stock].historical.length - 1];
+                    
+                    if (confidenceBounds[stock] && confidenceBounds[stock].length > 0) {
+                        // Create area data including connection from last historical point
+                        const areaData = [
+                            { date: lastHistorical.date, min: lastHistorical.price, max: lastHistorical.price },
+                            ...confidenceBounds[stock]
+                        ];
+                        
+                        // Define area generator
+                        const area = d3.area()
+                            .x(d => xScale(d.date))
+                            .y0(d => yScale(d.min))
+                            .y1(d => yScale(d.max))
+                            .curve(d3.curveMonotoneX);
+                        
+                        // Draw confidence bounds area
+                        const confidenceBoundsOpacity = options.hover ? 0 : 0.2; // Hide bounds initially if hover mode is enabled
+                        predictionGroup.append("path")
+                            .datum(areaData)
+                            .attr("class", `confidence-bounds confidence-bounds-${stock.toLowerCase()}`)
+                            .attr("fill", color)
+                            .attr("opacity", confidenceBoundsOpacity)
+                            .attr("d", area);
+                            
+                        console.log(`Plotted confidence bounds for stock ${stock} with ${confidenceBounds[stock].length} points`);
+                        
+                        // Add hover zone for confidence bounds (only in hover condition)
+                        if (options.hover) {
+                            predictionGroup.append("path")
+                                .datum(areaData)
+                                .attr("class", `confidence-hover-zone-${stock.toLowerCase()}`)
+                                .attr("fill", "transparent")
+                                .attr("stroke", "transparent")
+                                .attr("stroke-width", 5)
+                                .attr("d", area)
+                                .style("cursor", "pointer");
+                        }
+                    }
+                });
+            }
 
             // Real-time aggregated predictions - calculated from 5 sampled scenarios
             if (options.showAggregated) {
@@ -538,13 +732,14 @@
             // Alternative predictions - plot only the 5 sampled scenarios
             if (options.showAlternatives) {
                 // Create separate groups for each stock's alternatives
+                const initialOpacity = options.hover ? 0 : 1; // Hide alternatives initially if hover mode is enabled
                 const alternativesGroupA = predictionGroup.append("g")
                     .attr("class", "alternatives-group-a")
-                    .style("opacity", options.hover ? 0 : 1);
+                    .style("opacity", initialOpacity);
                     
                 const alternativesGroupB = predictionGroup.append("g")
                     .attr("class", "alternatives-group-b")
-                    .style("opacity", options.hover ? 0 : 1);
+                    .style("opacity", initialOpacity);
 
                 ['A', 'B'].forEach((stock, i) => {
                     const color = i === 0 ? config.colors.stockA : config.colors.stockB;
@@ -574,7 +769,6 @@
                                 .attr("fill", "none")
                                 .attr("stroke", color)
                                 .attr("stroke-width", 1.5)
-                                .attr("opacity", 0.4)
                                 .attr("d", line);
                                 
                             console.log(`Plotted alternative scenario ${scenarioName} for stock ${stock} with ${scenarioData.length} points`);
@@ -582,36 +776,154 @@
                     });
                 });
 
-                // Add hover interactions for condition 4 (hover on specific lines)
+                // Add hover interactions for condition 4 and 5
                 if (options.hover) {
-                    // Stock A hover zone interactions
-                    d3.select(`#${svgId}`).select('.hover-zone-a')
-                        .on("mouseenter", function() {
-                            alternativesGroupA.transition()
-                                .duration(200)
-                                .style("opacity", 1);
-                        })
-                        .on("mouseleave", function() {
-                            alternativesGroupA.transition()
-                                .duration(200)
-                                .style("opacity", 0);
-                        });
-                    
-                    // Stock B hover zone interactions
-                    d3.select(`#${svgId}`).select('.hover-zone-b')
-                        .on("mouseenter", function() {
-                            alternativesGroupB.transition()
-                                .duration(200)
-                                .style("opacity", 1);
-                        })
-                        .on("mouseleave", function() {
-                            alternativesGroupB.transition()
-                                .duration(200)
-                                .style("opacity", 0);
-                        });
+                    if (options.showConfidenceBounds) {
+                        // PI Plot hover: hover on aggregated line to reveal confidence bounds ONLY
+                        // Stock A aggregated line hover
+                        d3.select(`#${svgId}`).select('.hover-zone-a')
+                            .on("mouseenter", function() {
+                                // Show confidence bounds only (no alternatives)
+                                const shadeOpacity = parseFloat(document.getElementById('shadeOpacitySlider').value);
+                                d3.select(`#${svgId}`).select('.confidence-bounds-a')
+                                    .transition()
+                                    .duration(200)
+                                    .attr("opacity", shadeOpacity);
+                            })
+                            .on("mouseleave", function() {
+                                // Hide confidence bounds only
+                                d3.select(`#${svgId}`).select('.confidence-bounds-a')
+                                    .transition()
+                                    .duration(200)
+                                    .attr("opacity", 0);
+                            });
+                        
+                        // Stock B aggregated line hover
+                        d3.select(`#${svgId}`).select('.hover-zone-b')
+                            .on("mouseenter", function() {
+                                // Show confidence bounds only (no alternatives)
+                                const shadeOpacity = parseFloat(document.getElementById('shadeOpacitySlider').value);
+                                d3.select(`#${svgId}`).select('.confidence-bounds-b')
+                                    .transition()
+                                    .duration(200)
+                                    .attr("opacity", shadeOpacity);
+                            })
+                            .on("mouseleave", function() {
+                                // Hide confidence bounds only
+                                d3.select(`#${svgId}`).select('.confidence-bounds-b')
+                                    .transition()
+                                    .duration(200)
+                                    .attr("opacity", 0);
+                            });
+                    } else {
+                        // Regular aggregated line hover (Condition 4)
+                        // Stock A hover zone interactions
+                        d3.select(`#${svgId}`).select('.hover-zone-a')
+                            .on("mouseenter", function() {
+                                const alternativeOpacity = parseFloat(document.getElementById('alternativeOpacitySlider').value);
+                                alternativesGroupA.transition()
+                                    .duration(200)
+                                    .style("opacity", alternativeOpacity);
+                            })
+                            .on("mouseleave", function() {
+                                alternativesGroupA.transition()
+                                    .duration(200)
+                                    .style("opacity", 0);
+                            });
+                        
+                        // Stock B hover zone interactions
+                        d3.select(`#${svgId}`).select('.hover-zone-b')
+                            .on("mouseenter", function() {
+                                const alternativeOpacity = parseFloat(document.getElementById('alternativeOpacitySlider').value);
+                                alternativesGroupB.transition()
+                                    .duration(200)
+                                    .style("opacity", alternativeOpacity);
+                            })
+                            .on("mouseleave", function() {
+                                alternativesGroupB.transition()
+                                    .duration(200)
+                                    .style("opacity", 0);
+                            });
+                    }
                 }
             }
         }
+
+        // Control functionality
+        function initializeControls() {
+            // Alternative lines opacity control
+            const alternativeSlider = document.getElementById('alternativeOpacitySlider');
+            const alternativeValueDisplay = document.getElementById('alternativeOpacityValue');
+            
+            alternativeSlider.addEventListener('input', function() {
+                const opacity = parseFloat(this.value);
+                alternativeValueDisplay.textContent = opacity.toFixed(1);
+                
+                // Update opacity for all alternative prediction lines across all charts
+                d3.selectAll('.prediction-line')
+                    .style('opacity', opacity);
+            });
+            
+            // Shade opacity control
+            const shadeSlider = document.getElementById('shadeOpacitySlider');
+            const shadeValueDisplay = document.getElementById('shadeOpacityValue');
+            
+            shadeSlider.addEventListener('input', function() {
+                const opacity = parseFloat(this.value);
+                shadeValueDisplay.textContent = opacity.toFixed(1);
+                
+                // Update opacity for all confidence bounds (shade) across all charts
+                d3.selectAll('.confidence-bounds')
+                    .attr('opacity', opacity);
+            });
+            
+            // Date control
+            const dateSelect = document.getElementById('dateSelect');
+            
+            dateSelect.addEventListener('change', function() {
+                currentStartDate = this.value;
+                console.log('Start date changed to:', currentStartDate);
+                
+                // Reprocess data with new date filter and recreate charts
+                if (originalStockData.A && originalStockData.B) {
+                    // Reprocess the data with the new date
+                    stockData.A = processStockData(originalStockData.A);
+                    stockData.B = processStockData(originalStockData.B);
+                    
+                    // Recalculate confidence bounds with new data
+                    const fullData = [...originalStockData.A, ...originalStockData.B];
+                    confidenceBounds = calculateConfidenceBounds(fullData);
+                    
+                    // Recreate all charts
+                    createAllCharts();
+                    
+                    // Reapply current opacity settings
+                    const currentAlternativeOpacity = parseFloat(alternativeSlider.value);
+                    const currentShadeOpacity = parseFloat(shadeSlider.value);
+                    d3.selectAll('.prediction-line')
+                        .style('opacity', currentAlternativeOpacity);
+                    d3.selectAll('.confidence-bounds')
+                        .attr('opacity', currentShadeOpacity);
+                }
+            });
+        }
+
+        // Initialize controls after charts are created
+        d3.json('synthetic_stock_data.json').then(function(rawData) {
+            // Process the data
+            processData(rawData.data);
+            
+            // Create all visualizations
+            createAllCharts();
+            
+            // Initialize controls
+            initializeControls();
+        }).catch(function(error) {
+            console.error('Error loading data:', error);
+            // Add error message to page
+            document.querySelector('.visualization-grid').innerHTML = 
+                '<div style="grid-column: 1/-1; text-align: center; color: red;">Error loading data. Please ensure synthetic_stock_data.json is available.</div>';
+        });
     </script>
 </body>
 </html>
