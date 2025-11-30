@@ -1,108 +1,111 @@
-# Prediction Trust Experiment
+# Air Quality Prediction Visualization Trust Study
 
-A jsPsych-based experiment studying how different prediction visualization formats (single aggregated vs. multiple alternatives) affect user trust and decision-making in a simulated "alien stock market" environment.
+An interactive web experiment studying how different uncertainty visualization formats affect user trust in decision-making using air quality prediction data.
 
-## Overview
+## Quick Start
 
-This experiment implements a 2x2 factorial design:
-- **Model Quality**: Good (±5% noise) vs Bad (±20% noise)  
-- **Display Format**: Aggregation (single line) vs Alternative (multiple lines with opacity)
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-Participants trade stocks across 4 conditions (10 rounds each), making buy/sell decisions and rating their trust in the prediction model after each trade.
+2. **Start the server:**
+   ```bash
+   npm start
+   ```
 
-## Setup
+3. **Open in browser:**
+   Navigate to `http://localhost:8080` to run the experiment
 
-1. Install dependencies:
-```bash
-npm install
+## Study Overview
+
+- **8 experimental conditions** (between-subjects design)
+- **Two-phase study**: Text-based prediction → Visualization-based prediction  
+- **Measurements**: Visualization literacy, probability estimation, confidence, trust
+- **Data**: Synthetic air quality predictions for City A vs City B
+
+## Testing Different Conditions
+
+To test different visualization conditions, edit `index.html` line 13:
+
+```javascript
+const ASSIGNED_CONDITION = 1;  // Change to 1-8 to test different conditions
 ```
 
-2. Run the experiment:
-```bash
-npm start
-```
-Or:
-```bash
-npm run serve
-```
+### Available Conditions:
+1. **Baseline** - Aggregated prediction lines only
+2. **PI Plot** - Confidence bounds with shaded areas  
+3. **Ensemble Plot** - Multiple prediction lines shown
+4. **Ensemble + Hover** - Hover reveals alternative predictions
+5. **PI Plot + Hover** - Hover reveals individual predictions
+6. **PI → Ensemble** - Transform between representations on hover
+7. **Buggy Control** - Broken interactions (placeholder)
+8. **Bad Control** - Poor interactions (placeholder)
 
-3. Open browser and navigate to:
-```
-http://localhost:8000
-```
-
-## Project Structure
+## File Structure
 
 ```
-├── index.html              # Main HTML file
-├── src/
-│   ├── experiment.js       # Main experiment logic
-│   ├── config.js          # Configuration settings
-│   ├── plugins/
-│   │   ├── jspsych-stock-trading.js  # Custom trading interface
-│   │   └── jspsych-trust-survey.js   # Trust assessment plugin
-│   ├── utils/
-│   │   ├── dataFetcher.js           # API integration
-│   │   ├── predictionGenerator.js    # Prediction synthesis
-│   │   └── portfolioManager.js       # Portfolio calculations
-│   ├── stimuli/
-│   │   └── stockData.js             # Mock stock data
-│   └── styles/
-│       └── experiment.css           # Styling
+src/
+├── experiment.js              # Main experiment timeline
+├── config.js                  # 8-condition configuration  
+├── plugins/                   # Custom jsPsych plugins
+│   ├── jspsych-vis-literacy.js       # Visualization literacy test
+│   ├── jspsych-prediction-task.js    # Air quality prediction task
+│   ├── jspsych-trust-survey.js       # Trust measurement scales
+│   └── jspsych-broken-interactions.js # Control conditions (placeholder)
+├── utils/                     # Utility modules
+│   ├── visualizationRenderer.js      # D3.js visualization management
+│   ├── conditionManager.js           # Condition metadata handling
+│   ├── interactionController.js      # Hover/click interaction logic  
+│   └── dataCollector.js              # Comprehensive data logging
+├── data/                      
+│   └── airQualityData.js             # Synthetic air quality data
+└── styles/                    
+    ├── experiment.css                # Main styling
+    └── air-quality-theme.css         # Condition-specific styling
 ```
 
-## Features
+## Technologies
 
-- **Custom jsPsych Plugins**: Stock trading interface and trust survey
-- **D3.js Visualizations**: Interactive line charts with predictions
-- **Portfolio Management**: Track profits/losses across rounds
-- **Trust Assessment**: 5-dimension Likert scale ratings
-- **Data Export**: Automatic CSV export of all trial data
+- **jsPsych 7.3.4** - Psychology experiment framework
+- **D3.js 7.9.0** - Interactive data visualizations
+- **Vanilla JavaScript** - No build process required
+- **CSS3** - Responsive design with condition-specific styling
 
-## Configuration
+## Data Export
 
-Edit `src/config.js` to modify:
-- Initial portfolio value (default: $10,000)
-- Number of rounds per condition (default: 10)
-- Model noise levels
-- Trust questions
-- Debug settings
+The experiment automatically exports:
+- **CSV format**: Summary data for statistical analysis
+- **JSON format**: Complete interaction logs and metadata
 
-## Data Output
+## Development
 
-The experiment collects:
-- Trading decisions (buy/sell, quantity)
-- Trust ratings (5 dimensions, 1-7 scale)
-- Portfolio performance
-- Response times
-- Condition order
+- **No build process** required - edit files directly
+- **Local server** via Python HTTP server
+- **Debug mode** available via browser console
+- **Condition testing** via assignment flag in index.html
 
-Data is automatically saved as CSV at the end of the experiment.
+## Production Deployment
 
-## Debug Mode
+For production use:
+1. Set `ASSIGNED_CONDITION = null` in `index.html` for random assignment
+2. Deploy static files to any web server
+3. No server-side dependencies required
 
-Set `debug.enabled = true` in config.js to:
-- Show condition information
-- Use mock data instead of API calls
-- Enable console logging
+## Research Features
 
-## Alpha Vantage API
-
-To use real stock data:
-1. Get a free API key from [Alpha Vantage](https://www.alphavantage.co/support/#api-key)
-2. Set the API key in the environment or dataFetcher.js
-3. Set `debug.useMockData = false` in config.js
-
-Note: The experiment works perfectly with mock data for testing.
+- **Between-subjects design** - Each participant sees one condition
+- **Two-phase comparison** - Before/after visualization exposure
+- **Comprehensive logging** - All interactions and timing data captured
+- **Visualization literacy assessment** - Pre-experiment screening
+- **Validated trust scales** - Standard psychological instruments
 
 ## Browser Compatibility
 
-Tested on:
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+- Modern browsers with ES6+ support
+- Responsive design for desktop and mobile
+- Accessibility features included
 
-## License
+---
 
-For research purposes only.
+For questions or issues, refer to the comprehensive documentation in `CLAUDE.md`.

@@ -1,145 +1,51 @@
-# Prediction Trust Experiment Plan
+### Detailed Study Plan
+**Conditions**
+Condition 1 (baseline), just prediction
+Condition 2, PI plot (area shade)
+Condition 3, Ensemble plot (alternative lines)
+Condition 4, PI plot + hover on detail
+Condition 5, ensemble plot + hover on detail
+Condition 6, PI plot -- hover --> ensemble plot
+Condition 7 (control), buggy interaction
+Condition 8 (control), bad interaction
 
-## Study Overview
-**Research Question**: Does showing multiple prediction alternatives versus a single aggregated prediction affect user trust and understanding in model predictions?
+interaction condition (have control bar or not)
+add broken decisions to condition 6 - broken (hover in the wrong place, some prediction misaligned, line can be draggable)
+add bad decisions to condition 7 - (click each time, or forcing an animation, pop up windows for 2s and will disappear if you don't catch up)
 
-**Context**: Users will interact with predictions from an "alien stock market" (disguised historical stock data) to evaluate trust in different prediction visualization formats.
+**Procedure**
+1. Consent form
+2. User do a visualization literacy test
+3. Introduction
+4. User make prediction without visualization
+	Ask about probability and confidence of their prediction
+5. User make prediction with visualization
+	Ask about probability and confidence of their prediction
+6. Ask about trust questions
 
-## Experimental Design
 
-### Independent Variables (2x2 Factorial Design)
-1. **Model Quality**
-   - Good Model: Predictions closer to ground truth
-   - Bad Model: Predictions further from ground truth
+**Metrics**:
+1. Trust
+2. ~~WOA (Weight of Advice) = $|forcast_{final} - forcast_{initial})| / |forcast_{adviced} - forcast_{initial}|$
+3. ~~MAE (Mean absolute error)
+4. probability, show the drift
 
-2. **Display Format**
-   - Aggregation: Single prediction line
-   - Alternative: Multiple possible predictions with opacity encoding probability
+**Study**:
+1. Let participants predict without any visualization
+2. Ask about Confidence/Trust, and Interpretation questions (multiple choice)
+3. Let participants predict with uncertainty vis (5 conditions)
+4. Ask about Confidence/Trust, and Interpretation questions
+5. Evaluate delta_Trust, WOA, MAE
 
-### Dependent Variables
-- User trust ratings (1-7 scale on 5 dimensions)
-- Trading performance (profit/loss)
-- Decision confidence (implicit through trading amounts)
+prediction question:
+The probability of air quality of city A>city B is ___ 
 
-## Data Source
-- Historical stock data from Alpha Vantage API (https://www.alphavantage.co/)
-- Presented as "alien stock market" data to participants
-- Synthetic predictions generated based on ground truth with controlled variance
+How confident are you about your prediction?
+When making travel plan, I will certainly go to city A than city B.
+... I will probably go to city A than city B
+... I'm not sure about going to city A or B
 
-## Experimental Conditions
-4 conditions total (2x2):
-1. Good Model + Aggregation
-2. Good Model + Alternative
-3. Bad Model + Aggregation
-4. Bad Model + Alternative
-
-## Experiment Flow
-
-### Setup
-- Each participant starts with $10,000 virtual currency
-- 4 different stocks (one per condition)
-- 10 consecutive prediction points per stock
-
-### Per Round (10 rounds per condition)
-1. **Prediction Display**
-   - Show line chart with historical data and prediction
-   - Display current portfolio value
-   
-2. **Trading Decision**
-   - User chooses: Buy or Sell
-   - User inputs: Number of shares
-   
-3. **Outcome Reveal**
-   - Display ground truth
-   - Update portfolio value
-   - Show profit/loss from trade
-   
-4. **Trust Assessment**
-   - 5 trust questions (1-7 Likert scale)
-   - Scale starts from previous response
-   - User adjusts based on recent experience
-
-### Trust Questions
-1. How much do you trust the accuracy of this prediction model?
-2. How confident are you in making decisions based on these predictions?
-3. How well do you understand the model's prediction logic?
-4. How reliable do you find the prediction visualizations?
-5. How likely are you to use this model for future decisions?
-
-## User Interface Layout
-
-### Left Panel: Visualization
-- Line chart showing:
-  - Historical stock prices (solid line)
-  - Predictions based on condition:
-    - Aggregation: Single prediction line
-    - Alternative: Multiple lines with varying opacity
-- Trading controls (Buy/Sell buttons, quantity input)
-- Portfolio status (current value, available cash)
-
-### Right Panel: Trust Assessment
-- 5 trust questions with 7-point scales
-- Previous ratings shown as starting points
-- Submit button to proceed to next round
-
-## Data Collection
-
-### Per Round
-- Trading decision (buy/sell, quantity)
-- Trust ratings (5 dimensions)
-- Response time
-- Portfolio performance
-
-### Calculated Metrics
-- Trust rating changes over time
-- Correlation between performance and trust
-- Decision patterns per condition
-- Final portfolio value per condition
-
-## Prediction Generation Algorithm
-
-### Good Model
-- Base prediction = ground_truth + small_noise
-- Small noise: ±5% of ground truth value
-- For alternatives: Generate 3-5 variations with different noise samples
-
-### Bad Model
-- Base prediction = ground_truth + large_noise
-- Large noise: ±20% of ground truth value
-- For alternatives: Generate 3-5 variations with wider variance
-
-### Alternative Display
-- Primary prediction: 100% opacity
-- Secondary predictions: 60-80% opacity based on probability
-- Probability distribution: Normal distribution around base prediction
-
-## Expected Outcomes
-
-### Hypotheses
-1. Alternative displays will lead to higher trust when model performs poorly
-2. Aggregated displays will lead to higher trust when model performs well
-3. Trust ratings will correlate with trading performance
-4. Understanding ratings will be higher for alternative displays
-
-## Technical Requirements
-
-### Frontend
-- Interactive line chart visualization
-- Real-time portfolio tracking
-- Responsive trust rating interface
-- Session state management
-
-### Backend
-- Alpha Vantage API integration
-- Prediction generation engine
-- Data logging system
-- Session management
-
-## Participant Instructions
-"You are participating in an alien stock market trading simulation. You will see predictions for stock prices and make trading decisions. Your goal is to maximize your portfolio value while evaluating how much you trust the prediction system."
-
-## Ethical Considerations
-- Inform participants data is simulated
-- No real money involved
-- Data anonymization
-- Option to withdraw at any time
+trust question:
+1. how much do you trust the fidelity of this tool (interface) (do you think this tool is working as expected?)
+2. how much do you trust the underlying data (refer to Will's)
+3. how much do you think the visualization is misleading (refer to Will's)

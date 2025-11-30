@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alien Plant Growth Lab - Prediction Study</title>
+    <title>Air Quality Prediction Visualization Trust Study</title>
+    
+    <!-- Condition Assignment (1-8, default: 1) -->
+    <script>
+        // Set participant condition (1-8)
+        // Change this value to test different conditions
+        // In production, this will be randomly assigned
+        const ASSIGNED_CONDITION = 1;
+        console.log('Assigned to condition:', ASSIGNED_CONDITION);
+    </script>
     
     <!-- jsPsych CSS -->
     <link href="node_modules/jspsych/css/jspsych.css" rel="stylesheet" type="text/css" />
     
     <!-- Custom CSS -->
     <link href="src/styles/experiment.css" rel="stylesheet" type="text/css" />
+    <link href="src/styles/air-quality-theme.css" rel="stylesheet" type="text/css" />
     
     <!-- D3.js -->
     <script src="node_modules/d3/dist/d3.min.js"></script>
@@ -20,27 +30,28 @@
     <script src="node_modules/@jspsych/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
     <script src="node_modules/@jspsych/plugin-instructions/dist/index.browser.min.js"></script>
     <script src="node_modules/@jspsych/plugin-survey-likert/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-survey-text/dist/index.browser.min.js"></script>
+    <script src="node_modules/@jspsych/plugin-survey-multi-choice/dist/index.browser.min.js"></script>
     <script src="node_modules/@jspsych/plugin-fullscreen/dist/index.browser.min.js"></script>
     <script src="node_modules/@jspsych/plugin-call-function/dist/index.browser.min.js"></script>
     
     <!-- Custom Plugins -->
-    <script src="src/plugins/jspsych-plant-cultivation.js"></script>
+    <script src="src/plugins/jspsych-vis-literacy.js"></script>
+    <script src="src/plugins/jspsych-prediction-task.js"></script>
     <script src="src/plugins/jspsych-trust-survey.js"></script>
-    <script>
-        console.log('jsPsychPlantCultivation:', typeof jsPsychPlantCultivation);
-        console.log('jsPsychTrustSurvey:', typeof jsPsychTrustSurvey);
-    </script>
+    <script src="src/plugins/jspsych-broken-interactions.js"></script>
     
     <!-- Utility Scripts -->
-    <script src="src/utils/predictionGenerator.js"></script>
-    <script src="src/utils/greenhouseManager.js"></script>
-    <script src="src/utils/dataFetcher.js"></script>
+    <script src="src/utils/visualizationRenderer.js"></script>
+    <script src="src/utils/conditionManager.js"></script>
+    <script src="src/utils/interactionController.js"></script>
+    <script src="src/utils/dataCollector.js"></script>
     
     <!-- Configuration -->
     <script src="src/config.js"></script>
     
-    <!-- Sophisticated Alien Plant Growth Data -->
-    <script src="src/stimuli/plantGrowthData.js"></script>
+    <!-- Air Quality Data -->
+    <script src="src/data/airQualityData.js"></script>
 </head>
 <body>
     <div id="jspsych-target"></div>

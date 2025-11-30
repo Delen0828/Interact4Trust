@@ -1,30 +1,25 @@
-// Main experiment script
+// Air Quality Prediction Visualization Trust Study
+// Two-Phase Study Design: No Visualization → With Visualization
+
 let jsPsych;
 let timeline = [];
-let greenhouseManager;
-let dataFetcher;
-let predictionGenerator;
-let currentConditionIndex = 0;
-let trustRatingsHistory = {};
 
 // Initialize experiment
 function initializeExperiment() {
     // Initialize jsPsych
     jsPsych = initJsPsych({
         display_element: 'jspsych-target',
-        show_progress_bar: false,
+        show_progress_bar: true,
         auto_update_progress_bar: false,
+        message_progress_bar: 'Study Progress',
         on_finish: function() {
-            // Save data when experiment ends
             const data = jsPsych.data.get();
             saveData(data);
         }
     });
 
-    // Initialize utilities
-    greenhouseManager = new GreenhouseManager(ExperimentConfig.greenhouse.initialResources);
-    dataFetcher = new DataFetcher();
-    predictionGenerator = new PredictionGenerator();
+    // Initialize participant configuration
+    initializeParticipant();
 
     // Build timeline
     buildTimeline();
@@ -40,14 +35,21 @@ function buildTimeline() {
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div class="welcome-screen">
-                <h1>Welcome to the Alien Plant Growth Study</h1>
-                <p>You are about to participate in a plant cultivation simulation using growth data from alien plants.</p>
-                <p>Your goal is to maximize your greenhouse resources while evaluating growth prediction models.</p>
-                <p>You will start with 10 ${ExperimentConfig.greenhouse.resourceUnit} of growth resources.</p>
-                <p>The experiment will take approximately 30-40 minutes.</p>
+                <h1>Air Quality Prediction Study</h1>
+                <p>Welcome! You are about to participate in a research study about how people make decisions using air quality predictions.</p>
+                <p>This study examines how different ways of presenting prediction information affect trust and decision-making.</p>
+                <p>The study will take approximately 20-25 minutes.</p>
+                <div class="study-info">
+                    <h3>What you'll do:</h3>
+                    <ul>
+                        <li>Complete a brief assessment of visualization understanding</li>
+                        <li>Make predictions about air quality in two cities</li>
+                        <li>Answer questions about your confidence and trust</li>
+                    </ul>
+                </div>
             </div>
         `,
-        choices: ['Begin Experiment'],
+        choices: ['Begin Study'],
         data: { trial_type: 'welcome' }
     });
 
@@ -57,476 +59,413 @@ function buildTimeline() {
         stimulus: `
             <div class="consent-form">
                 <h2>Informed Consent</h2>
-                <p>This is a research study about trust in prediction systems.</p>
-                <ul>
-                    <li>Your participation is voluntary</li>
-                    <li>You may withdraw at any time</li>
-                    <li>Your data will be anonymized</li>
-                    <li>No real money is involved</li>
-                    <li>The "alien plant growth" is simulated data</li>
-                </ul>
-                <p>By continuing, you consent to participate in this study.</p>
+                <p>This research studies how visualization design affects decision-making and trust.</p>
+                <div class="consent-details">
+                    <h3>Study Details:</h3>
+                    <ul>
+                        <li><strong>Purpose:</strong> Understand how different visualization formats affect trust in prediction systems</li>
+                        <li><strong>Time:</strong> Approximately 20-25 minutes</li>
+                        <li><strong>Procedures:</strong> Answer questions, view charts, make predictions</li>
+                        <li><strong>Risks:</strong> No foreseeable risks beyond normal computer use</li>
+                    </ul>
+                    
+                    <h3>Your Rights:</h3>
+                    <ul>
+                        <li>Participation is completely voluntary</li>
+                        <li>You may withdraw at any time without penalty</li>
+                        <li>Your data will be anonymized and kept confidential</li>
+                        <li>No personally identifying information will be collected</li>
+                    </ul>
+                    
+                    <p><strong>Data Use:</strong> Anonymized data may be used for research publications and presentations.</p>
+                </div>
+                <p>By clicking "I Consent," you indicate that you understand this information and agree to participate.</p>
             </div>
         `,
         choices: ['I Consent', 'I Do Not Consent'],
         data: { trial_type: 'consent' },
         on_finish: function(data) {
             if (data.response === 1) {
-                jsPsych.endExperiment('Thank you for your interest. The experiment has ended.');
+                jsPsych.endExperiment('<p>Thank you for your interest. The experiment has ended.</p>');
             }
         }
     });
 
-    // Condition selection screen
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: `
-            <div class="condition-selection">
-                <h2>Choose Your Visualization Format</h2>
-                <p>Please select which type of prediction visualization you would like to work with:</p>
-                
-                <div style="display: flex; justify-content: space-around; margin: 40px 0; gap: 40px;">
-                    <div style="flex: 1; padding: 20px; border: 2px solid #e5e7eb; border-radius: 10px; background: #f9fafb;">
-                        <h3 style="color: #a855f7; margin-bottom: 15px;">Aggregation</h3>
-                        <p style="font-size: 16px; line-height: 1.6;">
-                            <strong>Single Prediction Line</strong><br>
-                            You will see one consolidated prediction line representing the consensus forecast.
-                            This provides a clear, simplified view of the expected growth pattern.
-                        </p>
-                    </div>
-                    
-                    <div style="flex: 1; padding: 20px; border: 2px solid #e5e7eb; border-radius: 10px; background: #f9fafb;">
-                        <h3 style="color: #a855f7; margin-bottom: 15px;">Hover-to-Reveal</h3>
-                        <p style="font-size: 16px; line-height: 1.6;">
-                            <strong>Interactive Predictions</strong><br>
-                            You will see one prediction line by default. 
-                            Hover over the chart to reveal alternative prediction models with different confidence levels.
-                        </p>
-                    </div>
-                </div>
-                
-                <p style="margin-top: 30px; color: #666;">
-                    <em>Note: You will complete 15 cultivation trials with your selected format.</em>
-                </p>
-            </div>
-        `,
-        choices: ['Select Aggregation', 'Select Hover-to-Reveal'],
-        data: { trial_type: 'condition_selection' },
-        on_finish: function(data) {
-            // Set the selected condition based on button clicked
-            const selectedConditionId = data.response === 0 ? 'aggregation' : 'hover_to_reveal';
-            const selectedCondition = setParticipantCondition(selectedConditionId);
-            
-            // Store selection in data
-            data.selected_condition_id = selectedConditionId;
-            data.selected_condition_name = selectedCondition.name;
-            
-            console.log('User selected condition:', selectedCondition.name);
-        }
-    });
-
-    // General instructions
+    // Instructions
     timeline.push({
         type: jsPsychInstructions,
         pages: [
             `<div class="instructions">
-                <h2>How the Study Works</h2>
-                <p>You will cultivate alien plants across 15 trials using prediction models.</p>
-                <p>In each trial, you will:</p>
+                <h2>Study Overview</h2>
+                <p>This study consists of two main parts:</p>
                 <ol>
-                    <li>See historical growth data and predictions</li>
-                    <li>Decide to cultivate or prune plants</li>
-                    <li>See the actual growth outcome</li>
-                    <li>Rate your trust in the prediction model</li>
+                    <li><strong>Visualization Assessment:</strong> Answer questions about charts and graphs</li>
+                    <li><strong>Air Quality Predictions:</strong> Make predictions about air quality in two cities</li>
                 </ol>
-            </div>`,
-            `<div class="instructions">
-                <h2>Understanding Predictions</h2>
-                <p>Sometimes you will see a <strong>single prediction line</strong>.</p>
-                <p>Other times you will see <strong>multiple prediction lines</strong> with different levels of confidence (shown by opacity).</p>
-                <p>Use these predictions to make informed cultivation decisions.</p>
-            </div>`,
-            `<div class="instructions">
-                <h2>Cultivation Rules</h2>
+                <p>For the air quality predictions, you will:</p>
                 <ul>
-                    <li>You can cultivate plants if you have enough resources</li>
-                    <li>You can prune plants to recover resources</li>
-                    <li>Each action has a small cultivation cost (${ExperimentConfig.greenhouse.cultivationCostRate * 100}%)</li>
-                    <li>Maximum ${ExperimentConfig.greenhouse.maxPlantsPerAction} plants per action</li>
+                    <li>First make predictions based on text descriptions</li>
+                    <li>Then make predictions using visualizations</li>
+                    <li>Answer questions about your confidence and trust</li>
                 </ul>
-                <p>Your goal is to maximize your greenhouse resources!</p>
+            </div>`,
+            `<div class="instructions">
+                <h2>Air Quality Context</h2>
+                <p>You will be making predictions about air quality in two hypothetical cities: <strong>City A</strong> and <strong>City B</strong>.</p>
+                <p>Air quality is measured on a scale where:</p>
+                <ul>
+                    <li><strong>Higher values</strong> = Better air quality (cleaner air)</li>
+                    <li><strong>Lower values</strong> = Worse air quality (more pollution)</li>
+                </ul>
+                <p>Your task will be to predict which city is likely to have better air quality in the future.</p>
             </div>`
         ],
         show_clickable_nav: true,
         data: { trial_type: 'instructions' }
     });
 
-    // Add condition-specific content directly to timeline
-    addConditionContent();
-}
+    // // Visualization Literacy Test
+    // timeline.push({
+    //     type: jsPsychVisLiteracy,
+    //     questions: ExperimentConfig.visualizationLiteracy.questions,
+    //     data: { 
+    //         trial_type: 'visualization_literacy',
+    //         condition_id: ParticipantConfig.assignedCondition.id,
+    //         condition_name: ParticipantConfig.assignedCondition.name
+    //     },
+    //     on_finish: function(data) {
+    //         ParticipantConfig.visualizationLiteracyScore = data.total_score;
+    //         console.log('Visualization literacy score:', data.total_score);
+    //     }
+    // });
 
-// Function to add condition content to the main timeline
-function addConditionContent() {
-    // Condition introduction - conditional on having a selected condition
+    // Phase 1 Introduction
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="phase-intro">
+                <h2>Phase 1: Prediction Without Visualization</h2>
+                <p>In this first phase, you will make predictions about air quality based on text descriptions only.</p>
+                <p>You will read a brief description of air quality trends and then make your prediction.</p>
+                <p>This helps us understand your baseline prediction ability before seeing any charts or graphs.</p>
+            </div>
+        `,
+        choices: ['Continue'],
+        data: { trial_type: 'phase1_intro' }
+    });
+
+    // Phase 1: Prediction Without Visualization
+    timeline.push({
+        type: jsPsychPredictionTask,
+        phase: 1,
+        show_visualization: false,
+        description: function() {
+            return generateTextDescription();
+        },
+        question: ExperimentConfig.predictionTask.question,
+        confidence_scale: ExperimentConfig.predictionTask.confidenceScale,
+        travel_question: ExperimentConfig.predictionTask.travelQuestion,
+        travel_choices: ExperimentConfig.predictionTask.travelChoices,
+        data: { 
+            trial_type: 'phase1_prediction',
+            phase: 1,
+            visualization_shown: false,
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name
+        },
+        on_finish: function(data) {
+            ParticipantConfig.phase1Complete = true;
+            console.log('Phase 1 complete. Probability estimate:', data.probability_estimate);
+        }
+    });
+
+    // Condition Assignment and Introduction
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: function() {
             const condition = ParticipantConfig.assignedCondition;
-            if (!condition) {
-                return '<div><h2>Error: No condition selected</h2></div>';
-            }
             return `
-                <div class="condition-intro">
-                    <h2>Alien Plant Growth Prediction Study</h2>
-                    <h3>Your Selected Format: ${condition.name}</h3>
-                    <p><strong>Instructions:</strong> ${condition.instructions}</p>
-                    <p>You will complete <strong>15 cultivation trials</strong> with different plants.</p>
-                    <p>Each trial will show you historical growth data and predictions to help make cultivation decisions.</p>
-                    ${ExperimentConfig.debug.showConditionInfo ? 
-                        `<p class="debug-info">Debug: ${condition.description} (${condition.displayFormat})</p>` : ''}
-                    ${ExperimentConfig.debug.showStimuliInfo ? 
-                        `<p class="stimuli-info">You will experience all 15 sophisticated prediction patterns: agreement, polarization, risk/gain analysis, and ambiguous spreads across different growth trends.</p>` : ''}
+                <div class="phase-intro">
+                    <h2>Phase 2: Prediction With Visualization</h2>
+                    <p>Now you will make the same type of prediction, but this time you will have access to visualizations showing air quality data and predictions.</p>
+                    
+                    <div class="condition-info">
+                        <h3>Your Visualization Format: ${condition.name}</h3>
+                        <p>${condition.instructions}</p>
+                        ${ExperimentConfig.debug.showConditionInfo ? 
+                            `<p class="debug-info"><em>Debug: ${condition.description} (${condition.displayFormat})</em></p>` : ''}
+                    </div>
+                    
+                    <p>Take your time to explore the visualization and make your best prediction.</p>
                 </div>
             `;
         },
-        choices: ['Begin Study'],
-        data: function() {
-            const condition = ParticipantConfig.assignedCondition;
-            return {
-                trial_type: 'condition_intro',
-                condition_id: condition?.id || 'unknown',
-                condition_name: condition?.name || 'unknown',
-                display_format: condition?.displayFormat || 'unknown',
-                total_trials: ExperimentConfig.structure.trialsPerCondition
-            };
+        choices: ['Continue to Visualization'],
+        data: { 
+            trial_type: 'phase2_intro',
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name
+        }
+    });
+
+    // Phase 2: Prediction With Visualization
+    timeline.push({
+        type: jsPsychPredictionTask,
+        phase: 2,
+        show_visualization: true,
+        visualization_condition: function() { 
+            return ParticipantConfig.assignedCondition; 
         },
-        on_start: function() {
-            // Check if condition was selected
-            if (!ParticipantConfig.assignedCondition) {
-                jsPsych.endExperiment('Error: No condition was selected. Please refresh and try again.');
-            }
-        }
-    });
-
-    // Reset greenhouse for the study
-    timeline.push({
-        type: jsPsychCallFunction,
-        func: function() {
-            const condition = ParticipantConfig.assignedCondition;
-            if (condition) {
-                greenhouseManager.reset();
-                trustRatingsHistory[condition.id] = null;
-            }
-        }
-    });
-
-    // Add 15 trials
-    for (let trial = 1; trial <= ExperimentConfig.structure.trialsPerCondition; trial++) {
-        // Get plant index for this trial
-        const plantIndex = trial;
-        
-        // Cultivation trial with sophisticated stimuli patterns
-        timeline.push({
-            type: jsPsychPlantCultivation,
-            growth_data: function() {
-                return getGrowthDataForRound(plantIndex, trial);
-            },
-            predictions: function() {
-                // Get the stimuli pattern for this trial from the randomized order
-                const stimuliPatternId = ParticipantConfig.stimuliOrder[trial - 1];
-                const condition = ParticipantConfig.assignedCondition;
-                const prediction = getPredictionForRound(plantIndex, condition.id, trial, stimuliPatternId);
-                
-                if (!prediction) {
-                    console.error('Failed to get prediction for trial', trial, 'pattern', stimuliPatternId);
-                    // Return fallback prediction
-                    return {
-                        pattern: 'fallback',
-                        trend: 'stable',
-                        description: 'Fallback prediction',
-                        displayFormat: condition.displayFormat,
-                        groundTruth: 102.5,
-                        values: condition.displayFormat === 'aggregation' ? [102.5] : [105, 103, 102.5, 102, 100],
-                        probabilities: condition.displayFormat === 'aggregation' ? [1.0] : [1.0, 0.8, 0.6, 0.4, 0.2],
-                        metadata: { stimuliIndex: trial, totalStimuli: 15 }
-                    };
-                }
-                return prediction;
-            },
-            condition: function() { return ParticipantConfig.assignedCondition; },
-            greenhouse: function() {
-                return greenhouseManager.getState();
-            },
-            trial: trial,
-            data: function() {
-                const condition = ParticipantConfig.assignedCondition;
-                return {
-                    trial_type: 'plant_cultivation',
-                    condition_id: condition?.id || 'unknown',
-                    condition_name: condition?.name || 'unknown',
-                    trial: trial,
-                    plant_index: plantIndex,
-                    display_format: condition?.displayFormat || 'unknown',
-                    total_trials: ExperimentConfig.structure.trialsPerCondition
-                };
-            },
-            on_finish: function(data) {
-                // Update greenhouse based on action with enhanced error checking
-                if (!data.growth_data || !data.growth_data.heights || !data.predictions) {
-                    console.error('Missing growth_data or predictions in trial data:', data);
-                    return;
-                }
-                
-                // Update greenhouse state with the actual result from trial (resource persistence)
-                if (data.greenhouse_after) {
-                    console.log('=== UPDATING GREENHOUSE STATE ===');
-                    console.log('Previous greenhouse resources:', greenhouseManager.greenhouse.resources);
-                    console.log('New resources from trial:', data.greenhouse_after.resources);
-                    
-                    // Update the greenhouse manager with the new resource state
-                    greenhouseManager.greenhouse.resources = data.greenhouse_after.resources;
-                    greenhouseManager.greenhouse.totalValue = data.greenhouse_after.totalValue;
-                    
-                    console.log('Updated greenhouse resources:', greenhouseManager.greenhouse.resources);
-                    console.log('================================');
-                } else {
-                    console.warn('No greenhouse_after data found in trial, resources may not persist correctly');
-                }
-                
-                // Log stimuli pattern information
-                if (ExperimentConfig.debug.enabled && data.predictions.metadata) {
-                    console.log(`Trial ${trial}: Pattern ${data.predictions.metadata.stimuliIndex}/15 -`, 
-                               data.predictions.pattern, data.predictions.trend);
-                }
-            }
-        });
-
-        // Trust survey trial with pattern-aware questions
-        timeline.push({
-            type: jsPsychTrustSurvey,
-            questions: ExperimentConfig.trustQuestions,
-            previous_ratings: function() {
-                const condition = ParticipantConfig.assignedCondition;
-                return trustRatingsHistory[condition?.id];
-            },
-            trial: trial,
-            condition: function() {
-                const condition = ParticipantConfig.assignedCondition;
-                return condition?.id || 'unknown';
-            },
-            current_pattern: function() {
-                // Get current stimuli pattern information for context
-                const stimuliPatternId = ParticipantConfig.stimuliOrder[trial - 1];
-                const stimuliInfo = getCurrentStimuliInfo(plantIndex, trial, stimuliPatternId);
-                return stimuliInfo;
-            },
-            greenhouse_change: function() {
-                // Calculate greenhouse change from this trial
-                const currentValue = greenhouseManager.getState().totalValue;
-                const previousValue = greenhouseManager.greenhouse.growthHistory[greenhouseManager.greenhouse.growthHistory.length - 2]?.totalValue || greenhouseManager.greenhouse.initialResources;
-                return currentValue - previousValue;
-            },
-            data: function() {
-                const condition = ParticipantConfig.assignedCondition;
-                return {
-                    trial_type: 'trust_survey',
-                    condition_id: condition?.id || 'unknown',
-                    condition_name: condition?.name || 'unknown',
-                    trial: trial,
-                    plant_index: plantIndex,
-                    display_format: condition?.displayFormat || 'unknown',
-                    total_trials: ExperimentConfig.structure.trialsPerCondition
-                };
-            },
-            on_finish: function(data) {
-                // Save trust ratings for next trial with pattern information
-                if (data.trust_ratings) {
-                    const condition = ParticipantConfig.assignedCondition;
-                    if (condition) {
-                        trustRatingsHistory[condition.id] = data.trust_ratings;
-                    }
-                }
-                
-                // Log pattern information with trust ratings
-                if (ExperimentConfig.debug.enabled && data.current_pattern) {
-                    console.log(`Trust Survey Trial ${trial}: Pattern ${data.current_pattern.index}/15 -`, 
-                               data.current_pattern.pattern, data.current_pattern.trend,
-                               'Trust ratings:', data.trust_ratings);
-                }
-            }
-        });
-    }
-
-    // Study completion summary
-    timeline.push({
-        type: jsPsychHtmlButtonResponse,
-        stimulus: function() {
-            const condition = ParticipantConfig.assignedCondition;
-            const stats = greenhouseManager.getStatistics();
-            const stimuliSummary = ExperimentConfig.debug.showStimuliInfo ? 
-                `<p class="stimuli-summary">You experienced all 15 sophisticated prediction patterns, including agreement, polarization, risk/gain scenarios, and ambiguous spreads across different growth trends.</p>` : '';
-            
-            return `
-                <div class="condition-summary">
-                    <h2>Study Complete!</h2>
-                    <h3>Format Used: ${condition?.name || 'Unknown'}</h3>
-                    <h3>Your Performance Summary</h3>
-                    <p><strong>Trials Completed:</strong> ${ExperimentConfig.structure.trialsPerCondition}</p>
-                    <p><strong>Final Greenhouse Value:</strong> ${stats.finalValue.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
-                    <p><strong>Total Growth:</strong> ${stats.totalGrowth.toFixed(2)}%</p>
-                    <p><strong>Total Actions:</strong> ${stats.totalActions}</p>
-                    ${stimuliSummary}
-                    <p>Thank you for participating in this study with the ${condition?.name || 'selected'} visualization format!</p>
-                </div>
-            `;
+        air_quality_data: function() {
+            return getAirQualityData();
         },
-        choices: ['Continue to Final Survey'],
-        data: function() {
-            const condition = ParticipantConfig.assignedCondition;
-            return {
-                trial_type: 'study_summary',
-                condition_id: condition?.id || 'unknown',
-                condition_name: condition?.name || 'unknown',
-                display_format: condition?.displayFormat || 'unknown',
-                trials_completed: ExperimentConfig.structure.trialsPerCondition,
-                final_greenhouse_value: greenhouseManager.greenhouse.totalValue,
-                patterns_experienced: 15  // Participant experienced all 15 patterns
-            };
+        question: ExperimentConfig.predictionTask.question,
+        confidence_scale: ExperimentConfig.predictionTask.confidenceScale,
+        travel_question: ExperimentConfig.predictionTask.travelQuestion,
+        travel_choices: ExperimentConfig.predictionTask.travelChoices,
+        data: { 
+            trial_type: 'phase2_prediction',
+            phase: 2,
+            visualization_shown: true,
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name,
+            display_format: ParticipantConfig.assignedCondition.displayFormat
+        },
+        on_finish: function(data) {
+            ParticipantConfig.phase2Complete = true;
+            console.log('Phase 2 complete. Probability estimate:', data.probability_estimate);
         }
     });
-    
-    // Final survey with questions about sophisticated patterns
+
+    // Trust Survey
     timeline.push({
-        type: jsPsychSurveyLikert,
+        type: jsPsychTrustSurvey,
+        questions: ExperimentConfig.trustQuestions,
+        condition: function() { 
+            return ParticipantConfig.assignedCondition; 
+        },
+        data: { 
+            trial_type: 'trust_survey',
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name,
+            display_format: ParticipantConfig.assignedCondition.displayFormat
+        }
+    });
+
+    // Interpretation Questions
+    timeline.push({
+        type: jsPsychSurveyMultiChoice,
         questions: [
             {
-                prompt: "Overall, how satisfied were you with the prediction models?",
-                labels: ["Very Unsatisfied", "Unsatisfied", "Neutral", "Satisfied", "Very Satisfied"]
+                prompt: "How would you describe the visualization you just used?",
+                options: [
+                    "Very easy to understand",
+                    "Somewhat easy to understand", 
+                    "Neither easy nor difficult",
+                    "Somewhat difficult to understand",
+                    "Very difficult to understand"
+                ],
+                required: true,
+                name: 'visualization_difficulty'
             },
             {
-                prompt: "Which display format did you prefer?",
-                labels: ["Strongly Prefer Single", "Prefer Single", "No Preference", "Prefer Multiple", "Strongly Prefer Multiple"]
+                prompt: "Did the visualization change your prediction compared to the text-only version?",
+                options: [
+                    "Yes, significantly",
+                    "Yes, somewhat",
+                    "No, stayed about the same",
+                    "I'm not sure"
+                ],
+                required: true,
+                name: 'prediction_change'
             },
             {
-                prompt: "How confident are you in your cultivation decisions?",
-                labels: ["Not Confident", "Slightly Confident", "Moderately Confident", "Very Confident", "Extremely Confident"]
-            },
-            {
-                prompt: "How helpful were the different prediction patterns (agreement, polarization, risk/gain scenarios)?",
-                labels: ["Not Helpful", "Slightly Helpful", "Moderately Helpful", "Very Helpful", "Extremely Helpful"]
-            },
-            {
-                prompt: "Did you notice different types of prediction patterns throughout the study?",
-                labels: ["Didn't Notice", "Noticed A Few", "Noticed Some", "Noticed Many", "Noticed All"]
-            },
-            {
-                prompt: function() {
-                    return `How would you rate the ${ParticipantConfig.assignedCondition?.name || 'selected'} visualization format?`;
-                },
-                labels: ["Very Poor", "Poor", "Fair", "Good", "Excellent"]
+                prompt: "Which format helped you make a more confident decision?",
+                options: [
+                    "Text description only",
+                    "Visualization only",
+                    "Both were equally helpful",
+                    "Neither was particularly helpful"
+                ],
+                required: true,
+                name: 'preferred_format'
             }
         ],
         data: { 
-            trial_type: 'final_survey',
-            condition_id: ParticipantConfig.assignedCondition?.id || 'unknown',
-            condition_name: ParticipantConfig.assignedCondition?.name || 'unknown',
-            display_format: ParticipantConfig.assignedCondition?.displayFormat || 'unknown',
-            total_stimuli_patterns: 15,
-            trials_completed: ExperimentConfig.structure.trialsPerCondition
+            trial_type: 'interpretation_questions',
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name
         }
     });
 
-    // Enhanced debrief with stimuli pattern information
+    // Final Demographics Survey
+    timeline.push({
+        type: jsPsychSurveyText,
+        questions: [
+            {
+                prompt: "What is your age?", 
+                name: 'age',
+                required: false,
+                columns: 3
+            },
+            {
+                prompt: "What is your field of study or profession?", 
+                name: 'profession',
+                required: false,
+                columns: 40
+            },
+            {
+                prompt: "How often do you work with data visualizations or charts?",
+                name: 'viz_experience', 
+                required: false,
+                columns: 40
+            }
+        ],
+        data: { 
+            trial_type: 'demographics',
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name
+        }
+    });
+
+    // Study Complete
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: function() {
-            const stats = greenhouseManager.getStatistics();
-            const conditionInfo = ParticipantConfig.assignedCondition;
-            const stimuliExplanation = `
-                <div class="stimuli-explanation">
-                    <h3>About the Prediction Patterns</h3>
-                    <p>During this study, you experienced 15 different sophisticated prediction patterns:</p>
-                    <ul>
-                        <li><strong>Agreement:</strong> Models converge on similar predictions</li>
-                        <li><strong>Polarization:</strong> Models split into distinct high/low predictions</li>
-                        <li><strong>Risk of Loss:</strong> One model shows severe decline risk</li>
-                        <li><strong>Chance of Gain:</strong> One model shows exceptional growth opportunity</li>
-                        <li><strong>Ambiguous Spread:</strong> Models show varied predictions without clear pattern</li>
-                    </ul>
-                    <p>Each pattern was combined with different trend directions (increase, decrease, stable) across your 15 trials.</p>
-                    <p><strong>Your condition:</strong> ${conditionInfo?.name || 'Unknown'} - ${conditionInfo?.description || 'No description'}</p>
-                </div>
-            `;
-            
+            const condition = ParticipantConfig.assignedCondition;
             return `
-                <div class="debrief">
-                    <h2>Thank You for Participating!</h2>
-                    <h3>Study Complete - ${conditionInfo?.name || 'Selected'} Format</h3>
-                    <p><strong>Trials Completed:</strong> ${ExperimentConfig.structure.trialsPerCondition}</p>
-                    <p><strong>Final Greenhouse Value:</strong> ${stats.finalValue.toFixed(0)} ${ExperimentConfig.greenhouse.resourceUnit}</p>
-                    <p><strong>Total Growth:</strong> ${stats.totalGrowth.toFixed(2)}%</p>
-                    <p><strong>Total Actions:</strong> ${stats.totalActions}</p>
-                    <p><strong>Prediction Patterns Experienced:</strong> All 15 unique pattern types</p>
-                    ${ExperimentConfig.debug.showStimuliInfo ? stimuliExplanation : ''}
-                    <p>Your data has been recorded for analysis of how the ${conditionInfo?.name || 'selected'} prediction visualization format affects trust and decision-making in plant cultivation scenarios.</p>
+                <div class="study-complete">
+                    <h2>Study Complete!</h2>
+                    <p>Thank you for participating in this research study.</p>
+                    
+                    <div class="study-summary">
+                        <h3>What you completed:</h3>
+                        <ul>
+                            <li>✓ Visualization literacy assessment</li>
+                            <li>✓ Phase 1: Text-based predictions</li>
+                            <li>✓ Phase 2: Visualization-based predictions (${condition.name})</li>
+                            <li>✓ Trust and confidence measurements</li>
+                        </ul>
+                    </div>
+                    
+                    <p>Your data helps researchers understand how different visualization designs affect decision-making and trust in prediction systems.</p>
+                    
+                    <p><strong>Data Download:</strong> Click below to download your anonymized data.</p>
                 </div>
             `;
         },
-        choices: ['Download Data & Exit'],
+        choices: ['Download Data & Complete Study'],
         data: { 
-            trial_type: 'debrief',
-            condition_id: ParticipantConfig.assignedCondition?.id || 'unknown',
-            condition_name: ParticipantConfig.assignedCondition?.name || 'unknown',
-            display_format: ParticipantConfig.assignedCondition?.displayFormat || 'unknown',
-            trials_completed: ExperimentConfig.structure.trialsPerCondition,
-            patterns_experienced: 15,
-            unique_pattern_types: 15
+            trial_type: 'study_complete',
+            condition_id: ParticipantConfig.assignedCondition.id,
+            condition_name: ParticipantConfig.assignedCondition.name,
+            phase1_complete: ParticipantConfig.phase1Complete,
+            phase2_complete: ParticipantConfig.phase2Complete
         },
         on_finish: function() {
             // Trigger data download
-            jsPsych.data.get().localSave('csv', `experiment_data_${ParticipantConfig.id}.csv`);
+            jsPsych.data.get().localSave('csv', `air_quality_study_${ParticipantConfig.id}.csv`);
         }
+    });
+
+    // Debrief
+    timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="debrief">
+                <h2>Thank You!</h2>
+                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
+                
+                <h3>Study Background:</h3>
+                <p>You were randomly assigned to one of eight different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+                
+                <p>The air quality data you saw was synthetic (computer-generated) for research purposes.</p>
+                
+                <h3>Questions?</h3>
+                <p>If you have questions about this research, please contact the research team.</p>
+                
+                <p>Your participation contributes to understanding how to design better prediction visualizations for real-world applications like weather forecasting, financial predictions, and public health data.</p>
+            </div>
+        `,
+        choices: ['Close Study'],
+        data: { trial_type: 'debrief' }
     });
 }
 
+// Helper Functions
+
+// Generate text description for Phase 1
+function generateTextDescription() {
+    return `
+        <div class="text-description">
+            <h3>Air Quality Information</h3>
+            <p><strong>City A:</strong> Historical air quality has been gradually improving over the past 5 months, with values ranging from 100-103. Recent trends suggest continued improvement.</p>
+            <p><strong>City B:</strong> Air quality has been more variable, fluctuating between 100-102. The trend over the past 5 months shows slight improvement but with more uncertainty.</p>
+            <p><strong>Forecasts:</strong> Multiple prediction models suggest City A is more likely to maintain its improving trend, while City B's future air quality remains more uncertain.</p>
+        </div>
+    `;
+}
+
+// Get air quality data (placeholder - will load from synthetic_city_data.json)
+function getAirQualityData() {
+    // This will be implemented to load data from AirQualityData
+    // For now, return placeholder structure
+    return {
+        historical: {
+            cityA: [],
+            cityB: []
+        },
+        predictions: {
+            scenarios: [],
+            aggregated: {
+                cityA: [],
+                cityB: []
+            },
+            bounds: {
+                cityA: { min: [], max: [] },
+                cityB: { min: [], max: [] }
+            }
+        }
+    };
+}
 
 // Save data function
 function saveData(data) {
-    // In production, send to server
-    if (!ExperimentConfig.debug.enabled && ExperimentConfig.dataCollection.saveToServer) {
+    const allData = data.values();
+    
+    // Add participant summary
+    const summary = {
+        participant_id: ParticipantConfig.id,
+        condition: ParticipantConfig.assignedCondition,
+        start_time: ParticipantConfig.startTime,
+        end_time: new Date().toISOString(),
+        visualization_literacy_score: ParticipantConfig.visualizationLiteracyScore,
+        phase1_complete: ParticipantConfig.phase1Complete,
+        phase2_complete: ParticipantConfig.phase2Complete
+    };
+    
+    if (ExperimentConfig.dataCollection.saveToServer) {
+        // Send to server
         fetch(ExperimentConfig.dataCollection.serverEndpoint, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                participant_id: ParticipantConfig.id,
-                data: data.values(),
-                metadata: ParticipantConfig
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: allData, summary })
         }).then(response => {
             console.log('Data saved to server');
         }).catch(error => {
             console.error('Error saving data:', error);
             // Fallback to local storage
-            localStorage.setItem(`experiment_data_${ParticipantConfig.id}`, JSON.stringify(data.values()));
+            localStorage.setItem(`air_quality_study_${ParticipantConfig.id}`, JSON.stringify({data: allData, summary}));
         });
     } else {
-        // Save to local storage in debug mode
-        localStorage.setItem(`experiment_data_${ParticipantConfig.id}`, JSON.stringify(data.values()));
+        // Save to local storage
+        localStorage.setItem(`air_quality_study_${ParticipantConfig.id}`, JSON.stringify({data: allData, summary}));
         console.log('Data saved to localStorage');
     }
 }
 
-// Initialize stimuli patterns when page loads
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure stimuli patterns are available
-    if (typeof AlienPlantData !== 'undefined' && AlienPlantData.patterns) {
-        console.log('Loaded 15 sophisticated stimuli patterns:', Object.keys(AlienPlantData.patterns));
-        initializeExperiment();
-    } else {
-        console.error('AlienPlantData not found! Make sure plantGrowthData.js is loaded.');
-        // Fallback initialization
-        setTimeout(initializeExperiment, 1000);
-    }
+    console.log('Starting Air Quality Prediction Visualization Trust Study');
+    initializeExperiment();
 });

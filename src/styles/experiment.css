@@ -2,19 +2,21 @@
 
 :root {
     --primary-color: #2563eb;
-    --success-color: #22c55e;  /* Enhanced green from example */
+    --success-color: #22c55e;
     --danger-color: #dc2626;
     --warning-color: #f59e0b;
     --background-color: #f9fafb;
     --text-color: #111827;
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
-    --alien-accent: #8b5cf6;
-    --purple-primary: #a855f7;  /* From sophisticated example */
-    --purple-light-1: #c084fc;
-    --purple-light-2: #d8b4fe;
-    --purple-light-3: #e9d5ff;
-    --purple-light-4: #f3e8ff;
+    --air-quality-accent: #3b82f6;  /* Blue theme for air quality */
+    --air-quality-primary: #1d4ed8;
+    --air-quality-light-1: #60a5fa;
+    --air-quality-light-2: #93c5fd;
+    --air-quality-light-3: #bfdbfe;
+    --air-quality-light-4: #dbeafe;
+    --city-a-color: #007bff;  /* Blue for City A */
+    --city-b-color: #fd7e14;  /* Orange for City B */
     --white: #ffffff;
     --grid-color: #e5e7eb;
 }
@@ -27,15 +29,15 @@ body {
     min-height: 100vh;
 }
 
-/* Enhanced Plant Cultivation Plugin Styles with Sophisticated Patterns */
-.plant-cultivation-container {
+/* Air Quality Prediction Task Plugin Styles */
+.prediction-task-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-.cultivation-header {
+.task-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -46,20 +48,20 @@ body {
     gap: 15px;
 }
 
-.cultivation-header h2 {
-    color: var(--alien-accent);
+.task-header h2 {
+    color: var(--air-quality-accent);
     font-size: 24px;
     margin: 0;
 }
 
-.greenhouse-status {
+.study-status {
     display: flex;
     gap: 20px;
     font-size: 14px;
     color: #6b7280;
 }
 
-.greenhouse-status span {
+.study-status span {
     padding: 5px 10px;
     background: white;
     border: 1px solid var(--border-color);
@@ -78,11 +80,11 @@ body {
 }
 
 .chart-container:hover {
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
     transform: translateY(-1px);
 }
 
-.cultivation-controls {
+.prediction-controls {
     background: white;
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -99,15 +101,15 @@ body {
     cursor: pointer;
 }
 
-.action-select option[value="cultivate"] {
+.prediction-select option[value="increase"] {
     color: var(--success-color);
 }
 
-.action-select option[value="prune"] {
+.prediction-select option[value="decrease"] {
     color: var(--danger-color);
 }
 
-.action-input-container {
+.prediction-input-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -115,19 +117,19 @@ body {
     transition: all 0.3s ease;
 }
 
-.action-input-container .input-row {
+.prediction-input-container .input-row {
     display: flex;
     align-items: center;
     gap: 15px;
     width: 100%;
 }
 
-.action-input-container label {
+.prediction-input-container label {
     font-weight: 500;
     min-width: 90px;
 }
 
-.action-input-container input[type="number"] {
+.prediction-input-container input[type="number"] {
     width: 150px;
     padding: 8px 12px;
     border: 1px solid var(--border-color);
@@ -135,7 +137,7 @@ body {
     font-size: 16px;
 }
 
-.action-input-container span {
+.prediction-input-container span {
     color: #6b7280;
     font-size: 14px;
     margin-left: 10px;
@@ -153,19 +155,19 @@ body {
     display: none;
 }
 
-/* Legacy support for cultivation input containers */
-.resource-input-container {
+/* Prediction confidence input containers */
+.confidence-input-container {
     display: flex;
     align-items: center;
     gap: 15px;
     margin-bottom: 20px;
 }
 
-.resource-input-container label {
+.confidence-input-container label {
     font-weight: 500;
 }
 
-#resource-input {
+#confidence-input {
     width: 120px;
     padding: 8px 12px;
     border: 1px solid var(--border-color);
@@ -173,7 +175,7 @@ body {
     font-size: 16px;
 }
 
-#cultivation-value {
+#prediction-value {
     color: #6b7280;
     font-size: 14px;
 }
@@ -181,7 +183,7 @@ body {
 .confirm-btn {
     width: 100%;
     padding: 12px;
-    background: var(--primary-color);
+    background: var(--air-quality-primary);
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -192,7 +194,7 @@ body {
 }
 
 .confirm-btn:hover:not(:disabled) {
-    background: #1d4ed8;
+    background: var(--air-quality-accent);
 }
 
 .confirm-btn:disabled {
@@ -275,23 +277,23 @@ body {
 }
 
 .survey-header h2 {
-    color: var(--alien-accent);
+    color: var(--air-quality-accent);
     margin-bottom: 10px;
 }
 
-.greenhouse-change {
+.prediction-change {
     display: inline-block;
     padding: 5px 15px;
     border-radius: 20px;
     font-weight: 600;
 }
 
-.greenhouse-change.positive {
+.prediction-change.positive {
     background: #dcfce7;
     color: var(--success-color);
 }
 
-.greenhouse-change.negative {
+.prediction-change.negative {
     background: #fee2e2;
     color: var(--danger-color);
 }
@@ -305,7 +307,7 @@ body {
 }
 
 .survey-instructions .highlight {
-    color: var(--alien-accent);
+    color: var(--air-quality-accent);
     font-weight: 500;
 }
 
@@ -370,14 +372,14 @@ body {
 }
 
 .scale-point:hover {
-    border-color: var(--alien-accent);
-    background: #f3f0ff;
+    border-color: var(--air-quality-accent);
+    background: #f0f7ff;
 }
 
 .scale-point.selected {
-    background: var(--alien-accent);
+    background: var(--air-quality-accent);
     color: white;
-    border-color: var(--alien-accent);
+    border-color: var(--air-quality-accent);
 }
 
 .scale-point.was-previous {
@@ -430,7 +432,7 @@ body {
 .submit-btn {
     width: 100%;
     padding: 15px;
-    background: var(--alien-accent);
+    background: var(--air-quality-accent);
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -442,7 +444,7 @@ body {
 }
 
 .submit-btn:hover {
-    background: #7c3aed;
+    background: var(--air-quality-primary);
 }
 
 /* Instruction and Information Screens */
@@ -472,17 +474,17 @@ body {
     transform: translateY(-2px);
 }
 
-.stimuli-explanation {
+.visualization-explanation {
     text-align: left;
     margin: 20px 0;
     padding: 20px;
-    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+    background: linear-gradient(135deg, #f0f7ff 0%, #dbeafe 100%);
     border-radius: 8px;
-    border: 1px solid var(--purple-primary);
+    border: 1px solid var(--air-quality-primary);
 }
 
-.stimuli-explanation h3 {
-    color: var(--purple-primary);
+.visualization-explanation h3 {
+    color: var(--air-quality-primary);
     margin-bottom: 15px;
 }
 
@@ -495,18 +497,18 @@ body {
     margin: 8px 0;
 }
 
-.stimuli-summary {
+.condition-summary {
     background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--air-quality-primary);
     border-radius: 6px;
     padding: 12px;
     margin: 15px 0;
-    color: var(--primary-color);
+    color: var(--air-quality-primary);
     font-size: 14px;
 }
 
 .welcome-screen h1 {
-    color: var(--alien-accent);
+    color: var(--air-quality-accent);
     margin-bottom: 20px;
 }
 
@@ -592,13 +594,13 @@ body {
 
 .historical-line {
     fill: none;
-    stroke: var(--success-color);
+    stroke: var(--city-a-color);
     stroke-width: 2;
     transition: all 0.3s ease;
 }
 
 .historical-dot {
-    fill: var(--success-color);
+    fill: var(--city-a-color);
     transition: all 0.3s ease;
 }
 
@@ -615,14 +617,14 @@ body {
 }
 
 .aggregation-line {
-    stroke: var(--purple-primary);
+    stroke: var(--air-quality-primary);
     stroke-width: 2.5;
     stroke-dasharray: 5,3;
     transition: all 0.3s ease;
 }
 
 .aggregation-dot {
-    fill: var(--purple-primary);
+    fill: var(--air-quality-primary);
     stroke: var(--white);
     stroke-width: 2;
 }
@@ -674,7 +676,7 @@ body {
     border-left: 4px solid rgba(107, 114, 128, 0.5);
 }
 
-/* Combined Cultivation and Trust Plugin Styles */
+/* Combined Prediction Task and Trust Plugin Styles */
 .combined-container {
     max-width: 1400px;
     margin: 0 auto;
@@ -691,7 +693,7 @@ body {
 }
 
 .experiment-header h2 {
-    color: var(--alien-accent);
+    color: var(--air-quality-accent);
     font-size: 24px;
     margin: 0;
 }
@@ -702,7 +704,7 @@ body {
     margin-bottom: 20px;
 }
 
-.cultivation-panel {
+.prediction-panel {
     flex: 1.2;
     background: white;
     border: 1px solid var(--border-color);
@@ -721,7 +723,7 @@ body {
 }
 
 .trust-panel h3 {
-    color: var(--alien-accent);
+    color: var(--air-quality-accent);
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 20px;
@@ -736,7 +738,7 @@ body {
 }
 
 .trust-instructions .highlight {
-    color: var(--alien-accent);
+    color: var(--air-quality-accent);
     font-weight: 500;
 }
 
@@ -793,14 +795,14 @@ body {
 }
 
 .trust-question .scale-point:hover {
-    border-color: var(--alien-accent);
-    background: #f3f0ff;
+    border-color: var(--air-quality-accent);
+    background: #f0f7ff;
 }
 
 .trust-question .scale-point.selected {
-    background: var(--alien-accent);
+    background: var(--air-quality-accent);
     color: white;
-    border-color: var(--alien-accent);
+    border-color: var(--air-quality-accent);
 }
 
 .trust-question .scale-point.was-previous {
@@ -830,7 +832,7 @@ body {
 
 .confirm-all-btn {
     padding: 15px 40px;
-    background: var(--alien-accent);
+    background: var(--air-quality-accent);
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -841,7 +843,7 @@ body {
 }
 
 .confirm-all-btn:hover:not(:disabled) {
-    background: #7c3aed;
+    background: var(--air-quality-primary);
 }
 
 .confirm-all-btn:disabled {
@@ -879,7 +881,7 @@ body {
         flex-direction: column;
     }
     
-    .cultivation-panel,
+    .prediction-panel,
     .trust-panel {
         flex: 1;
     }
@@ -888,7 +890,7 @@ body {
         max-height: none;
     }
     
-    .cultivation-header {
+    .task-header {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -909,25 +911,25 @@ body {
 }
 
 @media (max-width: 768px) {
-    .plant-cultivation-container,
+    .prediction-task-container,
     .trust-survey-container,
     .combined-container {
         padding: 10px;
     }
     
-    .cultivation-header,
+    .task-header,
     .experiment-header {
         flex-direction: column;
         gap: 10px;
         align-items: flex-start;
     }
     
-    .greenhouse-status {
+    .study-status {
         flex-wrap: wrap;
         gap: 10px;
     }
     
-    .greenhouse-status span {
+    .study-status span {
         font-size: 12px;
         padding: 4px 8px;
     }
@@ -976,11 +978,11 @@ body {
         padding: 8px;
     }
     
-    .cultivation-header h2 {
+    .task-header h2 {
         font-size: 18px;
     }
     
-    .greenhouse-status {
+    .study-status {
         flex-direction: column;
         align-items: flex-start;
     }
@@ -991,11 +993,11 @@ body {
         padding: 6px;
     }
     
-    .stimuli-explanation {
+    .visualization-explanation {
         padding: 12px;
     }
     
-    .stimuli-explanation li {
+    .visualization-explanation li {
         font-size: 13px;
         margin: 6px 0;
     }
@@ -1008,7 +1010,7 @@ body {
 
 .chart-wrapper:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
 
 .prediction-dot,

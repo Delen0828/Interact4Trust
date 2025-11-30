@@ -1,298 +1,244 @@
+// Air Quality Prediction Visualization Trust Study Configuration
+// 8 Experimental Conditions (Between-subjects design)
+
 const ExperimentConfig = {
-    // Experiment design: 2 named conditions, 15 trials each
-    // User-selected design: each participant chooses ONE condition
+    // Study Design: Two-phase approach (No visualization → With visualization)
+    studyType: 'two_phase_between_subjects',
+    
+    // 8 Experimental Conditions
     conditions: [
         { 
-            id: 'aggregation', 
-            name: 'Aggregation',
-            displayFormat: 'aggregation', 
-            description: 'Single aggregated prediction line only',
-            instructions: 'You will see one prediction line representing the consensus forecast.'
+            id: 'condition_1_baseline', 
+            name: 'Baseline',
+            displayFormat: 'aggregation_only',
+            description: 'Shows only aggregated prediction lines',
+            instructions: 'You will see a single prediction line for each city representing the expected air quality trend.'
         },
         { 
-            id: 'hover_to_reveal', 
-            name: 'Hover-to-Reveal',
-            displayFormat: 'alternative', 
-            description: 'Aggregated prediction with hover to reveal alternatives',
-            instructions: 'You will see one prediction line by default. Hover over the chart to reveal alternative predictions.'
+            id: 'condition_2_pi_plot', 
+            name: 'PI Plot',
+            displayFormat: 'confidence_bounds',
+            description: 'Shows aggregated prediction with confidence bounds',
+            instructions: 'You will see prediction lines with shaded areas indicating the range of uncertainty in the predictions.'
+        },
+        { 
+            id: 'condition_3_ensemble', 
+            name: 'Ensemble Plot',
+            displayFormat: 'alternative_lines',
+            description: 'Shows both aggregated and alternative predictions',
+            instructions: 'You will see multiple prediction lines showing different possible air quality scenarios alongside an average prediction.'
+        },
+        { 
+            id: 'condition_4_ensemble_hover', 
+            name: 'Ensemble + Hover',
+            displayFormat: 'hover_alternatives',
+            description: 'Aggregated by default, hover to reveal alternatives',
+            instructions: 'You will see average prediction lines. Hover over the chart to reveal alternative prediction scenarios.'
+        },
+        { 
+            id: 'condition_5_pi_hover', 
+            name: 'PI Plot + Hover',
+            displayFormat: 'hover_bounds',
+            description: 'PI plot with hover to reveal individual predictions',
+            instructions: 'You will see prediction lines with confidence bounds. Hover to see the individual predictions that make up the bounds.'
+        },
+        { 
+            id: 'condition_6_pi_to_ensemble', 
+            name: 'PI → Ensemble',
+            displayFormat: 'transform_hover',
+            description: 'PI plot transforms to ensemble plot on hover',
+            instructions: 'You will see prediction bounds that transform into individual prediction lines when you hover over them.'
+        },
+        { 
+            id: 'condition_7_buggy', 
+            name: 'Buggy Control',
+            displayFormat: 'broken_interactions',
+            description: 'Broken interactions (misaligned, draggable, wrong hover zones)',
+            instructions: 'You will see prediction visualizations with interactive elements. Note: Some interactions may not work as expected.'
+        },
+        { 
+            id: 'condition_8_bad', 
+            name: 'Bad Control',
+            displayFormat: 'poor_interactions',
+            description: 'Poor interactions (forced clicks, timed pop-ups, disappearing elements)',
+            instructions: 'You will see prediction visualizations with interactive elements that require specific actions to view details.'
         }
     ],
-    
-    // 15 Stimuli Patterns (from sophisticated example)
-    stimuliPatterns: {
-        "increase_agreement": {
-            trend: "increase",
-            pattern: "agreement",
-            description: "Models mostly agree on growth increase"
-        },
-        "increase_polarization": {
-            trend: "increase",
-            pattern: "polarization",
-            description: "Models split between high and low growth predictions"
-        },
-        "increase_risk_of_loss": {
-            trend: "increase",
-            pattern: "risk_of_loss",
-            description: "Mostly positive predictions with one severe decline risk"
-        },
-        "increase_chance_of_gain": {
-            trend: "increase",
-            pattern: "chance_of_gain",
-            description: "One model predicts exceptional growth opportunity"
-        },
-        "increase_ambiguous_spread": {
-            trend: "increase",
-            pattern: "ambiguous_spread",
-            description: "Models show varied growth predictions without clear pattern"
-        },
-        "decrease_agreement": {
-            trend: "decrease",
-            pattern: "agreement",
-            description: "Models mostly agree on growth decline"
-        },
-        "decrease_polarization": {
-            trend: "decrease",
-            pattern: "polarization",
-            description: "Models split between growth and decline predictions"
-        },
-        "decrease_risk_of_loss": {
-            trend: "decrease",
-            pattern: "risk_of_loss",
-            description: "Mostly positive predictions with one severe decline risk"
-        },
-        "decrease_chance_of_gain": {
-            trend: "decrease",
-            pattern: "chance_of_gain",
-            description: "One model predicts exceptional growth despite declining trend"
-        },
-        "decrease_ambiguous_spread": {
-            trend: "decrease",
-            pattern: "ambiguous_spread",
-            description: "Models show varied decline predictions without clear pattern"
-        },
-        "stable_agreement": {
-            trend: "stable",
-            pattern: "agreement",
-            description: "Models agree on stable growth with minimal change"
-        },
-        "stable_polarization": {
-            trend: "stable",
-            pattern: "polarization",
-            description: "Models split between growth and decline despite stable average"
-        },
-        "stable_risk_of_loss": {
-            trend: "stable",
-            pattern: "risk_of_loss",
-            description: "Mostly stable predictions with one severe decline risk"
-        },
-        "stable_chance_of_gain": {
-            trend: "stable",
-            pattern: "chance_of_gain",
-            description: "One model predicts exceptional growth opportunity"
-        },
-        "stable_ambiguous_spread": {
-            trend: "stable",
-            pattern: "ambiguous_spread",
-            description: "Models show varied stable predictions without clear pattern"
-        }
-    },
-    
-    // Pattern categories for analysis
-    patternCategories: {
-        agreement: "Models converge on similar predictions",
-        polarization: "Models split into distinct high/low predictions", 
-        risk_of_loss: "One model shows severe decline risk",
-        chance_of_gain: "One model shows exceptional growth opportunity",
-        ambiguous_spread: "Models show varied predictions without clear pattern"
-    },
-    
-    // Trend categories
-    trendCategories: {
-        increase: "Overall upward growth trend",
-        decrease: "Overall downward growth trend", 
-        stable: "Minimal change from current height"
-    },
-    
-    // Stimuli-based parameters (replacing simple good/bad model)
-    stimuliParams: {
-        // Each pattern has its own characteristics built into the data
-        displayFormats: {
-            aggregation: {
-                numPredictions: 1,
-                description: 'Single Prediction Line',
-                showAlternatives: false
+
+    // Visualization Literacy Test (12 questions)
+    visualizationLiteracy: {
+        enabled: true,
+        questionCount: 12,
+        timeLimit: null, // No time limit
+        questions: [
+            {
+                id: 'vl_1',
+                type: 'line_chart_basic',
+                question: 'In this line chart, which city had higher air quality in March?',
+                // Question details will be implemented in plugin
             },
-            alternative: {
-                numPredictions: 5,
-                description: 'Multiple Prediction Lines',
-                showAlternatives: true,
-                hoverToReveal: true
-            }
-        }
+            {
+                id: 'vl_2', 
+                type: 'trend_identification',
+                question: 'What trend does City A show from January to June?',
+            },
+            {
+                id: 'vl_3',
+                type: 'uncertainty_bounds',
+                question: 'What do the shaded areas around the line represent?',
+            },
+            // Additional questions will be defined in the plugin
+            // Total: 12 questions testing various visualization concepts
+        ]
     },
-    
-    // Enhanced display parameters for sophisticated patterns
-    displayParams: {
-        aggregation: {
-            numPredictions: 1,
-            description: 'Single Prediction Line',
-            interactionType: 'static'
+
+    // Two-Phase Study Structure
+    phases: {
+        phase1: {
+            name: 'Prediction Without Visualization',
+            description: 'Text-based air quality prediction task',
+            measurements: ['probability_estimate', 'confidence_rating', 'travel_choice']
         },
-        alternative: {
-            numPredictions: 5,
-            opacityLevels: [1.0, 0.8, 0.6, 0.4, 0.2],
-            description: 'Multiple Prediction Lines',
-            interactionType: 'hover_reveal',
-            defaultShow: 'aggregation', // Show aggregated prediction by default
-            hoverShow: 'alternatives' // Show all alternatives on hover
+        phase2: {
+            name: 'Prediction With Visualization', 
+            description: 'Visual prediction task with assigned condition',
+            measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'trust_ratings', 'interaction_data']
         }
     },
-    
-    // Greenhouse settings
-    greenhouse: {
-        initialResources: 10,
-        resourceUnit: 'units',  // Growth resource units
-        maxPlantsPerAction: 100,
-        cultivationCostRate: 0.001  // 0.1% cultivation cost
+
+    // Air Quality Prediction Task
+    predictionTask: {
+        question: 'The probability that air quality in City A will be better than City B is ____%',
+        confidenceScale: {
+            min: 1,
+            max: 7,
+            labels: ['Very Uncertain', 'Uncertain', 'Somewhat Uncertain', 'Neutral', 'Somewhat Certain', 'Certain', 'Very Certain']
+        },
+        travelQuestion: 'If you were planning to visit one of these cities, which would you choose?',
+        travelChoices: ['City A', 'City B', 'No Preference']
     },
-    
-    // Experiment structure
-    structure: {
-        trialsPerCondition: 15,  // Each participant does 15 trials
-        totalConditions: 2,      // Two available conditions (user selects one)
-        historicalDaysToShow: 30,
-        predictionDays: 1,
-        userSelected: true       // User selects their condition
-    },
-    
-    // Trust questions
+
+    // Trust and Confidence Measurements
     trustQuestions: [
         {
-            prompt: "How much do you trust the accuracy of this growth prediction model?",
-            labels: ["Not at all", "Completely"],
-            name: "trust_accuracy"
+            prompt: "How much do you trust the fidelity of this visualization tool (do you think this tool is working as expected)?",
+            labels: ["Not at all", "Very little", "Somewhat", "Moderately", "Quite a bit", "Very much", "Completely"],
+            type: "interface_trust"
         },
         {
-            prompt: "How confident are you in making cultivation decisions based on these predictions?",
-            labels: ["Not confident", "Very confident"],
-            name: "decision_confidence"
+            prompt: "How much do you trust the underlying air quality data?",
+            labels: ["Not at all", "Very little", "Somewhat", "Moderately", "Quite a bit", "Very much", "Completely"],
+            type: "data_trust"
         },
         {
-            prompt: "How well do you understand the model's growth prediction logic?",
-            labels: ["Don't understand", "Fully understand"],
-            name: "understanding"
-        },
-        {
-            prompt: "How reliable do you find the growth prediction visualizations?",
-            labels: ["Very unreliable", "Very reliable"],
-            name: "visualization_reliability"
-        },
-        {
-            prompt: "How likely are you to use this model for future cultivation decisions?",
-            labels: ["Very unlikely", "Very likely"],
-            name: "future_use"
+            prompt: "How much do you think this visualization is misleading?",
+            labels: ["Not at all", "Very little", "Somewhat", "Moderately", "Quite a bit", "Very much", "Completely"],
+            type: "misleading_rating"
         }
     ],
-    
-    // Total number of plants/trials
-    totalPlants: 15,
-    
-    // Timing parameters (in milliseconds)
-    timing: {
-        instructionsDuration: null,  // No time limit
-        cultivationDecisionTimeout: 60000,  // 60 seconds
-        trustSurveyTimeout: 30000,  // 30 seconds
-        feedbackDuration: 3000,  // 3 seconds
-        interTrialInterval: 500
-    },
-    
-    // Chart configuration
-    chart: {
-        width: 800,
-        height: 400,
-        margins: { top: 20, right: 80, bottom: 50, left: 80 },
-        colors: {
-            historical: '#22c55e',  // Green for historical growth
-            prediction: {
-                aggregation: '#a855f7',  // Purple for single prediction
-                alternative: ['#a855f7', '#c084fc', '#d8b4fe', '#e9d5ff', '#f3e8ff']  // Purple gradient
-            },
-            groundTruth: '#059669',  // Dark green for actual growth
-            grid: '#e5e7eb'
+
+    // Data Structure (follows synthetic_city_data.json format)
+    dataStructure: {
+        format: 'synthetic_city_data',
+        scenarioCount: 1, // Currently 1, planning to scale to 10
+        fields: {
+            date: 'Date string (YYYY-MM-DD)',
+            city: 'City identifier (A or B)',
+            price: 'Air quality index value',
+            series: 'Data type (historical or prediction)',
+            scenario: 'Scenario number (null for historical, 1-10 for predictions)'
         }
     },
-    
-    // Data collection settings
-    dataCollection: {
-        saveFormat: 'csv',
-        includeTimestamps: true,
-        includeBrowserInfo: true,
-        saveToServer: false,  // Set to true for production
-        serverEndpoint: '/api/save-data'
+
+    // Visualization Settings
+    visualization: {
+        width: 600,
+        height: 400,
+        margin: { top: 20, right: 20, bottom: 40, left: 50 },
+        colors: {
+            cityA: '#007bff',
+            cityB: '#fd7e14',
+            historical: '#6c757d'
+        },
+        sampleScenarios: 5, // Number of scenarios to sample for aggregation
+        animation: {
+            enabled: true,
+            duration: 300
+        }
     },
-    
-    // Debug mode with stimuli information
+
+    // Condition Assignment
+    conditionAssignment: {
+        mode: 'manual', // 'manual' for testing, 'random' for production
+        defaultCondition: 1, // Used when mode is 'manual'
+        getAssignedCondition: function() {
+            console.log('Getting assigned condition, ASSIGNED_CONDITION:', typeof ASSIGNED_CONDITION !== 'undefined' ? ASSIGNED_CONDITION : 'undefined');
+            console.log('Available conditions count:', ExperimentConfig.conditions.length);
+            
+            if (typeof ASSIGNED_CONDITION !== 'undefined') {
+                const conditionIndex = ASSIGNED_CONDITION - 1;
+                console.log('Condition index:', conditionIndex);
+                if (conditionIndex >= 0 && conditionIndex < ExperimentConfig.conditions.length) {
+                    console.log('Returning condition:', ExperimentConfig.conditions[conditionIndex].name);
+                    return ExperimentConfig.conditions[conditionIndex];
+                }
+            }
+            // Fallback to condition 1
+            console.log('Using fallback condition 1');
+            return ExperimentConfig.conditions[0];
+        }
+    },
+
+    // Debug Settings
     debug: {
         enabled: true,
-        skipInstructions: false,
         showConditionInfo: true,
-        showStimuliInfo: true,  // Show current stimuli pattern info
-        showPatternIndex: true,  // Show which of 15 patterns is active
-        useMockData: true,  // Use sophisticated synthetic data
-        fastMode: false  // Shorter timings for testing
-    }
-};
-
-// Participant configuration (generated per session)
-const ParticipantConfig = {
-    id: generateParticipantId(),
-    // Condition will be assigned based on user selection
-    assignedCondition: null,
-    // Randomize order of all 15 stimuli patterns for this participant
-    stimuliOrder: shuffleArray(Object.keys(ExperimentConfig.stimuliPatterns)),
-    startTime: new Date().toISOString(),
-    browserInfo: {
-        userAgent: navigator.userAgent,
-        screenWidth: screen.width,
-        screenHeight: screen.height,
-        platform: navigator.platform
+        showInteractionLogs: true,
+        logDataProcessing: true
     },
-    // Log condition assignment details
-    conditionDetails: {
-        conditionId: null, // Will be set after user selection
-        conditionName: null,
-        displayFormat: null,
-        totalTrials: ExperimentConfig.structure.trialsPerCondition
+
+    // Data Collection
+    dataCollection: {
+        saveToServer: false,
+        serverEndpoint: '/save-experiment-data',
+        fields: {
+            participant_id: 'string',
+            condition_id: 'string',
+            condition_name: 'string',
+            display_format: 'string',
+            phase_1_data: 'object',
+            phase_2_data: 'object',
+            vis_literacy_score: 'number',
+            trust_ratings: 'object',
+            interaction_logs: 'array',
+            timestamp: 'string'
+        }
     }
 };
 
-// Function to set condition after user selection
-function setParticipantCondition(conditionId) {
-    const condition = ExperimentConfig.conditions.find(c => c.id === conditionId);
-    if (condition) {
-        ParticipantConfig.assignedCondition = condition;
-        ParticipantConfig.conditionDetails.conditionId = condition.id;
-        ParticipantConfig.conditionDetails.conditionName = condition.name;
-        ParticipantConfig.conditionDetails.displayFormat = condition.displayFormat;
-    }
-    return condition;
+// Participant Configuration (initialized during experiment)
+let ParticipantConfig = {
+    id: null,
+    assignedCondition: null,
+    startTime: null,
+    phase1Complete: false,
+    phase2Complete: false,
+    visualizationLiteracyScore: null
+};
+
+// Initialize participant configuration
+function initializeParticipant() {
+    ParticipantConfig.id = 'P' + Math.random().toString(36).substr(2, 9);
+    ParticipantConfig.assignedCondition = ExperimentConfig.conditionAssignment.getAssignedCondition();
+    ParticipantConfig.startTime = new Date().toISOString();
+    
+    console.log('Participant initialized:', ParticipantConfig.id);
+    console.log('Assigned condition:', ParticipantConfig.assignedCondition.name);
+    
+    return ParticipantConfig;
 }
 
-// Helper functions
-function generateParticipantId() {
-    return 'P' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-}
-
-function shuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-}
-
-// Export configurations
+// Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { ExperimentConfig, ParticipantConfig };
+    module.exports = { ExperimentConfig, ParticipantConfig, initializeParticipant };
 }

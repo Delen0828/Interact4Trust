@@ -2,6594 +2,6594 @@
   "data": [
     {
       "date": "2025-01-01",
-      "stock": "A",
+      "city": "A",
       "price": 103,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-01",
-      "stock": "B",
+      "city": "B",
       "price": 100,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-02",
-      "stock": "A",
+      "city": "A",
       "price": 103.1,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-02",
-      "stock": "B",
+      "city": "B",
       "price": 100.07,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-03",
-      "stock": "A",
+      "city": "A",
       "price": 103.07,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-03",
-      "stock": "B",
+      "city": "B",
       "price": 99.93,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-04",
-      "stock": "A",
+      "city": "A",
       "price": 103.21,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-04",
-      "stock": "B",
+      "city": "B",
       "price": 99.98,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-05",
-      "stock": "A",
+      "city": "A",
       "price": 103.52,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-05",
-      "stock": "B",
+      "city": "B",
       "price": 100.04,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-06",
-      "stock": "A",
+      "city": "A",
       "price": 103.47,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-06",
-      "stock": "B",
+      "city": "B",
       "price": 99.9,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-07",
-      "stock": "A",
+      "city": "A",
       "price": 103.42,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-07",
-      "stock": "B",
+      "city": "B",
       "price": 100.27,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-08",
-      "stock": "A",
+      "city": "A",
       "price": 103.75,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-08",
-      "stock": "B",
+      "city": "B",
       "price": 100.36,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-09",
-      "stock": "A",
+      "city": "A",
       "price": 103.91,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-09",
-      "stock": "B",
+      "city": "B",
       "price": 100.12,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-10",
-      "stock": "A",
+      "city": "A",
       "price": 103.81,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-10",
-      "stock": "B",
+      "city": "B",
       "price": 100.26,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-11",
-      "stock": "A",
+      "city": "A",
       "price": 103.93,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-11",
-      "stock": "B",
+      "city": "B",
       "price": 100.06,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-12",
-      "stock": "A",
+      "city": "A",
       "price": 103.83,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-12",
-      "stock": "B",
+      "city": "B",
       "price": 100.22,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-13",
-      "stock": "A",
+      "city": "A",
       "price": 103.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-13",
-      "stock": "B",
+      "city": "B",
       "price": 100.45,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-14",
-      "stock": "A",
+      "city": "A",
       "price": 103.78,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-14",
-      "stock": "B",
+      "city": "B",
       "price": 100.28,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-15",
-      "stock": "A",
+      "city": "A",
       "price": 103.39,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-15",
-      "stock": "B",
+      "city": "B",
       "price": 100.48,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-16",
-      "stock": "A",
+      "city": "A",
       "price": 103.03,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-16",
-      "stock": "B",
+      "city": "B",
       "price": 100.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-17",
-      "stock": "A",
+      "city": "A",
       "price": 102.91,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-17",
-      "stock": "B",
+      "city": "B",
       "price": 100.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-18",
-      "stock": "A",
+      "city": "A",
       "price": 102.7,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-18",
-      "stock": "B",
+      "city": "B",
       "price": 101.11,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-19",
-      "stock": "A",
+      "city": "A",
       "price": 102.77,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-19",
-      "stock": "B",
+      "city": "B",
       "price": 101.06,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-20",
-      "stock": "A",
+      "city": "A",
       "price": 102.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-20",
-      "stock": "B",
+      "city": "B",
       "price": 100.91,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-21",
-      "stock": "A",
+      "city": "A",
       "price": 102.29,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-21",
-      "stock": "B",
+      "city": "B",
       "price": 100.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-22",
-      "stock": "A",
+      "city": "A",
       "price": 102.59,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-22",
-      "stock": "B",
+      "city": "B",
       "price": 100.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-23",
-      "stock": "A",
+      "city": "A",
       "price": 102.55,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-23",
-      "stock": "B",
+      "city": "B",
       "price": 100.55,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-24",
-      "stock": "A",
+      "city": "A",
       "price": 102.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-24",
-      "stock": "B",
+      "city": "B",
       "price": 100.62,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-25",
-      "stock": "A",
+      "city": "A",
       "price": 102.27,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-25",
-      "stock": "B",
+      "city": "B",
       "price": 100.67,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-26",
-      "stock": "A",
+      "city": "A",
       "price": 102.16,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-26",
-      "stock": "B",
+      "city": "B",
       "price": 100.84,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-27",
-      "stock": "A",
+      "city": "A",
       "price": 102.18,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-27",
-      "stock": "B",
+      "city": "B",
       "price": 100.84,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-28",
-      "stock": "A",
+      "city": "A",
       "price": 101.94,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-28",
-      "stock": "B",
+      "city": "B",
       "price": 101.13,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-29",
-      "stock": "A",
+      "city": "A",
       "price": 102.02,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-29",
-      "stock": "B",
+      "city": "B",
       "price": 101.08,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-30",
-      "stock": "A",
+      "city": "A",
       "price": 101.9,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-30",
-      "stock": "B",
+      "city": "B",
       "price": 101.63,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-31",
-      "stock": "A",
+      "city": "A",
       "price": 101.84,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-01-31",
-      "stock": "B",
+      "city": "B",
       "price": 101.76,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-01",
-      "stock": "A",
+      "city": "A",
       "price": 101.72,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-01",
-      "stock": "B",
+      "city": "B",
       "price": 101.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-02",
-      "stock": "A",
+      "city": "A",
       "price": 102.09,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.37,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-03",
-      "stock": "A",
+      "city": "A",
       "price": 102.09,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.46,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-04",
-      "stock": "A",
+      "city": "A",
       "price": 101.87,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.42,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-05",
-      "stock": "A",
+      "city": "A",
       "price": 102.04,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-06",
-      "stock": "A",
+      "city": "A",
       "price": 101.79,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.66,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-07",
-      "stock": "A",
+      "city": "A",
       "price": 101.84,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.64,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-08",
-      "stock": "A",
+      "city": "A",
       "price": 101.44,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.47,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-09",
-      "stock": "A",
+      "city": "A",
       "price": 101.17,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-09",
-      "stock": "B",
+      "city": "B",
       "price": 101.16,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.21,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-10",
-      "stock": "B",
+      "city": "B",
       "price": 101.07,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-11",
-      "stock": "A",
+      "city": "A",
       "price": 101.36,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-11",
-      "stock": "B",
+      "city": "B",
       "price": 101.25,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-12",
-      "stock": "A",
+      "city": "A",
       "price": 101.39,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-12",
-      "stock": "B",
+      "city": "B",
       "price": 101.29,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-13",
-      "stock": "A",
+      "city": "A",
       "price": 101.37,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-13",
-      "stock": "B",
+      "city": "B",
       "price": 101.04,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-14",
-      "stock": "A",
+      "city": "A",
       "price": 101.31,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-14",
-      "stock": "B",
+      "city": "B",
       "price": 101.07,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-15",
-      "stock": "A",
+      "city": "A",
       "price": 101.01,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-15",
-      "stock": "B",
+      "city": "B",
       "price": 101.15,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-16",
-      "stock": "A",
+      "city": "A",
       "price": 100.86,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-16",
-      "stock": "B",
+      "city": "B",
       "price": 100.97,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-17",
-      "stock": "A",
+      "city": "A",
       "price": 100.77,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-17",
-      "stock": "B",
+      "city": "B",
       "price": 101.0,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-18",
-      "stock": "A",
+      "city": "A",
       "price": 100.98,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-18",
-      "stock": "B",
+      "city": "B",
       "price": 101.01,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-19",
-      "stock": "A",
+      "city": "A",
       "price": 101.05,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-19",
-      "stock": "B",
+      "city": "B",
       "price": 100.78,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-20",
-      "stock": "A",
+      "city": "A",
       "price": 100.69,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-20",
-      "stock": "B",
+      "city": "B",
       "price": 100.86,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-21",
-      "stock": "A",
+      "city": "A",
       "price": 100.76,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-21",
-      "stock": "B",
+      "city": "B",
       "price": 100.97,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-22",
-      "stock": "A",
+      "city": "A",
       "price": 100.68,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-22",
-      "stock": "B",
+      "city": "B",
       "price": 101.19,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-23",
-      "stock": "A",
+      "city": "A",
       "price": 100.55,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-23",
-      "stock": "B",
+      "city": "B",
       "price": 101.4,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-24",
-      "stock": "A",
+      "city": "A",
       "price": 100.67,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-24",
-      "stock": "B",
+      "city": "B",
       "price": 101.12,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-25",
-      "stock": "A",
+      "city": "A",
       "price": 100.88,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-25",
-      "stock": "B",
+      "city": "B",
       "price": 100.93,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-26",
-      "stock": "A",
+      "city": "A",
       "price": 101.06,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-26",
-      "stock": "B",
+      "city": "B",
       "price": 101.04,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-27",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-27",
-      "stock": "B",
+      "city": "B",
       "price": 101.14,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-28",
-      "stock": "A",
+      "city": "A",
       "price": 100.83,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-02-28",
-      "stock": "B",
+      "city": "B",
       "price": 101.24,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-01",
-      "stock": "A",
+      "city": "A",
       "price": 100.9,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-01",
-      "stock": "B",
+      "city": "B",
       "price": 102.02,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-02",
-      "stock": "A",
+      "city": "A",
       "price": 101.1,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-02",
-      "stock": "B",
+      "city": "B",
       "price": 102.14,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-03",
-      "stock": "A",
+      "city": "A",
       "price": 101.0,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-03",
-      "stock": "B",
+      "city": "B",
       "price": 102.37,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.96,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-04",
-      "stock": "B",
+      "city": "B",
       "price": 102.57,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.74,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-05",
-      "stock": "B",
+      "city": "B",
       "price": 102.7,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.5,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-06",
-      "stock": "B",
+      "city": "B",
       "price": 102.64,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.66,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.79,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.93,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-08",
-      "stock": "B",
+      "city": "B",
       "price": 102.63,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.92,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-09",
-      "stock": "B",
+      "city": "B",
       "price": 102.59,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.12,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-10",
-      "stock": "B",
+      "city": "B",
       "price": 102.49,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-11",
-      "stock": "A",
+      "city": "A",
       "price": 101.19,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-11",
-      "stock": "B",
+      "city": "B",
       "price": 102.5,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-12",
-      "stock": "A",
+      "city": "A",
       "price": 101.06,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-12",
-      "stock": "B",
+      "city": "B",
       "price": 102.98,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-13",
-      "stock": "A",
+      "city": "A",
       "price": 101.14,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-13",
-      "stock": "B",
+      "city": "B",
       "price": 102.59,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-14",
-      "stock": "A",
+      "city": "A",
       "price": 101.45,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-14",
-      "stock": "B",
+      "city": "B",
       "price": 102.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-15",
-      "stock": "A",
+      "city": "A",
       "price": 101.44,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-15",
-      "stock": "B",
+      "city": "B",
       "price": 102.4,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-16",
-      "stock": "A",
+      "city": "A",
       "price": 101.76,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-16",
-      "stock": "B",
+      "city": "B",
       "price": 102.31,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-17",
-      "stock": "A",
+      "city": "A",
       "price": 101.23,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-17",
-      "stock": "B",
+      "city": "B",
       "price": 102.53,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-18",
-      "stock": "A",
+      "city": "A",
       "price": 101.39,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-18",
-      "stock": "B",
+      "city": "B",
       "price": 102.54,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-19",
-      "stock": "A",
+      "city": "A",
       "price": 101.41,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-19",
-      "stock": "B",
+      "city": "B",
       "price": 102.32,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-20",
-      "stock": "A",
+      "city": "A",
       "price": 101.35,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-20",
-      "stock": "B",
+      "city": "B",
       "price": 102.17,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-21",
-      "stock": "A",
+      "city": "A",
       "price": 101.37,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-21",
-      "stock": "B",
+      "city": "B",
       "price": 102.31,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-22",
-      "stock": "A",
+      "city": "A",
       "price": 100.96,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-22",
-      "stock": "B",
+      "city": "B",
       "price": 102.16,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-23",
-      "stock": "A",
+      "city": "A",
       "price": 100.92,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-23",
-      "stock": "B",
+      "city": "B",
       "price": 102.21,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-24",
-      "stock": "A",
+      "city": "A",
       "price": 100.99,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-24",
-      "stock": "B",
+      "city": "B",
       "price": 102.22,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-25",
-      "stock": "A",
+      "city": "A",
       "price": 101.29,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-25",
-      "stock": "B",
+      "city": "B",
       "price": 102.08,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-26",
-      "stock": "A",
+      "city": "A",
       "price": 101.19,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-26",
-      "stock": "B",
+      "city": "B",
       "price": 102.52,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-27",
-      "stock": "A",
+      "city": "A",
       "price": 101.02,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-27",
-      "stock": "B",
+      "city": "B",
       "price": 102.65,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-28",
-      "stock": "A",
+      "city": "A",
       "price": 100.92,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-28",
-      "stock": "B",
+      "city": "B",
       "price": 102.24,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-29",
-      "stock": "A",
+      "city": "A",
       "price": 101.11,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-29",
-      "stock": "B",
+      "city": "B",
       "price": 102.27,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-30",
-      "stock": "A",
+      "city": "A",
       "price": 101.17,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-30",
-      "stock": "B",
+      "city": "B",
       "price": 102.14,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-31",
-      "stock": "A",
+      "city": "A",
       "price": 101.06,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-03-31",
-      "stock": "B",
+      "city": "B",
       "price": 102.31,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-01",
-      "stock": "A",
+      "city": "A",
       "price": 101.17,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-01",
-      "stock": "B",
+      "city": "B",
       "price": 102.15,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-02",
-      "stock": "A",
+      "city": "A",
       "price": 101.19,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-02",
-      "stock": "B",
+      "city": "B",
       "price": 102.13,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-03",
-      "stock": "A",
+      "city": "A",
       "price": 101.38,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-03",
-      "stock": "B",
+      "city": "B",
       "price": 102.23,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-04",
-      "stock": "A",
+      "city": "A",
       "price": 101.24,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-04",
-      "stock": "B",
+      "city": "B",
       "price": 102.41,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-05",
-      "stock": "A",
+      "city": "A",
       "price": 101.18,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-05",
-      "stock": "B",
+      "city": "B",
       "price": 102.16,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-06",
-      "stock": "A",
+      "city": "A",
       "price": 101.1,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-06",
-      "stock": "B",
+      "city": "B",
       "price": 102.09,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.8,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.0,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.86,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.86,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.91,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-09",
-      "stock": "B",
+      "city": "B",
       "price": 102.22,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-10",
-      "stock": "A",
+      "city": "A",
       "price": 100.91,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-10",
-      "stock": "B",
+      "city": "B",
       "price": 102.3,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-11",
-      "stock": "A",
+      "city": "A",
       "price": 100.87,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-11",
-      "stock": "B",
+      "city": "B",
       "price": 102.05,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-12",
-      "stock": "A",
+      "city": "A",
       "price": 100.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-12",
-      "stock": "B",
+      "city": "B",
       "price": 102.23,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-13",
-      "stock": "A",
+      "city": "A",
       "price": 100.5,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-13",
-      "stock": "B",
+      "city": "B",
       "price": 102.67,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-14",
-      "stock": "A",
+      "city": "A",
       "price": 100.43,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-14",
-      "stock": "B",
+      "city": "B",
       "price": 102.88,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-15",
-      "stock": "A",
+      "city": "A",
       "price": 100.27,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-15",
-      "stock": "B",
+      "city": "B",
       "price": 102.57,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-16",
-      "stock": "A",
+      "city": "A",
       "price": 100.23,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-16",
-      "stock": "B",
+      "city": "B",
       "price": 102.47,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-17",
-      "stock": "A",
+      "city": "A",
       "price": 100.31,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-17",
-      "stock": "B",
+      "city": "B",
       "price": 102.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-18",
-      "stock": "A",
+      "city": "A",
       "price": 100.69,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-18",
-      "stock": "B",
+      "city": "B",
       "price": 102.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-19",
-      "stock": "A",
+      "city": "A",
       "price": 100.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-19",
-      "stock": "B",
+      "city": "B",
       "price": 102.67,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-20",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-20",
-      "stock": "B",
+      "city": "B",
       "price": 102.83,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-21",
-      "stock": "A",
+      "city": "A",
       "price": 100.77,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-21",
-      "stock": "B",
+      "city": "B",
       "price": 102.64,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-22",
-      "stock": "A",
+      "city": "A",
       "price": 100.38,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-22",
-      "stock": "B",
+      "city": "B",
       "price": 102.63,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-23",
-      "stock": "A",
+      "city": "A",
       "price": 100.37,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-23",
-      "stock": "B",
+      "city": "B",
       "price": 101.96,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-24",
-      "stock": "A",
+      "city": "A",
       "price": 100.39,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-24",
-      "stock": "B",
+      "city": "B",
       "price": 101.76,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-25",
-      "stock": "A",
+      "city": "A",
       "price": 100.88,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-25",
-      "stock": "B",
+      "city": "B",
       "price": 101.7,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-26",
-      "stock": "A",
+      "city": "A",
       "price": 100.84,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-26",
-      "stock": "B",
+      "city": "B",
       "price": 101.45,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-27",
-      "stock": "A",
+      "city": "A",
       "price": 100.9,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-27",
-      "stock": "B",
+      "city": "B",
       "price": 101.78,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-28",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-28",
-      "stock": "B",
+      "city": "B",
       "price": 101.49,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-29",
-      "stock": "A",
+      "city": "A",
       "price": 100.66,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-29",
-      "stock": "B",
+      "city": "B",
       "price": 101.4,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-30",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-04-30",
-      "stock": "B",
+      "city": "B",
       "price": 101.43,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-01",
-      "stock": "A",
+      "city": "A",
       "price": 101.04,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-01",
-      "stock": "B",
+      "city": "B",
       "price": 101.72,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-02",
-      "stock": "A",
+      "city": "A",
       "price": 101.2,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.43,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-03",
-      "stock": "A",
+      "city": "A",
       "price": 101.02,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.66,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-04",
-      "stock": "A",
+      "city": "A",
       "price": 101.3,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.67,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-05",
-      "stock": "A",
+      "city": "A",
       "price": 101.02,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.47,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-06",
-      "stock": "A",
+      "city": "A",
       "price": 101.13,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-07",
-      "stock": "A",
+      "city": "A",
       "price": 101.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.6,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-08",
-      "stock": "A",
+      "city": "A",
       "price": 101.38,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.48,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-09",
-      "stock": "A",
+      "city": "A",
       "price": 101.26,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-09",
-      "stock": "B",
+      "city": "B",
       "price": 101.49,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.28,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-10",
-      "stock": "B",
+      "city": "B",
       "price": 101.41,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-11",
-      "stock": "A",
+      "city": "A",
       "price": 101.18,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-11",
-      "stock": "B",
+      "city": "B",
       "price": 101.44,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-12",
-      "stock": "A",
+      "city": "A",
       "price": 100.87,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-12",
-      "stock": "B",
+      "city": "B",
       "price": 101.57,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-13",
-      "stock": "A",
+      "city": "A",
       "price": 100.88,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-13",
-      "stock": "B",
+      "city": "B",
       "price": 101.89,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-14",
-      "stock": "A",
+      "city": "A",
       "price": 100.67,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-14",
-      "stock": "B",
+      "city": "B",
       "price": 101.64,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-15",
-      "stock": "A",
+      "city": "A",
       "price": 100.76,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-15",
-      "stock": "B",
+      "city": "B",
       "price": 102.08,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-16",
-      "stock": "A",
+      "city": "A",
       "price": 100.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-16",
-      "stock": "B",
+      "city": "B",
       "price": 101.68,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-17",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-17",
-      "stock": "B",
+      "city": "B",
       "price": 101.65,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-18",
-      "stock": "A",
+      "city": "A",
       "price": 100.73,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-18",
-      "stock": "B",
+      "city": "B",
       "price": 101.77,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-19",
-      "stock": "A",
+      "city": "A",
       "price": 100.66,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-19",
-      "stock": "B",
+      "city": "B",
       "price": 101.82,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-20",
-      "stock": "A",
+      "city": "A",
       "price": 100.83,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-20",
-      "stock": "B",
+      "city": "B",
       "price": 101.7,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-21",
-      "stock": "A",
+      "city": "A",
       "price": 100.58,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-21",
-      "stock": "B",
+      "city": "B",
       "price": 101.65,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-22",
-      "stock": "A",
+      "city": "A",
       "price": 100.63,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-22",
-      "stock": "B",
+      "city": "B",
       "price": 101.55,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-23",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-23",
-      "stock": "B",
+      "city": "B",
       "price": 101.43,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-24",
-      "stock": "A",
+      "city": "A",
       "price": 100.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-24",
-      "stock": "B",
+      "city": "B",
       "price": 101.61,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-25",
-      "stock": "A",
+      "city": "A",
       "price": 100.6,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-25",
-      "stock": "B",
+      "city": "B",
       "price": 101.68,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-26",
-      "stock": "A",
+      "city": "A",
       "price": 100.65,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-26",
-      "stock": "B",
+      "city": "B",
       "price": 101.54,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-27",
-      "stock": "A",
+      "city": "A",
       "price": 100.81,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-27",
-      "stock": "B",
+      "city": "B",
       "price": 101.72,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-28",
-      "stock": "A",
+      "city": "A",
       "price": 100.56,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-28",
-      "stock": "B",
+      "city": "B",
       "price": 101.78,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-29",
-      "stock": "A",
+      "city": "A",
       "price": 100.3,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-29",
-      "stock": "B",
+      "city": "B",
       "price": 101.95,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-30",
-      "stock": "A",
+      "city": "A",
       "price": 100.4,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-30",
-      "stock": "B",
+      "city": "B",
       "price": 102.08,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-31",
-      "stock": "A",
+      "city": "A",
       "price": 100.46,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-05-31",
-      "stock": "B",
+      "city": "B",
       "price": 101.91,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-06-01",
-      "stock": "A",
+      "city": "A",
       "price": 100.51,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-06-01",
-      "stock": "B",
+      "city": "B",
       "price": 101.79,
       "series": "historical",
       "scenario": null
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.66,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.63,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.51,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.53,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.77,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.39,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.62,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.47,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.47,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.73,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.85,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.81,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.87,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.57,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.67,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.43,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.52,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.39,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.4,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.46,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.69,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 101.2,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.5,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.38,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.63,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.52,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.44,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.24,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 99.98,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 101.05,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 101.0,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.65,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.4,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.39,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.42,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.11,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 99.94,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.04,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 101.25,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.95,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.8,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.79,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.3,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.15,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.14,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.08,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.03,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.11,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 101.55,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 101.15,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.99,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.6,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.6,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.36,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.29,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 99.86,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 99.94,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 99.95,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 101.53,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 101.4,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 101.23,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.67,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.4,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.18,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 99.78,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 99.71,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 99.57,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 102.02,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 101.65,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 101.62,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.76,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.82,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.41,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.54,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 99.68,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 99.4,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 99.18,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.46,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.48,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.13,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 101.0,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 100.73,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 100.73,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 100.24,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 99.63,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 99.25,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 99.22,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 101.8,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 102.1,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 101.62,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 100.94,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 100.34,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 100.61,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 99.97,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 99.89,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 98.98,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 98.83,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 102.24,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 101.87,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 101.38,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 101.21,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 100.49,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 100.29,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 99.96,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 99.65,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 99.3,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 98.56,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 102.1,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 102.25,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 101.64,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 100.99,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 101.04,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 100.32,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 100.11,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 99.47,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 99.44,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 98.95,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 102.54,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 102.33,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 101.8,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 101.48,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 100.55,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 100.42,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 100.03,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 99.01,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 98.66,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 98.03,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 102.71,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 102.41,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 102.07,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 101.28,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 101.09,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 99.98,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 99.42,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 99.25,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 98.83,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 98.25,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 102.51,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 102.38,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 101.59,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 101.46,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 100.85,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 100.05,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 99.6,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 98.95,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 98.61,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 98.27,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 102.91,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 102.64,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 101.85,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 101.22,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 100.01,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 99.53,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 98.83,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 98.88,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 97.92,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 103.14,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 102.71,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 102.03,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 101.39,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 100.94,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 100.35,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 99.48,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 98.86,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 98.3,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 97.29,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 103.14,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 103.08,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 102.48,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 101.44,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 100.95,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 100.25,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 100.14,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 99.1,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 98.19,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 97.38,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 103.3,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 102.98,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 102.09,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 101.26,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 100.73,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 99.95,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 99.81,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 98.95,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 98.08,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 97.68,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 103.82,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 102.89,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 102.65,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 101.72,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 100.67,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 100.11,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 99.24,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 98.41,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 98.13,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 97.59,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 103.69,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 103.32,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 102.3,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 101.57,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 99.95,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 99.37,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 98.42,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 97.87,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 97.04,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 104.1,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 103.15,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 102.41,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 101.88,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 101.02,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 99.91,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 99.32,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 98.64,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 97.35,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 96.98,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 104.19,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 103.59,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 102.47,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 101.41,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 100.61,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 100.1,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 99.29,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 98.21,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 97.67,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 96.38,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 104.48,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 103.36,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 102.59,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 101.85,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 99.99,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 99.38,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 98.18,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 97.57,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 96.31,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 104.78,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 104.04,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 102.31,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 101.73,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 101.09,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 100.01,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 99.2,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 98.08,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 97.29,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 96.32,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 105.09,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 103.93,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 102.99,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 101.87,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 99.94,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 99.14,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 98.02,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 97.2,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 96.58,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 105.2,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 103.95,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 103.26,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 101.93,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 100.6,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 99.81,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 98.64,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 97.94,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 97.01,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 96.33,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 105.26,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 104.1,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 103.28,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 101.62,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 101.08,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 100.15,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 98.66,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 98.14,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 96.94,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 95.75,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 105.5,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 104.76,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 103.24,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 102.18,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 100.96,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 99.8,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 99.06,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 97.65,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 96.75,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 95.57,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.89,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.86,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 102.0,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.69,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.74,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.59,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.7,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.87,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.95,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.61,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 102.15,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 102.21,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.98,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 102.23,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.66,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.52,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.37,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 102.0,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.79,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.61,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 102.2,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.84,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 102.49,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.94,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.85,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.9,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.77,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.64,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.36,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 101.54,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 102.71,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 102.48,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 102.41,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.86,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.65,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.71,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.63,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.72,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.04,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 101.58,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 102.46,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 102.25,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.98,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.69,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 102.04,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.73,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.3,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.14,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.18,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 101.43,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.62,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.17,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.23,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.03,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.34,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.68,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.45,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.45,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.48,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 101.14,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 102.79,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 102.39,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 102.91,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 102.16,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.91,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.67,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.48,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 101.18,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 100.86,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 100.63,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 103.02,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 102.64,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 102.33,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 102.22,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 101.88,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 101.96,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 100.85,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 101.33,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 101.09,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 100.15,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 103.13,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 102.81,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 102.28,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 102.1,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 101.72,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 101.99,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 101.52,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 101.27,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 100.85,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 100.16,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 103.26,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 103.12,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 102.42,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 102.47,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 101.92,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 101.54,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 101.41,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 101.01,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 100.49,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 100.45,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 103.32,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 103.29,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 102.89,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 102.32,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 102.05,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 101.34,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 101.4,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 100.78,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 100.32,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 100.25,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 103.58,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 103.0,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 102.55,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 102.56,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 101.75,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 101.94,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 100.73,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 101.06,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 100.33,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 99.84,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 103.79,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 103.51,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 102.96,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 102.72,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 102.05,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 101.59,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 101.02,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 100.61,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 100.22,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 99.35,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 103.79,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 103.72,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 103.1,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 102.52,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 102.05,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 101.61,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 100.92,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 100.37,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 100.06,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 99.32,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 104.34,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 103.35,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 103.37,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 102.71,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 102.12,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 101.72,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 101.31,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 100.63,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 99.51,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 99.08,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 104.3,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 103.85,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 103.36,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 102.52,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 102.12,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 101.35,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 100.79,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 100.05,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 99.56,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 98.89,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 104.4,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 104.2,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 103.16,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 103.27,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 102.21,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 101.52,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 100.68,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 100.37,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 99.49,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 99.01,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 105.31,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 104.09,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 103.69,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 102.64,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 102.12,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 101.82,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 100.67,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 100.5,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 99.61,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 98.7,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 105.09,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 104.45,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 103.68,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 102.52,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 102.0,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 101.39,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 100.73,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 100.16,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 99.37,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 98.37,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 105.21,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 104.51,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 103.76,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 103.13,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 102.33,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 101.52,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 100.67,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 99.61,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 99.29,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 98.5,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 105.36,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 104.26,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 103.52,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 103.18,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 102.18,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 101.54,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 100.63,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 99.85,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 99.25,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 98.18,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 105.5,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 104.56,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 103.75,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 102.96,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 102.25,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 101.29,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 100.82,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 99.57,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 98.89,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 98.02,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 105.96,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 104.84,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 104.15,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 102.77,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 102.28,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 101.54,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 100.52,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 99.86,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 98.69,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 98.21,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 106.32,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 104.86,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 103.94,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 103.44,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 102.56,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 101.24,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 100.36,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 99.49,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 98.39,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 97.58,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 105.79,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 104.91,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 104.13,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 103.25,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 102.58,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 101.12,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 100.59,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 99.41,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 98.51,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 97.71,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 105.94,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 105.29,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 104.27,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 103.36,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 102.34,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 101.8,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 100.2,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 99.25,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 98.26,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 97.3,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 106.22,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 105.59,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 104.62,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 103.2,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 102.13,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 101.38,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 100.16,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 99.38,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 98.28,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 96.94,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 106.86,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 105.86,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 104.3,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 103.29,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 102.38,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 101.33,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 100.35,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 99.56,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 98.07,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 96.9,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 106.41,
       "series": "prediction",
       "scenario": "scenario_1"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 105.46,
       "series": "prediction",
       "scenario": "scenario_2"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 104.52,
       "series": "prediction",
       "scenario": "scenario_3"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 103.8,
       "series": "prediction",
       "scenario": "scenario_4"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 102.23,
       "series": "prediction",
       "scenario": "scenario_5"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 101.29,
       "series": "prediction",
       "scenario": "scenario_6"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 100.15,
       "series": "prediction",
       "scenario": "scenario_7"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 99.3,
       "series": "prediction",
       "scenario": "scenario_8"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 98.47,
       "series": "prediction",
       "scenario": "scenario_9"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 96.78,
       "series": "prediction",
       "scenario": "scenario_10"
     },
     {
       "date": "2025-06-02",
-      "stock": "A",
+      "city": "A",
       "price": 100.51,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-02",
-      "stock": "B",
+      "city": "B",
       "price": 101.79,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-03",
-      "stock": "A",
+      "city": "A",
       "price": 100.55,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-03",
-      "stock": "B",
+      "city": "B",
       "price": 101.9,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-04",
-      "stock": "A",
+      "city": "A",
       "price": 100.58,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-04",
-      "stock": "B",
+      "city": "B",
       "price": 102.0,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-05",
-      "stock": "A",
+      "city": "A",
       "price": 100.61,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-05",
-      "stock": "B",
+      "city": "B",
       "price": 102.11,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-06",
-      "stock": "A",
+      "city": "A",
       "price": 100.65,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-06",
-      "stock": "B",
+      "city": "B",
       "price": 102.21,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-07",
-      "stock": "A",
+      "city": "A",
       "price": 100.68,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-07",
-      "stock": "B",
+      "city": "B",
       "price": 102.32,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-08",
-      "stock": "A",
+      "city": "A",
       "price": 100.72,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-08",
-      "stock": "B",
+      "city": "B",
       "price": 102.43,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-09",
-      "stock": "A",
+      "city": "A",
       "price": 100.75,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-09",
-      "stock": "B",
+      "city": "B",
       "price": 102.53,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-10",
-      "stock": "A",
+      "city": "A",
       "price": 100.79,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-10",
-      "stock": "B",
+      "city": "B",
       "price": 102.64,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-11",
-      "stock": "A",
+      "city": "A",
       "price": 100.82,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-11",
-      "stock": "B",
+      "city": "B",
       "price": 102.74,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-12",
-      "stock": "A",
+      "city": "A",
       "price": 100.86,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-12",
-      "stock": "B",
+      "city": "B",
       "price": 102.85,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-13",
-      "stock": "A",
+      "city": "A",
       "price": 100.89,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-13",
-      "stock": "B",
+      "city": "B",
       "price": 102.95,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-14",
-      "stock": "A",
+      "city": "A",
       "price": 100.93,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-14",
-      "stock": "B",
+      "city": "B",
       "price": 103.06,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-15",
-      "stock": "A",
+      "city": "A",
       "price": 100.96,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-15",
-      "stock": "B",
+      "city": "B",
       "price": 103.16,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-16",
-      "stock": "A",
+      "city": "A",
       "price": 101.0,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-16",
-      "stock": "B",
+      "city": "B",
       "price": 103.27,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-17",
-      "stock": "A",
+      "city": "A",
       "price": 101.03,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-17",
-      "stock": "B",
+      "city": "B",
       "price": 103.37,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-18",
-      "stock": "A",
+      "city": "A",
       "price": 101.07,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-18",
-      "stock": "B",
+      "city": "B",
       "price": 103.48,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-19",
-      "stock": "A",
+      "city": "A",
       "price": 101.1,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-19",
-      "stock": "B",
+      "city": "B",
       "price": 103.58,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-20",
-      "stock": "A",
+      "city": "A",
       "price": 101.13,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-20",
-      "stock": "B",
+      "city": "B",
       "price": 103.69,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-21",
-      "stock": "A",
+      "city": "A",
       "price": 101.17,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-21",
-      "stock": "B",
+      "city": "B",
       "price": 103.79,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-22",
-      "stock": "A",
+      "city": "A",
       "price": 101.2,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-22",
-      "stock": "B",
+      "city": "B",
       "price": 103.9,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-23",
-      "stock": "A",
+      "city": "A",
       "price": 101.24,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-23",
-      "stock": "B",
+      "city": "B",
       "price": 104.0,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-24",
-      "stock": "A",
+      "city": "A",
       "price": 101.27,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-24",
-      "stock": "B",
+      "city": "B",
       "price": 104.11,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-25",
-      "stock": "A",
+      "city": "A",
       "price": 101.31,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-25",
-      "stock": "B",
+      "city": "B",
       "price": 104.22,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-26",
-      "stock": "A",
+      "city": "A",
       "price": 101.34,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-26",
-      "stock": "B",
+      "city": "B",
       "price": 104.32,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-27",
-      "stock": "A",
+      "city": "A",
       "price": 101.38,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-27",
-      "stock": "B",
+      "city": "B",
       "price": 104.43,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-28",
-      "stock": "A",
+      "city": "A",
       "price": 101.41,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-28",
-      "stock": "B",
+      "city": "B",
       "price": 104.53,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-29",
-      "stock": "A",
+      "city": "A",
       "price": 101.45,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-29",
-      "stock": "B",
+      "city": "B",
       "price": 104.64,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-30",
-      "stock": "A",
+      "city": "A",
       "price": 101.48,
       "series": "aggregated",
       "scenario": "mean"
     },
     {
       "date": "2025-06-30",
-      "stock": "B",
+      "city": "B",
       "price": 104.74,
       "series": "aggregated",
       "scenario": "mean"
