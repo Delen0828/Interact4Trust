@@ -63,7 +63,7 @@ export default class Condition6 {
                     .datum(areaData)
                     .attr("class", `confidence-bounds confidence-bounds-${stock.toLowerCase()}`)
                     .attr("fill", color)
-                    .attr("opacity", 0.2)  // Start visible for PI display
+                    .attr("opacity", this.interactionManager.getOpacityValues().shadeOpacity)  // Start visible for PI display
                     .attr("d", area);
                     
                 console.log(`Rendered confidence bounds for stock ${stock} with ${this.data.confidenceBounds[stock].length} points`);

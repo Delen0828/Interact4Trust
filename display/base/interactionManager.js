@@ -13,10 +13,8 @@ export class InteractionManager {
      * Get current opacity values from control sliders
      */
     getOpacityValues() {
-        // const alternativeOpacity = parseFloat(document.getElementById('alternativeOpacitySlider')?.value || 0.2);
-        // const shadeOpacity = parseFloat(document.getElementById('shadeOpacitySlider')?.value || 0.2);
-        const alternativeOpacity = 1;
-		const shadeOpacity = 0.2;
+        const alternativeOpacity = 0.4;
+        const shadeOpacity = 0.2;
 		return { alternativeOpacity, shadeOpacity };
     }
 
@@ -188,30 +186,43 @@ export class InteractionManager {
     }
 
     /**
-     * Click-to-reveal interaction: click once to show all lines, click again to hide
+     * Bad UX: Hover on invisible alternative lines to reveal them individually
      */
-    addClickToReveal(clickZone, alternativeTarget) {
-        let isVisible = false;
+    addBadHoverReveal(alternativeTarget) {
+        const self = this; // Store reference to maintain scope
         
-        clickZone
-            .style("cursor", "pointer")
-            .on("click", () => {
-                const { alternativeOpacity } = this.getOpacityValues();
-                
-                if (!isVisible) {
-                    // Show all alternatives
-                    alternativeTarget.transition()
-                        .duration(200)
+        // Make individual invisible hover zones for each alternative line
+        alternativeTarget.selectAll('path').each(function(d, i) {
+            const pathElement = d3.select(this);
+            const pathData = pathElement.datum();
+            
+            // Create invisible hover zone for this specific line using the same path
+            const hoverZone = alternativeTarget.append("path")
+                .datum(pathData)
+                .attr("class", `bad-hover-zone-${i}`)
+                .attr("d", pathElement.attr("d"))
+                .attr("fill", "none")
+                .attr("stroke", "transparent")
+                .attr("stroke-width", 20) // Even wider for easier hovering
+                .style("cursor", "crosshair") // Different cursor to hint something is there
+                .style("pointer-events", "stroke"); // Ensure hover works on stroke area
+            
+            // Hover to reveal individual line
+            hoverZone
+                .on("mouseenter", () => {
+                    const { alternativeOpacity } = self.getOpacityValues();
+                    console.log(`Revealing line ${i} with opacity ${alternativeOpacity}`);
+                    pathElement
+                        .attr("opacity", alternativeOpacity)
                         .style("opacity", alternativeOpacity);
-                    isVisible = true;
-                } else {
-                    // Hide all alternatives
-                    alternativeTarget.transition()
-                        .duration(200)
+                })
+                .on("mouseleave", () => {
+                    console.log(`Hiding line ${i}`);
+                    pathElement
+                        .attr("opacity", 0)
                         .style("opacity", 0);
-                    isVisible = false;
-                }
-            });
+                });
+        });
     }
 
     /**

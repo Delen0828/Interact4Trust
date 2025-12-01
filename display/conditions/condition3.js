@@ -86,7 +86,7 @@ export default class Condition3 {
                         .attr("fill", "none")
                         .attr("stroke", color)
                         .attr("stroke-width", 1.5)
-                        .attr("opacity", 0.2)  // Use default alternative opacity
+                        .attr("opacity", this.interactionManager.getOpacityValues().alternativeOpacity)  // Use dynamic opacity
                         .attr("d", line);
                         
                     console.log(`Rendered alternative scenario ${scenarioName} for stock ${stock} with ${scenarioData.length} points`);

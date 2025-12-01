@@ -66,7 +66,7 @@ export default class Condition2 {
                     .datum(areaData)
                     .attr("class", `confidence-bounds confidence-bounds-${stock.toLowerCase()}`)
                     .attr("fill", color)
-                    .attr("opacity", 0.2)
+                    .attr("opacity", this.interactionManager.getOpacityValues().shadeOpacity)
                     .attr("d", area);
                     
                 console.log(`Rendered confidence bounds for stock ${stock} with ${this.data.confidenceBounds[stock].length} points`);

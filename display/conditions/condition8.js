@@ -42,14 +42,12 @@ export default class Condition8 {
     renderAlternativeLines(predictionGroup) {
         const line = this.chartRenderer.createLineGenerator();
         
-        // Create separate groups for each stock's alternatives (hidden initially)
+        // Create separate groups for each stock's alternatives (group visible, but individual lines hidden)
         this.alternativesGroupA = predictionGroup.append("g")
-            .attr("class", "alternatives-group-a")
-            .style("opacity", 0);
+            .attr("class", "alternatives-group-a");
             
         this.alternativesGroupB = predictionGroup.append("g")
-            .attr("class", "alternatives-group-b")
-            .style("opacity", 0);
+            .attr("class", "alternatives-group-b");
 
         ['A', 'B'].forEach((stock, i) => {
             const color = i === 0 ? this.config.colors.stockA : this.config.colors.stockB;
@@ -80,6 +78,7 @@ export default class Condition8 {
                         .attr("fill", "none")
                         .attr("stroke", color)
                         .attr("stroke-width", 1.5)
+                        .attr("opacity", 0)  // Start invisible for bad UX hunting
                         .attr("d", line);
                         
                     console.log(`Rendered alternative scenario ${scenarioName} for stock ${stock} with ${scenarioData.length} points`);
@@ -123,17 +122,16 @@ export default class Condition8 {
     }
 
     setupInteractions() {
-        // Bad Control - click to reveal all alternative lines at once
-        const clickZoneA = this.interactionManager.select('click-zone-a');
-        const clickZoneB = this.interactionManager.select('click-zone-b');
-
-        // Stock A click-to-reveal interaction
-        this.interactionManager.addClickToReveal(clickZoneA, this.alternativesGroupA);
+        // Bad Control - hover on invisible alternative lines to reveal them individually
+        // Users have to hunt for the invisible lines by moving mouse around!
         
-        // Stock B click-to-reveal interaction
-        this.interactionManager.addClickToReveal(clickZoneB, this.alternativesGroupB);
+        // Stock A bad hover reveal
+        this.interactionManager.addBadHoverReveal(this.alternativesGroupA);
+        
+        // Stock B bad hover reveal  
+        this.interactionManager.addBadHoverReveal(this.alternativesGroupB);
 
-        console.log('Click-to-reveal interactions setup for Condition 8 (Bad Control)');
+        console.log('Bad hover-to-reveal interactions setup for Condition 8 (Bad Control)');
     }
 
     cleanup() {
