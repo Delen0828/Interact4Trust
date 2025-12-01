@@ -16,13 +16,25 @@ var jsPsychPredictionTask = (function (jspsych) {
       phase: {
         type: jspsych.ParameterType.INT,
         pretty_name: 'Phase',
-        description: 'Study phase (1 = no visualization, 2 = with visualization)',
+        description: 'Study phase (1 = historical only, 2 = historical + predictions)',
+        default: 1
+      },
+      round: {
+        type: jspsych.ParameterType.INT,
+        pretty_name: 'Round',
+        description: 'Round number (1-10)',
         default: 1
       },
       show_visualization: {
         type: jspsych.ParameterType.BOOL,
         pretty_name: 'Show Visualization',
         description: 'Whether to show visualization',
+        default: true
+      },
+      show_predictions: {
+        type: jspsych.ParameterType.BOOL,
+        pretty_name: 'Show Predictions',
+        description: 'Whether to show prediction data (Phase 2)',
         default: false
       },
       visualization_condition: {
@@ -96,31 +108,56 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
     renderTask() {
+      const roundText = this.trial.round ? ` - Round ${this.trial.round}` : '';
+      const phaseDescription = this.trial.show_predictions ? 
+        'historical data and prediction forecasts' : 'historical data only';
+      
       let html = `
+        <style>
+          .question-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+          }
+          .probability-input-inline {
+            display: inline;
+            width: 100px;
+            padding: 6px 10px;
+            margin: 0 5px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1.1em;
+            text-align: center;
+            background-color: #f8f9fa;
+          }
+          .probability-input-inline:focus {
+            border-color: #007bff;
+            outline: none;
+            background-color: white;
+          }
+        </style>
         <div class="prediction-task-container">
           <div class="task-header">
-            <h2>Air Quality Prediction - Phase ${this.trial.phase}</h2>
-            ${this.trial.phase === 1 ? 
-              '<p>Make your prediction based on the text description below.</p>' : 
-              '<p>Use the visualization below to make your prediction.</p>'}
+            <h2>Air Quality Prediction</h2>
+            ${this.trial.show_predictions && this.condition ? 
+              `<p class="condition-note"><em>Visualization: ${this.condition.name}</em></p>` : ''}
           </div>
 
           <div class="content-area">
-            ${this.trial.show_visualization ? this.renderVisualization() : this.renderDescription()}
+            ${this.trial.show_predictions ? this.renderVisualization() : this.renderDescription()}
           </div>
 
           <div class="prediction-form">
             <div class="question-section">
-              <h3>${this.trial.question}</h3>
-              <div class="probability-input">
+              <h3 class="question-title">Q1. ${this.trial.question.replace(' ____%', '')} 
                 <input type="number" id="probability-estimate" min="0" max="100" 
-                       placeholder="0-100" class="probability-input-field">
-                <span class="percentage-symbol">%</span>
-              </div>
+                       placeholder="0-100" class="probability-input-inline">%
+              </h3>
             </div>
 
             <div class="confidence-section">
-              <h4>How confident are you in this prediction?</h4>
+              <h3 class="question-title">Q2. How confident are you in this prediction?</h3>
               <div class="confidence-scale">
                 ${this.trial.confidence_scale.labels.map((label, index) => `
                   <label class="confidence-option">
@@ -133,7 +170,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
 
             <div class="travel-section">
-              <h4>${this.trial.travel_question}</h4>
+              <h3 class="question-title">Q3. ${this.trial.travel_question}</h3>
               <div class="travel-choices">
                 ${this.trial.travel_choices.map((choice, index) => `
                   <label class="travel-option">
@@ -146,7 +183,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
             <div class="submit-section">
               <button id="submit-prediction" class="submit-btn" disabled>
-                ${this.trial.phase === 1 ? 'Continue to Phase 2' : 'Continue to Trust Survey'}
+                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Trust Survey'}
               </button>
             </div>
           </div>
@@ -178,24 +215,6 @@ var jsPsychPredictionTask = (function (jspsych) {
           </div>
           <div id="air-quality-chart" class="chart-container">
             <div class="chart-placeholder">Loading visualization...</div>
-          </div>
-          <div class="chart-legend">
-            <div class="legend-item">
-              <span class="legend-color city-a-color"></span>
-              <span>City A</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-color city-b-color"></span>
-              <span>City B</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-line historical-line"></span>
-              <span>Historical Data</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-line prediction-line"></span>
-              <span>Predictions</span>
-            </div>
           </div>
         </div>
       `;
@@ -350,7 +369,9 @@ var jsPsychPredictionTask = (function (jspsych) {
 
       const trial_data = {
         phase: this.trial.phase,
+        round: this.trial.round || null,
         visualization_shown: this.trial.show_visualization,
+        predictions_shown: this.trial.show_predictions || false,
         condition_id: this.condition?.id || null,
         condition_name: this.condition?.name || null,
         display_format: this.condition?.displayFormat || null,

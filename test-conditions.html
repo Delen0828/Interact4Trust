@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condition Test</title>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .test-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .test-area {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .condition-selector {
+            margin: 10px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .condition-selector:hover {
+            background: #f0f8ff;
+        }
+
+        .active {
+            background: #007bff;
+            color: white;
+        }
+
+        .chart-svg {
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            background: #ffffff;
+        }
+
+        /* Chart styling */
+        .axis {
+            font-size: 10px;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #ccc;
+            shape-rendering: crispEdges;
+        }
+
+        .grid line {
+            stroke: #f0f0f0;
+            stroke-width: 1px;
+        }
+
+        .grid path {
+            stroke-width: 0;
+        }
+
+        .historical-line {
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .prediction-line {
+            fill: none;
+            stroke-width: 2;
+            opacity: 0.2;
+        }
+
+        .aggregated-line {
+            fill: none;
+            stroke-width: 2;
+            opacity: 1;
+        }
+
+        .hover-overlay {
+            fill: transparent;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Condition Test</h1>
+        
+        <div class="test-controls">
+            <h3>Select Condition to Test:</h3>
+            <div>
+                <button class="condition-selector" data-condition="1">Condition 1: Baseline</button>
+                <button class="condition-selector" data-condition="2">Condition 2: PI Plot</button>
+                <button class="condition-selector" data-condition="3">Condition 3: Ensemble Plot</button>
+                <button class="condition-selector" data-condition="4">Condition 4: Ensemble + Hover</button>
+            </div>
+            <div>
+                <button class="condition-selector" data-condition="5">Condition 5: PI Plot + Hover</button>
+                <button class="condition-selector" data-condition="6">Condition 6: PI → Ensemble</button>
+                <button class="condition-selector" data-condition="7">Condition 7: Buggy Control</button>
+                <button class="condition-selector" data-condition="8">Condition 8: Bad Control</button>
+            </div>
+            <p id="status">Click a condition to test the modular system</p>
+        </div>
+
+        <div class="test-area">
+            <h3 id="current-condition">No condition selected</h3>
+            <svg id="test-chart" class="chart-svg" width="600" height="400"></svg>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ConditionFactory } from './display/conditionFactory.js';
+
+        // Configuration
+        const config = {
+            width: 600,
+            height: 400,
+            margin: { top: 20, right: 20, bottom: 40, left: 50 },
+            colors: {
+                historical: '#6c757d',
+                stockA: '#007bff',
+                stockB: '#fd7e14'
+            }
+        };
+
+        let conditionFactory = null;
+        let currentCondition = null;
+
+        // Initialize
+        async function initialize() {
+            try {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = 'Loading data and initializing factory...';
+                
+                // Load data
+                const rawDataResponse = await d3.json('synthetic_stock_data.json');
+                const rawData = rawDataResponse.data;
+                
+                // Create and initialize condition factory
+                conditionFactory = new ConditionFactory();
+                await conditionFactory.initialize(config, rawData, '05/01');
+                
+                statusEl.textContent = 'Factory initialized. Click a condition to test.';
+                
+                // Add event listeners to condition selectors
+                document.querySelectorAll('.condition-selector').forEach(button => {
+                    button.addEventListener('click', async function() {
+                        const conditionNumber = parseInt(this.dataset.condition);
+                        await testCondition(conditionNumber);
+                    });
+                });
+                
+            } catch (error) {
+                console.error('Failed to initialize:', error);
+                document.getElementById('status').textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Test individual condition
+        async function testCondition(conditionNumber) {
+            try {
+                const statusEl = document.getElementById('status');
+                const titleEl = document.getElementById('current-condition');
+                
+                statusEl.textContent = `Testing Condition ${conditionNumber}...`;
+                
+                // Cleanup previous condition
+                if (currentCondition) {
+                    currentCondition.cleanup();
+                }
+                
+                // Clear SVG
+                d3.select('#test-chart').selectAll("*").remove();
+                
+                // Render condition
+                currentCondition = await conditionFactory.renderCondition(conditionNumber, 'test-chart');
+                
+                // Update UI
+                const conditionInfo = ConditionFactory.getConditionInfo()[conditionNumber];
+                titleEl.textContent = `${conditionInfo.name}: ${conditionInfo.description}`;
+                statusEl.textContent = `Condition ${conditionNumber} loaded successfully. Interact with the chart above.`;
+                
+                // Update button states
+                document.querySelectorAll('.condition-selector').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (parseInt(btn.dataset.condition) === conditionNumber) {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                console.log(`Condition ${conditionNumber} rendered successfully`);
+                
+            } catch (error) {
+                console.error(`Failed to test condition ${conditionNumber}:`, error);
+                document.getElementById('status').textContent = `Error testing condition ${conditionNumber}: ${error.message}`;
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initialize, 100);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (currentCondition) {
+                currentCondition.cleanup();
+            }
+            if (conditionFactory) {
+                conditionFactory.cleanup();
+            }
+        });
+    </script>
+</body>
+</html>

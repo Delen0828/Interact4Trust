@@ -120,9 +120,9 @@
         .visualization-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr;
             gap: 20px;
-            height: 120vh;
+            height: 160vh;
         }
 
         .condition-panel {
@@ -188,6 +188,21 @@
             border-bottom-color: black;
         }
 
+        .condition-6 .condition-title {
+            color: black;
+            border-bottom-color: black;
+        }
+
+        .condition-7 .condition-title {
+            color: #dc3545;
+            border-bottom-color: #dc3545;
+        }
+
+        .condition-8 .condition-title {
+            color: #6f42c1;
+            border-bottom-color: #6f42c1;
+        }
+
         /* Chart styling */
         .axis {
             font-size: 10px;
@@ -243,7 +258,7 @@
         @media (max-width: 768px) {
             .visualization-grid {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(5, 350px);
+                grid-template-rows: repeat(8, 350px);
                 height: auto;
             }
             
@@ -339,15 +354,44 @@
             <!-- Condition 4: Ensemble + Hover (Row 3, Column 2) -->
             <div class="condition-panel condition-4" style="grid-column: 2; grid-row: 3;">
                 <div class="condition-title">Condition 4: Ensemble + Hover</div>
-                <div class="condition-description">Aggregated by default, hover to reveal alterfnatives</div>
+                <div class="condition-description">Aggregated by default, hover to reveal alternatives</div>
                 <div class="chart-container">
                     <svg id="chart-4" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 6: PI → Ensemble (Row 4, Column 1) -->
+            <div class="condition-panel condition-6" style="grid-column: 1; grid-row: 4;">
+                <div class="condition-title">Condition 6: PI → Ensemble</div>
+                <div class="condition-description">PI plot transforms to ensemble plot on hover</div>
+                <div class="chart-container">
+                    <svg id="chart-6" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 7: Buggy Control (Row 4, Column 2) -->
+            <div class="condition-panel condition-7" style="grid-column: 2; grid-row: 4;">
+                <div class="condition-title">Condition 7: Buggy Control</div>
+                <div class="condition-description">Broken interactions: hover zones show wrong city data</div>
+                <div class="chart-container">
+                    <svg id="chart-7" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 8: Bad Control (Row 5, spans both columns) -->
+            <div class="condition-panel condition-8" style="grid-column: 1 / -1; grid-row: 5;">
+                <div class="condition-title">Condition 8: Bad Control</div>
+                <div class="condition-description">Poor interaction: click to reveal one alternative line at a time</div>
+                <div class="chart-container">
+                    <svg id="chart-8" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { ConditionFactory } from './display/conditionFactory.js';
+
         // Configuration
         const config = {
             width: 400,
@@ -360,494 +404,9 @@
             }
         };
 
-        // Global variables for data
-        let stockData = {};
-        let originalStockData = {}; // Store original unfiltered data
-        let globalYScale = null;
-        let sampledScenarios = [];
-        let realTimeAggregated = {};
-        let confidenceBounds = {}; // Store confidence bounds data
+        // Global variables
+        let conditionFactory = null;
         let currentStartDate = '05/01'; // Default start date
-
-
-        function processData(data) {
-            // Store original data
-            const stockA = data.filter(d => d.stock === 'A');
-            const stockB = data.filter(d => d.stock === 'B');
-            originalStockData.A = stockA;
-            originalStockData.B = stockB;
-
-            // Get all available scenarios from prediction data (only once)
-            if (sampledScenarios.length === 0) {
-                const allScenarios = [...new Set(data
-                    .filter(d => d.series === 'prediction')
-                    .map(d => d.scenario)
-                )];
-                
-                console.log('Available scenarios:', allScenarios);
-                
-                // Random sample 5 scenarios out of 10
-                sampledScenarios = sampleScenarios(allScenarios, 5);
-                console.log('Sampled scenarios:', sampledScenarios);
-            }
-
-            // Process each stock with current date filter
-            stockData.A = processStockData(originalStockData.A);
-            stockData.B = processStockData(originalStockData.B);
-            
-            // Calculate real-time aggregated data from sampled scenarios
-            calculateRealTimeAggregation(data);
-            
-            // Calculate confidence bounds from sampled scenarios
-            confidenceBounds = calculateConfidenceBounds(data);
-
-            // Debug log
-            console.log('Processed data:', stockData);
-            console.log('Real-time aggregated data points:', realTimeAggregated.A?.length || 0);
-            console.log('Sample real-time aggregated data:', realTimeAggregated.A?.slice(0, 5) || []);
-
-            // Calculate global Y scale
-            const allValues = [];
-            Object.values(stockData).forEach(stock => {
-                stock.historical.forEach(d => allValues.push(d.price));
-                stock.alternatives.forEach(d => allValues.push(d.price));
-            });
-            
-            // Include real-time aggregated values in scale calculation
-            Object.values(realTimeAggregated).forEach(aggregatedData => {
-                if (aggregatedData) {
-                    aggregatedData.forEach(d => allValues.push(d.price));
-                }
-            });
-
-            // Fixed y-scale range from 90 to 110
-            globalYScale = [90, 110];
-        }
-        
-        // Fisher-Yates shuffle for random sampling
-        function sampleScenarios(scenarios, sampleSize) {
-            const scenariosCopy = [...scenarios];
-            
-            // Fisher-Yates shuffle
-            for (let i = scenariosCopy.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [scenariosCopy[i], scenariosCopy[j]] = [scenariosCopy[j], scenariosCopy[i]];
-            }
-            
-            return scenariosCopy.slice(0, sampleSize);
-        }
-        
-        // Calculate real-time aggregation from sampled scenarios
-        function calculateRealTimeAggregation(data) {
-            ['A', 'B'].forEach(stock => {
-                // Filter prediction data for this stock and sampled scenarios
-                const predictionData = data.filter(d => 
-                    d.stock === stock && 
-                    d.series === 'prediction' && 
-                    sampledScenarios.includes(d.scenario)
-                );
-                
-                // Group by date
-                const groupedByDate = {};
-                predictionData.forEach(item => {
-                    if (!groupedByDate[item.date]) {
-                        groupedByDate[item.date] = [];
-                    }
-                    groupedByDate[item.date].push(item.price);
-                });
-                
-                // Calculate mean for each date
-                const aggregatedData = [];
-                Object.keys(groupedByDate).sort().forEach(date => {
-                    const prices = groupedByDate[date];
-                    const meanPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
-                    aggregatedData.push({
-                        date: new Date(date),
-                        price: meanPrice
-                    });
-                });
-                
-                realTimeAggregated[stock] = aggregatedData;
-                console.log(`Real-time aggregation for stock ${stock}:`, aggregatedData.length, 'data points');
-            });
-        }
-
-        // Calculate confidence bounds from sampled scenarios
-        function calculateConfidenceBounds(data) {
-            const confidenceBounds = {};
-            
-            ['A', 'B'].forEach(stock => {
-                // Filter prediction data for this stock and sampled scenarios
-                const predictionData = data.filter(d => 
-                    d.stock === stock && 
-                    d.series === 'prediction' && 
-                    sampledScenarios.includes(d.scenario)
-                );
-                
-                // Group by date
-                const groupedByDate = {};
-                predictionData.forEach(item => {
-                    if (!groupedByDate[item.date]) {
-                        groupedByDate[item.date] = [];
-                    }
-                    groupedByDate[item.date].push(item.price);
-                });
-                
-                // Calculate min/max bounds for each date
-                const boundsData = [];
-                Object.keys(groupedByDate).sort().forEach(date => {
-                    const prices = groupedByDate[date];
-                    const minPrice = Math.min(...prices);
-                    const maxPrice = Math.max(...prices);
-                    const meanPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
-                    
-                    boundsData.push({
-                        date: new Date(date),
-                        min: minPrice,
-                        max: maxPrice,
-                        mean: meanPrice
-                    });
-                });
-                
-                confidenceBounds[stock] = boundsData;
-                console.log(`Confidence bounds for stock ${stock}:`, boundsData.length, 'data points');
-            });
-            
-            return confidenceBounds;
-        }
-
-        function processStockData(stockData) {
-            // Filter historical data based on start date
-            const startYear = 2025;
-            const [startMonth, startDay] = currentStartDate.split('/').map(Number);
-            const filterDate = new Date(startYear, startMonth - 1, startDay);
-            
-            const historical = stockData
-                .filter(d => d.series === 'historical')
-                .map(d => ({ date: new Date(d.date), price: d.price }))
-                .filter(d => d.date >= filterDate)
-                .sort((a, b) => a.date - b.date);
-
-            // Filter alternatives to only include sampled scenarios
-            const alternatives = stockData
-                .filter(d => d.series === 'prediction' && 
-                           d.scenario && 
-                           sampledScenarios.includes(d.scenario))
-                .map(d => ({ scenario: d.scenario, date: new Date(d.date), price: d.price }))
-                .sort((a, b) => a.date - b.date);
-
-            return {
-                historical,
-                alternatives
-            };
-        }
-
-        function createAllCharts() {
-            // Condition 1: Aggregated Only
-            createChart('chart-1', { showAggregated: true, showAlternatives: false, showConfidenceBounds: false, hover: false });
-
-            // Condition 2: PI Plot
-            createChart('chart-2', { showAggregated: true, showAlternatives: false, showConfidenceBounds: true, hover: false });
-
-            // Condition 3: Ensemble Plot
-            createChart('chart-3', { showAggregated: true, showAlternatives: true, showConfidenceBounds: false, hover: false });
-
-            // Condition 4: Hover on Detail
-            createChart('chart-4', { showAggregated: true, showAlternatives: true, showConfidenceBounds: false, hover: true });
-
-            // Condition 5: PI Plot + Hover
-            createChart('chart-5', { showAggregated: true, showAlternatives: true, showConfidenceBounds: true, hover: true });
-        }
-
-        function createChart(svgId, options) {
-            const svg = d3.select(`#${svgId}`);
-            const margin = config.margin;
-            const width = config.width - margin.left - margin.right;
-            const height = config.height - margin.top - margin.bottom;
-
-            // Clear existing content
-            svg.selectAll("*").remove();
-
-            const g = svg.append("g")
-                .attr("transform", `translate(${margin.left},${margin.top})`);
-
-            // Scales - extend x-axis to 6/30
-            const allDates = [
-                ...stockData.A.historical.map(d => d.date),
-                ...stockData.B.historical.map(d => d.date),
-                ...(realTimeAggregated.A ? realTimeAggregated.A.map(d => d.date) : []),
-                ...(realTimeAggregated.B ? realTimeAggregated.B.map(d => d.date) : [])
-            ];
-
-            const xScale = d3.scaleTime()
-                .domain([d3.min(allDates), new Date('2025-06-30')])
-                .range([0, width]);
-
-            const yScale = d3.scaleLinear()
-                .domain(globalYScale)
-                .range([height, 0]);
-
-            // Add grid
-            g.append("g")
-                .attr("class", "grid")
-                .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(xScale)
-                    .tickSize(-height)
-                    .tickFormat("")
-                );
-
-            g.append("g")
-                .attr("class", "grid")
-                .call(d3.axisLeft(yScale)
-                    .tickSize(-width)
-                    .tickFormat("")
-                );
-
-            // Add axes
-            g.append("g")
-                .attr("class", "axis")
-                .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%m/%d")));
-
-            g.append("g")
-                .attr("class", "axis")
-                .call(d3.axisLeft(yScale));
-
-            // Add vertical line at 06/01
-            const verticalLineDate = new Date('2025-06-01');
-            g.append("line")
-                .attr("class", "vertical-reference-line")
-                .attr("x1", xScale(verticalLineDate))
-                .attr("x2", xScale(verticalLineDate))
-                .attr("y1", 0)
-                .attr("y2", height)
-                .attr("stroke", "#999")
-                .attr("stroke-width", 1)
-                .attr("opacity", 0.8);
-
-            // Draw historical lines for both stocks
-            const line = d3.line()
-                .x(d => xScale(d.date))
-                .y(d => yScale(d.price))
-                .curve(d3.curveMonotoneX);
-
-            // Stock A historical
-            g.append("path")
-                .datum(stockData.A.historical)
-                .attr("class", "historical-line")
-                .attr("stroke", config.colors.stockA)
-                .attr("d", line);
-
-            // Stock B historical  
-            g.append("path")
-                .datum(stockData.B.historical)
-                .attr("class", "historical-line")
-                .attr("stroke", config.colors.stockB)
-                .attr("d", line);
-
-            // Removed all dots as requested
-
-            // Prediction lines and interactions
-            const predictionGroup = g.append("g").attr("class", "predictions");
-
-            // PI Plot: Draw confidence bounds first (under aggregated lines)
-            if (options.showConfidenceBounds && confidenceBounds) {
-                ['A', 'B'].forEach((stock, i) => {
-                    const color = i === 0 ? config.colors.stockA : config.colors.stockB;
-                    const lastHistorical = stockData[stock].historical[stockData[stock].historical.length - 1];
-                    
-                    if (confidenceBounds[stock] && confidenceBounds[stock].length > 0) {
-                        // Create area data including connection from last historical point
-                        const areaData = [
-                            { date: lastHistorical.date, min: lastHistorical.price, max: lastHistorical.price },
-                            ...confidenceBounds[stock]
-                        ];
-                        
-                        // Define area generator
-                        const area = d3.area()
-                            .x(d => xScale(d.date))
-                            .y0(d => yScale(d.min))
-                            .y1(d => yScale(d.max))
-                            .curve(d3.curveMonotoneX);
-                        
-                        // Draw confidence bounds area
-                        const confidenceBoundsOpacity = options.hover ? 0 : 0.2; // Hide bounds initially if hover mode is enabled
-                        predictionGroup.append("path")
-                            .datum(areaData)
-                            .attr("class", `confidence-bounds confidence-bounds-${stock.toLowerCase()}`)
-                            .attr("fill", color)
-                            .attr("opacity", confidenceBoundsOpacity)
-                            .attr("d", area);
-                            
-                        console.log(`Plotted confidence bounds for stock ${stock} with ${confidenceBounds[stock].length} points`);
-                        
-                        // Add hover zone for confidence bounds (only in hover condition)
-                        if (options.hover) {
-                            predictionGroup.append("path")
-                                .datum(areaData)
-                                .attr("class", `confidence-hover-zone-${stock.toLowerCase()}`)
-                                .attr("fill", "transparent")
-                                .attr("stroke", "transparent")
-                                .attr("stroke-width", 5)
-                                .attr("d", area)
-                                .style("cursor", "pointer");
-                        }
-                    }
-                });
-            }
-
-            // Real-time aggregated predictions - calculated from 5 sampled scenarios
-            if (options.showAggregated) {
-                ['A', 'B'].forEach((stock, i) => {
-                    const color = i === 0 ? config.colors.stockA : config.colors.stockB;
-                    const lastHistorical = stockData[stock].historical[stockData[stock].historical.length - 1];
-                    
-                    if (realTimeAggregated[stock] && realTimeAggregated[stock].length > 0) {
-                        // Create continuous path through all real-time aggregated data points
-                        const fullAggregatedData = [lastHistorical, ...realTimeAggregated[stock]];
-                        
-                        predictionGroup.append("path")
-                            .datum(fullAggregatedData)
-                            .attr("class", `aggregated-line real-time-aggregated stock-${stock.toLowerCase()}-line`)
-                            .attr("stroke", color)
-                            .attr("d", line);
-                            
-                        console.log(`Plotted real-time aggregated line for stock ${stock} with ${realTimeAggregated[stock].length} points`);
-                        
-                        // Add hover zone for this aggregated line (only in hover condition)
-                        if (options.hover) {
-                            predictionGroup.append("path")
-                                .datum(fullAggregatedData)
-                                .attr("class", `hover-zone-${stock.toLowerCase()}`)
-                                .attr("fill", "none")
-                                .attr("stroke", "transparent")
-                                .attr("stroke-width", 15) // Wide invisible stroke for easier hovering
-                                .attr("d", line)
-                                .style("cursor", "pointer");
-                        }
-                    }
-                });
-            }
-
-            // Alternative predictions - plot only the 5 sampled scenarios
-            if (options.showAlternatives) {
-                // Create separate groups for each stock's alternatives
-                const initialOpacity = options.hover ? 0 : 1; // Hide alternatives initially if hover mode is enabled
-                const alternativesGroupA = predictionGroup.append("g")
-                    .attr("class", "alternatives-group-a")
-                    .style("opacity", initialOpacity);
-                    
-                const alternativesGroupB = predictionGroup.append("g")
-                    .attr("class", "alternatives-group-b")
-                    .style("opacity", initialOpacity);
-
-                ['A', 'B'].forEach((stock, i) => {
-                    const color = i === 0 ? config.colors.stockA : config.colors.stockB;
-                    const lastHistorical = stockData[stock].historical[stockData[stock].historical.length - 1];
-                    const currentAlternativesGroup = stock === 'A' ? alternativesGroupA : alternativesGroupB;
-                    
-                    // Group alternatives by scenario (should only include sampled scenarios)
-                    const scenarios = {};
-                    stockData[stock].alternatives.forEach(alt => {
-                        if (!scenarios[alt.scenario]) {
-                            scenarios[alt.scenario] = [];
-                        }
-                        scenarios[alt.scenario].push(alt);
-                    });
-                    
-                    console.log(`Stock ${stock} alternative scenarios:`, Object.keys(scenarios));
-                    console.log(`Expected sampled scenarios:`, sampledScenarios);
-                    
-                    // Create a line for each sampled scenario
-                    Object.entries(scenarios).forEach(([scenarioName, scenarioData], scenarioIndex) => {
-                        if (scenarioData.length > 0) {
-                            const fullScenarioData = [lastHistorical, ...scenarioData];
-                            
-                            currentAlternativesGroup.append("path")
-                                .datum(fullScenarioData)
-                                .attr("class", `prediction-line alternative-line scenario-${scenarioIndex} stock-${stock.toLowerCase()}-line`)
-                                .attr("fill", "none")
-                                .attr("stroke", color)
-                                .attr("stroke-width", 1.5)
-                                .attr("d", line);
-                                
-                            console.log(`Plotted alternative scenario ${scenarioName} for stock ${stock} with ${scenarioData.length} points`);
-                        }
-                    });
-                });
-
-                // Add hover interactions for condition 4 and 5
-                if (options.hover) {
-                    if (options.showConfidenceBounds) {
-                        // PI Plot hover: hover on aggregated line to reveal confidence bounds ONLY
-                        // Stock A aggregated line hover
-                        d3.select(`#${svgId}`).select('.hover-zone-a')
-                            .on("mouseenter", function() {
-                                // Show confidence bounds only (no alternatives)
-                                const shadeOpacity = parseFloat(document.getElementById('shadeOpacitySlider').value);
-                                d3.select(`#${svgId}`).select('.confidence-bounds-a')
-                                    .transition()
-                                    .duration(200)
-                                    .attr("opacity", shadeOpacity);
-                            })
-                            .on("mouseleave", function() {
-                                // Hide confidence bounds only
-                                d3.select(`#${svgId}`).select('.confidence-bounds-a')
-                                    .transition()
-                                    .duration(200)
-                                    .attr("opacity", 0);
-                            });
-                        
-                        // Stock B aggregated line hover
-                        d3.select(`#${svgId}`).select('.hover-zone-b')
-                            .on("mouseenter", function() {
-                                // Show confidence bounds only (no alternatives)
-                                const shadeOpacity = parseFloat(document.getElementById('shadeOpacitySlider').value);
-                                d3.select(`#${svgId}`).select('.confidence-bounds-b')
-                                    .transition()
-                                    .duration(200)
-                                    .attr("opacity", shadeOpacity);
-                            })
-                            .on("mouseleave", function() {
-                                // Hide confidence bounds only
-                                d3.select(`#${svgId}`).select('.confidence-bounds-b')
-                                    .transition()
-                                    .duration(200)
-                                    .attr("opacity", 0);
-                            });
-                    } else {
-                        // Regular aggregated line hover (Condition 4)
-                        // Stock A hover zone interactions
-                        d3.select(`#${svgId}`).select('.hover-zone-a')
-                            .on("mouseenter", function() {
-                                const alternativeOpacity = parseFloat(document.getElementById('alternativeOpacitySlider').value);
-                                alternativesGroupA.transition()
-                                    .duration(200)
-                                    .style("opacity", alternativeOpacity);
-                            })
-                            .on("mouseleave", function() {
-                                alternativesGroupA.transition()
-                                    .duration(200)
-                                    .style("opacity", 0);
-                            });
-                        
-                        // Stock B hover zone interactions
-                        d3.select(`#${svgId}`).select('.hover-zone-b')
-                            .on("mouseenter", function() {
-                                const alternativeOpacity = parseFloat(document.getElementById('alternativeOpacitySlider').value);
-                                alternativesGroupB.transition()
-                                    .duration(200)
-                                    .style("opacity", alternativeOpacity);
-                            })
-                            .on("mouseleave", function() {
-                                alternativesGroupB.transition()
-                                    .duration(200)
-                                    .style("opacity", 0);
-                            });
-                    }
-                }
-            }
-        }
 
         // Control functionality
         function initializeControls() {
@@ -855,74 +414,115 @@
             const alternativeSlider = document.getElementById('alternativeOpacitySlider');
             const alternativeValueDisplay = document.getElementById('alternativeOpacityValue');
             
-            alternativeSlider.addEventListener('input', function() {
-                const opacity = parseFloat(this.value);
-                alternativeValueDisplay.textContent = opacity.toFixed(1);
-                
-                // Update opacity for all alternative prediction lines across all charts
-                d3.selectAll('.prediction-line')
-                    .style('opacity', opacity);
-            });
+            if (alternativeSlider) {
+                alternativeSlider.addEventListener('input', function() {
+                    const opacity = parseFloat(this.value);
+                    alternativeValueDisplay.textContent = opacity.toFixed(1);
+                    
+                    // Update opacity for all alternative prediction lines across all charts
+                    d3.selectAll('.prediction-line')
+                        .style('opacity', opacity);
+                });
+            }
             
             // Shade opacity control
             const shadeSlider = document.getElementById('shadeOpacitySlider');
             const shadeValueDisplay = document.getElementById('shadeOpacityValue');
             
-            shadeSlider.addEventListener('input', function() {
-                const opacity = parseFloat(this.value);
-                shadeValueDisplay.textContent = opacity.toFixed(1);
-                
-                // Update opacity for all confidence bounds (shade) across all charts
-                d3.selectAll('.confidence-bounds')
-                    .attr('opacity', opacity);
-            });
+            if (shadeSlider) {
+                shadeSlider.addEventListener('input', function() {
+                    const opacity = parseFloat(this.value);
+                    shadeValueDisplay.textContent = opacity.toFixed(1);
+                    
+                    // Update opacity for all confidence bounds (shade) across all charts
+                    d3.selectAll('.confidence-bounds')
+                        .attr('opacity', opacity);
+                });
+            }
             
             // Date control
             const dateSelect = document.getElementById('dateSelect');
             
-            dateSelect.addEventListener('change', function() {
-                currentStartDate = this.value;
-                console.log('Start date changed to:', currentStartDate);
-                
-                // Reprocess data with new date filter and recreate charts
-                if (originalStockData.A && originalStockData.B) {
-                    // Reprocess the data with the new date
-                    stockData.A = processStockData(originalStockData.A);
-                    stockData.B = processStockData(originalStockData.B);
+            if (dateSelect) {
+                dateSelect.addEventListener('change', async function() {
+                    currentStartDate = this.value;
+                    console.log('Start date changed to:', currentStartDate);
                     
-                    // Recalculate confidence bounds with new data
-                    const fullData = [...originalStockData.A, ...originalStockData.B];
-                    confidenceBounds = calculateConfidenceBounds(fullData);
-                    
-                    // Recreate all charts
-                    createAllCharts();
-                    
-                    // Reapply current opacity settings
-                    const currentAlternativeOpacity = parseFloat(alternativeSlider.value);
-                    const currentShadeOpacity = parseFloat(shadeSlider.value);
-                    d3.selectAll('.prediction-line')
-                        .style('opacity', currentAlternativeOpacity);
-                    d3.selectAll('.confidence-bounds')
-                        .attr('opacity', currentShadeOpacity);
-                }
-            });
+                    if (conditionFactory && conditionFactory.isInitialized()) {
+                        try {
+                            await conditionFactory.updateWithNewDate(currentStartDate);
+                            
+                            // Reapply current opacity settings
+                            const currentAlternativeOpacity = parseFloat(alternativeSlider?.value || 0.2);
+                            const currentShadeOpacity = parseFloat(shadeSlider?.value || 0.2);
+                            d3.selectAll('.prediction-line')
+                                .style('opacity', currentAlternativeOpacity);
+                            d3.selectAll('.confidence-bounds')
+                                .attr('opacity', currentShadeOpacity);
+                                
+                        } catch (error) {
+                            console.error('Failed to update with new date:', error);
+                        }
+                    }
+                });
+            }
         }
 
-        // Initialize controls after charts are created
-        d3.json('synthetic_stock_data.json').then(function(rawData) {
-            // Process the data
-            processData(rawData.data);
-            
-            // Create all visualizations
-            createAllCharts();
-            
-            // Initialize controls
-            initializeControls();
-        }).catch(function(error) {
-            console.error('Error loading data:', error);
-            // Add error message to page
-            document.querySelector('.visualization-grid').innerHTML = 
-                '<div style="grid-column: 1/-1; text-align: center; color: red;">Error loading data. Please ensure synthetic_stock_data.json is available.</div>';
+        // Main initialization
+        async function initializeVisualization() {
+            try {
+                console.log('Loading data and initializing condition factory...');
+                
+                // Load data
+                const rawDataResponse = await d3.json('synthetic_stock_data.json');
+                const rawData = rawDataResponse.data;
+                
+                // Create and initialize condition factory
+                conditionFactory = new ConditionFactory();
+                await conditionFactory.initialize(config, rawData, currentStartDate);
+                
+                console.log('Condition factory initialized, rendering all conditions...');
+                
+                // Render all 8 conditions
+                await conditionFactory.renderAllConditions();
+                
+                console.log('All conditions rendered successfully');
+                
+                // Initialize controls
+                initializeControls();
+                
+                // Log condition information
+                const conditionInfo = ConditionFactory.getConditionInfo();
+                console.log('Available conditions:', conditionInfo);
+                
+            } catch (error) {
+                console.error('Failed to initialize visualization:', error);
+                
+                // Display error message
+                const grid = document.querySelector('.visualization-grid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; color: red; padding: 20px;">
+                            <h3>Error loading visualization</h3>
+                            <p>Failed to load data or initialize conditions: ${error.message}</p>
+                            <p>Please ensure synthetic_stock_data.json is available and all modules are accessible.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (conditionFactory) {
+                conditionFactory.cleanup();
+            }
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add a small delay to ensure D3 is fully loaded
+            setTimeout(initializeVisualization, 100);
         });
     </script>
 </body>

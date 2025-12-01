@@ -1,0 +1,207 @@
+/**
+ * Condition Factory
+ * Dynamically loads and instantiates condition modules
+ */
+import { DataProcessor } from './base/dataProcessor.js';
+
+export class ConditionFactory {
+    constructor() {
+        this.dataProcessor = new DataProcessor();
+        this.processedData = null;
+        this.config = null;
+        this.conditionInstances = new Map();
+    }
+
+    /**
+     * Initialize factory with configuration and data
+     */
+    async initialize(config, rawData, startDate = '05/01') {
+        this.config = config;
+        
+        // Process data through data processor
+        this.processedData = this.dataProcessor.processData(rawData, startDate);
+        
+        console.log('ConditionFactory initialized with processed data');
+        return this;
+    }
+
+    /**
+     * Create a specific condition instance
+     */
+    async createCondition(conditionNumber, svgId) {
+        try {
+            // Validate condition number
+            if (conditionNumber < 1 || conditionNumber > 8) {
+                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 1 and 8.`);
+            }
+
+            // Check if we have processed data
+            if (!this.processedData) {
+                throw new Error('Factory not initialized. Call initialize() first.');
+            }
+
+            console.log(`Loading condition ${conditionNumber} for ${svgId}`);
+            
+            // Dynamically import the condition module
+            const module = await import(`./conditions/condition${conditionNumber}.js`);
+            
+            // Create condition instance
+            const condition = new module.default(svgId, this.processedData, this.config);
+            
+            // Store instance for cleanup later
+            const key = `${svgId}-${conditionNumber}`;
+            this.conditionInstances.set(key, condition);
+            
+            console.log(`Condition ${conditionNumber} created for ${svgId}`);
+            return condition;
+            
+        } catch (error) {
+            console.error(`Failed to create condition ${conditionNumber}:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Render a specific condition
+     */
+    async renderCondition(conditionNumber, svgId) {
+        try {
+            const condition = await this.createCondition(conditionNumber, svgId);
+            
+            // Render the condition
+            condition.render();
+            
+            // Setup interactions
+            condition.setupInteractions();
+            
+            console.log(`Condition ${conditionNumber} rendered and interactions setup for ${svgId}`);
+            return condition;
+            
+        } catch (error) {
+            console.error(`Failed to render condition ${conditionNumber}:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Render all 8 conditions
+     */
+    async renderAllConditions() {
+        const conditionMappings = [
+            { number: 1, svgId: 'chart-1' },
+            { number: 2, svgId: 'chart-2' },
+            { number: 3, svgId: 'chart-3' },
+            { number: 4, svgId: 'chart-4' },
+            { number: 5, svgId: 'chart-5' },
+            { number: 6, svgId: 'chart-6' },
+            { number: 7, svgId: 'chart-7' },
+            { number: 8, svgId: 'chart-8' }
+        ];
+
+        console.log('Rendering all 8 conditions');
+
+        // Render all conditions in parallel for better performance
+        const renderPromises = conditionMappings.map(async ({ number, svgId }) => {
+            try {
+                return await this.renderCondition(number, svgId);
+            } catch (error) {
+                console.error(`Failed to render condition ${number} (${svgId}):`, error);
+                return null;
+            }
+        });
+
+        const results = await Promise.allSettled(renderPromises);
+        
+        // Log results
+        const successful = results.filter(r => r.status === 'fulfilled' && r.value !== null).length;
+        const failed = results.length - successful;
+        
+        console.log(`Rendering completed: ${successful} successful, ${failed} failed`);
+        
+        return results;
+    }
+
+    /**
+     * Update data with new start date and re-render all conditions
+     */
+    async updateWithNewDate(newStartDate) {
+        try {
+            console.log(`Updating all conditions with new start date: ${newStartDate}`);
+            
+            // Reprocess data with new date
+            this.processedData = this.dataProcessor.reprocessWithNewDate(newStartDate);
+            
+            // Re-render all conditions
+            await this.renderAllConditions();
+            
+            console.log('All conditions updated with new start date');
+            
+        } catch (error) {
+            console.error('Failed to update conditions with new date:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get a specific condition instance
+     */
+    getCondition(conditionNumber, svgId) {
+        const key = `${svgId}-${conditionNumber}`;
+        return this.conditionInstances.get(key);
+    }
+
+    /**
+     * Cleanup all condition instances
+     */
+    cleanup() {
+        console.log('Cleaning up all condition instances');
+        
+        for (const [key, condition] of this.conditionInstances) {
+            try {
+                condition.cleanup();
+            } catch (error) {
+                console.error(`Failed to cleanup condition ${key}:`, error);
+            }
+        }
+        
+        this.conditionInstances.clear();
+        console.log('All condition instances cleaned up');
+    }
+
+    /**
+     * Get current processed data
+     */
+    getProcessedData() {
+        return this.processedData;
+    }
+
+    /**
+     * Get data processor instance
+     */
+    getDataProcessor() {
+        return this.dataProcessor;
+    }
+
+    /**
+     * Check if factory is initialized
+     */
+    isInitialized() {
+        return this.processedData !== null && this.config !== null;
+    }
+
+    /**
+     * Get condition mapping information
+     */
+    static getConditionInfo() {
+        return {
+            1: { name: 'Baseline', description: 'Shows only aggregated prediction lines' },
+            2: { name: 'PI Plot', description: 'Shows aggregated prediction with confidence bounds' },
+            3: { name: 'Ensemble Plot', description: 'Shows both aggregated and alternative predictions' },
+            4: { name: 'Ensemble + Hover', description: 'Aggregated by default, hover to reveal alternatives' },
+            5: { name: 'PI Plot + Hover', description: 'PI plot with hover to reveal individual predictions' },
+            6: { name: 'PI → Ensemble', description: 'PI plot transforms to ensemble plot on hover' },
+            7: { name: 'Buggy Control', description: 'Broken interactions: hover zones show wrong city data' },
+            8: { name: 'Bad Control', description: 'Poor interaction: click to reveal one alternative line at a time' }
+        };
+    }
+}
