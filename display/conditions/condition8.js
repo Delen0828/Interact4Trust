@@ -33,7 +33,7 @@ export default class Condition8 {
         // Render alternative prediction lines (hidden initially)
         this.renderAlternativeLines(predictionGroup);
 
-        // Render aggregated prediction lines with click zones
+        // Render aggregated prediction lines with click zones (with dashed style)
         this.renderAggregatedLines(predictionGroup);
 
         console.log('Condition 8 (Bad Control) rendered');
@@ -89,26 +89,27 @@ export default class Condition8 {
     }
 
     renderAggregatedLines(predictionGroup) {
+        // Use the base renderer for dashed aggregated lines
+        this.chartRenderer.renderAggregatedLines(
+            predictionGroup, 
+            {
+                A: this.data.stockData.A,
+                B: this.data.stockData.B
+            },
+            this.config.colors,
+            this.data.realTimeAggregated
+        );
+        
+        // Add click zones for interaction (wider for easier clicking)
         const line = this.chartRenderer.createLineGenerator();
-
         ['A', 'B'].forEach((stock, i) => {
-            const color = i === 0 ? this.config.colors.stockA : this.config.colors.stockB;
             const lastHistorical = this.data.stockData[stock].historical[
                 this.data.stockData[stock].historical.length - 1
             ];
             
             if (this.data.realTimeAggregated[stock] && this.data.realTimeAggregated[stock].length > 0) {
-                // Create continuous path through all real-time aggregated data points
                 const fullAggregatedData = [lastHistorical, ...this.data.realTimeAggregated[stock]];
                 
-                predictionGroup.append("path")
-                    .datum(fullAggregatedData)
-                    .attr("class", `aggregated-line real-time-aggregated stock-${stock.toLowerCase()}-line`)
-                    .attr("stroke", color)
-                    .attr("fill", "none")
-                    .attr("stroke-width", 2)
-                    .attr("d", line);
-                    
                 // Create click zone for this aggregated line (wider for easier clicking)
                 this.interactionManager.createHoverZone(
                     predictionGroup,
@@ -117,25 +118,20 @@ export default class Condition8 {
                     line,
                     20  // Wider stroke for easier clicking
                 );
-                    
-                console.log(`Rendered aggregated line for stock ${stock} with ${this.data.realTimeAggregated[stock].length} points`);
             }
         });
     }
 
     setupInteractions() {
-        // Bad Control - click to reveal one alternative line at a time
+        // Bad Control - click to reveal all alternative lines at once
         const clickZoneA = this.interactionManager.select('click-zone-a');
         const clickZoneB = this.interactionManager.select('click-zone-b');
-        
-        const alternativeLinesA = this.alternativesGroupA.selectAll('.prediction-line');
-        const alternativeLinesB = this.alternativesGroupB.selectAll('.prediction-line');
 
         // Stock A click-to-reveal interaction
-        this.interactionManager.addClickToReveal(clickZoneA, alternativeLinesA, 'A');
+        this.interactionManager.addClickToReveal(clickZoneA, this.alternativesGroupA);
         
         // Stock B click-to-reveal interaction
-        this.interactionManager.addClickToReveal(clickZoneB, alternativeLinesB, 'B');
+        this.interactionManager.addClickToReveal(clickZoneB, this.alternativesGroupB);
 
         console.log('Click-to-reveal interactions setup for Condition 8 (Bad Control)');
     }

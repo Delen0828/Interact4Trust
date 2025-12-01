@@ -145,6 +145,34 @@ export class ChartRenderer {
     }
 
     /**
+     * Render aggregated prediction lines with dashed style after reference date
+     */
+    renderAggregatedLines(container, data, colors, realTimeAggregated) {
+        const line = this.createLineGenerator();
+
+        ['A', 'B'].forEach((stock, i) => {
+            const color = i === 0 ? colors.stockA : colors.stockB;
+            const lastHistorical = data[stock].historical[data[stock].historical.length - 1];
+            
+            if (realTimeAggregated[stock] && realTimeAggregated[stock].length > 0) {
+                // Create continuous path through all real-time aggregated data points
+                const fullAggregatedData = [lastHistorical, ...realTimeAggregated[stock]];
+                
+                container.append("path")
+                    .datum(fullAggregatedData)
+                    .attr("class", `aggregated-line real-time-aggregated stock-${stock.toLowerCase()}-line`)
+                    .attr("stroke", color)
+                    .attr("fill", "none")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", "5,5") // Dashed line for predictions
+                    .attr("d", line);
+                    
+                console.log(`Rendered dashed aggregated line for stock ${stock} with ${realTimeAggregated[stock].length} points`);
+            }
+        });
+    }
+
+    /**
      * Get SVG group container for adding elements
      */
     getContainer() {

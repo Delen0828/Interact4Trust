@@ -29,35 +29,20 @@ export default class Condition1 {
         const predictionGroup = container.append("g").attr("class", "predictions");
         const line = this.chartRenderer.createLineGenerator();
 
-        // Render aggregated prediction lines only
-        this.renderAggregatedLines(predictionGroup, line);
+        // Render aggregated prediction lines only (with dashed style)
+        this.chartRenderer.renderAggregatedLines(
+            predictionGroup, 
+            {
+                A: this.data.stockData.A,
+                B: this.data.stockData.B
+            },
+            this.config.colors,
+            this.data.realTimeAggregated
+        );
 
         console.log('Condition 1 (Baseline) rendered');
     }
 
-    renderAggregatedLines(predictionGroup, line) {
-        ['A', 'B'].forEach((stock, i) => {
-            const color = i === 0 ? this.config.colors.stockA : this.config.colors.stockB;
-            const lastHistorical = this.data.stockData[stock].historical[
-                this.data.stockData[stock].historical.length - 1
-            ];
-            
-            if (this.data.realTimeAggregated[stock] && this.data.realTimeAggregated[stock].length > 0) {
-                // Create continuous path through all real-time aggregated data points
-                const fullAggregatedData = [lastHistorical, ...this.data.realTimeAggregated[stock]];
-                
-                predictionGroup.append("path")
-                    .datum(fullAggregatedData)
-                    .attr("class", `aggregated-line real-time-aggregated stock-${stock.toLowerCase()}-line`)
-                    .attr("stroke", color)
-                    .attr("fill", "none")
-                    .attr("stroke-width", 2)
-                    .attr("d", line);
-                    
-                console.log(`Rendered aggregated line for stock ${stock} with ${this.data.realTimeAggregated[stock].length} points`);
-            }
-        });
-    }
 
     setupInteractions() {
         // No interactions for baseline condition

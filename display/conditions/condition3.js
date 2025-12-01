@@ -31,8 +31,16 @@ export default class Condition3 {
         // Render alternative prediction lines first
         this.renderAlternativeLines(predictionGroup);
 
-        // Render aggregated prediction lines on top
-        this.renderAggregatedLines(predictionGroup);
+        // Render aggregated prediction lines on top (with dashed style)
+        this.chartRenderer.renderAggregatedLines(
+            predictionGroup, 
+            {
+                A: this.data.stockData.A,
+                B: this.data.stockData.B
+            },
+            this.config.colors,
+            this.data.realTimeAggregated
+        );
 
         console.log('Condition 3 (Ensemble Plot) rendered');
     }
@@ -87,31 +95,6 @@ export default class Condition3 {
         });
     }
 
-    renderAggregatedLines(predictionGroup) {
-        const line = this.chartRenderer.createLineGenerator();
-
-        ['A', 'B'].forEach((stock, i) => {
-            const color = i === 0 ? this.config.colors.stockA : this.config.colors.stockB;
-            const lastHistorical = this.data.stockData[stock].historical[
-                this.data.stockData[stock].historical.length - 1
-            ];
-            
-            if (this.data.realTimeAggregated[stock] && this.data.realTimeAggregated[stock].length > 0) {
-                // Create continuous path through all real-time aggregated data points
-                const fullAggregatedData = [lastHistorical, ...this.data.realTimeAggregated[stock]];
-                
-                predictionGroup.append("path")
-                    .datum(fullAggregatedData)
-                    .attr("class", `aggregated-line real-time-aggregated stock-${stock.toLowerCase()}-line`)
-                    .attr("stroke", color)
-                    .attr("fill", "none")
-                    .attr("stroke-width", 2)
-                    .attr("d", line);
-                    
-                console.log(`Rendered aggregated line for stock ${stock} with ${this.data.realTimeAggregated[stock].length} points`);
-            }
-        });
-    }
 
     setupInteractions() {
         // No interactions for static ensemble plot

@@ -125,59 +125,91 @@ export class InteractionManager {
     }
 
     /**
-     * Buggy hover interaction: show wrong target on hover
+     * Buggy hover interaction: show wrong target on hover with swapped colors
      */
     addBuggyHover(hoverZoneA, hoverZoneB, targetA, targetB, options = {}) {
         const { duration = 200 } = options;
         const { alternativeOpacity } = this.getOpacityValues();
 
-        // Hover A shows B (BUG!)
+        // Store original colors
+        const originalColorA = '#007bff'; // Blue for City A
+        const originalColorB = '#fd7e14'; // Orange for City B
+      
         hoverZoneA
             .on("mouseenter", () => {
+                // Show B's data but with A's color (extra confusing!)
                 targetB.transition()
                     .duration(duration)
                     .style("opacity", alternativeOpacity);
+                
+                // Change all path elements within targetB to wrong color
+                targetB.selectAll('path')
+                    .transition()
+                    .duration(duration)
+                    .attr("stroke", originalColorA); // Wrong color!
             })
             .on("mouseleave", () => {
+                // Hide and restore B's original color
                 targetB.transition()
                     .duration(duration)
                     .style("opacity", 0);
+                    
+                targetB.selectAll('path')
+                    .transition()
+                    .duration(duration)
+                    .attr("stroke", originalColorB); // Restore correct color
             });
 
-        // Hover B shows A (BUG!)
+        // Hover B shows A with swapped color (BUG!)
         hoverZoneB
             .on("mouseenter", () => {
+                // Show A's data but with B's color (extra confusing!)
                 targetA.transition()
                     .duration(duration)
                     .style("opacity", alternativeOpacity);
+                
+                // Change all path elements within targetA to wrong color
+                targetA.selectAll('path')
+                    .transition()
+                    .duration(duration)
+                    .attr("stroke", originalColorB); // Wrong color!
             })
             .on("mouseleave", () => {
+                // Hide and restore A's original color
                 targetA.transition()
                     .duration(duration)
                     .style("opacity", 0);
+                    
+                targetA.selectAll('path')
+                    .transition()
+                    .duration(duration)
+                    .attr("stroke", originalColorA); // Restore correct color
             });
     }
 
     /**
-     * Click-to-reveal interaction: show one alternative line per click
+     * Click-to-reveal interaction: click once to show all lines, click again to hide
      */
-    addClickToReveal(clickZone, alternativeLines, stock) {
-        let currentClickCount = 0;
-        const totalAlternatives = alternativeLines.size();
+    addClickToReveal(clickZone, alternativeTarget) {
+        let isVisible = false;
         
         clickZone
             .style("cursor", "pointer")
             .on("click", () => {
                 const { alternativeOpacity } = this.getOpacityValues();
                 
-                // Show one more alternative line each click
-                if (currentClickCount < totalAlternatives) {
-                    alternativeLines.nodes()[currentClickCount].style.opacity = alternativeOpacity;
-                    currentClickCount++;
+                if (!isVisible) {
+                    // Show all alternatives
+                    alternativeTarget.transition()
+                        .duration(200)
+                        .style("opacity", alternativeOpacity);
+                    isVisible = true;
                 } else {
-                    // Reset: hide all alternatives and start over
-                    alternativeLines.style("opacity", 0);
-                    currentClickCount = 0;
+                    // Hide all alternatives
+                    alternativeTarget.transition()
+                        .duration(200)
+                        .style("opacity", 0);
+                    isVisible = false;
                 }
             });
     }
