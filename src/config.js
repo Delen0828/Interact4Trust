@@ -121,19 +121,69 @@ const ExperimentConfig = {
     // Trust and Confidence Measurements
     trustQuestions: [
         {
-            prompt: "How much do you trust the fidelity of this visualization tool (do you think this tool is working as expected)?",
-            labels: ["Not at all", "Very little", "Somewhat", "Moderately", "Quite a bit", "Very much", "Completely"],
-            type: "interface_trust"
+            prompt: "I was in control of my navigation through this interface.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "navigation_control"
         },
         {
-            prompt: "How much do you trust the underlying air quality data?",
-            labels: ["Not at all", "Very little", "Somewhat", "Moderately", "Quite a bit", "Very much", "Completely"],
+            prompt: "I had some control over the content of this interface that I wanted to see.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "content_control"
+        },
+        {
+            prompt: "I was in control over the pace of my visit to this interface.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "pace_control"
+        },
+        {
+            prompt: "I could communicate with the company directly for further questions about the company or its products if I wanted to.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "company_communication"
+        },
+        {
+            prompt: "The interface had the ability to respond to my specific questions quickly and efficiently.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "interface_responsiveness"
+        },
+        {
+            prompt: "I could communicate in real time with other customers who shared my interest in this interface.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "customer_communication"
+        },
+        {
+            prompt: "I felt I just had a personal conversation with a sociable, knowledgeable and warm representative from the company.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "personal_conversation"
+        },
+        {
+            prompt: "The interface was like talking back to me while I clicked through the interface.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "interface_interaction"
+        },
+        {
+            prompt: "I perceived the interface to be sensitive to my needs for product information.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "interface_sensitivity"
+        },
+        {
+            prompt: "I am skeptical about the information presented in this visualization.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "skeptical_rating"
+        },
+        {
+            prompt: "I trust this data.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "data_trust"
         },
         {
-            prompt: "How much do you think this visualization is misleading?",
-            labels: ["Not at all", "Very little", "Somewhat", "Moderately", "Quite a bit", "Very much", "Completely"],
-            type: "misleading_rating"
+            prompt: "I find this visualization difficult to use.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "usability_difficulty"
+        },
+        {
+            prompt: "I find this visualization easy to understand.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            type: "comprehension_ease"
         }
     ],
 

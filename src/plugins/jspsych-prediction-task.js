@@ -210,7 +210,6 @@ var jsPsychPredictionTask = (function (jspsych) {
       return `
         <div class="visualization-content">
           <div class="viz-header">
-            <h3>Air Quality Data and Predictions</h3>
             ${this.condition ? `<p class="condition-info">${this.condition.instructions}</p>` : ''}
           </div>
           <div id="air-quality-chart" class="chart-container">
