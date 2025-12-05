@@ -9,13 +9,20 @@ An interactive web experiment studying how different uncertainty visualization f
    npm install
    ```
 
-2. **Start the server:**
+2. **Start the server with PHP data saving:**
    ```bash
    npm start
+   # or
+   ./start_server.sh
    ```
 
 3. **Open in browser:**
-   Navigate to `http://localhost:8080` to run the experiment
+   Navigate to `http://localhost:8000` to run the experiment
+   
+   **Alternative Python server (no data saving):**
+   ```bash
+   npm run start-python  # Runs on localhost:8080
+   ```
 
 ## Study Overview
 
@@ -74,8 +81,14 @@ src/
 
 ## Data Export
 
-The experiment automatically exports:
-- **CSV format**: Summary data for statistical analysis
+### With PHP Server (Recommended)
+- **Automatic CSV saving**: Data saved to `data/` folder as `user_[ID]_[timestamp].csv`
+- **Server-side storage**: Participant data securely stored on server
+- **Fallback mechanism**: Uses localStorage if server unavailable
+
+### With Python Server (Development)
+- **localStorage only**: Data saved in browser storage
+- **Manual download**: Participants download their own data files
 - **JSON format**: Complete interaction logs and metadata
 
 ## Development

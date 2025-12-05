@@ -4,13 +4,15 @@
   "description": "Air Quality Prediction Visualization Trust Study - 8 experimental conditions examining how different uncertainty visualization formats affect user trust in decision-making",
   "main": "index.html",
   "scripts": {
-    "start": "python3 -m http.server 8080",
-    "serve": "python3 -m http.server 8080",
-    "dev": "python3 -m http.server 8080",
-    "test": "echo 'Open http://localhost:8080 in browser to test experiment - npm start to run server'",
-    "clean": "echo 'Old files already cleaned up - project is ready'",
+    "start": "./start_server.sh",
+    "serve": "./start_server.sh", 
+    "dev": "./start_server.sh",
+    "start-php": "./start_server.sh",
+    "start-python": "python3 -m http.server 8080",
+    "test": "echo 'Open http://localhost:8000 in browser to test experiment with PHP data saving - npm start to run server'",
+    "clean": "rm -rf dist && echo 'Cleaned dist directory'",
     "lint": "echo 'No linting configured - using vanilla JavaScript'",
-    "build": "echo 'No build step required - static files ready for deployment'"
+    "build": "mkdir -p dist && cp -r src display index.html conditions.html synthetic_stock_data.json save_data.php dist/ && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && echo 'Build complete - files ready for deployment with PHP data saving'"
   },
   "keywords": [
     "psychology",
