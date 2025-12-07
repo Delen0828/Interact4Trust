@@ -6,11 +6,12 @@ import { ChartRenderer } from '../base/chartRenderer.js';
 import { InteractionManager } from '../base/interactionManager.js';
 
 export default class Condition7 {
-    constructor(svgId, processedData, config) {
+    constructor(svgId, processedData, config, phase = null) {
         this.svgId = svgId;
         this.data = processedData;
         this.config = config;
-        this.chartRenderer = new ChartRenderer(svgId, config);
+        this.phase = phase;
+        this.chartRenderer = new ChartRenderer(svgId, config, phase);
         this.interactionManager = new InteractionManager(svgId);
         this.alternativesGroupA = null;
         this.alternativesGroupB = null;

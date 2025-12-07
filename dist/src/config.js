@@ -33,35 +33,35 @@ const ExperimentConfig = {
             name: 'Ensemble + Hover',
             displayFormat: 'hover_alternatives',
             description: 'Aggregated by default, hover to reveal alternatives',
-            instructions: 'Each line represent the prediction from one Forecast Agency. Hint: Hover on the lines for more details'
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_5_pi_hover', 
             name: 'PI Plot + Hover',
             displayFormat: 'hover_bounds',
             description: 'PI plot with hover to reveal individual predictions',
-            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region. Hint: Hover on the lines for more details'
+            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_6_pi_to_ensemble', 
             name: 'PI → Ensemble',
             displayFormat: 'transform_hover',
             description: 'PI plot transforms to ensemble plot on hover',
-            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region. Each line represent the prediction from one Forecast Agency. Hint: Hover on the lines for more details'
+            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region. Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_7_buggy', 
             name: 'Buggy Control',
             displayFormat: 'broken_interactions',
             description: 'Broken interactions (misaligned, draggable, wrong hover zones)',
-            instructions: 'Each line represent the prediction from one Forecast Agency. Hint: Hover on the lines for more details'
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_8_bad', 
             name: 'Bad Control',
             displayFormat: 'poor_interactions',
             description: 'Poor interactions (forced clicks, timed pop-ups, disappearing elements)',
-            instructions: 'Each line represent the prediction from one Forecast Agency. Hint: Hover on the lines for more details'
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_9_combined', 
@@ -81,7 +81,7 @@ const ExperimentConfig = {
             {
                 id: 'vl_1',
                 type: 'line_chart_basic',
-                question: 'In this line chart, which city had higher air quality in March?',
+                question: 'In this line chart, which city had lower AQI (better air quality) in March?',
                 // Question details will be implemented in plugin
             },
             {
@@ -115,81 +115,85 @@ const ExperimentConfig = {
 
     // Air Quality Prediction Task
     predictionTask: {
-        question: 'The probability that air quality in City A will be better than City B on 06/30 is ____%',
+        question: 'The probability that the air quality index of City A will be higher than City B on 06/30 is ____%',
         confidenceScale: {
             min: 1,
             max: 7,
             labels: ['Very Uncertain', 'Uncertain', 'Somewhat Uncertain', 'Neutral', 'Somewhat Certain', 'Certain', 'Very Certain']
         },
-        travelQuestion: 'If you were planning to visit one of these cities, which would you choose?',
+        travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower air quality index, which city would you travel to?',
         travelChoices: ['City A', 'City B', 'No Preference']
     },
 
-    // Trust and Confidence Measurements
+    // Trust and Confidence Measurements - Page 1
     trustQuestions: [
         {
             prompt: "I was in control of my navigation through this interface.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "navigation_control"
         },
         {
             prompt: "I had some control over the content of this interface that I wanted to see.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "content_control"
         },
         {
             prompt: "I was in control over the pace of my visit to this interface.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "pace_control"
         },
         {
             prompt: "I could communicate with the company directly for further questions about the company or its products if I wanted to.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "company_communication"
         },
         {
             prompt: "The interface had the ability to respond to my specific questions quickly and efficiently.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "interface_responsiveness"
         },
         {
             prompt: "I could communicate in real time with other customers who shared my interest in this interface.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "customer_communication"
         },
         {
             prompt: "I felt I just had a personal conversation with a sociable, knowledgeable and warm representative from the company.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "personal_conversation"
         },
         {
             prompt: "The interface was like talking back to me while I clicked through the interface.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "interface_interaction"
         },
         {
             prompt: "I perceived the interface to be sensitive to my needs for product information.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "interface_sensitivity"
-        },
+        }
+    ],
+
+    // Trust and Confidence Measurements - Page 2 (Visualization-specific)
+    visualizationTrustQuestions: [
         {
-            prompt: "I am skeptical about the information presented in this visualization.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            prompt: "I was skeptical about the information presented in this visualization.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "skeptical_rating"
         },
         {
-            prompt: "I trust this data.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            prompt: "I trusted this data.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "data_trust"
         },
         {
-            prompt: "I find this visualization difficult to use.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            prompt: "I found this visualization difficult to use.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "usability_difficulty"
         },
         {
-            prompt: "I find this visualization easy to understand.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
+            prompt: "I found this visualization easy to understand.",
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "comprehension_ease"
         }
     ],
@@ -198,22 +202,22 @@ const ExperimentConfig = {
     personalityQuestions: [
         {
             prompt: "I respect others.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "respect_others"
         },
         {
             prompt: "I have a good word for everyone.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "good_word_everyone"
         },
         {
             prompt: "I retreat from others.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "retreat_from_others"
         },
         {
             prompt: "I avoid contacts with others.",
-            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
+            labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "avoid_contacts"
         }
     ],

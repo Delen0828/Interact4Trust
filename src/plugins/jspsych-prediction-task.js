@@ -65,7 +65,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         type: jspsych.ParameterType.STRING,
         pretty_name: 'Question',
         description: 'Main prediction question',
-        default: 'The probability that air quality in City A will be better than City B on 06/30 is ____%'
+        default: 'The probability that the air quality index of City A will be better than City B on 06/30 is ____%'
       },
       confidence_scale: {
         type: jspsych.ParameterType.OBJECT,
@@ -515,9 +515,6 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
           </div>
           
-          ${this.condition ? `<div class="viz-instructions">
-            <p class="condition-instructions">${this.condition.instructions}</p>
-          </div>` : ''}
           
           <style>
             @keyframes loading-stripe {
@@ -575,7 +572,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         };
         
         // Initialize with data (pass data array directly, not wrapped)
-        await conditionFactory.initialize(config, data, '05/01');
+        await conditionFactory.initialize(config, data, '05/01', this.trial.phase);
         
         // Set up interaction logging before rendering
         this.setupVisualizationInteractionLogging();
@@ -604,8 +601,6 @@ var jsPsychPredictionTask = (function (jspsych) {
         // Add city labels to the start of the lines
         this.addCityLabels(svg, data);
 
-        // Update instructions after visualization loads if needed
-        this.updateInstructionsAfterLoad();
 
       } catch (error) {
         document.getElementById('air-quality-chart').innerHTML = 
@@ -744,22 +739,6 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
     }
 
-    updateInstructionsAfterLoad() {
-      // Ensure instructions are displayed after visualization loads
-      const instructionsContainer = document.querySelector('.viz-instructions');
-      
-      if (!instructionsContainer && this.condition?.instructions) {
-        const chartContainer = document.getElementById('air-quality-chart');
-        if (chartContainer) {
-          const instructionsHtml = `
-            <div class="viz-instructions">
-              <p class="condition-instructions">${this.condition.instructions}</p>
-            </div>
-          `;
-          chartContainer.insertAdjacentHTML('afterend', instructionsHtml);
-        }
-      }
-    }
     
     getConditionNumber() {
       // Handle null condition

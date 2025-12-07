@@ -15,8 +15,9 @@ export class ConditionFactory {
     /**
      * Initialize factory with configuration and data
      */
-    async initialize(config, rawData, startDate = '05/01') {
+    async initialize(config, rawData, startDate = '05/01', phase = null) {
         this.config = config;
+        this.phase = phase;
         
         // Process data through data processor
         this.processedData = this.dataProcessor.processData(rawData, startDate);
@@ -43,8 +44,8 @@ export class ConditionFactory {
             // Dynamically import the condition module
             const module = await import(`./conditions/condition${conditionNumber}.js`);
             
-            // Create condition instance
-            const condition = new module.default(svgId, this.processedData, this.config);
+            // Create condition instance with phase parameter
+            const condition = new module.default(svgId, this.processedData, this.config, this.phase);
             
             // Store instance for cleanup later
             const key = `${svgId}-${conditionNumber}`;

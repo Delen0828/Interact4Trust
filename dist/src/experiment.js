@@ -10,8 +10,14 @@ async function initializeExperiment() {
 		// Load prediction task plugin dynamically
 		const predictionModule = await import('./plugins/jspsych-prediction-task.js');
 		
-		// Register the plugin with jsPsych
+		// Load custom survey plugins
+		const trustSurveyModule = await import('./plugins/jspsych-trust-survey.js');
+		const personalitySurveyModule = await import('./plugins/jspsych-personality-survey.js');
+		
+		// Register the plugins with jsPsych
 		window.jsPsychPredictionTask = predictionModule.default || predictionModule.jsPsychPredictionTask;
+		window.jsPsychTrustSurvey = trustSurveyModule.default || trustSurveyModule.jsPsychTrustSurvey;
+		window.jsPsychPersonalitySurvey = personalitySurveyModule.default || personalitySurveyModule.jsPsychPersonalitySurvey;
 		
 		// Initialize jsPsych
 		jsPsych = initJsPsych({
@@ -191,10 +197,10 @@ function buildTimeline() {
 	        `<div class="instructions">
 	            <h2>Air Quality Context</h2>
 	            <p>You will be making predictions about air quality in two hypothetical cities: <strong>City A</strong> and <strong>City B</strong>.</p>
-	            <p>Air quality is measured on a scale where:</p>
+	            <p>Air quality is measured using the Air Quality Index (AQI) where:</p>
 	            <ul>
-	                <li><strong>Higher values</strong> = Better air quality (cleaner air)</li>
-	                <li><strong>Lower values</strong> = Worse air quality (more pollution)</li>
+	                <li><strong>Higher values</strong> = Worse air quality (more pollution)</li>
+	                <li><strong>Lower values</strong> = Better air quality (cleaner air)</li>
 	            </ul>
 	            <p>Your task will be to predict which city is likely to have better air quality in the future.</p>
 	        </div>`
@@ -203,22 +209,6 @@ function buildTimeline() {
 	    data: { trial_type: 'instructions' }
 	});
 
-	// Phase 1 Introduction
-	timeline.push({
-		type: jsPsychHtmlButtonResponse,
-		stimulus: `
-			<div class="phase-intro">
-				<h2>Phase 1: Initial Assessment</h2>
-				<p>In this first phase, you will make predictions about air quality based on <strong>historical data only</strong>.</p>
-				<p>You will see past air quality trends for both cities, but <strong>no future predictions</strong>.</p>
-				<p>Based on the historical patterns you observe, you'll be asked to estimate which city is likely to have better air quality in the future.</p>
-				<br>
-				<p><strong>Remember:</strong> Higher values = Better air quality (cleaner air)</p>
-			</div>
-		`,
-		choices: ['Continue to Phase 1'],
-		data: { trial_type: 'phase_1_intro' }
-	});
 
 	// Phase 1: Historical Visualization Only (Condition 0)
 	timeline.push({
@@ -257,32 +247,6 @@ function buildTimeline() {
 		}
 	});
 
-	// Phase 2 Introduction
-	timeline.push({
-		type: jsPsychHtmlButtonResponse,
-		stimulus: function() {
-			const condition = ParticipantConfig.assignedCondition;
-			return `
-				<div class="phase-intro">
-					<h2>Phase 2: Forecast Visualization</h2>
-					<p>In this second phase, you will make predictions using <strong>interactive forecast visualizations</strong>.</p>
-					<p>You will see the same historical data as before, plus <strong>future air quality predictions</strong> from multiple forecasting agencies.</p>
-					<p>Your assigned visualization condition: <strong>${condition.name}</strong></p>
-					<p><em>${condition.description}</em></p>
-					<br>
-					<p><strong>Instructions:</strong> ${condition.instructions}</p>
-					<br>
-					<p>Use this additional information to make your best prediction about which city will have better air quality on 06/30.</p>
-				</div>
-			`;
-		},
-		choices: ['Continue to Phase 2'],
-		data: { 
-			trial_type: 'phase_2_intro',
-			condition_id: function() { return ParticipantConfig.assignedCondition.id; },
-			condition_name: function() { return ParticipantConfig.assignedCondition.name; }
-		}
-	});
 
 	// Phase 2: Historical + Prediction Visualization  
 	timeline.push({
@@ -324,37 +288,44 @@ function buildTimeline() {
 				<h2>Trust & Experience Assessment</h2>
 				<p>Thank you for completing the prediction tasks!</p>
 				<p>Now we'd like to understand your experience with the forecast visualization you just used.</p>
-				<p>You'll be asked several questions about:</p>
-				<ul>
-					<li>Your trust in the visualization interface</li>
-					<li>Your trust in the underlying data</li>
-					<li>How easy or difficult the visualization was to use</li>
-					<li>Your overall experience with the interface</li>
-				</ul>
-				<p>Please answer honestly based on your experience.</p>
 			</div>
 		`,
 		choices: ['Continue to Trust Assessment'],
 		data: { trial_type: 'trust_intro' }
 	});
 
-	// Trust Survey after Prediction Visualization
+	// Trust Survey Page 1 - Interface Control
 	timeline.push({
-		type: jsPsychSurveyLikert,
-		questions: ExperimentConfig.trustQuestions.map(q => ({
-			prompt: q.prompt,
-			name: q.type,
-			labels: q.labels,
-			required: true
-		})),
+		type: jsPsychTrustSurvey,
+		questions: ExperimentConfig.trustQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
-                    <h3>Trust Assessment - Air Quality Forecasts</h3>
-                    <p>Please rate your agreement with the following statements based on your experience with the air quality forecast visualization.</p>
+                    <h3>Interface Assessment - Page 1</h3>
+                    <p>Please rate your agreement with the following statements based on your experience with the interface.</p>
                 </div>
             `,
 		data: {
-			trial_type: 'trust_survey_prediction',
+			trial_type: 'trust_survey_interface',
+			phase: 2,
+			round: 1,
+			condition_id: ParticipantConfig.assignedCondition.id,
+			condition_name: ParticipantConfig.assignedCondition.name,
+			display_format: ParticipantConfig.assignedCondition.displayFormat
+		}
+	});
+
+	// Trust Survey Page 2 - Visualization-specific  
+	timeline.push({
+		type: jsPsychTrustSurvey,
+		questions: ExperimentConfig.visualizationTrustQuestions,
+		preamble: `
+                <div class="trust-survey-preamble">
+                    <h3>Visualization Assessment - Page 2</h3>
+                    <p>Please rate your agreement with the following statements about the visualization you just used.</p>
+                </div>
+            `,
+		data: {
+			trial_type: 'trust_survey_visualization',
 			phase: 2,
 			round: 1,
 			condition_id: ParticipantConfig.assignedCondition.id,
@@ -362,16 +333,16 @@ function buildTimeline() {
 			display_format: ParticipantConfig.assignedCondition.displayFormat
 		},
 		on_finish: function (data) {
-			// Convert 0-based to 1-based indexing and rename response fields for consistency with original plugin
-			data.interface_trust = data.response.interface_trust !== null ? data.response.interface_trust + 1 : null;
+			// Convert 0-based to 1-7 scale indexing and rename response fields for consistency
+			data.skeptical_rating = data.response.skeptical_rating !== null ? data.response.skeptical_rating + 1 : null;
 			data.data_trust = data.response.data_trust !== null ? data.response.data_trust + 1 : null;
-			data.misleading_rating = data.response.misleading_rating !== null ? data.response.misleading_rating + 1 : null;
+			data.usability_difficulty = data.response.usability_difficulty !== null ? data.response.usability_difficulty + 1 : null;
+			data.comprehension_ease = data.response.comprehension_ease !== null ? data.response.comprehension_ease + 1 : null;
 
 			// Calculate composite metrics
-			data.trust_composite = data.interface_trust && data.data_trust ?
-				Math.round((data.interface_trust + data.data_trust) / 2) : null;
-			data.trust_adjusted = data.interface_trust && data.misleading_rating ?
-				Math.round(data.interface_trust - (data.misleading_rating - 4)) : null;
+			data.trust_composite = data.data_trust !== null ? data.data_trust : null;
+			data.usability_composite = data.usability_difficulty && data.comprehension_ease ?
+				Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
 		}
 	});
 
@@ -382,13 +353,6 @@ function buildTimeline() {
 			<div class="section-intro">
 				<h2>Background Information</h2>
 				<p>We're almost finished! This final section will ask for some background information to help us understand our results.</p>
-				<p>You'll be asked about:</p>
-				<ul>
-					<li>Your personality characteristics</li>
-					<li>Your age and profession</li>
-					<li>Your experience with data visualizations</li>
-				</ul>
-				<p>All questions are optional and your responses will remain anonymous.</p>
 			</div>
 		`,
 		choices: ['Continue to Background Questions'],
@@ -397,13 +361,8 @@ function buildTimeline() {
 
 	// Personality Self Evaluation
 	timeline.push({
-		type: jsPsychSurveyLikert,
-		questions: ExperimentConfig.personalityQuestions.map(q => ({
-			prompt: q.prompt,
-			name: q.type,
-			labels: q.labels,
-			required: true
-		})),
+		type: jsPsychPersonalitySurvey,
+		questions: ExperimentConfig.personalityQuestions,
 		preamble: `
 			<div class="personality-survey-preamble">
 				<h3>Personality Self Evaluation</h3>
@@ -417,35 +376,55 @@ function buildTimeline() {
 		}
 	});
 
-	// Final Demographics Survey
+	// Age and Major Questions (Text Input)
 	timeline.push({
 		type: jsPsychSurveyText,
 		questions: [
 			{
 				prompt: "What is your age?",
 				name: 'age',
-				required: false,
-				columns: 3
+				required: true,
+				columns: 5,
+				input_type: 'number'
 			},
 			{
-				prompt: "What is your field of study or profession?",
-				name: 'profession',
-				required: false,
-				columns: 40
-			},
-			{
-				prompt: "How often do you work with data visualizations or charts?",
-				name: 'viz_experience',
-				required: false,
+				prompt: "What is your major/field of work?",
+				name: 'major_field',
+				required: true,
 				columns: 40
 			}
 		],
 		data: {
-			trial_type: 'demographics',
+			trial_type: 'demographics_text_1',
 			condition_id: ParticipantConfig.assignedCondition.id,
 			condition_name: ParticipantConfig.assignedCondition.name
 		}
 	});
+
+	// Education and Visualization Experience (Multiple Choice)
+	timeline.push({
+		type: jsPsychSurveyMultiChoice,
+		questions: [
+			{
+				prompt: "What is your highest level of education?",
+				name: 'education',
+				required: true,
+				options: ['High school or equivalent', 'Some college', 'Associate degree', 'Bachelor\'s degree', 'Master\'s degree', 'Doctoral degree', 'Other']
+			},
+			{
+				prompt: "How often do you work with data visualizations or charts?",
+				name: 'viz_experience',
+				required: true,
+				options: ['Daily', 'Weekly', 'Monthly', 'A few times per year', 'Rarely', 'Never']
+			}
+		],
+		data: {
+			trial_type: 'demographics_mc',
+			condition_id: ParticipantConfig.assignedCondition.id,
+			condition_name: ParticipantConfig.assignedCondition.name
+		}
+	});
+
 
 	// Debrief
 	timeline.push({
@@ -456,7 +435,7 @@ function buildTimeline() {
                 <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
                 
                 <h3>Study Background:</h3>
-                <p>You were randomly assigned to one of eight different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+                <p>You were randomly assigned to one of nine different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
                 
                 <p>The air quality data you saw was synthetic (computer-generated) for research purposes.</p>
                 

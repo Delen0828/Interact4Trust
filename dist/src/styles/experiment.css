@@ -1273,7 +1273,7 @@ body {
 }
 
 .minivlat-layout .chart-container {
-    flex: 1;
+    flex: 2;
     background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: 12px;

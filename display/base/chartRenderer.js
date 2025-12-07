@@ -3,9 +3,10 @@
  * Shared functionality for all visualization conditions
  */
 export class ChartRenderer {
-    constructor(svgId, config) {
+    constructor(svgId, config, phase = null) {
         this.svgId = svgId;
         this.config = config;
+        this.phase = phase;
         this.svg = d3.select(`#${svgId}`);
         this.margin = config.margin;
         this.width = config.width - this.margin.left - this.margin.right;
@@ -116,17 +117,58 @@ export class ChartRenderer {
     /**
      * Add vertical reference line at prediction start (06/01)
      */
-    addReferenceLine() {
+    addReferenceLine(phase = null) {
+        // Use provided phase or fall back to stored phase
+        const currentPhase = phase !== null ? phase : this.phase;
+        
         const verticalLineDate = new Date('2025-06-01');
+        const lineX = this.xScale(verticalLineDate);
+        
         this.g.append("line")
             .attr("class", "vertical-reference-line")
-            .attr("x1", this.xScale(verticalLineDate))
-            .attr("x2", this.xScale(verticalLineDate))
+            .attr("x1", lineX)
+            .attr("x2", lineX)
             .attr("y1", 0)
             .attr("y2", this.height)
             .attr("stroke", "#999")
             .attr("stroke-width", 1)
             .attr("opacity", 0.8);
+            
+        // Add "Today" label on top of the vertical line
+        this.g.append("text")
+            .attr("class", "today-label")
+            .attr("x", lineX)
+            .attr("y", -5)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "12px")
+            .attr("font-weight", "500")
+            .attr("fill", "#666")
+            .text("Today");
+            
+        // Add phase-specific labels
+        if (currentPhase === 1) {
+            // Phase 1: Add "historical data" label on the left
+            this.g.append("text")
+                .attr("class", "phase-label")
+                .attr("x", lineX - 20)
+                .attr("y", this.height / 2 +20)
+                .attr("text-anchor", "end")
+                .attr("font-size", "12px")
+                .attr("font-style", "italic")
+                .attr("fill", "#666")
+                .text("historical data");
+        } else if (currentPhase === 2) {
+            // Phase 2: Add "forecast data" label on the right
+            this.g.append("text")
+                .attr("class", "phase-label")
+                .attr("x", lineX + 20)
+                .attr("y", this.height / 2 +20)
+                .attr("text-anchor", "start")
+                .attr("font-size", "12px")
+                .attr("font-style", "italic")
+                .attr("fill", "#666")
+                .text("forecast data");
+        }
     }
 
     /**
@@ -218,12 +260,12 @@ export class ChartRenderer {
     /**
      * Setup basic chart structure (grid, axes, reference line, historical data)
      */
-    setupBasicChart(data, globalYScale) {
+    setupBasicChart(data, globalYScale, phase = null) {
         this.clearAndSetup();
         this.createScales(data, globalYScale);
         this.addGrid();
         this.addAxes();
-        this.addReferenceLine();
+        this.addReferenceLine(phase);
         this.renderHistoricalLines(data);
         return this.g;
     }
