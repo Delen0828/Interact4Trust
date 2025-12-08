@@ -217,34 +217,8 @@ export class DataProcessor {
      * Calculate global Y scale domain
      */
     calculateGlobalYScale(stockData, realTimeAggregated) {
-        const allValues = [];
-        
-        // Include historical and alternative values
-        Object.values(stockData).forEach(stock => {
-            stock.historical.forEach(d => allValues.push(d.price));
-            stock.alternatives.forEach(d => allValues.push(d.price));
-        });
-        
-        // Include real-time aggregated values
-        Object.values(realTimeAggregated).forEach(aggregatedData => {
-            if (aggregatedData) {
-                aggregatedData.forEach(d => allValues.push(d.price));
-            }
-        });
-
-        // Dynamic y-scale range based on actual data values with padding
-        if (allValues.length === 0) {
-            return [80, 120]; // Fallback range for AQI data
-        }
-        
-        const minValue = Math.min(...allValues);
-        const maxValue = Math.max(...allValues);
-        const padding = (maxValue - minValue) * 0.1; // 10% padding
-        
-        return [
-            Math.max(0, Math.floor(minValue - padding)), // Don't go below 0 for AQI
-            Math.ceil(maxValue + padding)
-        ];
+        // Fixed y-axis range for consistent visualization across all phases
+        return [0, 150]; // Air Quality Index range from 0 to 200
     }
 
     /**

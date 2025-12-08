@@ -256,8 +256,7 @@ const ExperimentConfig = {
     conditionAssignment: {
         getAssignedCondition: function() {
             // Random assignment to one of the 9 conditions
-            // const randomIndex = Math.floor(Math.random() * ExperimentConfig.conditions.length);
-			const randomIndex=6;
+            const randomIndex = Math.floor(Math.random() * ExperimentConfig.conditions.length);
             return ExperimentConfig.conditions[randomIndex];
         }
     },
@@ -300,8 +299,8 @@ let ParticipantConfig = {
 };
 
 // Initialize participant configuration
-function initializeParticipant() {
-    ParticipantConfig.id = 'P' + Math.random().toString(36).substring(2, 11);
+function initializeParticipant(participantId) {
+    ParticipantConfig.id = participantId || null; // ID will be set from user input
     ParticipantConfig.assignedCondition = ExperimentConfig.conditionAssignment.getAssignedCondition();
     ParticipantConfig.startTime = new Date().toISOString();
     

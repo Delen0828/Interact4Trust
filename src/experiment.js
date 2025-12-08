@@ -31,9 +31,6 @@ async function initializeExperiment() {
 			}
 		});
 
-		// Initialize participant configuration
-		initializeParticipant();
-
 		// Build timeline
 		buildTimeline();
 
@@ -73,6 +70,44 @@ function buildTimeline() {
 	    `,
 	    choices: ['Begin Study'],
 	    data: { trial_type: 'welcome' }
+	});
+
+	// Fullscreen entry
+	timeline.push({
+	    type: jsPsychFullscreen,
+	    fullscreen_mode: true,
+	    message: `
+	        <div style="text-align: center; padding: 40px;">
+	            <h3>Enter Fullscreen Mode</h3>
+	            <p>For the best experience, this study will run in fullscreen mode.</p>
+	            <p>Please click the button below to enter fullscreen and continue.</p>
+	        </div>
+	    `,
+	    button_label: 'Enter Fullscreen',
+	    data: { trial_type: 'fullscreen_enter' }
+	});
+
+	// Participant ID collection
+	timeline.push({
+	    type: jsPsychSurveyText,
+	    questions: [
+	        {
+	            prompt: 'Please enter your participant ID:',
+	            name: 'participant_id',
+	            required: true,
+	            placeholder: 'Enter your ID'
+	        }
+	    ],
+	    button_label: 'Continue',
+	    on_finish: function(data) {
+	        // Store participant ID for use throughout experiment
+	        const participantId = data.response.participant_id;
+	        jsPsych.data.addProperties({participant_id: participantId});
+	        
+	        // Initialize participant configuration
+	        initializeParticipant(participantId);
+	    },
+	    data: { trial_type: 'participant_id_collection' }
 	});
 
 	// Consent form
@@ -179,10 +214,12 @@ function buildTimeline() {
 	timeline.push({
 	    type: jsPsychVisLiteracy,
 	    randomize_order: false, // Keep original question order
-	    data: { 
-	        trial_type: 'mini_vlat',
-	        condition_id: ParticipantConfig.assignedCondition.id,
-	        condition_name: ParticipantConfig.assignedCondition.name
+	    data: function() {
+	        return {
+	            trial_type: 'mini_vlat',
+	            condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+	            condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+	        };
 	    },
 	    on_finish: function(data) {
 	        ParticipantConfig.visualizationLiteracyScore = data.total_score;
@@ -265,15 +302,17 @@ function buildTimeline() {
 		confidence_scale: ExperimentConfig.predictionTask.confidenceScale,
 		travel_question: ExperimentConfig.predictionTask.travelQuestion,
 		travel_choices: ExperimentConfig.predictionTask.travelChoices,
-		data: {
-			trial_type: 'phase2_prediction',
-			phase: 2,
-			round: 1,
-			visualization_shown: true,
-			predictions_shown: true,
-			condition_id: ParticipantConfig.assignedCondition.id,
-			condition_name: ParticipantConfig.assignedCondition.name,
-			display_format: ParticipantConfig.assignedCondition.displayFormat
+		data: function() {
+			return {
+				trial_type: 'phase2_prediction',
+				phase: 2,
+				round: 1,
+				visualization_shown: true,
+				predictions_shown: true,
+				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null,
+				display_format: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.displayFormat : null
+			};
 		},
 		on_finish: function (data) {
 			ParticipantConfig.phase2Complete = true;
@@ -304,13 +343,15 @@ function buildTimeline() {
                     <p>Please rate your agreement with the following statements based on your experience with the interface.</p>
                 </div>
             `,
-		data: {
-			trial_type: 'trust_survey_interface',
-			phase: 2,
-			round: 1,
-			condition_id: ParticipantConfig.assignedCondition.id,
-			condition_name: ParticipantConfig.assignedCondition.name,
-			display_format: ParticipantConfig.assignedCondition.displayFormat
+		data: function() {
+			return {
+				trial_type: 'trust_survey_interface',
+				phase: 2,
+				round: 1,
+				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null,
+				display_format: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.displayFormat : null
+			};
 		}
 	});
 
@@ -324,13 +365,15 @@ function buildTimeline() {
                     <p>Please rate your agreement with the following statements about the visualization you just used.</p>
                 </div>
             `,
-		data: {
-			trial_type: 'trust_survey_visualization',
-			phase: 2,
-			round: 1,
-			condition_id: ParticipantConfig.assignedCondition.id,
-			condition_name: ParticipantConfig.assignedCondition.name,
-			display_format: ParticipantConfig.assignedCondition.displayFormat
+		data: function() {
+			return {
+				trial_type: 'trust_survey_visualization',
+				phase: 2,
+				round: 1,
+				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null,
+				display_format: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.displayFormat : null
+			};
 		},
 		on_finish: function (data) {
 			// Convert 0-based to 1-7 scale indexing and rename response fields for consistency
@@ -369,10 +412,12 @@ function buildTimeline() {
 				<p>Please rate your agreement with the following statements about yourself.</p>
 			</div>
 		`,
-		data: {
-			trial_type: 'personality',
-			condition_id: ParticipantConfig.assignedCondition.id,
-			condition_name: ParticipantConfig.assignedCondition.name
+		data: function() {
+			return {
+				trial_type: 'personality',
+				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+			};
 		}
 	});
 
@@ -394,10 +439,12 @@ function buildTimeline() {
 				columns: 40
 			}
 		],
-		data: {
-			trial_type: 'demographics_text_1',
-			condition_id: ParticipantConfig.assignedCondition.id,
-			condition_name: ParticipantConfig.assignedCondition.name
+		data: function() {
+			return {
+				trial_type: 'demographics_text_1',
+				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+			};
 		}
 	});
 
@@ -418,13 +465,29 @@ function buildTimeline() {
 				options: ['Daily', 'Weekly', 'Monthly', 'A few times per year', 'Rarely', 'Never']
 			}
 		],
-		data: {
-			trial_type: 'demographics_mc',
-			condition_id: ParticipantConfig.assignedCondition.id,
-			condition_name: ParticipantConfig.assignedCondition.name
+		data: function() {
+			return {
+				trial_type: 'demographics_mc',
+				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
+				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+			};
 		}
 	});
 
+	// Exit fullscreen
+	timeline.push({
+	    type: jsPsychFullscreen,
+	    fullscreen_mode: false,
+	    message: `
+	        <div style="text-align: center; padding: 40px;">
+	            <h3>Study Complete</h3>
+	            <p>Thank you for completing the study!</p>
+	            <p>Click below to exit fullscreen mode and see the final summary.</p>
+	        </div>
+	    `,
+	    button_label: 'Exit Fullscreen',
+	    data: { trial_type: 'fullscreen_exit' }
+	});
 
 	// Debrief
 	timeline.push({
@@ -509,71 +572,9 @@ async function getAirQualityData(roundNumber = 1) {
 
 	} catch (error) {
 		console.error('Error loading air quality data:', error);
-		console.log('Falling back to placeholder data');
-		return getPlaceholderData(roundNumber);
+		throw new Error(`Failed to load required data file: ${error.message}`);
 	}
 }
-
-// Fallback placeholder data for rounds
-function getPlaceholderData(roundNumber) {
-	const baseValue = 100 + (roundNumber % 3); // Slight variation per round
-	const allData = []; // Flat array to match JSON structure
-
-	// Generate simple placeholder historical data
-	for (let i = 0; i < 30; i++) { // 30 days of history
-		const date = new Date();
-		date.setDate(date.getDate() - 30 + i);
-		const dateString = date.toISOString().split('T')[0];
-
-		allData.push({
-			date: dateString,
-			stock: 'A',  // Use 'stock' field, not 'city'
-			price: Math.round((baseValue + Math.sin(i / 5) * 2 + (Math.random() - 0.5)) * 100) / 100,  // Use 'price' field, not 'aqi'
-			series: 'historical',
-			scenario: null
-		});
-
-		allData.push({
-			date: dateString,
-			stock: 'B',  // Use 'stock' field, not 'city'
-			price: Math.round((baseValue - 1 + Math.cos(i / 4) * 1.5 + (Math.random() - 0.5)) * 100) / 100,  // Use 'price' field, not 'aqi'
-			series: 'historical',
-			scenario: null
-		});
-	}
-
-	// Generate placeholder prediction data (future dates)
-	for (let scenario = 1; scenario <= 5; scenario++) { // 5 scenarios to match expected structure
-		for (let i = 0; i < 20; i++) { // 20 days of predictions
-			const date = new Date();
-			date.setDate(date.getDate() + 1 + i); // Start from tomorrow
-			const dateString = date.toISOString().split('T')[0];
-
-			// Add some variation between scenarios
-			const scenarioVariation = (scenario - 3) * 2; // -4 to +4 variation
-
-			allData.push({
-				date: dateString,
-				stock: 'A',
-				price: Math.round((baseValue + scenarioVariation + Math.sin(i / 3) * 1.5 + (Math.random() - 0.5)) * 100) / 100,
-				series: 'prediction',
-				scenario: scenario
-			});
-
-			allData.push({
-				date: dateString,
-				stock: 'B',
-				price: Math.round((baseValue - 2 + scenarioVariation * 0.5 + Math.cos(i / 4) * 1 + (Math.random() - 0.5)) * 100) / 100,
-				series: 'prediction',
-				scenario: scenario
-			});
-		}
-	}
-
-	console.log(`Generated ${allData.length} placeholder data points for round ${roundNumber}`);
-	return allData; // Return flat array, not nested object
-}
-
 
 // Save data function
 function saveData(data) {
@@ -596,7 +597,8 @@ function saveData(data) {
 		
 		// Generate filename in format required by PHP: user_[ID]_[TIMESTAMP].csv
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('Z', '').split('.')[0]; // Remove Z and milliseconds
-		const participantIdNumber = ParticipantConfig.id.replace('P', ''); // Remove 'P' prefix, ensure it's numeric
+		const participantIdClean = ParticipantConfig.id || 'unknown'; // Handle null case
+		const participantIdNumber = participantIdClean.toString().replace(/^P/, ''); // Remove 'P' prefix if present
 		const numericId = participantIdNumber.replace(/[^0-9]/g, '') || Date.now(); // Extract only digits, fallback to timestamp
 		const filename = `user_${numericId}_${timestamp}.csv`;
 
