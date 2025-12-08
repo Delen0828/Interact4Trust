@@ -9,10 +9,14 @@ echo "Building the project..."
 # Build the project (copies files to dist/)
 npm run build
 
-echo "Copying save_data.php to dist..."
-# Ensure PHP file is in dist (already handled by npm run build)
+echo "Copying PHP files to dist..."
+# Ensure PHP files are in dist
 if [ ! -f "dist/save_data.php" ]; then
     cp save_data.php dist/
+fi
+
+if [ ! -f "dist/complete_study.php" ]; then
+    cp complete_study.php dist/
 fi
 
 # Ensure data directory exists

@@ -92,7 +92,7 @@ function buildTimeline() {
 	    type: jsPsychSurveyText,
 	    questions: [
 	        {
-	            prompt: 'Please enter your participant ID:',
+	            prompt: 'Please enter your participant ID from Prolific:',
 	            name: 'participant_id',
 	            required: true,
 	            placeholder: 'Enter your ID'
@@ -509,7 +509,31 @@ function buildTimeline() {
             </div>
         `,
 		choices: ['Close Study'],
-		data: { trial_type: 'debrief' }
+		data: { trial_type: 'debrief' },
+		on_finish: function() {
+			// Get Prolific completion URL from server
+			fetch('./complete_study.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					// Redirect to Prolific completion page
+					window.location.href = data.redirect_url;
+				} else {
+					console.error('Error getting completion URL');
+					alert('There was an error completing your study. Please contact the research team.');
+				}
+			})
+			.catch(error => {
+				console.error('Error getting completion URL:', error);
+				alert('There was an error completing your study. Please contact the research team.');
+			});
+		}
 	});
 }
 

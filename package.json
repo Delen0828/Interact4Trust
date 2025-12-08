@@ -12,7 +12,7 @@
     "test": "echo 'Open http://localhost:8000 in browser to test experiment with PHP data saving - npm start to run server'",
     "clean": "rm -rf dist && echo 'Cleaned dist directory'",
     "lint": "echo 'No linting configured - using vanilla JavaScript'",
-    "build": "mkdir -p dist && cp -r src display index.html conditions.html synthetic_stock_data.json save_data.php dist/ && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && echo 'Build complete - files ready for deployment with PHP data saving'"
+    "build": "mkdir -p dist && cp -r src display index.html conditions.html synthetic_stock_data.json save_data.php complete_study.php dist/ && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && echo 'Build complete - files ready for deployment with PHP data saving'"
   },
   "keywords": [
     "psychology",
