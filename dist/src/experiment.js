@@ -50,6 +50,29 @@ async function initializeExperiment() {
 
 // Build experiment timeline
 function buildTimeline() {
+	// Preload mini-VLAT images
+	timeline.push({
+		type: jsPsychPreload,
+		images: [
+			'src/stimuli/minivlat-images/LineChart.png',
+			'src/stimuli/minivlat-images/BarChart.png',
+			'src/stimuli/minivlat-images/StackedBar.png',
+			'src/stimuli/minivlat-images/Stacked100.png',
+			'src/stimuli/minivlat-images/PieChart.png',
+			'src/stimuli/minivlat-images/Histogram.png',
+			'src/stimuli/minivlat-images/Scatterplot.png',
+			'src/stimuli/minivlat-images/AreaChart.png',
+			'src/stimuli/minivlat-images/StackedArea.png',
+			'src/stimuli/minivlat-images/BubbleChart.png',
+			'src/stimuli/minivlat-images/Choropleth.png',
+			'src/stimuli/minivlat-images/TreeMap.png'
+		],
+		message: 'Loading assessment images...',
+		show_progress_bar: true,
+		continue_after_error: false,
+		data: { trial_type: 'preload' }
+	});
+
 	// Welcome screen
 	timeline.push({
 	    type: jsPsychHtmlButtonResponse,
