@@ -19,10 +19,10 @@ fi
 mkdir -p dist/data
 
 echo "Starting PHP server on localhost:8000..."
-echo "Open http://localhost:8001 in your browser to access the experiment"
+echo "Open http://localhost:8864 in your browser to access the experiment"
 echo "Data will be saved in dist/data/ directory"
 echo "Press Ctrl+C to stop the server"
 echo ""
 
 # Start PHP server in dist directory
-cd dist && php -S localhost:8001
+cd dist && php -S localhost:8864

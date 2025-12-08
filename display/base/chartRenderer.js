@@ -151,23 +151,23 @@ export class ChartRenderer {
             this.g.append("text")
                 .attr("class", "phase-label")
                 .attr("x", lineX - 20)
-                .attr("y", this.height / 2 +20)
+                .attr("y", this.height / 2 -100)
                 .attr("text-anchor", "end")
                 .attr("font-size", "12px")
                 .attr("font-style", "italic")
                 .attr("fill", "#666")
-                .text("historical data");
+                .text("Historical Data");
         } else if (currentPhase === 2) {
             // Phase 2: Add "forecast data" label on the right
             this.g.append("text")
                 .attr("class", "phase-label")
                 .attr("x", lineX + 20)
-                .attr("y", this.height / 2 +20)
+                .attr("y", this.height / 2 -100)
                 .attr("text-anchor", "start")
                 .attr("font-size", "12px")
                 .attr("font-style", "italic")
                 .attr("fill", "#666")
-                .text("forecast data");
+                .text("Forecast Data");
         }
     }
 

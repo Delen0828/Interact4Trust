@@ -457,23 +457,59 @@ function buildTimeline() {
 async function getAirQualityData(roundNumber = 1) {
 	try {
 		// Load synthetic stock data (used by display system)
-		const response = await fetch('synthetic_stock_data.json');
+		const response = await fetch('synthetic_stock_data_aqi.json');
 		if (!response.ok) {
 			throw new Error(`Failed to load data: ${response.status}`);
 		}
 		const stockData = await response.json();
 		
-		// Return data array directly (not wrapped in object)
-		const data = stockData.data || stockData;
+		// Robustly extract data array from JSON structure
+		let data;
+		if (stockData && typeof stockData === 'object') {
+			// Handle wrapped format: { "data": [...] }
+			if (stockData.data && Array.isArray(stockData.data)) {
+				data = stockData.data;
+			} 
+			// Handle direct array format: [...]
+			else if (Array.isArray(stockData)) {
+				data = stockData;
+			}
+			// Handle unexpected object format
+			else {
+				console.error('Unexpected data structure:', stockData);
+				throw new Error(`Data is not in expected format. Expected array or {data: array}, got object with keys: ${Object.keys(stockData).join(', ')}`);
+			}
+		} else {
+			throw new Error(`Invalid JSON structure: expected object, got ${typeof stockData}`);
+		}
 		
-		// Validate data format
+		// Validate data format and content
 		if (!Array.isArray(data)) {
 			throw new Error(`Expected data to be an array, got ${typeof data}`);
 		}
 		
+		if (data.length === 0) {
+			throw new Error('Data array is empty');
+		}
+		
+		// Validate data structure by checking first few items
+		const sampleSize = Math.min(3, data.length);
+		for (let i = 0; i < sampleSize; i++) {
+			const item = data[i];
+			if (!item || typeof item !== 'object') {
+				throw new Error(`Invalid data item at index ${i}: expected object, got ${typeof item}`);
+			}
+			if (!item.hasOwnProperty('stock') || !item.hasOwnProperty('price')) {
+				throw new Error(`Invalid data item at index ${i}: missing required fields 'stock' or 'price'. Found: ${Object.keys(item).join(', ')}`);
+			}
+		}
+		
+		console.log(`Successfully loaded ${data.length} data points`);
 		return data;
 
 	} catch (error) {
+		console.error('Error loading air quality data:', error);
+		console.log('Falling back to placeholder data');
 		return getPlaceholderData(roundNumber);
 	}
 }
@@ -481,39 +517,61 @@ async function getAirQualityData(roundNumber = 1) {
 // Fallback placeholder data for rounds
 function getPlaceholderData(roundNumber) {
 	const baseValue = 100 + (roundNumber % 3); // Slight variation per round
+	const allData = []; // Flat array to match JSON structure
 
 	// Generate simple placeholder historical data
-	const historical = [];
 	for (let i = 0; i < 30; i++) { // 30 days of history
 		const date = new Date();
 		date.setDate(date.getDate() - 30 + i);
+		const dateString = date.toISOString().split('T')[0];
 
-		historical.push({
-			date: date.toISOString().split('T')[0],
+		allData.push({
+			date: dateString,
 			stock: 'A',  // Use 'stock' field, not 'city'
-			price: baseValue + Math.sin(i / 5) * 2 + (Math.random() - 0.5),  // Use 'price' field, not 'aqi'
+			price: Math.round((baseValue + Math.sin(i / 5) * 2 + (Math.random() - 0.5)) * 100) / 100,  // Use 'price' field, not 'aqi'
 			series: 'historical',
 			scenario: null
 		});
 
-		historical.push({
-			date: date.toISOString().split('T')[0],
+		allData.push({
+			date: dateString,
 			stock: 'B',  // Use 'stock' field, not 'city'
-			price: baseValue - 1 + Math.cos(i / 4) * 1.5 + (Math.random() - 0.5),  // Use 'price' field, not 'aqi'
+			price: Math.round((baseValue - 1 + Math.cos(i / 4) * 1.5 + (Math.random() - 0.5)) * 100) / 100,  // Use 'price' field, not 'aqi'
 			series: 'historical',
 			scenario: null
 		});
 	}
 
-	return {
-		round: roundNumber,
-		historical: historical,
-		predictions: {
-			scenarios: [],
-			aggregated: [],
-			bounds: []
+	// Generate placeholder prediction data (future dates)
+	for (let scenario = 1; scenario <= 5; scenario++) { // 5 scenarios to match expected structure
+		for (let i = 0; i < 20; i++) { // 20 days of predictions
+			const date = new Date();
+			date.setDate(date.getDate() + 1 + i); // Start from tomorrow
+			const dateString = date.toISOString().split('T')[0];
+
+			// Add some variation between scenarios
+			const scenarioVariation = (scenario - 3) * 2; // -4 to +4 variation
+
+			allData.push({
+				date: dateString,
+				stock: 'A',
+				price: Math.round((baseValue + scenarioVariation + Math.sin(i / 3) * 1.5 + (Math.random() - 0.5)) * 100) / 100,
+				series: 'prediction',
+				scenario: scenario
+			});
+
+			allData.push({
+				date: dateString,
+				stock: 'B',
+				price: Math.round((baseValue - 2 + scenarioVariation * 0.5 + Math.cos(i / 4) * 1 + (Math.random() - 0.5)) * 100) / 100,
+				series: 'prediction',
+				scenario: scenario
+			});
 		}
-	};
+	}
+
+	console.log(`Generated ${allData.length} placeholder data points for round ${roundNumber}`);
+	return allData; // Return flat array, not nested object
 }
 
 

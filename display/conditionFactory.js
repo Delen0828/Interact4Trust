@@ -19,6 +19,13 @@ export class ConditionFactory {
         this.config = config;
         this.phase = phase;
         
+        // Debug logging at ConditionFactory level
+        console.log('ConditionFactory.initialize received:');
+        console.log('- rawData type:', typeof rawData);
+        console.log('- rawData is array:', Array.isArray(rawData));
+        console.log('- rawData keys (if object):', typeof rawData === 'object' && rawData && !Array.isArray(rawData) ? Object.keys(rawData) : 'N/A');
+        console.log('- rawData sample:', Array.isArray(rawData) ? rawData.slice(0, 2) : rawData);
+        
         // Process data through data processor
         this.processedData = this.dataProcessor.processData(rawData, startDate);
         

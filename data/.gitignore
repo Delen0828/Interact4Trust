@@ -1,7 +1,0 @@
-# Ignore all participant data files for privacy
-*.csv
-*.txt
-*.log
-
-# Keep the directory structure
-!.gitignore

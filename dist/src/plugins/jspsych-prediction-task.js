@@ -571,6 +571,14 @@ var jsPsychPredictionTask = (function (jspsych) {
           yAxisTitle: 'Air Quality Index'
         };
         
+        // Debug logging before passing to ConditionFactory
+        console.log('Before ConditionFactory.initialize:');
+        console.log('- data type:', typeof data);
+        console.log('- data is array:', Array.isArray(data));
+        console.log('- data length:', Array.isArray(data) ? data.length : 'N/A');
+        console.log('- data keys (if object):', typeof data === 'object' && data && !Array.isArray(data) ? Object.keys(data) : 'N/A');
+        console.log('- first few items:', Array.isArray(data) ? data.slice(0, 3) : data);
+        
         // Initialize with data (pass data array directly, not wrapped)
         await conditionFactory.initialize(config, data, '05/01', this.trial.phase);
         
@@ -603,8 +611,49 @@ var jsPsychPredictionTask = (function (jspsych) {
 
 
       } catch (error) {
+        console.error('Visualization loading error:', error);
+        console.error('Error stack:', error.stack);
+        
+        // Safely check if data is defined before logging it
+        try {
+          console.error('Data passed to visualization:', typeof data !== 'undefined' ? data : 'undefined');
+        } catch (e) {
+          console.error('Could not log data (data not accessible)');
+        }
+        
+        const dataInfo = (() => {
+          try {
+            if (typeof data === 'undefined') {
+              return 'undefined';
+            } else if (Array.isArray(data)) {
+              return `Array (length: ${data.length})`;
+            } else {
+              return `${typeof data} ${typeof data === 'object' && data ? `(keys: ${Object.keys(data).join(', ')})` : ''}`;
+            }
+          } catch (e) {
+            return 'not accessible';
+          }
+        })();
+        
+        const errorDetails = `
+          <div class="error-details" style="text-align: left; margin-top: 10px; padding: 10px; background: #f8f8f8; border-radius: 4px; font-family: monospace; font-size: 12px;">
+            <strong>Error Details:</strong><br>
+            ${error.message}<br>
+            <br>
+            <strong>Data Info:</strong><br>
+            ${dataInfo}<br>
+            <br>
+            <details>
+              <summary>Technical Details</summary>
+              <pre>${error.stack || 'No stack trace available'}</pre>
+            </details>
+          </div>
+        `;
+        
         document.getElementById('air-quality-chart').innerHTML = 
-          `<p class="error-message">Error loading visualization: ${error.message}</p><p>Please continue with your best estimate.</p>`;
+          `<p class="error-message">Error loading visualization: ${error.message}</p>
+           <p>Please continue with your best estimate.</p>
+           ${errorDetails}`;
       }
     }
 
@@ -612,124 +661,77 @@ var jsPsychPredictionTask = (function (jspsych) {
       try {
         // Get the chart group (where the actual chart is rendered)
         const chartGroup = d3.select(svg).select('g');
-
-        // Find specific line elements using the classes assigned by the chart renderer
-        const cityALine = d3.select(svg).select('path.stock-a-line');
-        const cityBLine = d3.select(svg).select('path.stock-b-line');
-
-        // Check for vertical reference line (06/01 marker)
-        const referenceLineElement = d3.select(svg).select('.vertical-reference-line');
-        let labelX = null;
-        
-        if (!referenceLineElement.empty()) {
-          // Use reference line position for historical-only charts
-          labelX = parseFloat(referenceLineElement.attr('x1'));
+        if (chartGroup.empty()) {
+          console.warn('Chart group not found, skipping city labels');
+          return;
         }
 
-        if (!cityALine.empty()) {
-          // Get the path data and extract the appropriate point
-          const pathData = cityALine.attr('d');
+        // Find line elements with more flexible selectors
+        const stockALine = d3.select(svg).select('path.stock-a-line, path.line-a, path[stroke="#007bff"], path[stroke="#0066cc"]');
+        const stockBLine = d3.select(svg).select('path.stock-b-line, path.line-b, path[stroke="#fd7e14"], path[stroke="#ff6600"]');
+
+        // Get chart dimensions and margins for better positioning
+        const svgWidth = parseInt(svg.getAttribute('width')) || 600;
+        const svgHeight = parseInt(svg.getAttribute('height')) || 400;
+        
+        // Approximate chart margins (should match the config)
+        const margin = { top: 20, right: 20, bottom: 60, left: 70 };
+        const chartWidth = svgWidth - margin.left - margin.right;
+        const chartHeight = svgHeight - margin.top - margin.bottom;
+
+        // Position labels more reliably at the end of the chart area
+        const labelX = margin.left + chartWidth - 10; // 10px from right edge
+        
+        if (!stockALine.empty()) {
+          const pathData = stockALine.attr('d');
           if (pathData) {
-            let x, y;
-            
-            if (labelX !== null) {
-              // For historical-only charts, find y-value at reference line x-position
-              // Extract all points from path and find closest to reference line
-              const pathPoints = pathData.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/g);
-              if (pathPoints) {
-                let closestPoint = null;
-                let minDistance = Infinity;
+            // Extract the last point from the path for more accurate positioning
+            const pathPoints = pathData.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/g);
+            if (pathPoints && pathPoints.length > 0) {
+              // Get the last point in the path
+              const lastPointStr = pathPoints[pathPoints.length - 1];
+              const coords = lastPointStr.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
+              
+              if (coords) {
+                const y = parseFloat(coords[2]);
                 
-                pathPoints.forEach(pointStr => {
-                  const coords = pointStr.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
-                  if (coords) {
-                    const pointX = parseFloat(coords[1]);
-                    const pointY = parseFloat(coords[2]);
-                    const distance = Math.abs(pointX - labelX);
-                    if (distance < minDistance) {
-                      minDistance = distance;
-                      closestPoint = { x: pointX, y: pointY };
-                    }
-                  }
-                });
-                
-                if (closestPoint) {
-                  x = labelX;
-                  y = closestPoint.y;
-                }
+                chartGroup.append('text')
+                  .attr('x', labelX)
+                  .attr('y', y - 5) // Slightly above the line
+                  .attr('text-anchor', 'end')
+                  .attr('font-size', '11px')
+                  .attr('font-weight', '600')
+                  .attr('fill', '#007bff')
+                  .style('background', 'rgba(255,255,255,0.8)')
+                  .text('City A');
               }
-            } else {
-              // For prediction charts, use first point as before
-              const firstPoint = pathData.match(/M\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
-              if (firstPoint) {
-                x = parseFloat(firstPoint[1]);
-                y = parseFloat(firstPoint[2]);
-              }
-            }
-            
-            if (x !== undefined && y !== undefined) {
-              chartGroup.append('text')
-                .attr('x', x )
-                .attr('y', y + 10)
-                .attr('text-anchor', 'end')
-                .attr('font-size', '12px')
-                .attr('font-weight', '600')
-                .attr('fill', '#007bff')
-                .text('City A');
             }
           }
         }
 
-        if (!cityBLine.empty()) {
-          // Get the path data and extract the appropriate point
-          const pathData = cityBLine.attr('d');
+        if (!stockBLine.empty()) {
+          const pathData = stockBLine.attr('d');
           if (pathData) {
-            let x, y;
-            
-            if (labelX !== null) {
-              // For historical-only charts, find y-value at reference line x-position
-              // Extract all points from path and find closest to reference line
-              const pathPoints = pathData.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/g);
-              if (pathPoints) {
-                let closestPoint = null;
-                let minDistance = Infinity;
+            // Extract the last point from the path for more accurate positioning
+            const pathPoints = pathData.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/g);
+            if (pathPoints && pathPoints.length > 0) {
+              // Get the last point in the path
+              const lastPointStr = pathPoints[pathPoints.length - 1];
+              const coords = lastPointStr.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
+              
+              if (coords) {
+                const y = parseFloat(coords[2]);
                 
-                pathPoints.forEach(pointStr => {
-                  const coords = pointStr.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
-                  if (coords) {
-                    const pointX = parseFloat(coords[1]);
-                    const pointY = parseFloat(coords[2]);
-                    const distance = Math.abs(pointX - labelX);
-                    if (distance < minDistance) {
-                      minDistance = distance;
-                      closestPoint = { x: pointX, y: pointY };
-                    }
-                  }
-                });
-                
-                if (closestPoint) {
-                  x = labelX;
-                  y = closestPoint.y;
-                }
+                chartGroup.append('text')
+                  .attr('x', labelX)
+                  .attr('y', y + 15) // Slightly below the line (opposite of City A)
+                  .attr('text-anchor', 'end')
+                  .attr('font-size', '11px')
+                  .attr('font-weight', '600')
+                  .attr('fill', '#fd7e14')
+                  .style('background', 'rgba(255,255,255,0.8)')
+                  .text('City B');
               }
-            } else {
-              // For prediction charts, use first point as before
-              const firstPoint = pathData.match(/M\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
-              if (firstPoint) {
-                x = parseFloat(firstPoint[1]);
-                y = parseFloat(firstPoint[2]);
-              }
-            }
-            
-            if (x !== undefined && y !== undefined) {
-              chartGroup.append('text')
-                .attr('x', x )
-                .attr('y', y - 10)
-                .attr('text-anchor', 'end')
-                .attr('font-size', '12px')
-                .attr('font-weight', '600')
-                .attr('fill', '#fd7e14')
-                .text('City B');
             }
           }
         }

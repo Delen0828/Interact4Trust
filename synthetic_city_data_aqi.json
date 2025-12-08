@@ -1,0 +1,6598 @@
+{
+  "data": [
+    {
+      "date": "2025-01-01",
+      "city": "A",
+      "price": 99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-01",
+      "city": "B",
+      "price": 84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-02",
+      "city": "A",
+      "price": 100,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-02",
+      "city": "B",
+      "price": 84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-03",
+      "city": "A",
+      "price": 100,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-03",
+      "city": "B",
+      "price": 83,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-04",
+      "city": "A",
+      "price": 101,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-04",
+      "city": "B",
+      "price": 83,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-05",
+      "city": "A",
+      "price": 102,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-05",
+      "city": "B",
+      "price": 84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-06",
+      "city": "A",
+      "price": 102,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-06",
+      "city": "B",
+      "price": 83,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-07",
+      "city": "A",
+      "price": 102,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-07",
+      "city": "B",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-08",
+      "city": "A",
+      "price": 103,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-08",
+      "city": "B",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-09",
+      "city": "A",
+      "price": 104,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-09",
+      "city": "B",
+      "price": 84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-10",
+      "city": "A",
+      "price": 104,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-10",
+      "city": "B",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-11",
+      "city": "A",
+      "price": 104,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-11",
+      "city": "B",
+      "price": 84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-12",
+      "city": "A",
+      "price": 104,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-12",
+      "city": "B",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-13",
+      "city": "A",
+      "price": 103,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-13",
+      "city": "B",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-14",
+      "city": "A",
+      "price": 104,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-14",
+      "city": "B",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-15",
+      "city": "A",
+      "price": 102,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-15",
+      "city": "B",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-16",
+      "city": "A",
+      "price": 100,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-16",
+      "city": "B",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-17",
+      "city": "A",
+      "price": 99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-17",
+      "city": "B",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-18",
+      "city": "A",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-18",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-19",
+      "city": "A",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-19",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-20",
+      "city": "A",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-20",
+      "city": "B",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-21",
+      "city": "A",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-21",
+      "city": "B",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-22",
+      "city": "A",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-22",
+      "city": "B",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-23",
+      "city": "A",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-23",
+      "city": "B",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-24",
+      "city": "A",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-24",
+      "city": "B",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-25",
+      "city": "A",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-25",
+      "city": "B",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-26",
+      "city": "A",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-26",
+      "city": "B",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-27",
+      "city": "A",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-27",
+      "city": "B",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-28",
+      "city": "A",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-28",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-29",
+      "city": "A",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-29",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-30",
+      "city": "A",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-30",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-31",
+      "city": "A",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-31",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-01",
+      "city": "A",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-01",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-02",
+      "city": "A",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-02",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-03",
+      "city": "A",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-03",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-04",
+      "city": "A",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-04",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-05",
+      "city": "A",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-05",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-06",
+      "city": "A",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-06",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-07",
+      "city": "A",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-07",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-08",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-08",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-09",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-09",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-10",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-10",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-11",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-11",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-12",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-12",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-13",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-13",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-14",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-14",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-15",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-15",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-16",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-16",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-17",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-17",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-18",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-18",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-19",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-19",
+      "city": "B",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-20",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-20",
+      "city": "B",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-21",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-21",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-22",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-22",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-23",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-23",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-24",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-24",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-25",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-25",
+      "city": "B",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-26",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-26",
+      "city": "B",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-27",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-27",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-28",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-28",
+      "city": "B",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-01",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-01",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-02",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-02",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-03",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-03",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-04",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-04",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-05",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-05",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-06",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-06",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-07",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-07",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-08",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-08",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-09",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-09",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-10",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-10",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-11",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-11",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-12",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-12",
+      "city": "B",
+      "price": 99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-13",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-13",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-14",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-14",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-15",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-15",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-16",
+      "city": "A",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-16",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-17",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-17",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-18",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-18",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-19",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-19",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-20",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-20",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-21",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-21",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-22",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-22",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-23",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-23",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-24",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-24",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-25",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-25",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-26",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-26",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-27",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-27",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-28",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-28",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-29",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-29",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-30",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-30",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-31",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-31",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-01",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-01",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-02",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-02",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-03",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-03",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-04",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-04",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-05",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-05",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-06",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-06",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-07",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-07",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-08",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-08",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-09",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-09",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-10",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-10",
+      "city": "B",
+      "price": 96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-11",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-11",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-12",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-12",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-13",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-13",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-14",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-14",
+      "city": "B",
+      "price": 99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-15",
+      "city": "A",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-15",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-16",
+      "city": "A",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-16",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-17",
+      "city": "A",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-17",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-18",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-18",
+      "city": "B",
+      "price": 97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-19",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-19",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-20",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-20",
+      "city": "B",
+      "price": 99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-21",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-21",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-22",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-22",
+      "city": "B",
+      "price": 98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-23",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-23",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-24",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-24",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-25",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-25",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-26",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-26",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-27",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-27",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-28",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-28",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-29",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-29",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-30",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-30",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-01",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-01",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-02",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-02",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-03",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-03",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-04",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-04",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-05",
+      "city": "A",
+      "price": 89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-05",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-06",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-06",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-07",
+      "city": "A",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-07",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-08",
+      "city": "A",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-08",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-09",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-09",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-10",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-10",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-11",
+      "city": "A",
+      "price": 90,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-11",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-12",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-12",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-13",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-13",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-14",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-14",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-15",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-15",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-16",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-16",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-17",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-17",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-18",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-18",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-19",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-19",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-20",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-20",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-21",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-21",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-22",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-22",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-23",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-23",
+      "city": "B",
+      "price": 91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-24",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-24",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-25",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-25",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-26",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-26",
+      "city": "B",
+      "price": 92,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-27",
+      "city": "A",
+      "price": 88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-27",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-28",
+      "city": "A",
+      "price": 87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-28",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-29",
+      "city": "A",
+      "price": 85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-29",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-30",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-30",
+      "city": "B",
+      "price": 95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-31",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-31",
+      "city": "B",
+      "price": 94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-01",
+      "city": "A",
+      "price": 86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-01",
+      "city": "B",
+      "price": 93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 82,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 82,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 82,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 82,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 77,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 82,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 77,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 77,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 72,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 77,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 75,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 69,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 70,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 75,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 75,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 72,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 68,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 105,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 69,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 67,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 64,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 107,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 64,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 109,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 105,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 69,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 64,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 111,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 69,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 65,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 111,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 105,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 68,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 64,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 111,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 105,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 67,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 61,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 113,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 109,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 82,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 66,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 60,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 102,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 107,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 79,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 107,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 112,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 105,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 77,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 111,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 107,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 94,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 75,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 111,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 108,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 112,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 102,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 100,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 113,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 108,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 103,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 99,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 88,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 78,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 115,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 109,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 98,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 92,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 86,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 83,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 77,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 117,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 109,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 102,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 75,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 114,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 110,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 105,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 97,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 89,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 87,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 76,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 71,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 115,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 112,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 93,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 69,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 117,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 113,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 108,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 74,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 67,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 120,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 115,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 106,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 101,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 96,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 91,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 85,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 81,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 73,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 67,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 118,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 113,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 108,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 104,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 95,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 90,
+      "series": "prediction",
+      "scenario": "scenario_6"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 84,
+      "series": "prediction",
+      "scenario": "scenario_7"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 80,
+      "series": "prediction",
+      "scenario": "scenario_8"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 75,
+      "series": "prediction",
+      "scenario": "scenario_9"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 66,
+      "series": "prediction",
+      "scenario": "scenario_10"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "A",
+      "price": 86,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-02",
+      "city": "B",
+      "price": 93,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "A",
+      "price": 86,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-03",
+      "city": "B",
+      "price": 94,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "A",
+      "price": 87,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-04",
+      "city": "B",
+      "price": 94,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "A",
+      "price": 87,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-05",
+      "city": "B",
+      "price": 95,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "A",
+      "price": 87,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-06",
+      "city": "B",
+      "price": 95,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "A",
+      "price": 87,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-07",
+      "city": "B",
+      "price": 96,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "A",
+      "price": 87,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-08",
+      "city": "B",
+      "price": 96,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "A",
+      "price": 88,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-09",
+      "city": "B",
+      "price": 97,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "A",
+      "price": 88,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-10",
+      "city": "B",
+      "price": 98,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "A",
+      "price": 88,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-11",
+      "city": "B",
+      "price": 98,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "A",
+      "price": 88,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-12",
+      "city": "B",
+      "price": 99,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "A",
+      "price": 88,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-13",
+      "city": "B",
+      "price": 99,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "A",
+      "price": 88,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-14",
+      "city": "B",
+      "price": 100,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "A",
+      "price": 89,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-15",
+      "city": "B",
+      "price": 100,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "A",
+      "price": 89,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-16",
+      "city": "B",
+      "price": 101,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "A",
+      "price": 89,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-17",
+      "city": "B",
+      "price": 101,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "A",
+      "price": 89,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-18",
+      "city": "B",
+      "price": 102,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "A",
+      "price": 89,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-19",
+      "city": "B",
+      "price": 103,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "A",
+      "price": 90,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-20",
+      "city": "B",
+      "price": 103,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "A",
+      "price": 90,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-21",
+      "city": "B",
+      "price": 104,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "A",
+      "price": 90,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-22",
+      "city": "B",
+      "price": 104,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "A",
+      "price": 90,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-23",
+      "city": "B",
+      "price": 105,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "A",
+      "price": 90,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-24",
+      "city": "B",
+      "price": 105,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "A",
+      "price": 91,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-25",
+      "city": "B",
+      "price": 106,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "A",
+      "price": 91,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-26",
+      "city": "B",
+      "price": 107,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "A",
+      "price": 91,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-27",
+      "city": "B",
+      "price": 107,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "A",
+      "price": 91,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-28",
+      "city": "B",
+      "price": 108,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "A",
+      "price": 91,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-29",
+      "city": "B",
+      "price": 108,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "A",
+      "price": 91,
+      "series": "aggregated",
+      "scenario": "mean"
+    },
+    {
+      "date": "2025-06-30",
+      "city": "B",
+      "price": 109,
+      "series": "aggregated",
+      "scenario": "mean"
+    }
+  ]
+}

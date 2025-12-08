@@ -27,6 +27,35 @@ export class DataProcessor {
      * Process raw data into filtered datasets for each stock
      */
     processData(rawData, currentStartDate = '05/01') {
+        // Validate input data
+        if (!rawData) {
+            throw new Error('DataProcessor: rawData is null or undefined');
+        }
+        
+        if (!Array.isArray(rawData)) {
+            // Handle case where data might be wrapped in an object
+            if (typeof rawData === 'object' && rawData.data && Array.isArray(rawData.data)) {
+                console.warn('DataProcessor: Found wrapped data format, unwrapping...');
+                rawData = rawData.data;
+            } else {
+                throw new Error(`DataProcessor: Expected rawData to be an array, got ${typeof rawData}. If data is wrapped, ensure it has a 'data' property with an array.`);
+            }
+        }
+        
+        if (rawData.length === 0) {
+            throw new Error('DataProcessor: rawData array is empty');
+        }
+        
+        // Validate data structure 
+        const firstItem = rawData[0];
+        if (!firstItem || typeof firstItem !== 'object') {
+            throw new Error(`DataProcessor: Invalid data item structure. Expected object, got ${typeof firstItem}`);
+        }
+        
+        if (!firstItem.hasOwnProperty('stock') || !firstItem.hasOwnProperty('price')) {
+            throw new Error(`DataProcessor: Missing required fields. Expected 'stock' and 'price', found: ${Object.keys(firstItem).join(', ')}`);
+        }
+
         // Store original data
         const stockA = rawData.filter(d => d.stock === 'A');
         const stockB = rawData.filter(d => d.stock === 'B');
@@ -36,13 +65,14 @@ export class DataProcessor {
         // Get all available scenarios from prediction data (only once)
         if (this.sampledScenarios.length === 0) {
             const allScenarios = [...new Set(rawData
-                .filter(d => d.series === 'prediction')
+                .filter(d => d.series === 'prediction' && d.scenario)
                 .map(d => d.scenario)
             )];
             
             
-            // Random sample 5 scenarios out of 10
-            this.sampledScenarios = DataProcessor.sampleScenarios(allScenarios, 5);
+            // Random sample 5 scenarios out of available scenarios
+            const sampleSize = Math.min(5, allScenarios.length);
+            this.sampledScenarios = DataProcessor.sampleScenarios(allScenarios, sampleSize);
         }
 
         // Process each stock with current date filter
@@ -202,8 +232,19 @@ export class DataProcessor {
             }
         });
 
-        // Fixed y-scale range from 90 to 110
-        return [90, 110];
+        // Dynamic y-scale range based on actual data values with padding
+        if (allValues.length === 0) {
+            return [80, 120]; // Fallback range for AQI data
+        }
+        
+        const minValue = Math.min(...allValues);
+        const maxValue = Math.max(...allValues);
+        const padding = (maxValue - minValue) * 0.1; // 10% padding
+        
+        return [
+            Math.max(0, Math.floor(minValue - padding)), // Don't go below 0 for AQI
+            Math.ceil(maxValue + padding)
+        ];
     }
 
     /**
