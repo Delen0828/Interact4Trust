@@ -474,7 +474,6 @@
             if (dateSelect) {
                 dateSelect.addEventListener('change', async function() {
                     currentStartDate = this.value;
-                    console.log('Start date changed to:', currentStartDate);
                     
                     if (conditionFactory && conditionFactory.isInitialized()) {
                         try {
@@ -499,7 +498,6 @@
         // Main initialization
         async function initializeVisualization() {
             try {
-                console.log('Loading data and initializing condition factory...');
                 
                 // Load data
                 const rawDataResponse = await d3.json('synthetic_stock_data_aqi.json');
@@ -509,19 +507,16 @@
                 conditionFactory = new ConditionFactory();
                 await conditionFactory.initialize(config, rawData, currentStartDate);
                 
-                console.log('Condition factory initialized, rendering all conditions...');
                 
                 // Render all 8 conditions
                 await conditionFactory.renderAllConditions();
                 
-                console.log('All conditions rendered successfully');
                 
                 // Initialize controls
                 initializeControls();
                 
                 // Log condition information
                 const conditionInfo = ConditionFactory.getConditionInfo();
-                console.log('Available conditions:', conditionInfo);
                 
             } catch (error) {
                 console.error('Failed to initialize visualization:', error);

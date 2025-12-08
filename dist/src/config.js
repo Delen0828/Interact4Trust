@@ -245,7 +245,7 @@ const ExperimentConfig = {
             cityB: '#fd7e14',
             historical: '#6c757d'
         },
-        sampleScenarios: 5, // Number of scenarios to sample for aggregation
+        sampleScenarios: 5, // Number of scenarios to use for aggregation (fixed: 1,2,3,5,8)
         animation: {
             enabled: true,
             duration: 300
@@ -300,9 +300,16 @@ let ParticipantConfig = {
 
 // Initialize participant configuration
 function initializeParticipant(participantId) {
+    console.log('🚀 INITIALIZING PARTICIPANT:', participantId);
+    
     ParticipantConfig.id = participantId || null; // ID will be set from user input
     ParticipantConfig.assignedCondition = ExperimentConfig.conditionAssignment.getAssignedCondition();
     ParticipantConfig.startTime = new Date().toISOString();
+    
+    console.log('✅ PARTICIPANT INITIALIZED:');
+    console.log('  Participant ID:', ParticipantConfig.id);
+    console.log('  Start Time:', ParticipantConfig.startTime);
+    console.log('  Full Config:', ParticipantConfig);
     
     return ParticipantConfig;
 }

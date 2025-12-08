@@ -58,7 +58,6 @@ class InteractionController {
 
   // Set up broken interactions for condition 7
   setupBrokenInteractions(container) {
-    console.log('Setting up broken interactions (placeholder)');
     
     // TODO: Implement broken interaction patterns:
     // - Offset hover zones by 50px
@@ -71,7 +70,6 @@ class InteractionController {
 
   // Set up poor interactions for condition 8
   setupPoorInteractions(container) {
-    console.log('Setting up poor interactions (placeholder)');
     
     // TODO: Implement poor UX patterns:
     // - Force clicks instead of hover

@@ -97,12 +97,14 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.jsPsych = jsPsych;
       this.startTime = null;
       this.interactionLog = [];
+      this.sliderMoved = false; // Track if slider has been moved
     }
 
     trial(display_element, trial) {
       this.startTime = performance.now();
       this.display_element = display_element;
       this.trial = trial;
+      this.sliderMoved = false; // Reset slider tracking for new trial
 
       // Get condition information
       if (trial.visualization_condition) {
@@ -378,7 +380,10 @@ var jsPsychPredictionTask = (function (jspsych) {
                   <span class="city-b-label">City B will be better</span>
                   <span class="city-a-label">City A will be better</span>
                 </div>
-                <div class="current-probability" id="current-probability"></div>
+                <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
+                <div class="slider-requirement" id="slider-requirement" style="font-size: 12px; color: #e74c3c; margin-top: 5px; text-align: center; display: block;">
+                  ⚠️ You must move the slider to continue
+                </div>
               </div>
             </div>
 
@@ -571,13 +576,6 @@ var jsPsychPredictionTask = (function (jspsych) {
           yAxisTitle: 'Air Quality Index'
         };
         
-        // Debug logging before passing to ConditionFactory
-        console.log('Before ConditionFactory.initialize:');
-        console.log('- data type:', typeof data);
-        console.log('- data is array:', Array.isArray(data));
-        console.log('- data length:', Array.isArray(data) ? data.length : 'N/A');
-        console.log('- data keys (if object):', typeof data === 'object' && data && !Array.isArray(data) ? Object.keys(data) : 'N/A');
-        console.log('- first few items:', Array.isArray(data) ? data.slice(0, 3) : data);
         
         // Initialize with data (pass data array directly, not wrapped)
         await conditionFactory.initialize(config, data, '05/01', this.trial.phase);
@@ -828,7 +826,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         }
       };
 
-      // Enable submit button when all required fields are filled
+      // Enable submit button when all required fields are filled AND slider has been moved
       const checkFormValidity = () => {
         const probability = probabilityInput.value;
         const cityAEstimate = document.getElementById('city-a-estimate').value;
@@ -840,7 +838,8 @@ var jsPsychPredictionTask = (function (jspsych) {
                        cityAEstimate !== '' && 
                        cityBEstimate !== '' &&
                        confidence && 
-                       travelChoice;
+                       travelChoice &&
+                       this.sliderMoved; // Require that slider has been moved
         
         submitButton.disabled = !isValid;
         
@@ -854,6 +853,14 @@ var jsPsychPredictionTask = (function (jspsych) {
 
       // Add event listeners
       probabilityInput.addEventListener('input', () => {
+        this.sliderMoved = true; // Mark slider as moved when user interacts with it
+        
+        // Hide the requirement message once slider is moved
+        const requirementMessage = document.getElementById('slider-requirement');
+        if (requirementMessage) {
+          requirementMessage.style.display = 'none';
+        }
+        
         updateProbabilityDisplay();
         checkFormValidity();
       });
@@ -910,6 +917,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         city_a_estimate: cityAEstimate.value ? parseFloat(cityAEstimate.value) : null,
         city_b_estimate: cityBEstimate.value ? parseFloat(cityBEstimate.value) : null,
         confidence_rating: confidence ? parseInt(confidence.value) : null,
+        slider_moved: this.sliderMoved, // Track whether participant actively moved the slider
         confidence_label: confidence ? this.trial.confidence_scale.labels[parseInt(confidence.value) - 1] : null,
         travel_choice: travelChoice ? travelChoice.value : null,
         

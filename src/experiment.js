@@ -223,7 +223,6 @@ function buildTimeline() {
 	    },
 	    on_finish: function(data) {
 	        ParticipantConfig.visualizationLiteracyScore = data.total_score;
-	        console.log('Mini-VLAT score:', data.total_score + ' / ' + data.total_questions);
 	    }
 	});
 
@@ -293,6 +292,7 @@ function buildTimeline() {
 		show_visualization: true,
 		show_predictions: true,
 		visualization_condition: function () {
+			
 			return ParticipantConfig.assignedCondition;
 		},
 		air_quality_data: async function () {
@@ -511,26 +511,36 @@ function buildTimeline() {
 		choices: ['Close Study'],
 		data: { trial_type: 'debrief' },
 		on_finish: function() {
-			// Get Prolific completion URL from server
+			// Securely validate completion and get redirect URL from server
+			const completionData = {
+				study_complete: true,
+				phase1_complete: ParticipantConfig.phase1Complete,
+				phase2_complete: ParticipantConfig.phase2Complete,
+				end_time: new Date().toISOString()
+			};
+
+			
 			fetch('./complete_study.php', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({})
+				body: JSON.stringify(completionData)
 			})
-			.then(response => response.json())
+			.then(response => {
+				return response.json();
+			})
 			.then(data => {
 				if (data.success) {
 					// Redirect to Prolific completion page
 					window.location.href = data.redirect_url;
 				} else {
-					console.error('Error getting completion URL');
+					console.error('Study completion validation failed:', data.error);
 					alert('There was an error completing your study. Please contact the research team.');
 				}
 			})
 			.catch(error => {
-				console.error('Error getting completion URL:', error);
+				console.error('Error validating study completion:', error);
 				alert('There was an error completing your study. Please contact the research team.');
 			});
 		}
@@ -591,7 +601,6 @@ async function getAirQualityData(roundNumber = 1) {
 			}
 		}
 		
-		console.log(`Successfully loaded ${data.length} data points`);
 		return data;
 
 	} catch (error) {
@@ -640,7 +649,6 @@ function saveData(data) {
 			}
 			return response.json();
 		}).then(result => {
-			console.log('Data saved successfully:', result);
 		}).catch(error => {
 			console.error('Error saving to server, using localStorage fallback:', error);
 			// Fallback to local storage

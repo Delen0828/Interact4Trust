@@ -34,7 +34,6 @@ class DataCollector {
       assigned_time: performance.now() - this.studyData.start_time
     };
     
-    console.log('DataCollector: Condition assigned', this.studyData.assigned_condition);
   }
 
   setVisualizationLiteracyScore(score, totalQuestions, responses) {
@@ -46,7 +45,6 @@ class DataCollector {
       completion_time: performance.now() - this.studyData.start_time
     };
     
-    console.log('DataCollector: Vis literacy scored', this.studyData.vis_literacy_score);
   }
 
   setPhase1Data(data) {
@@ -57,7 +55,6 @@ class DataCollector {
       completion_time: performance.now() - this.studyData.start_time
     };
     
-    console.log('DataCollector: Phase 1 data recorded', this.studyData.phase_1_data);
   }
 
   setPhase2Data(data) {
@@ -68,7 +65,6 @@ class DataCollector {
       completion_time: performance.now() - this.studyData.start_time
     };
     
-    console.log('DataCollector: Phase 2 data recorded', this.studyData.phase_2_data);
   }
 
   logInteraction(interactionType, data = {}) {
@@ -83,7 +79,6 @@ class DataCollector {
     
     // Only log important interactions to avoid spam
     if (['hover_enter', 'hover_leave', 'click', 'broken_interaction'].includes(interactionType)) {
-      console.log('DataCollector: Interaction logged', interaction);
     }
   }
 
@@ -93,7 +88,6 @@ class DataCollector {
       completion_time: performance.now() - this.studyData.start_time
     };
     
-    console.log('DataCollector: Demographics recorded');
   }
 
   addSessionMetadata(key, value) {
@@ -220,7 +214,6 @@ class DataCollector {
     a.click();
     window.URL.revokeObjectURL(url);
     
-    console.log('DataCollector: CSV downloaded', csvData.participant_id);
   }
 
   // Download complete JSON data
@@ -236,7 +229,6 @@ class DataCollector {
     a.click();
     window.URL.revokeObjectURL(url);
     
-    console.log('DataCollector: JSON downloaded', data.participant_id);
   }
 
   // Reset data for new participant
@@ -253,7 +245,6 @@ class DataCollector {
       session_metadata: {}
     };
     
-    console.log('DataCollector: Reset for new participant', this.studyData.participant_id);
   }
 }
 

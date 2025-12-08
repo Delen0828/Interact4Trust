@@ -9,18 +9,11 @@ export class DataProcessor {
     }
 
     /**
-     * Fisher-Yates shuffle for random sampling
+     * Get fixed scenarios for consistent experiment conditions
+     * Uses scenarios [1, 2, 3, 5, 8] as specified for the study
      */
-    static sampleScenarios(scenarios, sampleSize) {
-        const scenariosCopy = [...scenarios];
-        
-        // Fisher-Yates shuffle
-        for (let i = scenariosCopy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [scenariosCopy[i], scenariosCopy[j]] = [scenariosCopy[j], scenariosCopy[i]];
-        }
-        
-        return scenariosCopy.slice(0, sampleSize);
+    static getFixedScenarios() {
+        return ['scenario_1', 'scenario_2', 'scenario_3', 'scenario_5', 'scenario_8'];
     }
 
     /**
@@ -69,10 +62,12 @@ export class DataProcessor {
                 .map(d => d.scenario)
             )];
             
+            // Use fixed scenarios for consistency: [1, 2, 3, 5, 8]
+            const fixedScenarios = DataProcessor.getFixedScenarios();
             
-            // Random sample 5 scenarios out of available scenarios
-            const sampleSize = Math.min(5, allScenarios.length);
-            this.sampledScenarios = DataProcessor.sampleScenarios(allScenarios, sampleSize);
+            // Only include scenarios that exist in the data
+            this.sampledScenarios = fixedScenarios.filter(scenario => allScenarios.includes(scenario));
+            
         }
 
         // Process each stock with current date filter
