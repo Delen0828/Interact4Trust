@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' || $_SERVER['REQUEST_METHOD'] === 'POST
     http_response_code(200);
     echo json_encode([
         'success' => true,
-        'redirect_url' => 'https://app.prolific.com/submissions/complete?cc=CQGCCVCQ'
+        'redirect_url' => 'https://app.prolific.com/submissions/complete?cc=CP91LGYA'
     ]);
 } else {
     http_response_code(405);
