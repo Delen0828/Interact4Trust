@@ -578,7 +578,7 @@ function buildTimeline() {
 			};
 
 			
-			fetch('./complete_study.php', {
+			fetch('/complete_study.php', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
