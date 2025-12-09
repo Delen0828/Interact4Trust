@@ -1,15 +1,15 @@
 # Claude Development Instructions
 
-## Project: Air Quality Prediction Visualization Trust Study
+## Project: Humidity Prediction Visualization Trust Study
 
 ### Overview
-You are maintaining an interactive web experiment that studies how different uncertainty visualization formats affect user trust in decision-making. The experiment uses synthetic air quality prediction data comparing two cities (City A vs City B) to examine how visualization literacy, probability estimation, confidence, and trust are affected by different visualization approaches.
+You are maintaining an interactive web experiment that studies how different uncertainty visualization formats affect user trust in decision-making. The experiment uses synthetic Humidity prediction data comparing two cities (City A vs City B) to examine how visualization literacy, probability estimation, confidence, and trust are affected by different visualization approaches.
 
 ### Core Technologies
 - **Frontend Framework**: jsPsych (JavaScript psychology experiment framework)
 - **Visualization**: D3.js for interactive line charts with sophisticated hover effects and uncertainty representations
 - **Styling**: Custom CSS with enhanced responsive design and condition-specific visual indicators
-- **Data**: Synthetic air quality prediction data with multiple scenarios and aggregations
+- **Data**: Synthetic Humidity prediction data with multiple scenarios and aggregations
 - **Architecture**: Vanilla JavaScript with modular plugin system
 
 ### Current Implementation Status
@@ -33,7 +33,7 @@ You are maintaining an interactive web experiment that studies how different unc
 
 3. **Experiment Structure**:
    - **Visualization Literacy Test** (pre-experiment assessment)
-   - **Air Quality Prediction Tasks** comparing City A vs City B
+   - **Humidity Prediction Tasks** comparing City A vs City B
    - **Trust and Confidence Measurements** using validated scales
    - **Between-subjects assignment** to one of 8 visualization conditions
 
@@ -96,14 +96,14 @@ conditions: [
 
 #### 2. Data Structure System
 ```javascript
-// Synthetic air quality data follows synthetic_city_data.json format
+// Synthetic Humidity data follows synthetic_city_data.json format
 // Each scenario is a separate JSON file (planning to scale to 10 scenarios)
 dataFormat: {
     "data": [
         {
             "date": "2025-01-01",
             "city": "A",                    // City A or B
-            "price": 103,                   // Air quality index value
+            "price": 103,                   // Humidity value
             "series": "historical",         // "historical" or "prediction"
             "scenario": null                // null for historical, 1-10 for predictions
         },
@@ -127,15 +127,15 @@ dataFormat: {
 ```
 
 #### 3. Two-Phase Study Interface
-- **Phase 1 (No Visualization)**: Text-based air quality descriptions, probability estimation task
-- **Phase 2 (With Visualization)**: Interactive D3.js charts showing air quality predictions
-- **Prediction Task**: "The probability that air quality in City A > City B is ____%"
+- **Phase 1 (No Visualization)**: Text-based Humidity descriptions, probability estimation task
+- **Phase 2 (With Visualization)**: Interactive D3.js charts showing Humidity predictions
+- **Prediction Task**: "The probability that Humidity in City A > City B is ____%"
 - **Confidence Assessment**: 7-point scale from "Very uncertain" to "Very certain"
 - **Travel Decision**: Choice between cities for travel planning
 
 #### 4. Trust and Confidence Measurement
 - **Interface Trust**: "How much do you trust the fidelity of this visualization tool?"
-- **Data Trust**: "How much do you trust the underlying air quality data?"
+- **Data Trust**: "How much do you trust the underlying Humidity data?"
 - **Misleading Assessment**: "How much do you think this visualization is misleading?"
 - **Confidence Tracking**: Before/after visualization exposure comparison
 - **Interpretation Questions**: Multiple choice comprehension assessment
@@ -154,11 +154,11 @@ src/
 ├── config.js                  # Experiment configuration and 8 conditions
 ├── plugins/
 │   ├── jspsych-vis-literacy.js      # Visualization literacy test plugin
-│   ├── jspsych-prediction-task.js   # Air quality prediction task plugin
+│   ├── jspsych-prediction-task.js   # Humidity prediction task plugin
 │   ├── jspsych-trust-survey.js      # Trust and confidence rating plugin
 │   └── jspsych-broken-interactions.js # Control condition plugins (buggy/bad UX)
 ├── stimuli/
-│   └── airQualityData.js      # Synthetic air quality prediction data
+│   └── airQualityData.js      # Synthetic Humidity prediction data
 ├── utils/
 │   ├── visualizationRenderer.js # D3.js visualization management
 │   ├── conditionManager.js      # Handle 8 different visualization conditions
@@ -215,7 +215,7 @@ src/
 2. Visualization Literacy Test (12 questions)
 3. General Instructions
 4. Phase 1: Prediction Without Visualization
-   - Text description of air quality trends
+   - Text description of Humidity trends
    - Probability estimation task
    - Confidence and travel decision
 5. Condition Assignment (random: 1 of 8 conditions)
@@ -300,7 +300,7 @@ const conditionConfig = ExperimentConfig.getConditionById(`condition_${assignedC
 - **Toggle Controls**: Enable/disable debug info and timing displays
 
 ### Visual Design Features
-- **Air Quality Theme**: Consistent terminology around city air quality comparison
+- **Humidity Theme**: Consistent terminology around city Humidity comparison
 - **Condition-Specific Styling**: Visual indicators differentiate each condition
 - **Smooth Animations**: D3.js transitions for professional polish (except controls)
 - **Responsive Layout**: Mobile-friendly design with adaptive components
@@ -308,7 +308,7 @@ const conditionConfig = ExperimentConfig.getConditionById(`condition_${assignedC
 
 ### Testing Checklist
 - [ ] All 8 conditions render correctly with distinct behaviors
-- [ ] Air quality data loads and processes properly
+- [ ] Humidity data loads and processes properly
 - [ ] Two-phase study flow works seamlessly
 - [ ] Visualization literacy test scores correctly
 - [ ] Trust and confidence measurements capture data properly
@@ -339,10 +339,10 @@ const conditionConfig = ExperimentConfig.getConditionById(`condition_${assignedC
 - **Research Ethics**: Informed consent and data anonymization built-in
 
 ### Key Differences from Original Plant Study
-- **Domain**: Air quality prediction instead of alien plant cultivation
+- **Domain**: Humidity prediction instead of alien plant cultivation
 - **Study Design**: 8 conditions instead of 2, two-phase instead of 15 trials
 - **Measurements**: Visualization literacy, probability estimation, trust scales
-- **Data**: Air quality time series instead of plant growth patterns
+- **Data**: Humidity time series instead of plant growth patterns
 - **Interactions**: Sophisticated hover/animation effects plus broken control conditions
 - **Focus**: Uncertainty visualization impact on trust and decision-making
 

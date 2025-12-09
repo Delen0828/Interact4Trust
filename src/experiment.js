@@ -1,4 +1,4 @@
-// Air Quality Prediction Visualization Trust Study
+// Humidity Prediction Visualization Trust Study
 // Two-Phase Study Design: No Visualization → With Visualization
 
 let jsPsych;
@@ -117,13 +117,13 @@ function buildTimeline() {
 	    type: jsPsychHtmlButtonResponse,
 	    stimulus: `
 	        <div class="welcome-screen">
-	            <h1>Air Quality Prediction Study</h1>
-	            <p>Welcome! You are about to participate in a research study about how people make decisions using air quality predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 15 minutes.</p>
+	            <h1>Humidity Prediction Study</h1>
+	            <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 15 minutes.</p>
 	            <div class="study-info">
 	                <h3>What you'll do:</h3>
 	                <ul>
 	                    <li>Complete a brief assessment of visualization understanding</li>
-	                    <li>Make predictions about air quality in two cities</li>
+	                    <li>Make predictions about humidity in two cities</li>
 	                    <li>Answer questions about your confidence and trust</li>
 						<li>Report basic demographic data</li>
 	                </ul>
@@ -293,14 +293,10 @@ function buildTimeline() {
 	    type: jsPsychInstructions,
 	    pages: [
 	        `<div class="instructions">
-	            <h2>Air Quality Context</h2>
-	            <p>You will be making predictions about air quality in two hypothetical cities: <strong>City A</strong> and <strong>City B</strong>.</p>
-	            <p>Air quality is measured using the Air Quality Index (AQI) where:</p>
-	            <ul>
-	                <li><strong>Higher values</strong> = Worse air quality (more pollution)</li>
-	                <li><strong>Lower values</strong> = Better air quality (cleaner air)</li>
-	            </ul>
-	            <p>Your task will be to predict which city is likely to have better air quality in the future.</p>
+	            <h2>Humidity Context</h2>
+	            <p>You will be making predictions about humidity in two hypothetical cities: <br> <strong>City A</strong> and <strong>City B</strong>.</p>
+	            <p>Humidity is measured in a scale from 0 to 100.
+	            <p>Your task will be to predict which city is likely to have higher or lower humidity in the future.</p>
 	        </div>`
 	    ],
 	    show_clickable_nav: true,
@@ -321,7 +317,7 @@ function buildTimeline() {
 				name: 'Historical Only',
 				displayFormat: 'historical_only',
 				description: 'Shows only historical data, no predictions',
-				instructions: 'You will see historical air quality data for both cities. No prediction forecasts are shown.'
+				instructions: 'You will see historical humidity data for both cities. No prediction forecasts are shown.'
 			};
 		},
 		air_quality_data: async function () {
@@ -562,7 +558,7 @@ function buildTimeline() {
                 <h3>Study Background:</h3>
                 <p>You were randomly assigned to one of nine different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
                 
-                <p>The air quality data you saw was synthetic (computer-generated) for research purposes.</p>
+                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
                 
                 <h3>Questions?</h3>
                 <p>If you have questions about this research, please contact the research team.</p>
@@ -612,16 +608,16 @@ function buildTimeline() {
 // Helper Functions
 
 
-// Get air quality data for specific round  
+// Get Humidity data for specific round  
 async function getAirQualityData() {
 	try {
-		// Load synthetic air quality data (used by display system)
+		// Load synthetic Humidity data (used by display system)
 		// Try multiple possible paths depending on where experiment is running from
 		let response;
 		const possiblePaths = [
-			'synthetic_stock_data_aqi.json',        // From main directory
-			'../synthetic_stock_data_aqi.json',     // From src/ subdirectory  
-			'../../synthetic_stock_data_aqi.json'   // From versions/versionN/ subdirectory
+			'synthetic_stock_data_norm.json',        // From main directory
+			'../synthetic_stock_data_norm.json',     // From src/ subdirectory  
+			'../../synthetic_stock_data_norm.json'   // From versions/versionN/ subdirectory
 		];
 		
 		for (const path of possiblePaths) {
@@ -679,7 +675,7 @@ async function getAirQualityData() {
 		return data;
 
 	} catch (error) {
-		console.error('Error loading air quality data:', error);
+		console.error('Error loading Humidity data:', error);
 		throw new Error(`Failed to load required data file: ${error.message}`);
 	}
 }

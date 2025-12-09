@@ -59,7 +59,7 @@ var jsPsychBrokenInteractions = (function (jspsych) {
       let html = `
         <div class="broken-interactions-container">
           <div class="condition-header">
-            <h2>Air Quality Prediction Visualization</h2>
+            <h2>Humidity Prediction Visualization</h2>
             <p>Explore the chart to make your prediction.</p>
           </div>
           
@@ -122,7 +122,7 @@ var jsPsychBrokenInteractions = (function (jspsych) {
       let html = `
         <div class="broken-interactions-container">
           <div class="condition-header">
-            <h2>Air Quality Prediction Visualization</h2>
+            <h2>Humidity Prediction Visualization</h2>
             <p>Click on chart elements to view details.</p>
           </div>
           

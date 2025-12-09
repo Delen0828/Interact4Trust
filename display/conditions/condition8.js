@@ -35,7 +35,7 @@ export default class Condition8 {
         this.renderAlternativeLines(predictionGroup);
 
         // Render aggregated prediction lines with click zones (with dashed style)
-        this.renderAggregatedLines(predictionGroup);
+        // this.renderAggregatedLines(predictionGroup);
 
     }
 
@@ -85,39 +85,39 @@ export default class Condition8 {
         });
     }
 
-    renderAggregatedLines(predictionGroup) {
-        // Use the base renderer for dashed aggregated lines
-        this.chartRenderer.renderAggregatedLines(
-            predictionGroup, 
-            {
-                A: this.data.stockData.A,
-                B: this.data.stockData.B
-            },
-            this.config.colors,
-            this.data.realTimeAggregated
-        );
+    // renderAggregatedLines(predictionGroup) {
+    //     // Use the base renderer for dashed aggregated lines
+    //     this.chartRenderer.renderAggregatedLines(
+    //         predictionGroup, 
+    //         {
+    //             A: this.data.stockData.A,
+    //             B: this.data.stockData.B
+    //         },
+    //         this.config.colors,
+    //         this.data.realTimeAggregated
+    //     );
         
-        // Add click zones for interaction (wider for easier clicking)
-        const line = this.chartRenderer.createLineGenerator();
-        ['A', 'B'].forEach((stock, i) => {
-            const lastHistorical = this.data.stockData[stock].historical[
-                this.data.stockData[stock].historical.length - 1
-            ];
+    //     // Add click zones for interaction (wider for easier clicking)
+    //     const line = this.chartRenderer.createLineGenerator();
+    //     ['A', 'B'].forEach((stock, i) => {
+    //         const lastHistorical = this.data.stockData[stock].historical[
+    //             this.data.stockData[stock].historical.length - 1
+    //         ];
             
-            if (this.data.realTimeAggregated[stock] && this.data.realTimeAggregated[stock].length > 0) {
-                const fullAggregatedData = [lastHistorical, ...this.data.realTimeAggregated[stock]];
+    //         if (this.data.realTimeAggregated[stock] && this.data.realTimeAggregated[stock].length > 0) {
+    //             const fullAggregatedData = [lastHistorical, ...this.data.realTimeAggregated[stock]];
                 
-                // Create click zone for this aggregated line (wider for easier clicking)
-                this.interactionManager.createHoverZone(
-                    predictionGroup,
-                    fullAggregatedData,
-                    `click-zone-${stock.toLowerCase()}`,
-                    line,
-                    20  // Wider stroke for easier clicking
-                );
-            }
-        });
-    }
+    //             // Create click zone for this aggregated line (wider for easier clicking)
+    //             this.interactionManager.createHoverZone(
+    //                 predictionGroup,
+    //                 fullAggregatedData,
+    //                 `click-zone-${stock.toLowerCase()}`,
+    //                 line,
+    //                 20  // Wider stroke for easier clicking
+    //             );
+    //         }
+    //     });
+    // }
 
     setupInteractions() {
         // Bad Control - hover on invisible alternative lines to reveal them individually

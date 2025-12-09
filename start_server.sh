@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Air Quality Prediction Visualization Trust Study - Multi-Version Server Startup Script
+# Humidity Prediction Visualization Trust Study - Multi-Version Server Startup Script
 # This script builds the project and starts a PHP server for data collection
 
 # Build the project (creates multi-version structure in dist/)

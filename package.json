@@ -1,7 +1,7 @@
 {
   "name": "interact4trust-air-quality-study",
   "version": "2.0.0",
-  "description": "Air Quality Prediction Visualization Trust Study - 8 experimental conditions examining how different uncertainty visualization formats affect user trust in decision-making",
+  "description": "Humidity Prediction Visualization Trust Study - 8 experimental conditions examining how different uncertainty visualization formats affect user trust in decision-making",
   "main": "index.html",
   "scripts": {
     "start": "./start_server.sh",

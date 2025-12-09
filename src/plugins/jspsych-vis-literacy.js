@@ -2,7 +2,7 @@
  * jsPsych Visualization Literacy Test Plugin
  * 
  * Tests participant understanding of common visualization concepts
- * Used in the Air Quality Prediction Visualization Trust Study
+ * Used in the Humidity Prediction Visualization Trust Study
  */
 
 var jsPsychVisLiteracy = (function (jspsych) {

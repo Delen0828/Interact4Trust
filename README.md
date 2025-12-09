@@ -1,6 +1,6 @@
-# Air Quality Prediction Visualization Trust Study
+# Humidity Prediction Visualization Trust Study
 
-An interactive web experiment studying how different uncertainty visualization formats affect user trust in decision-making using air quality prediction data.
+An interactive web experiment studying how different uncertainty visualization formats affect user trust in decision-making using Humidity prediction data.
 
 ## Quick Start
 
@@ -29,7 +29,7 @@ An interactive web experiment studying how different uncertainty visualization f
 - **8 experimental conditions** (between-subjects design)
 - **Two-phase study**: Text-based prediction → Visualization-based prediction  
 - **Measurements**: Visualization literacy, probability estimation, confidence, trust
-- **Data**: Synthetic air quality predictions for City A vs City B
+- **Data**: Synthetic Humidity predictions for City A vs City B
 
 ## Testing Different Conditions
 
@@ -57,7 +57,7 @@ src/
 ├── config.js                  # 8-condition configuration  
 ├── plugins/                   # Custom jsPsych plugins
 │   ├── jspsych-vis-literacy.js       # Visualization literacy test
-│   ├── jspsych-prediction-task.js    # Air quality prediction task
+│   ├── jspsych-prediction-task.js    # Humidity prediction task
 │   ├── jspsych-trust-survey.js       # Trust measurement scales
 │   └── jspsych-broken-interactions.js # Control conditions (placeholder)
 ├── utils/                     # Utility modules
@@ -66,7 +66,7 @@ src/
 │   ├── interactionController.js      # Hover/click interaction logic  
 │   └── dataCollector.js              # Comprehensive data logging
 ├── data/                      
-│   └── airQualityData.js             # Synthetic air quality data
+│   └── airQualityData.js             # Synthetic Humidity data
 └── styles/                    
     ├── experiment.css                # Main styling
     └── air-quality-theme.css         # Condition-specific styling

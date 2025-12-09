@@ -30,7 +30,7 @@ body {
     min-height: 100vh;
 }
 
-/* Air Quality Prediction Task Plugin Styles */
+/* Humidity Prediction Task Plugin Styles */
 .prediction-task-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -81,8 +81,84 @@ body {
 }
 
 .chart-container:hover {
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.15);
     transform: translateY(-1px);
+}
+
+/* Simple Chart Legend Styles */
+.simple-chart-legend {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    border-top: 1px solid var(--border-color);
+    background: #f8f9fa;
+    font-size: 13px;
+}
+
+.legend-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color-line {
+    width: 20px;
+    height: 3px;
+    border-radius: 1px;
+}
+
+.legend-color-line.city-a {
+    background-color: var(--city-a-color);
+}
+
+.legend-color-line.city-b {
+    background-color: var(--city-b-color);
+}
+
+.legend-line span {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Chart Instructions for Phase 2 only */
+.chart-instructions {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    background: #f8f9fa;
+}
+
+.instructions-content {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.instructions-content p {
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .simple-chart-legend {
+        gap: 15px;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .legend-color-line {
+        width: 16px;
+        height: 2px;
+    }
+    
+    .chart-instructions {
+        padding: 12px 15px;
+    }
+    
+    .instructions-content {
+        font-size: 12px;
+    }
 }
 
 .prediction-controls {
@@ -1377,8 +1453,6 @@ body {
 
 .minivlat-continue.enabled:hover {
     background: var(--success-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
 .minivlat-continue:disabled {

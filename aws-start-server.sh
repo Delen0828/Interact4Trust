@@ -1,5 +1,5 @@
 #!/bin/bash
-# Air Quality Study - AWS Multi-Version Deployment Script
+# Humidity Study - AWS Multi-Version Deployment Script
 npm run build
 # Ensure data directory exists
 mkdir -p dist/data

@@ -1,4 +1,4 @@
-/* Additional Air Quality Specific Styles */
+/* Additional Humidity Specific Styles */
 
 /* Broken and Poor Interaction Styles for Conditions 7 & 8 */
 .broken-interactions-container,
@@ -283,7 +283,7 @@
     transition: width 0.3s ease;
 }
 
-/* Responsive adjustments for air quality theme */
+/* Responsive adjustments for Humidity theme */
 @media (max-width: 768px) {
     .vis-literacy-container,
     .broken-interactions-container,

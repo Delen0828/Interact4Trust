@@ -1,4 +1,4 @@
-// Air Quality Prediction Visualization Trust Study Configuration
+// Humidity Prediction Visualization Trust Study Configuration
 // Version 2: Baseline Condition (Hardcoded)
 
 const ExperimentConfig = {
@@ -19,7 +19,7 @@ const ExperimentConfig = {
             name: 'PI Plot',
             displayFormat: 'confidence_bounds',
             description: 'Shows aggregated prediction with confidence bounds',
-            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region'
+            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region'
         },
         { 
             id: 'condition_3_ensemble', 
@@ -40,14 +40,14 @@ const ExperimentConfig = {
             name: 'PI Plot + Hover',
             displayFormat: 'hover_bounds',
             description: 'PI plot with hover to reveal individual predictions',
-            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region.<br><br>Hint: Hover on the lines for more details'
+            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_6_pi_to_ensemble', 
             name: 'PI → Ensemble',
             displayFormat: 'transform_hover',
             description: 'PI plot transforms to ensemble plot on hover',
-            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region. Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
+            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region. Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_7_buggy', 
@@ -68,42 +68,17 @@ const ExperimentConfig = {
             name: 'Combined PI + Ensemble',
             displayFormat: 'combined_pi_ensemble',
             description: 'Shows both confidence bounds and alternative prediction lines',
-            instructions: 'Shade represents the region that there are 95% chance the air quality falls in this region. Each line represent the prediction from one Forecast Agency'
+            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region. Each line represent the prediction from one Forecast Agency'
         }
     ],
 
-    // Visualization Literacy Test (12 questions)
-    visualizationLiteracy: {
-        enabled: true,
-        questionCount: 12,
-        timeLimit: null, // No time limit
-        questions: [
-            {
-                id: 'vl_1',
-                type: 'line_chart_basic',
-                question: 'In this line chart, which city had lower AQI (better air quality) in March?',
-                // Question details will be implemented in plugin
-            },
-            {
-                id: 'vl_2', 
-                type: 'trend_identification',
-                question: 'What trend does City A show from January to June?',
-            },
-            {
-                id: 'vl_3',
-                type: 'uncertainty_bounds',
-                question: 'What do the shaded areas around the line represent?',
-            },
-            // Additional questions will be defined in the plugin
-            // Total: 12 questions testing various visualization concepts
-        ]
-    },
+    
 
     // Two-Phase Study Structure
     phases: {
         phase1: {
             name: 'Prediction Without Visualization',
-            description: 'Text-based air quality prediction task',
+            description: 'Text-based Humidity prediction task',
             measurements: ['probability_estimate', 'confidence_rating', 'travel_choice']
         },
         phase2: {
@@ -113,15 +88,15 @@ const ExperimentConfig = {
         }
     },
 
-    // Air Quality Prediction Task
+    // Humidity Prediction Task
     predictionTask: {
-        question: 'The probability that the air quality index of City A will be higher than City B on 06/30 is ____%',
+        question: 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%',
         confidenceScale: {
             min: 1,
             max: 7,
             labels: ['Very Uncertain', 'Uncertain', 'Somewhat Uncertain', 'Neutral', 'Somewhat Certain', 'Certain', 'Very Certain']
         },
-        travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower air quality index, which city would you travel to?',
+        travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower humidity, which city would you travel to?',
         travelChoices: ['City A', 'City B', 'No Preference']
     },
 
@@ -229,7 +204,7 @@ const ExperimentConfig = {
         fields: {
             date: 'Date string (YYYY-MM-DD)',
             city: 'City identifier (A or B)',
-            price: 'Air quality index value',
+            price: 'Humidity value',
             series: 'Data type (historical or prediction)',
             scenario: 'Scenario number (null for historical, 1-10 for predictions)'
         }

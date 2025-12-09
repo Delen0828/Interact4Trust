@@ -1,7 +1,7 @@
 /**
- * Air Quality Data
+ * Humidity Data
  * 
- * Synthetic air quality index (AQI) data for two cities with historical and prediction data
+ * Synthetic Humidity  data for two cities with historical and prediction data
  * Following the format structure from synthetic_city_data.json
  * 
  * Data Structure:
@@ -144,7 +144,7 @@ function generatePredictionData() {
   return data;
 }
 
-// Complete synthetic air quality dataset
+// Complete synthetic Humidity dataset
 const airQualityData = {
   data: [
     ...generateHistoricalData(),

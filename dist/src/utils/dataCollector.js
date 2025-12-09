@@ -1,7 +1,7 @@
 /**
  * Data Collector
  * 
- * Comprehensive data logging utilities for the air quality prediction study
+ * Comprehensive data logging utilities for the Humidity prediction study
  * Tracks participant responses, interactions, and timing across all 8 conditions
  */
 

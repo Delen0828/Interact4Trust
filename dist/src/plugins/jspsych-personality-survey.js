@@ -68,7 +68,7 @@ var jsPsychPersonalitySurvey = (function (jspsych) {
             text-align: center;
           }
           .personality-survey-preamble h3 {
-            color: #28a745;
+            color: #374151;
             margin-bottom: 15px;
           }
           .personality-question {
@@ -153,8 +153,8 @@ var jsPsychPersonalitySurvey = (function (jspsych) {
             padding: 0 4px;
           }
           .submit-btn {
-            background: #28a745 !important;
-            border-color: #28a745 !important;
+            background: #374151 !important;
+            border-color: #374151 !important;
             color: white;
             padding: 12px 24px;
             font-size: 16px;
@@ -168,8 +168,8 @@ var jsPsychPersonalitySurvey = (function (jspsych) {
             margin: 30px auto 0;
           }
           .submit-btn:hover:not(:disabled) {
-            background: #218838 !important;
-            border-color: #1e7e34 !important;
+            background: #111827 !important;
+            border-color: #111827 !important;
           }
           .submit-btn:disabled {
             background: #6c757d !important;

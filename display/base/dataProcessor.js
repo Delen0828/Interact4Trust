@@ -206,7 +206,7 @@ export class DataProcessor {
      */
     calculateGlobalYScale(stockData, realTimeAggregated) {
         // Fixed y-axis range for consistent visualization across all phases
-        return [0, 150]; // Air Quality Index range from 0 to 200
+        return [0, 100]; // Humidity range from 0 to 100
     }
 
     /**

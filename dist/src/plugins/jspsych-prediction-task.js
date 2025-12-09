@@ -1,7 +1,7 @@
 /**
  * jsPsych Prediction Task Plugin
  * 
- * Two-phase air quality prediction task with optional visualization
+ * Two-phase Humidity prediction task with optional visualization
  * Phase 1: Text-based prediction
  * Phase 2: Visualization-based prediction (8 conditions)
  */
@@ -17,7 +17,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
   const info = {
     name: 'prediction-task',
-    description: 'Air quality prediction task with optional visualization',
+    description: 'Humidity prediction task with optional visualization',
     parameters: {
       phase: {
         type: jspsych.ParameterType.INT,
@@ -57,15 +57,15 @@ var jsPsychPredictionTask = (function (jspsych) {
       },
       air_quality_data: {
         type: jspsych.ParameterType.FUNCTION,
-        pretty_name: 'Air Quality Data',
-        description: 'Air quality data for visualization',
+        pretty_name: 'Humidity Data',
+        description: 'Humidity data for visualization',
         default: null
       },
       question: {
         type: jspsych.ParameterType.STRING,
         pretty_name: 'Question',
         description: 'Main prediction question',
-        default: 'The probability that the air quality index of City A will be better than City B on 06/30 is ____%'
+        default: 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%'
       },
       confidence_scale: {
         type: jspsych.ParameterType.OBJECT,
@@ -155,19 +155,17 @@ var jsPsychPredictionTask = (function (jspsych) {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #0891B2;
+            background: #374151;
             cursor: pointer;
             border: 3px solid white;
-            box-shadow: 0 2px 6px rgba(8, 145, 178, 0.3);
           }
           .probability-slider::-moz-range-thumb {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #0891B2;
+            background: #374151;
             cursor: pointer;
             border: 3px solid white;
-            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
           }
           .slider-city-labels {
             display: flex;
@@ -187,7 +185,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             margin-top: 15px;
             font-size: 16px;
             font-weight: 600;
-            color: #0891B2;
+            color: #374151;
             min-height: 20px;
           }
           .confidence-scale {
@@ -218,7 +216,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             align-items: center;
             padding: 0;
             background: white;
-            color: #333;
+            color: #374151;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -228,13 +226,13 @@ var jsPsychPredictionTask = (function (jspsych) {
             position: relative;
           }
           .confidence-option:hover .confidence-button {
-            border-color: #0891B2;
+            border-color: #111827;
             background: #f0f7ff;
           }
           .confidence-option input:checked + .confidence-button {
-            background: #0891B2;
+            background: #374151;
             color: white;
-            border-color: #0891B2;
+            border-color: #374151;
           }
           .confidence-number {
             font-weight: 600;
@@ -278,7 +276,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             align-items: center;
             padding: 12px 20px;
             background: white;
-            color: #333;
+            color: #374151;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -287,13 +285,13 @@ var jsPsychPredictionTask = (function (jspsych) {
             justify-content: center;
           }
           .travel-option:hover .travel-button {
-            border-color: #0891B2;
+            border-color: #111827;
             background: #f0f7ff;
           }
           .travel-option input:checked + .travel-button {
-            background: #0891B2;
+            background: #374151;
             color: white;
-            border-color: #0891B2;
+            border-color: #374151;
           }
           .travel-text {
             font-weight: 500;
@@ -313,7 +311,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           .estimate-label {
             font-weight: 600;
             font-size: 18px;
-            color: #333;
+            color: #374151;
             min-width: 70px;
           }
           .estimate-label.city-a {
@@ -343,24 +341,24 @@ var jsPsychPredictionTask = (function (jspsych) {
           .scene-label {
             font-size: 16px;
             font-weight: 500;
-            color: #28a745;
-            background: rgba(40, 167, 69, 0.1);
+            color: #374151;
+            background: rgba(55, 65, 81,0.1);
             padding: 6px 12px;
             border-radius: 6px;
-            border: 1px solid rgba(40, 167, 69, 0.3);
+            border: 1px solid rgba(55, 65, 81,0.3);
           }
           .submit-btn {
-            background: #28a745 !important;
-            border-color: #28a745 !important;
+            background: #333 !important;
+            border-color: #333 !important;
           }
           .submit-btn:hover:not(:disabled) {
-            background: #218838 !important;
-            border-color: #1e7e34 !important;
+            background: #333 !important;
+            border-color: #333 !important;
           }
         </style>
         <div class="prediction-task-container">
           <div class="task-header">
-            <h2 style="color: #28a745;">Air Quality Prediction</h2>
+            <h2 style="color: #333;">Humidity Prediction</h2>
             <div class="scene-label">
               ${this.trial.phase === 1 ? 'Historical Data' : 'Forecast Data'}
             </div>
@@ -377,8 +375,8 @@ var jsPsychPredictionTask = (function (jspsych) {
                 <input type="range" id="probability-estimate" class="probability-slider" 
                        min="0" max="100" step="1" value="">
                 <div class="slider-city-labels">
-                  <span class="city-b-label">City B will be better</span>
-                  <span class="city-a-label">City A will be better</span>
+                  <span class="city-b-label">City B will be higher</span>
+                  <span class="city-a-label">City A will be higher</span>
                 </div>
                 <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
                 <div class="slider-requirement" id="slider-requirement" style="font-size: 12px; color: #e74c3c; margin-top: 5px; text-align: center; display: block;">
@@ -388,17 +386,17 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
 
             <div class="air-quality-estimates-section">
-              <h3 class="question-title">Q2. What is the estimated air quality index of City A and City B on 06/30?</h3>
+              <h3 class="question-title">Q2. What is the estimated Humidity of City A and City B on 06/30?</h3>
               <div class="estimates-container">
                 <div class="estimate-input-group">
                   <label for="city-a-estimate" class="estimate-label city-a">City A:</label>
                   <input type="number" id="city-a-estimate" class="estimate-input" 
-                         placeholder="Enter AQI" min="0" max="500" step="1">
+                         placeholder=" Enter Humidity" min="0" max="100" step="1">
                 </div>
                 <div class="estimate-input-group">
                   <label for="city-b-estimate" class="estimate-label city-b">City B:</label>
                   <input type="number" id="city-b-estimate" class="estimate-input" 
-                         placeholder="Enter AQI" min="0" max="500" step="1">
+                         placeholder=" Enter Humidity" min="0" max="100" step="1">
                 </div>
               </div>
             </div>
@@ -517,7 +515,6 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
           </div>
           
-          
           <style>
             @keyframes loading-stripe {
               0% { background-position: 0 0; }
@@ -530,10 +527,11 @@ var jsPsychPredictionTask = (function (jspsych) {
       return initialTemplate;
     }
 
+
     async renderVisualizationContent() {
       
       try {
-        // Get air quality data - handle both sync and async data functions
+        // Get Humidity data - handle both sync and async data functions
         let data = null;
         if (this.trial.air_quality_data) {
           const dataResult = this.trial.air_quality_data();
@@ -570,7 +568,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           },
           showAxisTitles: true,
           xAxisTitle: 'Date',
-          yAxisTitle: 'Air Quality Index'
+          yAxisTitle: 'Humidity'
         };
         
         
@@ -603,6 +601,9 @@ var jsPsychPredictionTask = (function (jspsych) {
 
         // Add city labels to the start of the lines
         this.addCityLabels(svg, data);
+
+        // Add legend and instructions after visualization is loaded
+        this.addLegendAndInstructions();
 
 
       } catch (error) {
@@ -736,6 +737,44 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
     }
 
+    addLegendAndInstructions() {
+      const chartContainer = document.getElementById('air-quality-chart');
+      if (!chartContainer) return;
+
+      // Remove any existing legend/instructions
+      const existingLegend = chartContainer.querySelector('.simple-chart-legend');
+      const existingInstructions = chartContainer.querySelector('.chart-instructions');
+      if (existingLegend) existingLegend.remove();
+      if (existingInstructions) existingInstructions.remove();
+
+      // Add simple legend
+      const legendHTML = `
+        <div class="simple-chart-legend">
+          <div class="legend-line">
+            <div class="legend-color-line city-a"></div>
+            <span>City A</span>
+          </div>
+          <div class="legend-line">
+            <div class="legend-color-line city-b"></div>
+            <span>City B</span>
+          </div>
+        </div>
+      `;
+      chartContainer.insertAdjacentHTML('beforeend', legendHTML);
+
+      // Add instructions for Phase 2 only
+      if (this.trial.phase === 2 && this.condition && this.condition.instructions) {
+        const instructionsHTML = `
+          <div class="chart-instructions">
+            <div class="instructions-content">
+              ${this.condition.instructions}
+            </div>
+          </div>
+        `;
+        chartContainer.insertAdjacentHTML('beforeend', instructionsHTML);
+      }
+    }
+
     
     getConditionNumber() {
       // Handle null condition
@@ -817,7 +856,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       const updateProbabilityDisplay = () => {
         if (probabilityInput.value !== '') {
           const value = parseInt(probabilityInput.value);
-          currentProbabilityDisplay.textContent = `${value}% that City A will be better than City B`;
+          currentProbabilityDisplay.textContent = `${value}% that City A will be higher than City B`;
         } else {
           currentProbabilityDisplay.textContent = '';
         }

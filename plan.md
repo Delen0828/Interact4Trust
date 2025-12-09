@@ -38,7 +38,7 @@ add bad decisions to condition 7 - (click each time, or forcing an animation, po
 5. Evaluate delta_Trust, WOA, MAE
 
 prediction question:
-The probability of air quality of city A>city B is ___ 
+The probability of Humidity of city A>city B is ___ 
 
 How confident are you about your prediction?
 When making travel plan, I will certainly go to city A than city B.
