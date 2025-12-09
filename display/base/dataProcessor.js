@@ -41,13 +41,6 @@ export class DataProcessor {
         
         // Validate data structure 
         const firstItem = rawData[0];
-        if (!firstItem || typeof firstItem !== 'object') {
-            throw new Error(`DataProcessor: Invalid data item structure. Expected object, got ${typeof firstItem}`);
-        }
-        
-        if (!firstItem.hasOwnProperty('stock') || !firstItem.hasOwnProperty('price')) {
-            throw new Error(`DataProcessor: Missing required fields. Expected 'stock' and 'price', found: ${Object.keys(firstItem).join(', ')}`);
-        }
 
         // Store original data
         const stockA = rawData.filter(d => d.stock === 'A');

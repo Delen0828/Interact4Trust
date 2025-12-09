@@ -17,6 +17,8 @@ echo "  dist/data/ - Data collection directory"
 
 # Ensure data directory exists
 mkdir -p dist/data
+cp synthetic_*.json dist/
+for i in {1..9}; do cp dist/synthetic_*.json dist/version$i/; done
 
 echo ""
 echo "Starting PHP server on localhost:8010..."

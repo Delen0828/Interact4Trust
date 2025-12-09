@@ -500,7 +500,7 @@
             try {
                 
                 // Load data
-                const rawDataResponse = await d3.json('synthetic_stock_data_aqi.json');
+                const rawDataResponse = await d3.json('synthetic_city_data.json');
                 const rawData = rawDataResponse.data;
                 
                 // Create and initialize condition factory
@@ -528,7 +528,7 @@
                         <div style="grid-column: 1/-1; text-align: center; color: red; padding: 20px;">
                             <h3>Error loading visualization</h3>
                             <p>Failed to load data or initialize conditions: ${error.message}</p>
-                            <p>Please ensure synthetic_stock_data.json is available and all modules are accessible.</p>
+                            <p>Please ensure synthetic_city_data.json is available and all modules are accessible.</p>
                         </div>
                     `;
                 }

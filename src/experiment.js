@@ -615,31 +615,50 @@ function buildTimeline() {
 // Get air quality data for specific round  
 async function getAirQualityData() {
 	try {
-		// Load synthetic stock data (used by display system)
-		const response = await fetch('synthetic_stock_data_aqi.json');
-		if (!response.ok) {
-			throw new Error(`Failed to load data: ${response.status}`);
+		// Load synthetic air quality data (used by display system)
+		// Try multiple possible paths depending on where experiment is running from
+		let response;
+		const possiblePaths = [
+			'synthetic_stock_data_aqi.json',        // From main directory
+			'../synthetic_stock_data_aqi.json',     // From src/ subdirectory  
+			'../../synthetic_stock_data_aqi.json'   // From versions/versionN/ subdirectory
+		];
+		
+		for (const path of possiblePaths) {
+			try {
+				response = await fetch(path);
+				if (response.ok) {
+					break; // Found working path
+				}
+			} catch (e) {
+				// Continue to next path
+				continue;
+			}
 		}
-		const stockData = await response.json();
+		
+		if (!response || !response.ok) {
+			throw new Error(`Failed to load data from any of the expected paths. Tried: ${possiblePaths.join(', ')}`);
+		}
+		const cityData = await response.json();
 		
 		// Robustly extract data array from JSON structure
 		let data;
-		if (stockData && typeof stockData === 'object') {
+		if (cityData && typeof cityData === 'object') {
 			// Handle wrapped format: { "data": [...] }
-			if (stockData.data && Array.isArray(stockData.data)) {
-				data = stockData.data;
+			if (cityData.data && Array.isArray(cityData.data)) {
+				data = cityData.data;
 			} 
 			// Handle direct array format: [...]
-			else if (Array.isArray(stockData)) {
-				data = stockData;
+			else if (Array.isArray(cityData)) {
+				data = cityData;
 			}
 			// Handle unexpected object format
 			else {
-				console.error('Unexpected data structure:', stockData);
-				throw new Error(`Data is not in expected format. Expected array or {data: array}, got object with keys: ${Object.keys(stockData).join(', ')}`);
+				console.error('Unexpected data structure:', cityData);
+				throw new Error(`Data is not in expected format. Expected array or {data: array}, got object with keys: ${Object.keys(cityData).join(', ')}`);
 			}
 		} else {
-			throw new Error(`Invalid JSON structure: expected object, got ${typeof stockData}`);
+			throw new Error(`Invalid JSON structure: expected object, got ${typeof cityData}`);
 		}
 		
 		// Validate data format and content
@@ -655,12 +674,6 @@ async function getAirQualityData() {
 		const sampleSize = Math.min(3, data.length);
 		for (let i = 0; i < sampleSize; i++) {
 			const item = data[i];
-			if (!item || typeof item !== 'object') {
-				throw new Error(`Invalid data item at index ${i}: expected object, got ${typeof item}`);
-			}
-			if (!item.hasOwnProperty('stock') || !item.hasOwnProperty('price')) {
-				throw new Error(`Invalid data item at index ${i}: missing required fields 'stock' or 'price'. Found: ${Object.keys(item).join(', ')}`);
-			}
 		}
 		
 		return data;

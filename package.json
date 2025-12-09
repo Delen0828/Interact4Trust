@@ -12,7 +12,7 @@
     "test": "echo 'Open http://localhost:8000 in browser to test experiment with PHP data saving - npm start to run server'",
     "clean": "rm -rf dist && echo 'Cleaned dist directory'",
     "lint": "echo 'No linting configured - using vanilla JavaScript'",
-    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp save_data.php complete_study.php simple_index.html dist/ && mv dist/simple_index.html dist/index.html && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && cp -r versions/version1 versions/version2 versions/version3 versions/version4 versions/version5 versions/version6 versions/version7 versions/version8 versions/version9 dist/ && echo 'Multi-version build complete - 9 experimental conditions ready for deployment'"
+    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp -r display dist/ && cp save_data.php complete_study.php simple_index.html dist/ && mv dist/simple_index.html dist/index.html && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && cp -r versions/version1 versions/version2 versions/version3 versions/version4 versions/version5 versions/version6 versions/version7 versions/version8 versions/version9 dist/ && echo 'Multi-version build complete - 9 experimental conditions ready for deployment'"
   },
   "keywords": [
     "psychology",
