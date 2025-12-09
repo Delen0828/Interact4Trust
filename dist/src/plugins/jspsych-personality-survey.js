@@ -126,13 +126,13 @@ var jsPsychPersonalitySurvey = (function (jspsych) {
             position: relative;
           }
           .personality-option:hover .personality-button {
-            border-color: #007bff;
-            background: #f0f7ff;
+            border-color: #374151;
+            background: #f9fafb;
           }
           .personality-option input:checked + .personality-button {
-            background: #007bff;
+            background: #374151;
             color: white;
-            border-color: #007bff;
+            border-color: #374151;
           }
           .personality-number {
             font-weight: 600;

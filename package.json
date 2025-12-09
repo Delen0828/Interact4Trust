@@ -12,7 +12,7 @@
     "test": "echo 'Open http://localhost:8000 in browser to test experiment with PHP data saving - npm start to run server'",
     "clean": "rm -rf dist && echo 'Cleaned dist directory'",
     "lint": "echo 'No linting configured - using vanilla JavaScript'",
-    "build": "mkdir -p dist && cp -r src display index.html conditions.html synthetic_stock_data.json save_data.php complete_study.php dist/ && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && echo 'Build complete - files ready for deployment with PHP data saving'"
+    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp save_data.php complete_study.php simple_index.html dist/ && mv dist/simple_index.html dist/index.html && mkdir -p dist/data && mkdir -p dist/node_modules && cp -r node_modules/jspsych node_modules/@jspsych node_modules/d3 dist/node_modules/ && cp -r versions/version1 versions/version2 versions/version3 versions/version4 versions/version5 versions/version6 versions/version7 versions/version8 versions/version9 dist/ && echo 'Multi-version build complete - 9 experimental conditions ready for deployment'"
   },
   "keywords": [
     "psychology",
@@ -41,6 +41,7 @@
     "@jspsych/plugin-html-button-response": "^1.1.3",
     "@jspsych/plugin-html-keyboard-response": "^1.1.3",
     "@jspsych/plugin-instructions": "^1.1.4",
+    "@jspsych/plugin-preload": "^2.1.0",
     "@jspsych/plugin-survey-likert": "^1.1.3",
     "@jspsych/plugin-survey-multi-choice": "^1.1.3",
     "@jspsych/plugin-survey-text": "^1.1.3",

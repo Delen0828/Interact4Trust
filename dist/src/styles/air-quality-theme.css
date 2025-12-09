@@ -30,15 +30,15 @@
 }
 
 .implementation-notice {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border: 2px solid #f59e0b;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border: 2px solid #6b7280;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
 }
 
 .implementation-notice h3 {
-    color: #92400e;
+    color: #374151;
     margin-top: 0;
     margin-bottom: 15px;
 }
@@ -50,7 +50,7 @@
 
 .implementation-notice li {
     margin: 8px 0;
-    color: #92400e;
+    color: #374151;
 }
 
 .chart-placeholder {
@@ -245,11 +245,11 @@
 
 /* AQI-specific styling */
 .aqi-good {
-    color: #22c55e;
+    color: #6b7280;
 }
 
 .aqi-moderate {
-    color: #f59e0b;
+    color: #374151;
 }
 
 .aqi-unhealthy {

@@ -47,7 +47,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_1',
 					type: 'treemap',
 					question: 'eBay is nested in the Software category.',
-					image: 'src/stimuli/minivlat-images/TreeMap.png',
+					image: '../src/stimuli/minivlat-images/TreeMap.png',
 					options: ['True', 'False', "I don't know"],
 					correct: 1  // False
 				},
@@ -55,7 +55,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_2',
 					type: 'stacked_100_bar',
 					question: 'Which country has the lowest proportion of Gold medals?',
-					image: 'src/stimuli/minivlat-images/Stacked100.png',
+					image: '../src/stimuli/minivlat-images/Stacked100.png',
 					options: ['USA', 'Great Britain', 'Japan', 'Australia', "I don't know"],
 					correct: 1  // Great Britain
 				},
@@ -63,7 +63,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_3',
 					type: 'histogram',
 					question: 'What distance have customers traveled the most?',
-					image: 'src/stimuli/minivlat-images/Histogram.png',
+					image: '../src/stimuli/minivlat-images/Histogram.png',
 					options: ['60–70 km', '30–40 km', '20–30 km', '50–60 km', "I don't know"],
 					correct: 1  // 30–40 km
 				},
@@ -71,7 +71,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_4',
 					type: 'choropleth',
 					question: 'In 2020, the unemployment rate for Washington (WA) was higher than that of Wisconsin (WI).',
-					image: 'src/stimuli/minivlat-images/Choropleth.png',
+					image: '../src/stimuli/minivlat-images/Choropleth.png',
 					options: ['True', 'False', "I don't know"],
 					correct: 0  // True
 				},
@@ -79,7 +79,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_5',
 					type: 'pie_chart',
 					question: 'What is the approximate global smartphone market share of Samsung?',
-					image: 'src/stimuli/minivlat-images/PieChart.png',
+					image: '../src/stimuli/minivlat-images/PieChart.png',
 					options: ['17.6%', '25.3%', '10.9%', '35.2%', "I don't know"],
 					correct: 0  // 17.6%
 				},
@@ -87,7 +87,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_6',
 					type: 'bubble_chart',
 					question: 'Which has the largest number of metro stations?',
-					image: 'src/stimuli/minivlat-images/BubbleChart.png',
+					image: '../src/stimuli/minivlat-images/BubbleChart.png',
 					options: ['Beijing', 'Shanghai', 'London', 'Seoul', "I don't know"],
 					correct: 1  // Shanghai
 				},
@@ -95,7 +95,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_7',
 					type: 'stacked_bar',
 					question: 'What is the cost of peanuts in Seoul?',
-					image: 'src/stimuli/minivlat-images/StackedBar.png',
+					image: '../src/stimuli/minivlat-images/StackedBar.png',
 					options: ['$5.2', '$6.1', '$7.5', '$4.5', "I don't know"],
 					correct: 1  // $6.1
 				},
@@ -103,7 +103,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_8',
 					type: 'line_chart',
 					question: 'What was the price of a barrel of oil in February 2020?',
-					image: 'src/stimuli/minivlat-images/LineChart.png',
+					image: '../src/stimuli/minivlat-images/LineChart.png',
 					options: ['$50.54', '$47.02', '$42.34', '$43.48', "I don't know"],
 					correct: 0  // $50.54
 				},
@@ -111,7 +111,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_9',
 					type: 'bar_chart',
 					question: 'What is the average internet speed in Japan?',
-					image: 'src/stimuli/minivlat-images/BarChart.png',
+					image: '../src/stimuli/minivlat-images/BarChart.png',
 					options: ['42.30 Mbps', '40.51 Mbps', '35.25 Mbps', '16.16 Mbps', "I don't know"],
 					correct: 1  // 40.51 Mbps
 				},
@@ -119,7 +119,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_10',
 					type: 'area_chart',
 					question: 'What was the average price of a pound of coffee in October 2019?',
-					image: 'src/stimuli/minivlat-images/AreaChart.png',
+					image: '../src/stimuli/minivlat-images/AreaChart.png',
 					options: ['$0.71', '$0.90', '$0.80', '$0.63', "I don't know"],
 					correct: 0  // $0.71
 				},
@@ -127,7 +127,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_11',
 					type: 'stacked_area',
 					question: 'What was the ratio of girls named "Isla" to girls named "Amelia" in 2012 in the UK?',
-					image: 'src/stimuli/minivlat-images/StackedArea.png',
+					image: '../src/stimuli/minivlat-images/StackedArea.png',
 					options: ['1 to 1', '1 to 2', '1 to 3', '1 to 4', "I don't know"],
 					correct: 1  // 1 to 2
 				},
@@ -135,7 +135,7 @@ var jsPsychVisLiteracy = (function (jspsych) {
 					id: 'minivlat_12',
 					type: 'scatter_plot',
 					question: 'There is a negative relationship between the height and weight of the 85 males.',
-					image: 'src/stimuli/minivlat-images/Scatterplot.png',
+					image: '../src/stimuli/minivlat-images/Scatterplot.png',
 					options: ['True', 'False', "I don't know"],
 					correct: 1  // False
 				}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality Study - Version 6: PI → Ensemble</title>
+    
+    <!-- jsPsych CSS -->
+    <link href="../node_modules/jspsych/css/jspsych.css" rel="stylesheet" type="text/css" />
+    
+    <!-- Custom CSS -->
+    <link href="../src/styles/experiment.css" rel="stylesheet" type="text/css" />
+    <link href="../src/styles/air-quality-theme.css" rel="stylesheet" type="text/css" />
+    
+    <!-- D3.js -->
+    <script src="../node_modules/d3/dist/d3.min.js"></script>
+    
+    <!-- jsPsych -->
+    <script src="../node_modules/jspsych/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-html-button-response/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-html-keyboard-response/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-instructions/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-survey-likert/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-survey-text/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-survey-multi-choice/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-fullscreen/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-call-function/dist/index.browser.min.js"></script>
+    <script src="../node_modules/@jspsych/plugin-preload/dist/index.browser.min.js"></script>
+    
+    <!-- Version-Specific Configuration -->
+    <script src="./config.js"></script>
+    
+    <!-- Air Quality Data -->
+    <script src="../src/data/airQualityData.js"></script>
+    
+    <!-- Custom Plugins (non-module) -->
+    <script src="../src/plugins/jspsych-vis-literacy.js"></script>
+    <script src="../src/plugins/jspsych-broken-interactions.js"></script>
+    
+    <!-- Utility Scripts -->
+    <script src="../src/utils/conditionManager.js"></script>
+    <script src="../src/utils/interactionController.js"></script>
+    <script src="../src/utils/dataCollector.js"></script>
+</head>
+<body>
+
+    
+    <div id="jspsych-target"></div>
+    
+    <!-- Main Experiment Script -->
+    <script type="module" src="../src/experiment.js"></script>
+</body>
+</html>

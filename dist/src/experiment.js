@@ -4,9 +4,31 @@
 let jsPsych;
 let timeline = [];
 
+// Wait for config to be loaded
+function waitForConfig() {
+	return new Promise((resolve, reject) => {
+		const checkConfig = () => {
+			if (window.ExperimentConfig && window.ParticipantConfig && window.initializeParticipant) {
+						resolve();
+			} else {
+					setTimeout(checkConfig, 50);
+			}
+		};
+		checkConfig();
+		
+		// Timeout after 5 seconds
+		setTimeout(() => {
+			reject(new Error('Timeout waiting for config to load. Check if config.js is properly loaded.'));
+		}, 5000);
+	});
+}
+
 // Initialize experiment
 async function initializeExperiment() {
 	try {
+		// Wait for config to be available
+		await waitForConfig();
+		
 		// Load prediction task plugin dynamically
 		const predictionModule = await import('./plugins/jspsych-prediction-task.js');
 		
@@ -18,6 +40,11 @@ async function initializeExperiment() {
 		window.jsPsychPredictionTask = predictionModule.default || predictionModule.jsPsychPredictionTask;
 		window.jsPsychTrustSurvey = trustSurveyModule.default || trustSurveyModule.jsPsychTrustSurvey;
 		window.jsPsychPersonalitySurvey = personalitySurveyModule.default || personalitySurveyModule.jsPsychPersonalitySurvey;
+		
+		// Check if jsPsych is available
+		if (typeof initJsPsych === 'undefined') {
+			throw new Error('jsPsych library not loaded. Check if jspsych scripts are properly included.');
+		}
 		
 		// Initialize jsPsych
 		jsPsych = initJsPsych({
@@ -38,11 +65,23 @@ async function initializeExperiment() {
 		jsPsych.run(timeline);
 		
 	} catch (error) {
+		console.error('Experiment initialization failed:', error);
+		
 		document.getElementById('jspsych-target').innerHTML = `
 			<div style="text-align: center; padding: 50px;">
-				<h2 style="color: red;">Error Loading Study</h2>
-				<p>Failed to load required components: ${error.message}</p>
-				<p>Please refresh the page and try again.</p>
+				<h2 style="color: #dc2626;">Error Loading Study</h2>
+				<p><strong>Error:</strong> ${error.message}</p>
+				<p><strong>Type:</strong> ${error.name}</p>
+				<div style="margin-top: 20px; padding: 15px; background: #f3f4f6; border-radius: 5px; text-align: left;">
+					<strong>Debug Info:</strong><br>
+					<span style="font-family: monospace; font-size: 12px;">
+						Config loaded: ${window.ExperimentConfig ? '✅' : '❌'}<br>
+						jsPsych available: ${typeof initJsPsych !== 'undefined' ? '✅' : '❌'}<br>
+						Timeline length: ${timeline ? timeline.length : 'undefined'}<br>
+						Error stack: ${error.stack}
+					</span>
+				</div>
+				<p style="margin-top: 20px;">Please check the browser console for more details and refresh the page to try again.</p>
 			</div>
 		`;
 	}
@@ -54,18 +93,18 @@ function buildTimeline() {
 	timeline.push({
 		type: jsPsychPreload,
 		images: [
-			'src/stimuli/minivlat-images/LineChart.png',
-			'src/stimuli/minivlat-images/BarChart.png',
-			'src/stimuli/minivlat-images/StackedBar.png',
-			'src/stimuli/minivlat-images/Stacked100.png',
-			'src/stimuli/minivlat-images/PieChart.png',
-			'src/stimuli/minivlat-images/Histogram.png',
-			'src/stimuli/minivlat-images/Scatterplot.png',
-			'src/stimuli/minivlat-images/AreaChart.png',
-			'src/stimuli/minivlat-images/StackedArea.png',
-			'src/stimuli/minivlat-images/BubbleChart.png',
-			'src/stimuli/minivlat-images/Choropleth.png',
-			'src/stimuli/minivlat-images/TreeMap.png'
+			'../src/stimuli/minivlat-images/LineChart.png',
+			'../src/stimuli/minivlat-images/BarChart.png',
+			'../src/stimuli/minivlat-images/StackedBar.png',
+			'../src/stimuli/minivlat-images/Stacked100.png',
+			'../src/stimuli/minivlat-images/PieChart.png',
+			'../src/stimuli/minivlat-images/Histogram.png',
+			'../src/stimuli/minivlat-images/Scatterplot.png',
+			'../src/stimuli/minivlat-images/AreaChart.png',
+			'../src/stimuli/minivlat-images/StackedArea.png',
+			'../src/stimuli/minivlat-images/BubbleChart.png',
+			'../src/stimuli/minivlat-images/Choropleth.png',
+			'../src/stimuli/minivlat-images/TreeMap.png'
 		],
 		message: 'Loading assessment images...',
 		show_progress_bar: true,
@@ -128,7 +167,7 @@ function buildTimeline() {
 	        jsPsych.data.addProperties({participant_id: participantId});
 	        
 	        // Initialize participant configuration
-	        initializeParticipant(participantId);
+	        window.initializeParticipant(participantId);
 	    },
 	    data: { trial_type: 'participant_id_collection' }
 	});
@@ -240,12 +279,12 @@ function buildTimeline() {
 	    data: function() {
 	        return {
 	            trial_type: 'mini_vlat',
-	            condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-	            condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+	            condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+	            condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
 	        };
 	    },
 	    on_finish: function(data) {
-	        ParticipantConfig.visualizationLiteracyScore = data.total_score;
+	        window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
 	    }
 	});
 
@@ -286,12 +325,12 @@ function buildTimeline() {
 			};
 		},
 		air_quality_data: async function () {
-			return await getAirQualityData(1);
+			return await getAirQualityData();
 		},
-		question: ExperimentConfig.predictionTask.question,
-		confidence_scale: ExperimentConfig.predictionTask.confidenceScale,
-		travel_question: ExperimentConfig.predictionTask.travelQuestion,
-		travel_choices: ExperimentConfig.predictionTask.travelChoices,
+		question: window.ExperimentConfig.predictionTask.question,
+		confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
+		travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
+		travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
 		data: {
 			trial_type: 'phase1_prediction',
 			phase: 1,
@@ -301,8 +340,8 @@ function buildTimeline() {
 			condition_id: 'condition_0_historical',
 			condition_name: 'Historical Only'
 		},
-		on_finish: function (data) {
-			ParticipantConfig.phase1Complete = true;
+		on_finish: function (_data) {
+			window.ParticipantConfig.phase1Complete = true;
 		}
 	});
 
@@ -316,15 +355,15 @@ function buildTimeline() {
 		show_predictions: true,
 		visualization_condition: function () {
 			
-			return ParticipantConfig.assignedCondition;
+			return window.ParticipantConfig.assignedCondition;
 		},
 		air_quality_data: async function () {
-			return await getAirQualityData(1);
+			return await getAirQualityData();
 		},
-		question: ExperimentConfig.predictionTask.question,
-		confidence_scale: ExperimentConfig.predictionTask.confidenceScale,
-		travel_question: ExperimentConfig.predictionTask.travelQuestion,
-		travel_choices: ExperimentConfig.predictionTask.travelChoices,
+		question: window.ExperimentConfig.predictionTask.question,
+		confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
+		travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
+		travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
 		data: function() {
 			return {
 				trial_type: 'phase2_prediction',
@@ -332,13 +371,13 @@ function buildTimeline() {
 				round: 1,
 				visualization_shown: true,
 				predictions_shown: true,
-				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null,
-				display_format: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.displayFormat : null
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
 			};
 		},
-		on_finish: function (data) {
-			ParticipantConfig.phase2Complete = true;
+		on_finish: function (_data) {
+			window.ParticipantConfig.phase2Complete = true;
 		}
 	});
 
@@ -359,7 +398,7 @@ function buildTimeline() {
 	// Trust Survey Page 1 - Interface Control
 	timeline.push({
 		type: jsPsychTrustSurvey,
-		questions: ExperimentConfig.trustQuestions,
+		questions: window.ExperimentConfig.trustQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
                     <h3>Interface Assessment - Page 1</h3>
@@ -371,9 +410,9 @@ function buildTimeline() {
 				trial_type: 'trust_survey_interface',
 				phase: 2,
 				round: 1,
-				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null,
-				display_format: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.displayFormat : null
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
 			};
 		}
 	});
@@ -381,7 +420,7 @@ function buildTimeline() {
 	// Trust Survey Page 2 - Visualization-specific  
 	timeline.push({
 		type: jsPsychTrustSurvey,
-		questions: ExperimentConfig.visualizationTrustQuestions,
+		questions: window.ExperimentConfig.visualizationTrustQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
                     <h3>Visualization Assessment - Page 2</h3>
@@ -393,9 +432,9 @@ function buildTimeline() {
 				trial_type: 'trust_survey_visualization',
 				phase: 2,
 				round: 1,
-				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null,
-				display_format: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.displayFormat : null
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
 			};
 		},
 		on_finish: function (data) {
@@ -428,7 +467,7 @@ function buildTimeline() {
 	// Personality Self Evaluation
 	timeline.push({
 		type: jsPsychPersonalitySurvey,
-		questions: ExperimentConfig.personalityQuestions,
+		questions: window.ExperimentConfig.personalityQuestions,
 		preamble: `
 			<div class="personality-survey-preamble">
 				<h3>Personality Self Evaluation</h3>
@@ -438,8 +477,8 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'personality',
-				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
 			};
 		}
 	});
@@ -465,8 +504,8 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'demographics_text_1',
-				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
 			};
 		}
 	});
@@ -491,8 +530,8 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'demographics_mc',
-				condition_id: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.id : null,
-				condition_name: ParticipantConfig.assignedCondition ? ParticipantConfig.assignedCondition.name : null
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
 			};
 		}
 	});
@@ -537,8 +576,8 @@ function buildTimeline() {
 			// Securely validate completion and get redirect URL from server
 			const completionData = {
 				study_complete: true,
-				phase1_complete: ParticipantConfig.phase1Complete,
-				phase2_complete: ParticipantConfig.phase2Complete,
+				phase1_complete: window.ParticipantConfig.phase1Complete,
+				phase2_complete: window.ParticipantConfig.phase2Complete,
 				end_time: new Date().toISOString()
 			};
 
@@ -574,7 +613,7 @@ function buildTimeline() {
 
 
 // Get air quality data for specific round  
-async function getAirQualityData(roundNumber = 1) {
+async function getAirQualityData() {
 	try {
 		// Load synthetic stock data (used by display system)
 		const response = await fetch('synthetic_stock_data_aqi.json');
@@ -638,28 +677,28 @@ function saveData(data) {
 
 	// Add participant summary
 	const summary = {
-		participant_id: ParticipantConfig.id,
-		condition: ParticipantConfig.assignedCondition,
-		start_time: ParticipantConfig.startTime,
+		participant_id: window.ParticipantConfig.id,
+		condition: window.ParticipantConfig.assignedCondition,
+		start_time: window.ParticipantConfig.startTime,
 		end_time: new Date().toISOString(),
-		visualization_literacy_score: ParticipantConfig.visualizationLiteracyScore,
-		phase1_complete: ParticipantConfig.phase1Complete,
-		phase2_complete: ParticipantConfig.phase2Complete
+		visualization_literacy_score: window.ParticipantConfig.visualizationLiteracyScore,
+		phase1_complete: window.ParticipantConfig.phase1Complete,
+		phase2_complete: window.ParticipantConfig.phase2Complete
 	};
 
-	if (ExperimentConfig.dataCollection.saveToServer) {
+	if (window.ExperimentConfig.dataCollection.saveToServer) {
 		// Convert data to CSV format for PHP script
 		const csvData = convertToCSV(allData, summary);
 		
 		// Generate filename in format required by PHP: user_[ID]_[TIMESTAMP].csv
 		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('Z', '').split('.')[0]; // Remove Z and milliseconds
-		const participantIdClean = ParticipantConfig.id || 'unknown'; // Handle null case
+		const participantIdClean = window.ParticipantConfig.id || 'unknown'; // Handle null case
 		const participantIdNumber = participantIdClean.toString().replace(/^P/, ''); // Remove 'P' prefix if present
 		const numericId = participantIdNumber.replace(/[^0-9]/g, '') || Date.now(); // Extract only digits, fallback to timestamp
 		const filename = `user_${numericId}_${timestamp}.csv`;
 
 		// Send to PHP server in expected format
-		fetch(ExperimentConfig.dataCollection.serverEndpoint, {
+		fetch(window.ExperimentConfig.dataCollection.serverEndpoint, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ 
@@ -671,15 +710,15 @@ function saveData(data) {
 				throw new Error(`Server error: ${response.status}`);
 			}
 			return response.json();
-		}).then(result => {
+		}).then(() => {
 		}).catch(error => {
 			console.error('Error saving to server, using localStorage fallback:', error);
 			// Fallback to local storage
-			localStorage.setItem(`air_quality_study_${ParticipantConfig.id}`, JSON.stringify({ data: allData, summary }));
+			localStorage.setItem(`air_quality_study_${window.ParticipantConfig.id}`, JSON.stringify({ data: allData, summary }));
 		});
 	} else {
 		// Save to local storage
-		localStorage.setItem(`air_quality_study_${ParticipantConfig.id}`, JSON.stringify({ data: allData, summary }));
+		localStorage.setItem(`air_quality_study_${window.ParticipantConfig.id}`, JSON.stringify({ data: allData, summary }));
 	}
 }
 

@@ -126,13 +126,13 @@ var jsPsychTrustSurvey = (function (jspsych) {
             position: relative;
           }
           .trust-option:hover .trust-button {
-            border-color: #007bff;
-            background: #f0f7ff;
+            border-color: #374151;
+            background: #f9fafb;
           }
           .trust-option input:checked + .trust-button {
-            background: #007bff;
+            background: #374151;
             color: white;
-            border-color: #007bff;
+            border-color: #374151;
           }
           .trust-number {
             font-weight: 600;

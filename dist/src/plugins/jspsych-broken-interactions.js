@@ -90,11 +90,11 @@ var jsPsychBrokenInteractions = (function (jspsych) {
                 </text>
                 
                 <!-- Sample broken elements preview -->
-                <line x1="100" y1="300" x2="500" y2="150" stroke="#007bff" stroke-width="2" opacity="0.3"/>
-                <line x1="105" y1="305" x2="505" y2="155" stroke="#007bff" stroke-width="2"/>
+                <line x1="100" y1="300" x2="500" y2="150" stroke="#0891B2" stroke-width="2" opacity="0.3"/>
+                <line x1="105" y1="305" x2="505" y2="155" stroke="#0891B2" stroke-width="2"/>
                 <text x="110" y="320" font-size="10" fill="red">Offset line (broken)</text>
                 
-                <line x1="100" y1="320" x2="500" y2="200" stroke="#fd7e14" stroke-width="2"/>
+                <line x1="100" y1="320" x2="500" y2="200" stroke="#7C3AED" stroke-width="2"/>
                 <circle cx="300" cy="260" r="20" fill="none" stroke="red" stroke-dasharray="2,2"/>
                 <text x="330" y="265" font-size="10" fill="red">Wrong hover zone</text>
               </svg>
@@ -154,8 +154,8 @@ var jsPsychBrokenInteractions = (function (jspsych) {
                 </text>
                 
                 <!-- Sample poor UX elements preview -->
-                <line x1="100" y1="300" x2="500" y2="150" stroke="#007bff" stroke-width="2"/>
-                <line x1="100" y1="320" x2="500" y2="200" stroke="#fd7e14" stroke-width="2"/>
+                <line x1="100" y1="300" x2="500" y2="150" stroke="#0891B2" stroke-width="2"/>
+                <line x1="100" y1="320" x2="500" y2="200" stroke="#7C3AED" stroke-width="2"/>
                 
                 <rect x="200" y="100" width="200" height="60" fill="white" stroke="#ccc" stroke-dasharray="2,2"/>
                 <text x="300" y="120" text-anchor="middle" font-size="10" fill="red">Forced click popup</text>

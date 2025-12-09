@@ -155,16 +155,16 @@ var jsPsychPredictionTask = (function (jspsych) {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #007bff;
+            background: #0891B2;
             cursor: pointer;
             border: 3px solid white;
-            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 2px 6px rgba(8, 145, 178, 0.3);
           }
           .probability-slider::-moz-range-thumb {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #007bff;
+            background: #0891B2;
             cursor: pointer;
             border: 3px solid white;
             box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
@@ -177,17 +177,17 @@ var jsPsychPredictionTask = (function (jspsych) {
             font-weight: 500;
           }
           .city-b-label {
-            color: #fd7e14;
+            color: #7C3AED;
           }
           .city-a-label {
-            color: #007bff;
+            color: #0891B2;
           }
           .current-probability {
             text-align: center;
             margin-top: 15px;
             font-size: 16px;
             font-weight: 600;
-            color: #007bff;
+            color: #0891B2;
             min-height: 20px;
           }
           .confidence-scale {
@@ -228,13 +228,13 @@ var jsPsychPredictionTask = (function (jspsych) {
             position: relative;
           }
           .confidence-option:hover .confidence-button {
-            border-color: #007bff;
+            border-color: #0891B2;
             background: #f0f7ff;
           }
           .confidence-option input:checked + .confidence-button {
-            background: #007bff;
+            background: #0891B2;
             color: white;
-            border-color: #007bff;
+            border-color: #0891B2;
           }
           .confidence-number {
             font-weight: 600;
@@ -287,13 +287,13 @@ var jsPsychPredictionTask = (function (jspsych) {
             justify-content: center;
           }
           .travel-option:hover .travel-button {
-            border-color: #007bff;
+            border-color: #0891B2;
             background: #f0f7ff;
           }
           .travel-option input:checked + .travel-button {
-            background: #007bff;
+            background: #0891B2;
             color: white;
-            border-color: #007bff;
+            border-color: #0891B2;
           }
           .travel-text {
             font-weight: 500;
@@ -317,10 +317,10 @@ var jsPsychPredictionTask = (function (jspsych) {
             min-width: 70px;
           }
           .estimate-label.city-a {
-            color: #007bff;
+            color: #0891B2;
           }
           .estimate-label.city-b {
-            color: #fd7e14;
+            color: #7C3AED;
           }
           .estimate-input {
             width: 120px;
@@ -333,7 +333,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .estimate-input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #0891B2;
             background: #f0f7ff;
           }
           .estimate-input::placeholder {
@@ -507,14 +507,11 @@ var jsPsychPredictionTask = (function (jspsych) {
             <div class="chart-placeholder" id="loading-placeholder">
               <div style="text-align: center; padding: 20px;">
                 <div style="font-size: 14px;">Loading visualization...</div>
-                <div style="margin-top: 8px; font-size: 12px; color: #666;" id="condition-display">
-                  Condition: ${this.condition ? this.condition.name : 'Unknown'}
-                </div>
                 <div style="margin-top: 8px; font-size: 11px; color: #999;">
                   Phase ${this.trial.phase || 'Unknown'} • ${this.trial.show_predictions ? 'With Predictions' : 'Historical Only'}
                 </div>
                 <div style="margin-top: 15px; width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
-                  <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #007bff 25%, #ffffff 25%, #ffffff 50%, #007bff 50%, #007bff 75%, #ffffff 75%); background-size: 40px 100%; animation: loading-stripe 1s linear infinite;"></div>
+                  <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #0891B2 25%, #ffffff 25%, #ffffff 50%, #0891B2 50%, #0891B2 75%, #ffffff 75%); background-size: 40px 100%; animation: loading-stripe 1s linear infinite;"></div>
                 </div>
               </div>
             </div>
@@ -568,8 +565,8 @@ var jsPsychPredictionTask = (function (jspsych) {
           margin: { top: 20, right: 20, bottom: 60, left: 70 },
           colors: {
             historical: '#6c757d',
-            stockA: '#007bff',
-            stockB: '#fd7e14'
+            stockA: '#0891B2',
+            stockB: '#7C3AED'
           },
           showAxisTitles: true,
           xAxisTitle: 'Date',
@@ -665,8 +662,8 @@ var jsPsychPredictionTask = (function (jspsych) {
         }
 
         // Find line elements with more flexible selectors
-        const stockALine = d3.select(svg).select('path.stock-a-line, path.line-a, path[stroke="#007bff"], path[stroke="#0066cc"]');
-        const stockBLine = d3.select(svg).select('path.stock-b-line, path.line-b, path[stroke="#fd7e14"], path[stroke="#ff6600"]');
+        const stockALine = d3.select(svg).select('path.stock-a-line, path.line-a, path[stroke="#0891B2"], path[stroke="#0066cc"]');
+        const stockBLine = d3.select(svg).select('path.stock-b-line, path.line-b, path[stroke="#7C3AED"], path[stroke="#ff6600"]');
 
         // Get chart dimensions and margins for better positioning
         const svgWidth = parseInt(svg.getAttribute('width')) || 600;
@@ -699,7 +696,7 @@ var jsPsychPredictionTask = (function (jspsych) {
                   .attr('text-anchor', 'end')
                   .attr('font-size', '11px')
                   .attr('font-weight', '600')
-                  .attr('fill', '#007bff')
+                  .attr('fill', '#0891B2')
                   .style('background', 'rgba(255,255,255,0.8)')
                   .text('City A');
               }
@@ -726,7 +723,7 @@ var jsPsychPredictionTask = (function (jspsych) {
                   .attr('text-anchor', 'end')
                   .attr('font-size', '11px')
                   .attr('font-weight', '600')
-                  .attr('fill', '#fd7e14')
+                  .attr('fill', '#7C3AED')
                   .style('background', 'rgba(255,255,255,0.8)')
                   .text('City B');
               }

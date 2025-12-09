@@ -1,5 +1,0 @@
-participant_id,visualization_literacy_score,condition_id,condition_name
-62e199458482518274623771,,condition_9_combined,Combined PI + Ensemble
-66573c811d17794993965781,,condition_7_buggy,Buggy Control
-67aced4b25f62493088645b8,,condition_5_pi_hover,PI Plot + Hover
-test,,condition_9_combined,Combined PI + Ensemble

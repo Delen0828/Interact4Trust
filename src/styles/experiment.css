@@ -1,23 +1,23 @@
 /* Custom styles for the experiment */
 
 :root {
-    --success-color: #22c55e;
-    --success-hover: #16a34a;
+    --success-color: #374151;
+    --success-hover: #111827;
     --disabled-color: #9ca3af;
     --danger-color: #dc2626;
-    --warning-color: #f59e0b;
+    --warning-color: #6b7280;
     --background-color: #f9fafb;
     --text-color: #111827;
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
-    --air-quality-accent: #15803d;  /* Dark green theme for air quality */
-    --air-quality-primary: #166534;
-    --air-quality-light-1: #22c55e;
-    --air-quality-light-2: #4ade80;
+    --air-quality-accent: #374151;  /* Neutral dark grey for UI elements */
+    --air-quality-primary: #111827;
+    --air-quality-light-1: #6b7280;
+    --air-quality-light-2: #9ca3af;
     --air-quality-light-3: #e5e7eb;  /* Light grey for gradients */
     --air-quality-light-4: #f3f4f6;  /* Very light grey for backgrounds */
-    --city-a-color: #007bff;  /* Blue for City A */
-    --city-b-color: #fd7e14;  /* Orange for City B */
+    --city-a-color: #0891B2;  /* Teal for City A */
+    --city-b-color: #7C3AED;  /* Purple for City B */
     --white: #ffffff;
     --grid-color: #e5e7eb;
 }
@@ -638,11 +638,11 @@ body {
 .debug-info {
     margin-top: 10px;
     padding: 12px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border: 1px solid #fbbf24;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border: 1px solid #9ca3af;
     border-radius: 8px;
     font-size: 13px;
-    color: #92400e;
+    color: #374151;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -1168,7 +1168,7 @@ body {
 .pattern-trend-indicator.increase {
     background: linear-gradient(135deg, var(--air-quality-light-4) 0%, var(--air-quality-light-3) 100%);
     color: var(--success-color);
-    border: 1px solid #22c55e;
+    border: 1px solid var(--success-color);
 }
 
 .pattern-trend-indicator.decrease {
