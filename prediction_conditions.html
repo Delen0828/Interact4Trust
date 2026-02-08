@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Condition Patterns</title>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #212529;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .opacity-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 1px solid #e9ecef;
+        }
+
+        .opacity-slider {
+            width: 100px;
+            height: 20px;
+        }
+
+        .opacity-label {
+            font-size: 12px;
+            color: #6c757d;
+            min-width: 120px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-line {
+            width: 20px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .legend-historical { background: #6c757d; }
+        .legend-aggregate { background: #007bff; }
+        .legend-scenarios { background: #fd7e14; }
+
+        .visualization-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .category-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .category-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .category-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .category-title {
+            color: #374151;
+            border-bottom-color: #374151;
+        }
+
+        .agreement-section .category-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .outlier-section .category-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .divergence-section .category-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .condition-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .condition-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+            color: #374151;
+        }
+
+        .condition-description {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .chart-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .chart-svg {
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            background: #ffffff;
+        }
+
+
+        /* Chart styling */
+        .axis {
+            font-size: 10px;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: #ccc;
+            shape-rendering: crispEdges;
+        }
+
+        .grid line {
+            stroke: #f0f0f0;
+            stroke-width: 1px;
+        }
+
+        .grid path {
+            stroke-width: 0;
+        }
+
+        .historical-line {
+            fill: none;
+            stroke: #6c757d;
+            stroke-width: 3;
+        }
+
+        .aggregate-line {
+            fill: none;
+            stroke: #007bff;
+            stroke-width: 3;
+        }
+
+        .scenario-line {
+            fill: none;
+            stroke: #fd7e14;
+            stroke-width: 2;
+            opacity: 0.4;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .outlier-section .category-grid,
+            .divergence-section .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .legend {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .opacity-control {
+                margin-left: 0;
+                padding-left: 0;
+                border-left: none;
+                border-top: 1px solid #e9ecef;
+                padding-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Prediction Condition Patterns</h1>
+            <p>Visualizing different patterns of prediction agreement and uncertainty</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-line legend-historical"></div>
+                <span>Historical Data</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line legend-aggregate"></div>
+                <span>Aggregated Prediction</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line legend-scenarios"></div>
+                <span>Individual Scenarios</span>
+            </div>
+            
+            <div class="opacity-control">
+                <span class="opacity-label">Scenario Opacity:</span>
+                <input type="range" id="scenarioOpacitySlider" class="opacity-slider" 
+                       min="0.1" max="1" step="0.1" value="0.4">
+                <span id="scenarioOpacityValue">0.4</span>
+            </div>
+        </div>
+
+        <div class="visualization-container">
+            <!-- Agreement Section -->
+            <div class="category-section agreement-section">
+                <div class="category-title">Agreement</div>
+                <div class="category-grid">
+                    <div class="condition-panel agreement">
+                        <div class="condition-title">Agreement</div>
+                        <div class="condition-description">
+                            All predictions align with the aggregated trend.
+                        </div>
+                        <div class="chart-container">
+                            <svg id="chart-agreement" class="chart-svg" width="600" height="300"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outlier Section -->
+            <div class="category-section outlier-section">
+                <div class="category-title">Outlier Patterns</div>
+                <div class="category-grid">
+                    <div class="condition-panel risk-of-loss">
+                        <div class="condition-title">Risk of Loss</div>
+                        <div class="condition-description">
+                            Aggregated trend is up, but a small minority predict down (lower).
+                        </div>
+                        <div class="chart-container">
+                            <svg id="chart-risk-of-loss" class="chart-svg" width="450" height="300"></svg>
+                        </div>
+                    </div>
+
+                    <div class="condition-panel chance-of-gain">
+                        <div class="condition-title">Chance of Gain</div>
+                        <div class="condition-description">
+                            Aggregated trend is down, but a small minority predict up (higher).
+                        </div>
+                        <div class="chart-container">
+                            <svg id="chart-chance-of-gain" class="chart-svg" width="450" height="300"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divergence Section -->
+            <div class="category-section divergence-section">
+                <div class="category-title">Divergence Patterns</div>
+                <div class="category-grid">
+                    <div class="condition-panel polarization">
+                        <div class="condition-title">Polarization</div>
+                        <div class="condition-description">
+                            Predictions split into roughly equal groups above and below the aggregate.
+                        </div>
+                        <div class="chart-container">
+                            <svg id="chart-polarization" class="chart-svg" width="450" height="300"></svg>
+                        </div>
+                    </div>
+
+                    <div class="condition-panel ambiguous-spread">
+                        <div class="condition-title">Ambiguous Spread</div>
+                        <div class="condition-description">
+                            Predictions scatter broadly around the aggregate without clear clusters.
+                        </div>
+                        <div class="chart-container">
+                            <svg id="chart-ambiguous-spread" class="chart-svg" width="450" height="300"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Configuration
+        const getConfig = (chartId) => {
+            if (chartId === 'chart-agreement') {
+                return { width: 600, height: 300, margin: { top: 20, right: 20, bottom: 40, left: 50 } };
+            }
+            return { width: 450, height: 300, margin: { top: 20, right: 20, bottom: 40, left: 50 } };
+        };
+
+        // Global data variable
+        let predictionData = null;
+
+        // Load and process data
+        async function loadData() {
+            try {
+                const data = await d3.json('synthetic_prediction_conditions.json');
+                predictionData = data;
+                return data;
+            } catch (error) {
+                console.error('Failed to load prediction data:', error);
+                return null;
+            }
+        }
+
+        // Create time scale (assuming monthly data) - limit to August
+        function createTimeScale() {
+            const dates = [];
+            // Historical dates (5 points: Jan-May)
+            for (let i = 0; i < 5; i++) {
+                dates.push(new Date(2025, i, 1));
+            }
+            // Prediction dates (4 points: May-Aug) - start from May to connect with historical
+            for (let i = 4; i < 8; i++) {
+                dates.push(new Date(2025, i, 1));
+            }
+            return dates;
+        }
+
+        // Calculate aggregate prediction from scenarios (limit to first 4 points for Aug cutoff)
+        function calculateAggregate(scenarios) {
+            const aggregate = [];
+            for (let i = 0; i < Math.min(4, scenarios[0].length); i++) {
+                const sum = scenarios.reduce((acc, scenario) => acc + scenario[i], 0);
+                aggregate.push(sum / scenarios.length);
+            }
+            return aggregate;
+        }
+
+        // Create chart for a specific condition
+        function createChart(containerId, conditionName, data) {
+            const svg = d3.select(`#${containerId}`);
+            svg.selectAll("*").remove(); // Clear existing content
+
+            const config = getConfig(containerId);
+            const innerWidth = config.width - config.margin.left - config.margin.right;
+            const innerHeight = config.height - config.margin.top - config.margin.bottom;
+
+            const g = svg.append('g')
+                .attr('transform', `translate(${config.margin.left},${config.margin.top})`);
+
+            const dates = createTimeScale();
+            const historical = data.historical;
+            const predictions = data.predictions;
+            const aggregate = calculateAggregate(predictions);
+
+            // Prepend last historical point to predictions for continuity (limit to 4 prediction points)
+            const lastHistoricalValue = historical[historical.length - 1];
+            const continuousAggregate = [lastHistoricalValue, ...aggregate];
+            const continuousPredictions = predictions.map(scenario => [lastHistoricalValue, ...scenario.slice(0, 4)]);
+
+            // Combine historical and aggregate for full timeline
+            const fullAggregate = [...historical, ...aggregate];
+            const allValues = [
+                ...historical,
+                ...predictions.flat(),
+                ...aggregate
+            ];
+
+            // Scales
+            const xScale = d3.scaleTime()
+                .domain(d3.extent(dates))
+                .range([0, innerWidth]);
+
+            const yScale = d3.scaleLinear()
+                .domain(d3.extent(allValues))
+                .nice()
+                .range([innerHeight, 0]);
+
+            // Line generator (conditional curve for ambiguous spread)
+            const useLinear = conditionName.toLowerCase() === 'ambiguous_spread';
+            const line = d3.line()
+                .x((d, i) => xScale(dates[i]))
+                .y(d => yScale(d))
+                .curve(useLinear ? d3.curveLinear : d3.curveMonotoneX);
+
+            // Add grid
+            g.append('g')
+                .attr('class', 'grid')
+                .attr('transform', `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(xScale)
+                    .tickSize(-innerHeight)
+                    .tickFormat('')
+                );
+
+            g.append('g')
+                .attr('class', 'grid')
+                .call(d3.axisLeft(yScale)
+                    .tickSize(-innerWidth)
+                    .tickFormat('')
+                );
+
+            // Add axes
+            g.append('g')
+                .attr('class', 'axis')
+                .attr('transform', `translate(0,${innerHeight})`)
+                .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b')));
+
+            g.append('g')
+                .attr('class', 'axis')
+                .call(d3.axisLeft(yScale));
+
+            // Add axis labels
+            g.append('text')
+                .attr('transform', 'rotate(-90)')
+                .attr('y', 0 - config.margin.left)
+                .attr('x', 0 - (innerHeight / 2))
+                .attr('dy', '1em')
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('fill', '#6c757d')
+                .text('Value');
+
+            g.append('text')
+                .attr('transform', `translate(${innerWidth / 2}, ${innerHeight + config.margin.bottom})`)
+                .style('text-anchor', 'middle')
+                .style('font-size', '12px')
+                .style('fill', '#6c757d')
+                .text('Time');
+
+            // Draw historical line
+            g.append('path')
+                .datum(historical)
+                .attr('class', 'historical-line')
+                .attr('d', line);
+
+
+            // Draw individual prediction scenarios (starting from May)
+            continuousPredictions.forEach((scenario, scenarioIndex) => {
+                g.append('path')
+                    .datum(scenario)
+                    .attr('class', 'scenario-line')
+                    .attr('d', d => line(d.map((val, i) => val)))
+                    .attr('transform', `translate(${xScale(dates[4]) - xScale(dates[0])},0)`);
+                
+            });
+
+            // Draw aggregate prediction line (starting from May)
+            g.append('path')
+                .datum(continuousAggregate)
+                .attr('class', 'aggregate-line')
+                .attr('d', line)
+                .attr('transform', `translate(${xScale(dates[4]) - xScale(dates[0])},0)`);
+
+
+            // Add vertical line to separate historical from predictions (between May and June)
+            g.append('line')
+                .attr('x1', xScale(dates[4]) + (xScale(dates[5]) - xScale(dates[4])) / 2)
+                .attr('x2', xScale(dates[4]) + (xScale(dates[5]) - xScale(dates[4])) / 2)
+                .attr('y1', 0)
+                .attr('y2', innerHeight)
+                .attr('stroke', '#ccc')
+                .attr('stroke-dasharray', '3,3')
+                .attr('stroke-width', 1);
+        }
+
+        // Initialize opacity control
+        function initializeControls() {
+            const slider = document.getElementById('scenarioOpacitySlider');
+            const valueDisplay = document.getElementById('scenarioOpacityValue');
+            
+            if (slider) {
+                slider.addEventListener('input', function() {
+                    const opacity = parseFloat(this.value);
+                    valueDisplay.textContent = opacity.toFixed(1);
+                    
+                    d3.selectAll('.scenario-line')
+                        .style('opacity', opacity);
+                });
+            }
+        }
+
+        // Main initialization
+        async function initialize() {
+            try {
+                const data = await loadData();
+                if (!data) {
+                    throw new Error('Failed to load prediction conditions data');
+                }
+
+                // Create charts for each condition
+                Object.entries(data).forEach(([conditionName, conditionData]) => {
+                    const chartId = `chart-${conditionName.toLowerCase().replace(/_/g, '-')}`;
+                    createChart(chartId, conditionName, conditionData);
+                });
+
+                // Initialize controls
+                initializeControls();
+
+            } catch (error) {
+                console.error('Failed to initialize prediction conditions:', error);
+                
+                const grid = document.querySelector('.visualization-grid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; color: red; padding: 20px;">
+                            <h3>Error loading visualization</h3>
+                            <p>Failed to load prediction conditions data: ${error.message}</p>
+                            <p>Please ensure synthetic_prediction_conditions.json is available.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initialize, 100);
+        });
+    </script>
+</body>
+</html>
