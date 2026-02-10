@@ -69,6 +69,48 @@ const ExperimentConfig = {
             displayFormat: 'combined_pi_ensemble',
             description: 'Shows both confidence bounds and alternative prediction lines',
             instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region. Each line represent the prediction from one Forecast Agency'
+        },
+        { 
+            id: 'condition_10_button_next', 
+            name: 'Button Next Line',
+            displayFormat: 'button_next_line',
+            description: 'Bad: Click "Next Line" button multiple times to reveal alternatives',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Click the "Show Next Line" button to reveal alternatives (bad design: requires multiple clicks)'
+        },
+        { 
+            id: 'condition_11_checkbox', 
+            name: 'Checkbox Selection',
+            displayFormat: 'checkbox_selection',
+            description: 'Bad: Tick all empty boxes to reveal each prediction line',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Tick the checkboxes to reveal alternatives (bad design: requires multiple selections)'
+        },
+        { 
+            id: 'condition_12_legend_hover', 
+            name: 'Legend Hover',
+            displayFormat: 'legend_hover',
+            description: 'Bad: Hover on small legend items to show one line at a time',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on legend items to reveal alternatives (bad design: one at a time, requires precision)'
+        },
+        { 
+            id: 'condition_13_visual_offset', 
+            name: 'Visual Offset Bug',
+            displayFormat: 'visual_offset_bug',
+            description: 'Buggy: Ensemble lines are offset by 10px when revealed',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines to reveal alternatives (buggy: visual misalignment)'
+        },
+        { 
+            id: 'condition_14_escaping_aggregation', 
+            name: 'Escaping Aggregation Bug',
+            displayFormat: 'escaping_aggregation_bug',
+            description: 'Buggy: Aggregation line escapes when you hover on predictions',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines to reveal alternatives (buggy: aggregation disappears)'
+        },
+        { 
+            id: 'condition_15_inconsistent_shape', 
+            name: 'Inconsistent Shape Bug',
+            displayFormat: 'inconsistent_shape_bug',
+            description: 'Buggy: Every hover shows different random subset of prediction lines',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines to reveal alternatives (buggy: different results each time)'
         }
     ],
 

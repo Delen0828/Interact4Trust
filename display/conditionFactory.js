@@ -32,8 +32,8 @@ export class ConditionFactory {
     async createCondition(conditionNumber, svgId) {
         try {
             // Validate condition number
-            if (conditionNumber < 0 || conditionNumber > 9) {
-                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 9.`);
+            if (conditionNumber < 0 || conditionNumber > 15) {
+                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 15.`);
             }
 
             // Check if we have processed data
@@ -80,7 +80,7 @@ export class ConditionFactory {
     }
 
     /**
-     * Render all 10 conditions
+     * Render all 16 conditions
      */
     async renderAllConditions() {
         const conditionMappings = [
@@ -93,7 +93,13 @@ export class ConditionFactory {
             { number: 6, svgId: 'chart-6' },
             { number: 7, svgId: 'chart-7' },
             { number: 8, svgId: 'chart-8' },
-            { number: 9, svgId: 'chart-9' }
+            { number: 9, svgId: 'chart-9' },
+            { number: 10, svgId: 'chart-10' },
+            { number: 11, svgId: 'chart-11' },
+            { number: 12, svgId: 'chart-12' },
+            { number: 13, svgId: 'chart-13' },
+            { number: 14, svgId: 'chart-14' },
+            { number: 15, svgId: 'chart-15' }
         ];
 
 
@@ -192,7 +198,13 @@ export class ConditionFactory {
             6: { name: 'PI → Ensemble', description: 'PI plot transforms to ensemble plot on hover' },
             7: { name: 'Buggy Control', description: 'Broken interactions: hover zones show wrong city data' },
             8: { name: 'Bad Control', description: 'Poor interaction: click to reveal one alternative line at a time' },
-            9: { name: 'Combined PI + Ensemble', description: 'Shows both confidence bounds and alternative prediction lines' }
+            9: { name: 'Combined PI + Ensemble', description: 'Shows both confidence bounds and alternative prediction lines' },
+            10: { name: 'Button Next Line', description: 'Bad: Click "Next Line" button multiple times to reveal alternatives' },
+            11: { name: 'Checkbox Selection', description: 'Bad: Tick all empty boxes to reveal each prediction line' },
+            12: { name: 'Legend Hover', description: 'Bad: Hover on small legend items to show one line at a time' },
+            13: { name: 'Visual Offset Bug', description: 'Buggy: Ensemble lines are offset by 10px when revealed' },
+            14: { name: 'Escaping Aggregation Bug', description: 'Buggy: Aggregation line escapes when you hover on predictions' },
+            15: { name: 'Inconsistent Shape Bug', description: 'Buggy: Every hover shows different random subset of prediction lines' }
         };
     }
 }
