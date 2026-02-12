@@ -804,6 +804,12 @@ var jsPsychPredictionTask = (function (jspsych) {
           return 8;  // Condition 8: Bad Control
         case 'combined_pi_ensemble':
           return 9;  // Condition 9: Combined PI + Ensemble
+        case 'checkbox_selection':
+          return 11;  // Condition 11: Checkbox Selection
+        case 'tiny_slider_checkbox':
+          return 16;  // Condition 16: Tiny Slider Checkbox
+        case 'buggy_checkbox_selection':
+          return 17;  // Condition 17: Buggy Checkbox Selection
         default:
           return 1;  // Fallback to Baseline
       }

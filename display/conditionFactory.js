@@ -1,4 +1,4 @@
-/**
+ /**
  * Condition Factory
  * Dynamically loads and instantiates condition modules
  */
@@ -32,8 +32,8 @@ export class ConditionFactory {
     async createCondition(conditionNumber, svgId) {
         try {
             // Validate condition number
-            if (conditionNumber < 0 || conditionNumber > 15) {
-                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 15.`);
+            if (conditionNumber < 0 || conditionNumber > 17) {
+                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 17.`);
             }
 
             // Check if we have processed data
@@ -80,7 +80,7 @@ export class ConditionFactory {
     }
 
     /**
-     * Render all 16 conditions
+     * Render all conditions
      */
     async renderAllConditions() {
         const conditionMappings = [
@@ -94,12 +94,9 @@ export class ConditionFactory {
             { number: 7, svgId: 'chart-7' },
             { number: 8, svgId: 'chart-8' },
             { number: 9, svgId: 'chart-9' },
-            { number: 10, svgId: 'chart-10' },
-            { number: 11, svgId: 'chart-11' },
-            { number: 12, svgId: 'chart-12' },
-            { number: 13, svgId: 'chart-13' },
-            { number: 14, svgId: 'chart-14' },
-            { number: 15, svgId: 'chart-15' }
+            { number: 11, svgId: 'chart-10' },  // Original condition 11
+            { number: 16, svgId: 'chart-11' },  // Original condition 16
+            { number: 17, svgId: 'chart-12' }   // Original condition 17
         ];
 
 
@@ -193,18 +190,15 @@ export class ConditionFactory {
             1: { name: 'Baseline', description: 'Shows only aggregated prediction lines' },
             2: { name: 'PI Plot', description: 'Shows aggregated prediction with confidence bounds' },
             3: { name: 'Ensemble Plot', description: 'Shows both aggregated and alternative predictions' },
-            4: { name: 'Ensemble + Hover', description: 'Aggregated by default, hover to reveal alternatives' },
-            5: { name: 'PI Plot + Hover', description: 'PI plot with hover to reveal individual predictions' },
+            4: { name: 'PI Plot + Hover', description: 'PI plot with hover to reveal individual predictions' },
+            5: { name: 'Ensemble + Hover', description: 'Aggregated by default, hover to reveal alternatives' },
             6: { name: 'PI → Ensemble', description: 'PI plot transforms to ensemble plot on hover' },
             7: { name: 'Buggy Control', description: 'Broken interactions: hover zones show wrong city data' },
             8: { name: 'Bad Control', description: 'Poor interaction: click to reveal one alternative line at a time' },
             9: { name: 'Combined PI + Ensemble', description: 'Shows both confidence bounds and alternative prediction lines' },
-            10: { name: 'Button Next Line', description: 'Bad: Click "Next Line" button multiple times to reveal alternatives' },
-            11: { name: 'Checkbox Selection', description: 'Bad: Tick all empty boxes to reveal each prediction line' },
-            12: { name: 'Legend Hover', description: 'Bad: Hover on small legend items to show one line at a time' },
-            13: { name: 'Visual Offset Bug', description: 'Buggy: Ensemble lines are offset by 10px when revealed' },
-            14: { name: 'Escaping Aggregation Bug', description: 'Buggy: Aggregation line escapes when you hover on predictions' },
-            15: { name: 'Inconsistent Shape Bug', description: 'Buggy: Every hover shows different random subset of prediction lines' }
+            10: { name: 'Checkbox Selection', description: 'Bad: Tick all empty boxes to reveal each prediction line' },
+            11: { name: 'Tiny Slider Checkbox Selection', description: 'Worse: tiny-height horizontal slider of selection boxes with mini targets' },
+            12: { name: 'Checkbox Selection with Buggy Select All', description: 'Buggy: Select All button has 50% chance of doing nothing' }
         };
     }
 }

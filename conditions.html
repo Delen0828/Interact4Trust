@@ -119,10 +119,8 @@
 
         .visualization-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px;
-            height: 440vh;
         }
 
         .condition-panel {
@@ -137,10 +135,11 @@
         .condition-title {
             font-size: 18px;
             font-weight: 600;
+            color: #2c3e50;
             margin-bottom: 8px;
             text-align: center;
             padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
+            border-bottom: 2px solid #2c3e50;
         }
 
         .condition-description {
@@ -160,87 +159,6 @@
             border: 1px solid #e9ecef;
             border-radius: 4px;
             background: #ffffff;
-        }
-
-        /* Condition-specific styling */
-        .condition-1 .condition-title {
-            color: black;
-            border-bottom-color: black;
-        }
-
-        .condition-2 .condition-title {
-            color: black;
-            border-bottom-color: black;
-        }
-
-        .condition-3 .condition-title {
-            color: black;
-            border-bottom-color: black;
-        }
-
-        .condition-4 .condition-title {
-            color: black;
-            border-bottom-color: black;
-        }
-
-        .condition-5 .condition-title {
-            color: black;
-            border-bottom-color: black;
-        }
-
-        .condition-6 .condition-title {
-            color: black;
-            border-bottom-color: black;
-        }
-
-        .condition-7 .condition-title {
-            color: #dc3545;
-            border-bottom-color: #dc3545;
-        }
-
-        .condition-8 .condition-title {
-            color: #6f42c1;
-            border-bottom-color: #6f42c1;
-        }
-
-        .condition-0 .condition-title {
-            color: #374151;
-            border-bottom-color: #374151;
-        }
-
-        .condition-9 .condition-title {
-            color: #17a2b8;
-            border-bottom-color: #17a2b8;
-        }
-
-        .condition-10 .condition-title {
-            color: #e74c3c;
-            border-bottom-color: #e74c3c;
-        }
-
-        .condition-11 .condition-title {
-            color: #f39c12;
-            border-bottom-color: #f39c12;
-        }
-
-        .condition-12 .condition-title {
-            color: #9b59b6;
-            border-bottom-color: #9b59b6;
-        }
-
-        .condition-13 .condition-title {
-            color: #e67e22;
-            border-bottom-color: #e67e22;
-        }
-
-        .condition-14 .condition-title {
-            color: #34495e;
-            border-bottom-color: #34495e;
-        }
-
-        .condition-15 .condition-title {
-            color: #8e44ad;
-            border-bottom-color: #8e44ad;
         }
 
         /* Chart styling */
@@ -298,8 +216,6 @@
         @media (max-width: 768px) {
             .visualization-grid {
                 grid-template-columns: 1fr;
-                grid-template-rows: repeat(16, 350px);
-                height: auto;
             }
             
             /* Reset grid positioning for mobile */
@@ -314,7 +230,7 @@
     <div class="container">
         <div class="header">
             <h1>Humidity Prediction Visualization Conditions</h1>
-            <p>Comparing different methods of presenting prediction uncertainty (16 conditions total)</p>
+            <p>Comparing different methods of presenting prediction uncertainty (13 conditions total)</p>
         </div>
 
         <div class="legend">
@@ -355,8 +271,8 @@
         </div>
 
         <div class="visualization-grid">
-            <!-- Condition 0: Historical Only (Row 1, spans both columns) -->
-            <div class="condition-panel condition-0" style="grid-column: 1 / -1; grid-row: 1;">
+            <!-- Condition 0: Historical Only -->
+            <div class="condition-panel condition-0">
                 <div class="condition-title">Condition 0: Historical Only</div>
                 <div class="condition-description">Shows only historical data, no predictions after 6/1</div>
                 <div class="chart-container">
@@ -364,8 +280,8 @@
                 </div>
             </div>
 
-            <!-- Condition 1: Baseline (Row 2, spans both columns) -->
-            <div class="condition-panel condition-1" style="grid-column: 1 / -1; grid-row: 2;">
+            <!-- Condition 1: Baseline -->
+            <div class="condition-panel condition-1">
                 <div class="condition-title">Condition 1: Baseline</div>
                 <div class="condition-description">Shows only aggregated prediction lines</div>
                 <div class="chart-container">
@@ -373,8 +289,8 @@
                 </div>
             </div>
 
-            <!-- Condition 2: PI Plot (Row 3, Column 1) -->
-            <div class="condition-panel condition-2" style="grid-column: 1; grid-row: 3;">
+            <!-- Condition 2: PI Plot -->
+            <div class="condition-panel condition-2">
                 <div class="condition-title">Condition 2: PI Plot</div>
                 <div class="condition-description">Shows aggregated prediction with confidence bounds</div>
                 <div class="chart-container">
@@ -382,8 +298,8 @@
                 </div>
             </div>
 
-            <!-- Condition 3: Ensemble Plot (Row 3, Column 2) -->
-            <div class="condition-panel condition-3" style="grid-column: 2; grid-row: 3;">
+            <!-- Condition 3: Ensemble Plot -->
+            <div class="condition-panel condition-3">
                 <div class="condition-title">Condition 3: Ensemble Plot</div>
                 <div class="condition-description">Shows both aggregated and alternative predictions</div>
                 <div class="chart-container">
@@ -391,26 +307,26 @@
                 </div>
             </div>
 
-            <!-- Condition 5: PI Plot + Hover (Row 4, Column 1) -->
-            <div class="condition-panel condition-5" style="grid-column: 1; grid-row: 4;">
-                <div class="condition-title">Condition 5: PI Plot + Hover</div>
+            <!-- Condition 4: PI Plot + Hover -->
+            <div class="condition-panel condition-4">
+                <div class="condition-title">Condition 4: PI Plot + Hover</div>
                 <div class="condition-description">PI plot with hover to reveal individual predictions</div>
-                <div class="chart-container">
-                    <svg id="chart-5" class="chart-svg" width="400" height="300"></svg>
-                </div>
-            </div>
-
-            <!-- Condition 4: Ensemble + Hover (Row 4, Column 2) -->
-            <div class="condition-panel condition-4" style="grid-column: 2; grid-row: 4;">
-                <div class="condition-title">Condition 4: Ensemble + Hover</div>
-                <div class="condition-description">Aggregated by default, hover to reveal alternatives</div>
                 <div class="chart-container">
                     <svg id="chart-4" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 6: PI → Ensemble (Row 5, Column 1) -->
-            <div class="condition-panel condition-6" style="grid-column: 1; grid-row: 5;">
+            <!-- Condition 5: Ensemble + Hover -->
+            <div class="condition-panel condition-5">
+                <div class="condition-title">Condition 5: Ensemble + Hover</div>
+                <div class="condition-description">Aggregated by default, hover to reveal alternatives</div>
+                <div class="chart-container">
+                    <svg id="chart-5" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 6: PI → Ensemble -->
+            <div class="condition-panel condition-6">
                 <div class="condition-title">Condition 6: PI → Ensemble</div>
                 <div class="condition-description">PI plot transforms to ensemble plot on hover</div>
                 <div class="chart-container">
@@ -418,8 +334,8 @@
                 </div>
             </div>
 
-            <!-- Condition 7: Buggy Control (Row 5, Column 2) -->
-            <div class="condition-panel condition-7" style="grid-column: 2; grid-row: 5;">
+            <!-- Condition 7: Buggy Control -->
+            <div class="condition-panel condition-7">
                 <div class="condition-title">Condition 7: Buggy Control</div>
                 <div class="condition-description">Broken interactions: hover zones show wrong city data</div>
                 <div class="chart-container">
@@ -427,17 +343,17 @@
                 </div>
             </div>
 
-            <!-- Condition 8: Bad Control (Row 6, spans both columns) -->
-            <div class="condition-panel condition-8" style="grid-column: 1 / -1; grid-row: 6;">
+            <!-- Condition 8: Bad Control -->
+            <div class="condition-panel condition-8">
                 <div class="condition-title">Condition 8: Bad Control</div>
-                <div class="condition-description">Poor interaction: hover on invisible lines to reveal them individually</div>
+                <div class="condition-description">Poor interaction: click to reveal one alternative line at a time</div>
                 <div class="chart-container">
                     <svg id="chart-8" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 9: Combined PI + Ensemble (Row 7, spans both columns) -->
-            <div class="condition-panel condition-9" style="grid-column: 1 / -1; grid-row: 7;">
+            <!-- Condition 9: Combined PI + Ensemble -->
+            <div class="condition-panel condition-9">
                 <div class="condition-title">Condition 9: Combined PI + Ensemble</div>
                 <div class="condition-description">Shows both confidence bounds and alternative prediction lines</div>
                 <div class="chart-container">
@@ -445,57 +361,30 @@
                 </div>
             </div>
 
-            <!-- Condition 10: Button Next Line (Row 8, Column 1) -->
-            <div class="condition-panel condition-10" style="grid-column: 1; grid-row: 8;">
-                <div class="condition-title">Condition 10: Button Next Line</div>
-                <div class="condition-description">Bad: Click "Next Line" button multiple times to reveal alternatives</div>
+            <!-- Condition 10: Checkbox Selection -->
+            <div class="condition-panel condition-10">
+                <div class="condition-title">Condition 10: Checkbox Selection</div>
+                <div class="condition-description">Bad: Tick all empty boxes to reveal each prediction line</div>
                 <div class="chart-container">
                     <svg id="chart-10" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 11: Checkbox Selection (Row 8, Column 2) -->
-            <div class="condition-panel condition-11" style="grid-column: 2; grid-row: 8;">
-                <div class="condition-title">Condition 11: Checkbox Selection</div>
-                <div class="condition-description">Bad: Tick all empty boxes to reveal each prediction line</div>
+            <!-- Condition 11: Tiny Slider Checkbox Selection -->
+            <div class="condition-panel condition-11">
+                <div class="condition-title">Condition 11: Tiny Slider Checkbox Selection</div>
+                <div class="condition-description">Worse: tiny-height horizontal slider of selection boxes with mini targets</div>
                 <div class="chart-container">
                     <svg id="chart-11" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 12: Legend Hover (Row 9, spans both columns) -->
-            <div class="condition-panel condition-12" style="grid-column: 1 / -1; grid-row: 9;">
-                <div class="condition-title">Condition 12: Legend Hover</div>
-                <div class="condition-description">Bad: Hover on small legend items to show one line at a time</div>
+            <!-- Condition 12: Checkbox Selection with Buggy Select All -->
+            <div class="condition-panel condition-12">
+                <div class="condition-title">Condition 12: Checkbox Selection with Buggy Select All</div>
+                <div class="condition-description">Buggy: Select All button has 50% chance of doing nothing</div>
                 <div class="chart-container">
                     <svg id="chart-12" class="chart-svg" width="400" height="300"></svg>
-                </div>
-            </div>
-
-            <!-- Condition 13: Visual Offset Bug (Row 10, Column 1) -->
-            <div class="condition-panel condition-13" style="grid-column: 1; grid-row: 10;">
-                <div class="condition-title">Condition 13: Visual Offset Bug</div>
-                <div class="condition-description">Buggy: Ensemble lines are offset by 10px when revealed</div>
-                <div class="chart-container">
-                    <svg id="chart-13" class="chart-svg" width="400" height="300"></svg>
-                </div>
-            </div>
-
-            <!-- Condition 14: Escaping Aggregation Bug (Row 10, Column 2) -->
-            <div class="condition-panel condition-14" style="grid-column: 2; grid-row: 10;">
-                <div class="condition-title">Condition 14: Escaping Aggregation Bug</div>
-                <div class="condition-description">Buggy: Aggregation line escapes when you hover on predictions</div>
-                <div class="chart-container">
-                    <svg id="chart-14" class="chart-svg" width="400" height="300"></svg>
-                </div>
-            </div>
-
-            <!-- Condition 15: Inconsistent Shape Bug (Row 11, spans both columns) -->
-            <div class="condition-panel condition-15" style="grid-column: 1 / -1; grid-row: 11;">
-                <div class="condition-title">Condition 15: Inconsistent Shape Bug</div>
-                <div class="condition-description">Buggy: Every hover shows different random subset of prediction lines</div>
-                <div class="chart-container">
-                    <svg id="chart-15" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
         </div>
@@ -592,7 +481,7 @@
                 await conditionFactory.initialize(config, rawData, currentStartDate);
                 
                 
-                // Render all 8 conditions
+                // Render all conditions
                 await conditionFactory.renderAllConditions();
                 
                 

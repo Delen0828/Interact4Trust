@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Humidity Study - Version 5: PI Plot + Hover</title>
     
-    <!-- jsPsych CSS -->
+    
+    <script>
+        (function () {
+            const pathname = window.location.pathname;
+            if (!pathname.endsWith("/") && !pathname.endsWith(".html")) {
+                window.location.replace(window.location.origin + pathname + "/" + window.location.search + window.location.hash);
+            }
+        })();
+    </script>
+<!-- jsPsych CSS -->
     <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
     
     <!-- Custom CSS -->

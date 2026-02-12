@@ -1,14 +1,15 @@
 /**
- * Condition 11: Checkbox Selection (Bad Design)
+ * Condition 17: Checkbox Selection with Buggy Interaction (Bad Design)
  * Shows list of checkboxes for each prediction scenario
  * All boxes start empty (unchecked)
  * User must tick each box individually to reveal corresponding line
- * Bad UX due to multiple selections required
+ * BUG: When user clicks an option, it selects the next option instead (or wraps to first)
+ * Bad UX due to confusing interaction where clicking one checkbox affects another
  */
 import { ChartRenderer } from '../base/chartRenderer.js';
 import { InteractionManager } from '../base/interactionManager.js';
 
-export default class Condition11 {
+export default class Condition17 {
     constructor(svgId, processedData, config, phase = null) {
         this.svgId = svgId;
         this.data = processedData;
@@ -192,9 +193,26 @@ export default class Condition11 {
             labelText.textContent = `${city}S${scenarioName}`;
             labelText.style.fontSize = '9px';
             
-            // Add event listener
+            // BUGGY: When user clicks an option, select the next option instead (or wrap to first)
             checkbox.addEventListener('change', () => {
-                this.toggleCityScenario(cityScenarioKey, checkbox.checked);
+                // Get all checkbox keys in sorted order
+                const allKeys = Object.keys(this.cityScenarioCheckboxes).sort();
+                const currentIndex = allKeys.indexOf(cityScenarioKey);
+                
+                // Determine next index (wrap to 0 if last)
+                const nextIndex = (currentIndex + 1) % allKeys.length;
+                const nextKey = allKeys[nextIndex];
+                
+                // Get the next checkbox element
+                const nextCheckbox = this.cityScenarioCheckboxes[nextKey];
+                
+                // Toggle the next checkbox to match the current checkbox's state
+                if (nextCheckbox) {
+                    nextCheckbox.checked = checkbox.checked;
+                    this.toggleCityScenario(nextKey, checkbox.checked);
+                }
+                
+                // Update the select all state
                 this.updateSelectAllState();
             });
             this.cityScenarioCheckboxes[cityScenarioKey] = checkbox;
@@ -233,6 +251,7 @@ export default class Condition11 {
         selectAllText.textContent = 'Select All';
         selectAllText.style.fontSize = '9px';
 
+        // Normal Select All functionality (no longer buggy)
         selectAllCheckbox.addEventListener('change', () => {
             this.setAllScenariosVisible(selectAllCheckbox.checked);
         });
@@ -245,13 +264,13 @@ export default class Condition11 {
         
         // Add instruction text
         const instruction = document.createElement('div');
-        instruction.textContent = '☝️ Tick individual city/scenario boxes to reveal each prediction line (10 total)';
+        instruction.textContent = '⚠️ Click a checkbox to select the next option (buggy interaction)';
         instruction.style.cssText = `
             font-size: 9px;
-            color: #6c757d;
+            color: #dc3545;
             text-align: center;
             margin-top: 6px;
-            font-style: italic;
+            font-weight: bold;
         `;
         this.checkboxContainer.appendChild(instruction);
         
