@@ -126,23 +126,68 @@ var jsPsychPredictionTask = (function (jspsych) {
       
       let html = `
         <style>
+          /* Prevent scrolling during prediction task */
+          html, body, #jspsych-target, .jspsych-content, .jspsych-content-wrapper {
+            overflow: hidden !important;
+            max-height: 100vh !important;
+          }
+          /* Kill jsPsych wrapper padding that eats vertical space */
+          .jspsych-content-wrapper {
+            padding: 0 !important;
+          }
+          .jspsych-content {
+            margin: 0 !important;
+            max-width: 100% !important;
+          }
+          .prediction-task-container {
+            padding: 6px 20px !important;
+            box-sizing: border-box;
+          }
+          .task-header {
+            margin-bottom: 4px !important;
+            padding-bottom: 4px !important;
+          }
+          .task-header h2 {
+            font-size: 18px !important;
+            margin: 0 !important;
+          }
+          /* Tighten chart wrapper — SVG stays 600x400, just less wrapper padding */
+          .chart-container {
+            min-height: unset !important;
+            padding: 8px !important;
+            margin-bottom: 4px !important;
+          }
+          .chart-container:hover {
+            transform: none !important;
+          }
+          .simple-chart-legend {
+            padding: 4px 10px !important;
+          }
+          .chart-instructions {
+            padding: 4px 10px !important;
+          }
+          .prediction-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+          }
           .question-title {
-            font-size: 1.1em;
+            font-size: 0.9em;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 2px;
             color: #333;
             text-align: left;
           }
           .probability-slider-container {
-            margin: 20px 0;
+            margin: 2px 0;
             position: relative;
             width: 100%;
           }
           .probability-slider {
-            width: calc(100% - 24px);
-            margin: 0 12px;
-            height: 8px;
-            border-radius: 4px;
+            width: calc(100% - 20px);
+            margin: 0 10px;
+            height: 6px;
+            border-radius: 3px;
             background: #ddd;
             outline: none;
             -webkit-appearance: none;
@@ -152,26 +197,26 @@ var jsPsychPredictionTask = (function (jspsych) {
           .probability-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: #374151;
             cursor: pointer;
-            border: 3px solid white;
+            border: 2px solid white;
           }
           .probability-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: #374151;
             cursor: pointer;
-            border: 3px solid white;
+            border: 2px solid white;
           }
           .slider-city-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 1px;
+            font-size: 12px;
             font-weight: 500;
           }
           .city-b-label {
@@ -182,25 +227,26 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .current-probability {
             text-align: center;
-            margin-top: 15px;
-            font-size: 16px;
+            margin-top: 1px;
+            font-size: 13px;
             font-weight: 600;
             color: #374151;
-            min-height: 20px;
+            min-height: 0;
+            line-height: 1.2;
           }
           .confidence-scale {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            flex-wrap: nowrap;
+            gap: 4px;
             align-items: flex-start;
-            margin-top: 10px;
+            margin-top: 2px;
             justify-content: flex-start;
           }
           .confidence-option {
             position: relative;
             cursor: pointer;
             flex: 1;
-            min-width: 80px;
+            min-width: 0;
           }
           .confidence-option input[type="radio"] {
             opacity: 0;
@@ -217,11 +263,11 @@ var jsPsychPredictionTask = (function (jspsych) {
             padding: 0;
             background: white;
             color: #374151;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: 2px solid #ddd;
-            height: 80px;
+            height: 42px;
             box-sizing: border-box;
             position: relative;
           }
@@ -236,28 +282,28 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .confidence-number {
             font-weight: 600;
-            font-size: 18px;
+            font-size: 14px;
             text-align: center;
             line-height: 1;
-            margin-top: 15px;
+            margin-top: 6px;
             margin-bottom: 0;
           }
           .confidence-label {
-            font-size: 12px;
+            font-size: 9px;
             font-weight: 500;
-            line-height: 1.1;
+            line-height: 1;
             text-align: center;
             word-wrap: break-word;
             hyphens: auto;
-            margin-top: 8px;
-            padding: 0 4px;
+            margin-top: 2px;
+            padding: 0 1px;
           }
           .travel-choices {
             display: flex;
             flex-direction: row;
-            gap: 15px;
+            gap: 8px;
             align-items: flex-start;
-            margin-top: 10px;
+            margin-top: 2px;
           }
           .travel-option {
             position: relative;
@@ -274,14 +320,14 @@ var jsPsychPredictionTask = (function (jspsych) {
           .travel-button {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
+            padding: 4px 14px;
             background: white;
             color: #374151;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: 2px solid #ddd;
-            min-width: 120px;
+            min-width: 90px;
             justify-content: center;
           }
           .travel-option:hover .travel-button {
@@ -295,24 +341,25 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .travel-text {
             font-weight: 500;
+            font-size: 13px;
           }
           .estimates-container {
             display: flex;
-            gap: 30px;
+            gap: 16px;
             align-items: center;
-            margin-top: 15px;
+            margin-top: 2px;
             flex-wrap: wrap;
           }
           .estimate-input-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 6px;
           }
           .estimate-label {
             font-weight: 600;
-            font-size: 18px;
+            font-size: 14px;
             color: #374151;
-            min-width: 70px;
+            min-width: 50px;
           }
           .estimate-label.city-a {
             color: #0891B2;
@@ -321,13 +368,13 @@ var jsPsychPredictionTask = (function (jspsych) {
             color: #7C3AED;
           }
           .estimate-input {
-            width: 120px;
-            padding: 8px 12px;
+            width: 100px;
+            padding: 3px 8px;
             border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
+            border-radius: 4px;
+            font-size: 13px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
           }
           .estimate-input:focus {
             outline: none;
@@ -336,20 +383,22 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .estimate-input::placeholder {
             color: #999;
-            font-size: 14px;
+            font-size: 11px;
           }
           .scene-label {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 500;
             color: #374151;
             background: rgba(55, 65, 81,0.1);
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 3px 8px;
+            border-radius: 4px;
             border: 1px solid rgba(55, 65, 81,0.3);
           }
           .submit-btn {
             background: #333 !important;
             border-color: #333 !important;
+            padding: 6px !important;
+            margin-top: 2px !important;
           }
           .submit-btn:hover:not(:disabled) {
             background: #333 !important;
@@ -379,7 +428,7 @@ var jsPsychPredictionTask = (function (jspsych) {
                   <span class="city-a-label">City A will be higher</span>
                 </div>
                 <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
-                <div class="slider-requirement" id="slider-requirement" style="font-size: 12px; color: #e74c3c; margin-top: 5px; text-align: center; display: block;">
+                <div class="slider-requirement" id="slider-requirement" style="font-size: 11px; color: #e74c3c; margin-top: 2px; text-align: center; display: block;">
                   ⚠️ You must move the slider to continue
                 </div>
               </div>
@@ -775,7 +824,6 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
     }
 
-    
     getConditionNumber() {
       // Handle null condition
       if (!this.condition || !this.condition.displayFormat) {
@@ -815,30 +863,121 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
     }
 
+    getElementClassString(element) {
+      if (!element) return '';
+      if (typeof element.className === 'string') return element.className;
+      if (element.className && typeof element.className.baseVal === 'string') return element.className.baseVal;
+      if (element.getAttribute) return element.getAttribute('class') || '';
+      return '';
+    }
+
+    getElementToken(element) {
+      if (!element || !element.tagName) return 'unknown';
+      const tag = element.tagName.toLowerCase();
+      const idPart = element.id ? `#${element.id}` : '';
+      const classes = this.getElementClassString(element)
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2);
+      const classPart = classes.length > 0 ? `.${classes.join('.')}` : '';
+      return `${tag}${idPart}${classPart}`;
+    }
+
+    getElementPath(element, chartContainer) {
+      if (!element || !chartContainer) return null;
+      const segments = [];
+      let current = element;
+      let depth = 0;
+
+      while (current && depth < 5) {
+        segments.push(this.getElementToken(current));
+        if (current === chartContainer) break;
+        current = current.parentElement;
+        depth += 1;
+      }
+
+      return segments.reverse().join(' > ');
+    }
+
+    getElementMetadata(target, chartContainer) {
+      if (!target || !target.tagName) return null;
+
+      const classes = this.getElementClassString(target)
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 6);
+
+      const metadata = {
+        label: this.getElementToken(target),
+        tag: target.tagName.toLowerCase()
+      };
+
+      if (target.id) metadata.id = target.id;
+      if (classes.length > 0) metadata.classes = classes;
+
+      const dataAttributes = {};
+      ['data-stock', 'data-series', 'data-city', 'data-element', 'data-role', 'data-interaction'].forEach((attr) => {
+        const value = target.getAttribute(attr);
+        if (value !== null) {
+          dataAttributes[attr.replace('data-', '')] = value;
+        }
+      });
+      if (Object.keys(dataAttributes).length > 0) metadata.data = dataAttributes;
+
+      const path = this.getElementPath(target, chartContainer);
+      if (path) metadata.path = path;
+
+      return metadata;
+    }
+
     setupVisualizationInteractionLogging() {
       // Log mouse interactions for analysis
       const chartContainer = document.getElementById('air-quality-chart');
       if (chartContainer) {
-        chartContainer.addEventListener('mouseenter', () => {
-          this.logInteraction('chart_enter', { timestamp: performance.now() - this.startTime });
+        chartContainer.addEventListener('mouseenter', (e) => {
+          const rect = chartContainer.getBoundingClientRect();
+          this.logInteraction('chart_enter', {
+            x: e.clientX,
+            y: e.clientY,
+            chart_x: e.clientX - rect.left,
+            chart_y: e.clientY - rect.top,
+            element: this.getElementMetadata(e.target, chartContainer),
+            timestamp: performance.now() - this.startTime
+          });
         });
 
-        chartContainer.addEventListener('mouseleave', () => {
-          this.logInteraction('chart_leave', { timestamp: performance.now() - this.startTime });
+        chartContainer.addEventListener('mouseleave', (e) => {
+          const rect = chartContainer.getBoundingClientRect();
+          this.logInteraction('chart_leave', {
+            x: e.clientX,
+            y: e.clientY,
+            chart_x: e.clientX - rect.left,
+            chart_y: e.clientY - rect.top,
+            element: this.getElementMetadata(e.target, chartContainer),
+            timestamp: performance.now() - this.startTime
+          });
         });
 
         chartContainer.addEventListener('mousemove', (e) => {
+          const rect = chartContainer.getBoundingClientRect();
           this.logInteraction('chart_hover', { 
             x: e.clientX, 
             y: e.clientY,
+            chart_x: e.clientX - rect.left,
+            chart_y: e.clientY - rect.top,
+            element: this.getElementMetadata(e.target, chartContainer),
             timestamp: performance.now() - this.startTime 
           });
         });
 
         chartContainer.addEventListener('click', (e) => {
+          const rect = chartContainer.getBoundingClientRect();
           this.logInteraction('chart_click', { 
             x: e.clientX, 
             y: e.clientY,
+            chart_x: e.clientX - rect.left,
+            chart_y: e.clientY - rect.top,
+            element: this.getElementMetadata(e.target, chartContainer),
             timestamp: performance.now() - this.startTime 
           });
         });
@@ -967,6 +1106,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         rt: rt,
         interaction_log: this.interactionLog,
         total_interactions: this.interactionLog.length,
+        screen_width: window.innerWidth,
+        screen_height: window.innerHeight,
+        device_pixel_ratio: window.devicePixelRatio || 1,
         
         // Additional data for Phase 2
         ...(this.trial.phase === 2 && {
