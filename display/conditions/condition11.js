@@ -112,9 +112,11 @@ export default class Condition11 {
         this.checkboxContainer = document.createElement('div');
         this.checkboxContainer.style.cssText = `
             display: block;
-            width: min(100%, 680px);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
             margin: 12px auto 0;
-            padding: 8px 10px;
+            padding: 6px 8px;
             background: #f8f9fa;
             border-radius: 6px;
             border-top: 1px solid #e9ecef;
@@ -122,49 +124,40 @@ export default class Condition11 {
             text-align: center;
         `;
         
-        // Create header
-        const header = document.createElement('div');
-        header.textContent = 'Select scenarios to display:';
-        header.style.cssText = `
-            font-size: 11px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #495057;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        `;
-        this.checkboxContainer.appendChild(header);
-        
         // Create checkbox grid (separate for each city/scenario combination)
         const checkboxGrid = document.createElement('div');
         checkboxGrid.style.cssText = `
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 1px;
         `;
-        
+
         // Add checkboxes for each city/scenario combination
+        const scenarioIndexByCity = { A: 0, B: 0 };
         Object.keys(this.alternativeLines).sort().forEach((cityScenarioKey) => {
-            const [city, scenarioName] = cityScenarioKey.split('_');
+            const [city] = cityScenarioKey.split('_');
+            scenarioIndexByCity[city] = (scenarioIndexByCity[city] || 0) + 1;
+            const scenarioIndex = scenarioIndexByCity[city];
             const color = city === 'A' ? this.config.colors.stockA : this.config.colors.stockB;
             
             const checkboxWrapper = document.createElement('label');
             checkboxWrapper.style.cssText = `
                 display: flex;
                 align-items: center;
-                font-size: 10px;
+                font-size: 9px;
                 color: #6c757d;
                 cursor: pointer;
-                padding: 2px 5px;
-                border-radius: 3px;
+                padding: 1px 3px;
+                border-radius: 2px;
                 transition: background-color 0.2s;
                 border: 1px solid #e9ecef;
                 margin: 0;
-                min-height: 24px;
+                min-height: 18px;
                 white-space: nowrap;
             `;
             
@@ -181,24 +174,24 @@ export default class Condition11 {
             checkbox.type = 'checkbox';
             checkbox.id = `checkbox-${cityScenarioKey}-${this.svgId}`;
             checkbox.style.cssText = `
-                margin-right: 4px;
-                transform: scale(0.8);
+                margin-right: 2px;
+                transform: scale(0.72);
             `;
-            
-            // Create color indicator
+
             const colorDot = document.createElement('div');
             colorDot.style.cssText = `
-                width: 6px;
-                height: 6px;
+                width: 5px;
+                height: 5px;
                 border-radius: 50%;
                 background: ${color};
-                margin-right: 3px;
+                margin-right: 2px;
+                flex: 0 0 auto;
             `;
             
             // Create label text
             const labelText = document.createElement('span');
-            labelText.textContent = `${city}S${scenarioName}`;
-            labelText.style.fontSize = '9px';
+            labelText.textContent = `${city}[${scenarioIndex}]`;
+            labelText.style.fontSize = '8px';
             
             // Add event listener
             checkbox.addEventListener('change', () => {
@@ -218,14 +211,14 @@ export default class Condition11 {
         selectAllWrapper.style.cssText = `
             display: flex;
             align-items: center;
-            font-size: 10px;
+            font-size: 9px;
             color: #495057;
             cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 3px;
+            padding: 1px 3px;
+            border-radius: 2px;
             border: 1px dashed #adb5bd;
             margin: 0;
-            min-height: 24px;
+            min-height: 18px;
             font-weight: 600;
             white-space: nowrap;
         `;
@@ -234,14 +227,14 @@ export default class Condition11 {
         selectAllCheckbox.type = 'checkbox';
         selectAllCheckbox.id = `checkbox-select-all-${this.svgId}`;
         selectAllCheckbox.style.cssText = `
-            margin-right: 4px;
-            transform: scale(0.8);
+            margin-right: 2px;
+            transform: scale(0.72);
         `;
         this.selectAllCheckbox = selectAllCheckbox;
 
         const selectAllText = document.createElement('span');
-        selectAllText.textContent = 'Select All';
-        selectAllText.style.fontSize = '9px';
+        selectAllText.textContent = 'All';
+        selectAllText.style.fontSize = '8px';
 
         selectAllCheckbox.addEventListener('change', () => {
             this.setAllScenariosVisible(selectAllCheckbox.checked);
@@ -252,21 +245,6 @@ export default class Condition11 {
         checkboxGrid.appendChild(selectAllWrapper);
         
         this.checkboxContainer.appendChild(checkboxGrid);
-        
-        // Add instruction text
-        const instruction = document.createElement('div');
-        instruction.textContent = '☝️ Tick individual city/scenario boxes to reveal each prediction line (10 total)';
-        instruction.style.cssText = `
-            font-size: 9px;
-            color: #6c757d;
-            text-align: center;
-            margin-top: 6px;
-            font-style: italic;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        `;
-        this.checkboxContainer.appendChild(instruction);
         
         chartContainer.appendChild(this.checkboxContainer);
     }

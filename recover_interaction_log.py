@@ -223,12 +223,19 @@ def plot_points(
 
         ax.imshow(img, extent=[0, img_w, img_h, 0], aspect="auto")
 
-        ax.scatter(
-            xs, ys,
-            c=colors,
-            s=30, alpha=0.85,
-            edgecolors="white", linewidths=0.5,
-        )
+        # Separate click events for larger, translucent markers
+        non_click = [(x, y, c) for x, y, c, t in zip(xs, ys, colors, types) if t != "chart_click"]
+        clicks = [(x, y, c) for x, y, c, t in zip(xs, ys, colors, types) if t == "chart_click"]
+
+        if non_click:
+            nc_xs, nc_ys, nc_cs = zip(*non_click)
+            ax.scatter(nc_xs, nc_ys, c=list(nc_cs), s=30, alpha=0.85,
+                       edgecolors="white", linewidths=0.5)
+        if clicks:
+            cl_xs, cl_ys, cl_cs = zip(*clicks)
+            ax.scatter(cl_xs, cl_ys, c=list(cl_cs), s=350, alpha=0.3,
+                       edgecolors="white", linewidths=1.0)
+
         ax.plot(xs, ys, linewidth=0.8, alpha=0.3, color="#ffffff")
 
         ax.set_xlim(0, img_w)
@@ -258,12 +265,19 @@ def plot_points(
 
         fig, ax = plt.subplots(figsize=(9, 7))
 
-        ax.scatter(
-            xs, ys,
-            c=colors,
-            s=20, alpha=0.9,
-            edgecolors="none",
-        )
+        # Separate click events for larger, translucent markers
+        non_click = [(x, y, c) for x, y, c, t in zip(xs, ys, colors, types) if t != "chart_click"]
+        clicks = [(x, y, c) for x, y, c, t in zip(xs, ys, colors, types) if t == "chart_click"]
+
+        if non_click:
+            nc_xs, nc_ys, nc_cs = zip(*non_click)
+            ax.scatter(nc_xs, nc_ys, c=list(nc_cs), s=20, alpha=0.9,
+                       edgecolors="none")
+        if clicks:
+            cl_xs, cl_ys, cl_cs = zip(*clicks)
+            ax.scatter(cl_xs, cl_ys, c=list(cl_cs), s=350, alpha=0.3,
+                       edgecolors="none")
+
         ax.plot(xs, ys, linewidth=0.8, alpha=0.25, color="#333333")
 
         ax.set_xlabel("x")
@@ -299,8 +313,8 @@ def main() -> None:
         help="Path to input file (.csv with interaction_log column, or .json array).",
     )
     parser.add_argument(
-        "output", nargs="?", default="interaction_recovered.png",
-        help="Output PNG path (default: interaction_recovered.png).",
+        "output", nargs="?", default=None,
+        help="Output PNG path (default: derived from screenshot or input name).",
     )
     parser.add_argument("--title", default=None, help="Optional plot title.")
     parser.add_argument(
@@ -323,6 +337,14 @@ def main() -> None:
     try:
         input_path = Path(args.input)
         ss = Path(args.screenshot) if args.screenshot else None
+
+        # Derive default output base from screenshot name (or input name).
+        if args.output is not None:
+            default_output = args.output
+        elif ss is not None:
+            default_output = f"{ss.stem}_recover.png"
+        else:
+            default_output = f"{input_path.stem}_recover.png"
 
         res = None
         if args.resolution:
@@ -351,9 +373,9 @@ def main() -> None:
 
                 # Build output path: insert phase number if multiple rows.
                 if len(rows) == 1:
-                    out = Path(args.output)
+                    out = Path(default_output)
                 else:
-                    base = Path(args.output)
+                    base = Path(default_output)
                     out = base.with_stem(
                         f"{base.stem}_phase{row_info['phase']}"
                     )
@@ -378,9 +400,9 @@ def main() -> None:
             raw_text = input_path.read_text(encoding="utf-8")
             events = parse_events_json(raw_text)
             points = extract_points(events)
-            plot_points(points, Path(args.output), args.title, ss, res)
+            plot_points(points, Path(default_output), args.title, ss, res)
             mode = "overlay" if ss else "standalone"
-            print(f"Saved {len(points)} points to {args.output} ({mode})")
+            print(f"Saved {len(points)} points to {default_output} ({mode})")
 
     except Exception as exc:
         raise SystemExit(f"Error: {exc}")

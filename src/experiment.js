@@ -35,11 +35,13 @@ async function initializeExperiment() {
 		// Load custom survey plugins
 		const trustSurveyModule = await import('./plugins/jspsych-trust-survey.js');
 		const personalitySurveyModule = await import('./plugins/jspsych-personality-survey.js');
+		const interactionFeedbackModule = await import('./plugins/jspsych-interaction-feedback.js');
 		
 		// Register the plugins with jsPsych
 		window.jsPsychPredictionTask = predictionModule.default || predictionModule.jsPsychPredictionTask;
 		window.jsPsychTrustSurvey = trustSurveyModule.default || trustSurveyModule.jsPsychTrustSurvey;
 		window.jsPsychPersonalitySurvey = personalitySurveyModule.default || personalitySurveyModule.jsPsychPersonalitySurvey;
+		window.jsPsychInteractionFeedback = interactionFeedbackModule.default || interactionFeedbackModule.jsPsychInteractionFeedback;
 		
 		// Check if jsPsych is available
 		if (typeof initJsPsych === 'undefined') {
@@ -374,6 +376,27 @@ function buildTimeline() {
 		},
 		on_finish: function (_data) {
 			window.ParticipantConfig.phase2Complete = true;
+		}
+	});
+
+	// Interaction Feedback (single page)
+	timeline.push({
+		type: window.jsPsychInteractionFeedback,
+		preamble: `
+			<div class="interaction-feedback-preamble">
+				<h3>Interaction Feedback</h3>
+				<p>Please share your feedback about the interaction you just experienced.</p>
+			</div>
+		`,
+		data: function() {
+			return {
+				trial_type: 'interaction_feedback',
+				phase: 2,
+				round: 1,
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
+			};
 		}
 	});
 

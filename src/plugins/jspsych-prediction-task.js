@@ -224,7 +224,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             transform: none !important;
           }
           .simple-chart-legend {
-            padding: 4px 10px !important;
+            padding: 1px 10px !important;
           }
           .chart-instructions {
             padding: 2px 10px !important;
