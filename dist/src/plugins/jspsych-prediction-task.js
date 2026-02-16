@@ -98,13 +98,21 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.startTime = null;
       this.interactionLog = [];
       this.sliderMoved = false; // Track if slider has been moved
+      this.trialRunId = 0;
+      this.activeTrialRunId = 0;
+      this.loadingTimeoutId = null;
+      this.visualizationRenderTimeoutId = null;
     }
 
     trial(display_element, trial) {
+      this.clearPendingVisualizationTimers();
+      this.trialRunId += 1;
+      this.activeTrialRunId = this.trialRunId;
       this.startTime = performance.now();
       this.display_element = display_element;
       this.trial = trial;
       this.sliderMoved = false; // Reset slider tracking for new trial
+      this.interactionLog = [];
 
       // Get condition information
       if (trial.visualization_condition) {
@@ -121,6 +129,26 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.renderTask();
     }
 
+    clearPendingVisualizationTimers() {
+      if (this.loadingTimeoutId !== null) {
+        clearTimeout(this.loadingTimeoutId);
+        this.loadingTimeoutId = null;
+      }
+      if (this.visualizationRenderTimeoutId !== null) {
+        clearTimeout(this.visualizationRenderTimeoutId);
+        this.visualizationRenderTimeoutId = null;
+      }
+    }
+
+    isActiveTrial(trialRunId) {
+      return trialRunId === this.activeTrialRunId;
+    }
+
+    getChartContainer() {
+      if (!this.display_element) return null;
+      return this.display_element.querySelector('#air-quality-chart');
+    }
+
     renderTask() {
       // Note: roundText and phaseDescription available for future use if needed
       
@@ -131,6 +159,12 @@ var jsPsychPredictionTask = (function (jspsych) {
             overflow: hidden !important;
             max-height: 100vh !important;
           }
+          #jspsych-target {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: flex-start !important;
+            width: 100% !important;
+          }
           /* Kill jsPsych wrapper padding that eats vertical space */
           .jspsych-content-wrapper {
             padding: 0 !important;
@@ -138,10 +172,26 @@ var jsPsychPredictionTask = (function (jspsych) {
           .jspsych-content {
             margin: 0 !important;
             max-width: 100% !important;
+            width: 100% !important;
           }
           .prediction-task-container {
             padding: 6px 20px !important;
             box-sizing: border-box;
+            margin: 0 auto !important;
+            max-width: 1200px !important;
+            width: 100% !important;
+            text-align: center !important;
+          }
+          .content-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .visualization-content {
+            width: 100%;
+            display: flex;
+            justify-content: center;
           }
           .task-header {
             margin-bottom: 4px !important;
@@ -156,6 +206,13 @@ var jsPsychPredictionTask = (function (jspsych) {
             min-height: unset !important;
             padding: 8px !important;
             margin-bottom: 4px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            position: relative;
+          }
+          .chart-container svg {
+            display: block;
+            margin: 0 auto;
           }
           .chart-container:hover {
             transform: none !important;
@@ -169,19 +226,44 @@ var jsPsychPredictionTask = (function (jspsych) {
           .prediction-form {
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            gap: clamp(3px, 0.7vh, 7px);
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            text-align: left;
+          }
+          .question-section,
+          .air-quality-estimates-section,
+          .confidence-section,
+          .travel-section,
+          .submit-section {
+            margin: 0;
+            padding: 0;
           }
           .question-title {
-            font-size: 0.9em;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin: 0 0 1px 0;
             color: #333;
             text-align: left;
           }
+          .q2-inline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+          }
+          .air-quality-estimates-section .question-title,
+          .air-quality-estimates-section .estimates-container {
+            margin: 0;
+          }
           .probability-slider-container {
-            margin: 2px 0;
+            margin: 1px 0;
             position: relative;
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
           }
           .probability-slider {
             width: calc(100% - 20px);
@@ -216,8 +298,15 @@ var jsPsychPredictionTask = (function (jspsych) {
             display: flex;
             justify-content: space-between;
             margin-top: 1px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
+            width: calc(100% - 20px);
+            max-width: 600px;
+            line-height: 1.1;
+            min-height: 20px;
+            align-items: center;
+            position: relative;
+            padding: 0 2px;
           }
           .city-b-label {
             color: #7C3AED;
@@ -225,22 +314,41 @@ var jsPsychPredictionTask = (function (jspsych) {
           .city-a-label {
             color: #0891B2;
           }
+          .slider-feedback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1;
+          }
           .current-probability {
             text-align: center;
-            margin-top: 1px;
-            font-size: 13px;
+            margin-top: 0;
+            font-size: 12px;
             font-weight: 600;
             color: #374151;
             min-height: 0;
-            line-height: 1.2;
+            line-height: 1.1;
+            max-width: 320px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .slider-requirement {
+            font-size: 11px;
+            color: #e74c3c;
+            text-align: center;
+            line-height: 1.1;
+            margin-top: 0;
           }
           .confidence-scale {
             display: flex;
             flex-wrap: nowrap;
             gap: 4px;
-            align-items: flex-start;
+            align-items: center;
             margin-top: 2px;
-            justify-content: flex-start;
+            justify-content: center;
           }
           .confidence-option {
             position: relative;
@@ -345,9 +453,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .estimates-container {
             display: flex;
-            gap: 16px;
+            gap: 10px;
             align-items: center;
-            margin-top: 2px;
+            margin-top: 0;
             flex-wrap: wrap;
           }
           .estimate-input-group {
@@ -426,26 +534,30 @@ var jsPsychPredictionTask = (function (jspsych) {
                 <div class="slider-city-labels">
                   <span class="city-b-label">City B will be higher</span>
                   <span class="city-a-label">City A will be higher</span>
-                </div>
-                <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
-                <div class="slider-requirement" id="slider-requirement" style="font-size: 11px; color: #e74c3c; margin-top: 2px; text-align: center; display: block;">
-                  ⚠️ You must move the slider to continue
+                  <div class="slider-feedback">
+                    <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
+                    <div class="slider-requirement" id="slider-requirement" style="display: block;">
+                      ⚠️ You must move the slider to continue
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="air-quality-estimates-section">
-              <h3 class="question-title">Q2. What is the estimated Humidity of City A and City B on 06/30?</h3>
-              <div class="estimates-container">
-                <div class="estimate-input-group">
-                  <label for="city-a-estimate" class="estimate-label city-a">City A:</label>
-                  <input type="number" id="city-a-estimate" class="estimate-input" 
-                         placeholder=" Enter Humidity" min="0" max="100" step="1">
-                </div>
-                <div class="estimate-input-group">
-                  <label for="city-b-estimate" class="estimate-label city-b">City B:</label>
-                  <input type="number" id="city-b-estimate" class="estimate-input" 
-                         placeholder=" Enter Humidity" min="0" max="100" step="1">
+              <div class="q2-inline">
+                <h3 class="question-title">Q2. What is the estimated Humidity of City A and City B on 06/30?</h3>
+                <div class="estimates-container">
+                  <div class="estimate-input-group">
+                    <label for="city-a-estimate" class="estimate-label city-a">City A:</label>
+                    <input type="number" id="city-a-estimate" class="estimate-input" 
+                           placeholder=" Enter Humidity" min="0" max="100" step="1">
+                  </div>
+                  <div class="estimate-input-group">
+                    <label for="city-b-estimate" class="estimate-label city-b">City B:</label>
+                    <input type="number" id="city-b-estimate" class="estimate-input" 
+                           placeholder=" Enter Humidity" min="0" max="100" step="1">
+                  </div>
                 </div>
               </div>
             </div>
@@ -489,13 +601,17 @@ var jsPsychPredictionTask = (function (jspsych) {
       `;
 
       this.display_element.innerHTML = html;
+
       this.setupEventListeners();
 
       // Render visualization if needed
       if (this.trial.show_visualization) {
+        const trialRunId = this.activeTrialRunId;
+
         // Update condition display after DOM is ready
         setTimeout(() => {
-          const conditionElement = document.getElementById('condition-display');
+          if (!this.isActiveTrial(trialRunId)) return;
+          const conditionElement = this.display_element.querySelector('#condition-display');
           if (conditionElement) {
             const conditionName = this.condition?.name || 'Loading...';
             conditionElement.textContent = `Condition: ${conditionName}`;
@@ -503,8 +619,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         }, 0);
         
         // Set up timeout to catch stuck loading
-        const loadingTimeout = setTimeout(() => {
-          const chartElement = document.getElementById('air-quality-chart');
+        this.loadingTimeoutId = setTimeout(() => {
+          if (!this.isActiveTrial(trialRunId)) return;
+          const chartElement = this.getChartContainer();
           if (chartElement && chartElement.innerHTML.includes('Loading visualization')) {
             chartElement.innerHTML = `
               <div class="error-message">
@@ -516,14 +633,22 @@ var jsPsychPredictionTask = (function (jspsych) {
         }, 10000); // 10 second timeout
         
         // Use setTimeout to ensure DOM is ready, then call async function
-        setTimeout(() => {
-          this.renderVisualizationContent()
+        this.visualizationRenderTimeoutId = setTimeout(() => {
+          if (!this.isActiveTrial(trialRunId)) return;
+          this.renderVisualizationContent(trialRunId)
             .then(() => {
-              clearTimeout(loadingTimeout); // Clear timeout on success
+              if (this.loadingTimeoutId !== null) {
+                clearTimeout(this.loadingTimeoutId);
+                this.loadingTimeoutId = null;
+              }
             })
             .catch(error => {
-              clearTimeout(loadingTimeout); // Clear timeout on error
-              const chartElement = document.getElementById('air-quality-chart');
+              if (this.loadingTimeoutId !== null) {
+                clearTimeout(this.loadingTimeoutId);
+                this.loadingTimeoutId = null;
+              }
+              if (!this.isActiveTrial(trialRunId)) return;
+              const chartElement = this.getChartContainer();
               if (chartElement) {
                 chartElement.innerHTML = 
                   `<p class="error-message">Visualization failed to load: ${error.message}<br>Please continue with your best estimate.</p>`;
@@ -577,9 +702,10 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
 
-    async renderVisualizationContent() {
+    async renderVisualizationContent(trialRunId) {
       
       try {
+        if (!this.isActiveTrial(trialRunId)) return;
         // Get Humidity data - handle both sync and async data functions
         let data = null;
         if (this.trial.air_quality_data) {
@@ -592,15 +718,19 @@ var jsPsychPredictionTask = (function (jspsych) {
             data = dataResult;
           }
         }
+        if (!this.isActiveTrial(trialRunId)) return;
         
         if (!data) {
-          document.getElementById('air-quality-chart').innerHTML = 
-            '<p class="error-message">No data available. Please continue with your best estimate.</p>';
+          const chartContainer = this.getChartContainer();
+          if (chartContainer) {
+            chartContainer.innerHTML = '<p class="error-message">No data available. Please continue with your best estimate.</p>';
+          }
           return;
         }
         
         // Import ConditionFactory dynamically
         const { ConditionFactory } = await import('../../display/conditionFactory.js');
+        if (!this.isActiveTrial(trialRunId)) return;
         
         // Initialize condition factory
         const conditionFactory = new ConditionFactory();
@@ -623,6 +753,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         
         // Initialize with data (pass data array directly, not wrapped)
         await conditionFactory.initialize(config, data, '05/01', this.trial.phase);
+        if (!this.isActiveTrial(trialRunId)) return;
         
         // Set up interaction logging before rendering
         this.setupVisualizationInteractionLogging();
@@ -631,19 +762,27 @@ var jsPsychPredictionTask = (function (jspsych) {
         const conditionNumber = this.getConditionNumber();
         
         // Clear the container and create SVG element for the condition
-        const chartContainer = document.getElementById('air-quality-chart');
+        const chartContainer = this.getChartContainer();
+        if (!chartContainer) return;
         chartContainer.innerHTML = '';
         
         // Create SVG element with proper ID for the condition
+        const svgId = `jspsych-chart-svg-${trialRunId}`;
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("id", "jspsych-chart-svg");
+        svg.setAttribute("id", svgId);
         svg.setAttribute("width", "600");
         svg.setAttribute("height", "400");
         svg.setAttribute("class", "chart-svg");
         chartContainer.appendChild(svg);
 
         // Render the condition
-        const conditionInstance = await conditionFactory.renderCondition(conditionNumber, 'jspsych-chart-svg');
+        const conditionInstance = await conditionFactory.renderCondition(conditionNumber, svgId);
+        if (!this.isActiveTrial(trialRunId)) {
+          if (conditionInstance && typeof conditionInstance.cleanup === 'function') {
+            conditionInstance.cleanup();
+          }
+          return;
+        }
         
         // Store condition instance for cleanup
         this.conditionInstance = conditionInstance;
@@ -695,10 +834,13 @@ var jsPsychPredictionTask = (function (jspsych) {
           </div>
         `;
         
-        document.getElementById('air-quality-chart').innerHTML = 
-          `<p class="error-message">Error loading visualization: ${error.message}</p>
-           <p>Please continue with your best estimate.</p>
-           ${errorDetails}`;
+        const chartContainer = this.getChartContainer();
+        if (chartContainer) {
+          chartContainer.innerHTML = 
+            `<p class="error-message">Error loading visualization: ${error.message}</p>
+             <p>Please continue with your best estimate.</p>
+             ${errorDetails}`;
+        }
       }
     }
 
@@ -787,14 +929,16 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
     addLegendAndInstructions() {
-      const chartContainer = document.getElementById('air-quality-chart');
+      const chartContainer = this.getChartContainer();
       if (!chartContainer) return;
 
       // Remove any existing legend/instructions
       const existingLegend = chartContainer.querySelector('.simple-chart-legend');
       const existingInstructions = chartContainer.querySelector('.chart-instructions');
+      const existingFloatingHint = chartContainer.querySelector('.chart-floating-hint');
       if (existingLegend) existingLegend.remove();
       if (existingInstructions) existingInstructions.remove();
+      if (existingFloatingHint) existingFloatingHint.remove();
 
       // Add simple legend
       const legendHTML = `
@@ -814,8 +958,8 @@ var jsPsychPredictionTask = (function (jspsych) {
       // Add instructions for Phase 2 only
       if (this.trial.phase === 2 && this.condition && this.condition.instructions) {
         const instructionsHTML = `
-          <div class="chart-instructions">
-            <div class="instructions-content">
+          <div class="chart-floating-hint" style="position: absolute; top: 10px; left: 10px; background: transparent; color: #9ca3af; font-size: 12px; line-height: 1.3; pointer-events: none; text-align: left; max-width: 240px;">
+            <div class="instructions-content" style="color: #9ca3af;">
               ${this.condition.instructions}
             </div>
           </div>
@@ -932,7 +1076,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     setupVisualizationInteractionLogging() {
       // Log mouse interactions for analysis
-      const chartContainer = document.getElementById('air-quality-chart');
+      const chartContainer = this.getChartContainer();
       if (chartContainer) {
         chartContainer.addEventListener('mouseenter', (e) => {
           const rect = chartContainer.getBoundingClientRect();
@@ -993,9 +1137,11 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
     setupEventListeners() {
-      const probabilityInput = document.getElementById('probability-estimate');
-      const currentProbabilityDisplay = document.getElementById('current-probability');
-      const submitButton = document.getElementById('submit-prediction');
+      const root = this.display_element;
+      const probabilityInput = root.querySelector('#probability-estimate');
+      const currentProbabilityDisplay = root.querySelector('#current-probability');
+      const submitButton = root.querySelector('#submit-prediction');
+      if (!probabilityInput || !currentProbabilityDisplay || !submitButton) return;
       
       // Update probability display when slider changes
       const updateProbabilityDisplay = () => {
@@ -1010,10 +1156,16 @@ var jsPsychPredictionTask = (function (jspsych) {
       // Enable submit button when all required fields are filled AND slider has been moved
       const checkFormValidity = () => {
         const probability = probabilityInput.value;
-        const cityAEstimate = document.getElementById('city-a-estimate').value;
-        const cityBEstimate = document.getElementById('city-b-estimate').value;
-        const confidence = document.querySelector('input[name="confidence"]:checked');
-        const travelChoice = document.querySelector('input[name="travel-choice"]:checked');
+        const cityAEstimateInput = root.querySelector('#city-a-estimate');
+        const cityBEstimateInput = root.querySelector('#city-b-estimate');
+        if (!cityAEstimateInput || !cityBEstimateInput) {
+          submitButton.disabled = true;
+          return;
+        }
+        const cityAEstimate = cityAEstimateInput.value;
+        const cityBEstimate = cityBEstimateInput.value;
+        const confidence = root.querySelector('input[name="confidence"]:checked');
+        const travelChoice = root.querySelector('input[name="travel-choice"]:checked');
         
         const isValid = probability !== '' && 
                        cityAEstimate !== '' && 
@@ -1037,7 +1189,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         this.sliderMoved = true; // Mark slider as moved when user interacts with it
         
         // Hide the requirement message once slider is moved
-        const requirementMessage = document.getElementById('slider-requirement');
+        const requirementMessage = root.querySelector('#slider-requirement');
         if (requirementMessage) {
           requirementMessage.style.display = 'none';
         }
@@ -1047,13 +1199,14 @@ var jsPsychPredictionTask = (function (jspsych) {
       });
       
       // Add event listeners for estimate inputs
-      const cityAEstimate = document.getElementById('city-a-estimate');
-      const cityBEstimate = document.getElementById('city-b-estimate');
+      const cityAEstimate = root.querySelector('#city-a-estimate');
+      const cityBEstimate = root.querySelector('#city-b-estimate');
+      if (!cityAEstimate || !cityBEstimate) return;
       
       cityAEstimate.addEventListener('input', checkFormValidity);
       cityBEstimate.addEventListener('input', checkFormValidity);
       
-      const radioInputs = document.querySelectorAll('input[type="radio"]');
+      const radioInputs = root.querySelectorAll('input[type="radio"]');
       radioInputs.forEach(radio => {
         radio.addEventListener('change', checkFormValidity);
       });
@@ -1065,6 +1218,8 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
     finishTrial() {
+      this.clearPendingVisualizationTimers();
+      this.activeTrialRunId = -1;
       const endTime = performance.now();
       const rt = endTime - this.startTime;
 
@@ -1078,11 +1233,12 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
 
       // Collect responses
-      const probabilityInput = document.getElementById('probability-estimate');
-      const cityAEstimate = document.getElementById('city-a-estimate');
-      const cityBEstimate = document.getElementById('city-b-estimate');
-      const confidence = document.querySelector('input[name="confidence"]:checked');
-      const travelChoice = document.querySelector('input[name="travel-choice"]:checked');
+      const root = this.display_element;
+      const probabilityInput = root.querySelector('#probability-estimate');
+      const cityAEstimate = root.querySelector('#city-a-estimate');
+      const cityBEstimate = root.querySelector('#city-b-estimate');
+      const confidence = root.querySelector('input[name="confidence"]:checked');
+      const travelChoice = root.querySelector('input[name="travel-choice"]:checked');
 
       const trial_data = {
         phase: this.trial.phase,
@@ -1094,9 +1250,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         display_format: this.condition?.displayFormat || null,
         
         // Responses
-        probability_estimate: parseFloat(probabilityInput.value),
-        city_a_estimate: cityAEstimate.value ? parseFloat(cityAEstimate.value) : null,
-        city_b_estimate: cityBEstimate.value ? parseFloat(cityBEstimate.value) : null,
+        probability_estimate: probabilityInput && probabilityInput.value !== '' ? parseFloat(probabilityInput.value) : null,
+        city_a_estimate: cityAEstimate && cityAEstimate.value ? parseFloat(cityAEstimate.value) : null,
+        city_b_estimate: cityBEstimate && cityBEstimate.value ? parseFloat(cityBEstimate.value) : null,
         confidence_rating: confidence ? parseInt(confidence.value) : null,
         slider_moved: this.sliderMoved, // Track whether participant actively moved the slider
         confidence_label: confidence ? this.trial.confidence_scale.labels[parseInt(confidence.value) - 1] : null,
