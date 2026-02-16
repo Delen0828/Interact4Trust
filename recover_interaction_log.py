@@ -6,15 +6,20 @@ Accepts either:
     ``interaction_log`` column and ``phase`` column).
   - A plain JSON array of events (legacy format).
 
-For each ``chart_hover`` event this script reads ``data.x``, ``data.y``,
-and ``data.timestamp``.
+For each interaction event with positional data this script reads
+``data.x``, ``data.y``, and the event ``type``.
 """
 
 import argparse
 import csv
 import json
+import sys
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
+
+# The interaction_log column can easily exceed the default 128 KB CSV field
+# size limit, so raise it before any CSV reading happens.
+csv.field_size_limit(sys.maxsize)
 
 
 # ---------------------------------------------------------------------------
@@ -107,13 +112,16 @@ def load_from_csv(
 # Point extraction
 # ---------------------------------------------------------------------------
 
-def extract_points(events: Iterable[dict[str, Any]]) -> List[Tuple[float, float, float]]:
-    points: List[Tuple[float, float, float]] = []
+def extract_points(events: Iterable[dict[str, Any]]) -> List[Tuple[float, float, float, str]]:
+    """Extract (timestamp, x, y, event_type) from events that have positional data."""
+    points: List[Tuple[float, float, float, str]] = []
 
     for event in events:
         if not isinstance(event, dict):
             continue
-        if event.get("type") != "chart_hover":
+
+        event_type = event.get("type", "")
+        if not event_type:
             continue
 
         data = event.get("data")
@@ -125,7 +133,7 @@ def extract_points(events: Iterable[dict[str, Any]]) -> List[Tuple[float, float,
         ts = data.get("timestamp", event.get("timestamp"))
 
         if isinstance(x, (int, float)) and isinstance(y, (int, float)) and isinstance(ts, (int, float)):
-            points.append((float(ts), float(x), float(y)))
+            points.append((float(ts), float(x), float(y), str(event_type)))
 
     points.sort(key=lambda p: p[0])
     return points
@@ -135,14 +143,25 @@ def extract_points(events: Iterable[dict[str, Any]]) -> List[Tuple[float, float,
 # Plotting
 # ---------------------------------------------------------------------------
 
+_TYPE_COLORS: Dict[str, str] = {
+    "chart_hover":  "#1f77b4",   # blue
+    "chart_click":  "#d62728",   # red
+    "chart_enter":  "#2ca02c",   # green
+    "chart_leave":  "#ff7f0e",   # orange
+    "hover_enter":  "#9467bd",   # purple
+    "hover_leave":  "#8c564b",   # brown
+}
+_DEFAULT_COLOR = "#7f7f7f"       # grey for unknown types
+
+
 def plot_points(
-    points: List[Tuple[float, float, float]],
+    points: List[Tuple[float, float, float, str]],
     output_path: Path,
     title: Optional[str] = None,
     screenshot_path: Optional[Path] = None,
     source_resolution: Optional[Tuple[int, int]] = None,
 ) -> None:
-    """Plot interaction points, optionally overlaid on a screenshot.
+    """Plot interaction points coloured by event type.
 
     Parameters
     ----------
@@ -154,6 +173,7 @@ def plot_points(
     """
     try:
         import matplotlib.pyplot as plt
+        import matplotlib.patches as mpatches
         import matplotlib.image as mpimg
     except ImportError as exc:
         raise RuntimeError(
@@ -161,14 +181,30 @@ def plot_points(
         ) from exc
 
     if not points:
-        raise ValueError("No valid chart_hover points found.")
+        raise ValueError("No valid interaction points found.")
 
     src_w, src_h = source_resolution or (1920, 1080)
 
-    t0 = points[0][0]
-    times = [(ts - t0) / 1000.0 for ts, _, _ in points]
-    raw_xs = [x for _, x, _ in points]
-    raw_ys = [y for _, _, y in points]
+    raw_xs = [x for _, x, _, _ in points]
+    raw_ys = [y for _, _, y, _ in points]
+    types  = [t for _, _, _, t in points]
+
+    # Map each point to its colour.
+    colors = [_TYPE_COLORS.get(t, _DEFAULT_COLOR) for t in types]
+
+    # Build legend handles for the types actually present.
+    seen_types: List[str] = []
+    for t in types:
+        if t not in seen_types:
+            seen_types.append(t)
+
+    legend_handles = [
+        mpatches.Patch(
+            color=_TYPE_COLORS.get(t, _DEFAULT_COLOR),
+            label=t,
+        )
+        for t in seen_types
+    ]
 
     if screenshot_path is not None:
         # --- Overlay mode: render trail on top of screenshot ---
@@ -187,9 +223,9 @@ def plot_points(
 
         ax.imshow(img, extent=[0, img_w, img_h, 0], aspect="auto")
 
-        scatter = ax.scatter(
+        ax.scatter(
             xs, ys,
-            c=times, cmap="plasma",
+            c=colors,
             s=30, alpha=0.85,
             edgecolors="white", linewidths=0.5,
         )
@@ -200,15 +236,16 @@ def plot_points(
         ax.set_aspect("equal", adjustable="box")
         ax.axis("off")
 
-        cbar = fig.colorbar(scatter, ax=ax, shrink=0.6, pad=0.02)
-        cbar.set_label("time since first hover (s)", fontsize=8)
-
         if scale_x != 1.0 or scale_y != 1.0:
             subtitle = f"source {src_w}x{src_h} -> screenshot {img_w}x{img_h}"
             fig.text(0.5, 0.01, subtitle, ha="center", fontsize=7, color="gray")
 
         fig.suptitle(title or "Interaction Trace Overlay", fontsize=10)
-        fig.tight_layout()
+        fig.legend(
+            handles=legend_handles, loc="lower center",
+            ncol=len(legend_handles), fontsize=8, frameon=False,
+        )
+        fig.tight_layout(rect=[0, 0.04, 1, 1])
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
@@ -221,9 +258,9 @@ def plot_points(
 
         fig, ax = plt.subplots(figsize=(9, 7))
 
-        scatter = ax.scatter(
+        ax.scatter(
             xs, ys,
-            c=times, cmap="viridis",
+            c=colors,
             s=20, alpha=0.9,
             edgecolors="none",
         )
@@ -236,11 +273,12 @@ def plot_points(
         ax.grid(alpha=0.2)
         ax.set_aspect("equal", adjustable="box")
 
-        cbar = fig.colorbar(scatter, ax=ax)
-        cbar.set_label("time since first hover (s)")
-
         fig.suptitle(title or "Recovered Interaction Trace")
-        fig.tight_layout()
+        fig.legend(
+            handles=legend_handles, loc="lower center",
+            ncol=len(legend_handles), fontsize=9, frameon=False,
+        )
+        fig.tight_layout(rect=[0, 0.04, 1, 1])
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(output_path, dpi=180)
@@ -303,7 +341,7 @@ def main() -> None:
                 events = row_info["events"]
                 points = extract_points(events)
                 if not points:
-                    print(f"  Skipping phase {row_info['phase']}: no hover points")
+                    print(f"  Skipping phase {row_info['phase']}: no interaction points")
                     continue
 
                 # Use screen resolution from CSV if available and not overridden.

@@ -149,6 +149,11 @@ var jsPsychPredictionTask = (function (jspsych) {
       return this.display_element.querySelector('#air-quality-chart');
     }
 
+    getVisualizationContent() {
+      if (!this.display_element) return null;
+      return this.display_element.querySelector('.visualization-content');
+    }
+
     renderTask() {
       // Note: roundText and phaseDescription available for future use if needed
       
@@ -187,6 +192,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-bottom: 14px;
           }
           .visualization-content {
             width: 100%;
@@ -221,7 +227,26 @@ var jsPsychPredictionTask = (function (jspsych) {
             padding: 4px 10px !important;
           }
           .chart-instructions {
-            padding: 4px 10px !important;
+            padding: 2px 10px !important;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+          }
+          .chart-description-line,
+          .chart-hint-line {
+            font-size: 12px;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+          }
+          .chart-description-line {
+            color: #6b7280;
+          }
+          .chart-hint-line {
+            color: #9ca3af;
+            font-style: italic;
           }
           .prediction-form {
             display: flex;
@@ -957,11 +982,26 @@ var jsPsychPredictionTask = (function (jspsych) {
 
       // Add instructions for Phase 2 only
       if (this.trial.phase === 2 && this.condition && this.condition.instructions) {
+        const rawInstructions = String(this.condition.instructions || '');
+        const instructionLines = rawInstructions
+          .replace(/<br\s*\/?>/gi, '\n')
+          .replace(/<[^>]+>/g, '')
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        let descriptionText = instructionLines.find((line) => !/^hint\s*:/i.test(line)) || '';
+        const hintText = instructionLines.find((line) => /^hint\s*:/i.test(line)) || '';
+
+        // Fallback if legacy text has no explicit Hint line.
+        if (!descriptionText && instructionLines.length > 0) {
+          descriptionText = instructionLines[0];
+        }
+
         const instructionsHTML = `
-          <div class="chart-floating-hint" style="position: absolute; top: 10px; left: 10px; background: transparent; color: #9ca3af; font-size: 12px; line-height: 1.3; pointer-events: none; text-align: left; max-width: 240px;">
-            <div class="instructions-content" style="color: #9ca3af;">
-              ${this.condition.instructions}
-            </div>
+          <div class="chart-instructions">
+            <div class="chart-description-line">${descriptionText}</div>
+            <div class="chart-hint-line">${hintText}</div>
           </div>
         `;
         chartContainer.insertAdjacentHTML('beforeend', instructionsHTML);
@@ -1027,15 +1067,15 @@ var jsPsychPredictionTask = (function (jspsych) {
       return `${tag}${idPart}${classPart}`;
     }
 
-    getElementPath(element, chartContainer) {
-      if (!element || !chartContainer) return null;
+    getElementPath(element, rootContainer) {
+      if (!element || !rootContainer) return null;
       const segments = [];
       let current = element;
       let depth = 0;
 
       while (current && depth < 5) {
         segments.push(this.getElementToken(current));
-        if (current === chartContainer) break;
+        if (current === rootContainer) break;
         current = current.parentElement;
         depth += 1;
       }
@@ -1043,7 +1083,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       return segments.reverse().join(' > ');
     }
 
-    getElementMetadata(target, chartContainer) {
+    getElementMetadata(target, rootContainer) {
       if (!target || !target.tagName) return null;
 
       const classes = this.getElementClassString(target)
@@ -1068,64 +1108,75 @@ var jsPsychPredictionTask = (function (jspsych) {
       });
       if (Object.keys(dataAttributes).length > 0) metadata.data = dataAttributes;
 
-      const path = this.getElementPath(target, chartContainer);
+      const path = this.getElementPath(target, rootContainer);
       if (path) metadata.path = path;
 
       return metadata;
     }
 
     setupVisualizationInteractionLogging() {
-      // Log mouse interactions for analysis
+      // Log mouse interactions on the entire visualization area (chart + controls like checkboxes)
+      // but NOT the question form below
+      const vizContent = this.getVisualizationContent();
+      if (!vizContent) return;
+
       const chartContainer = this.getChartContainer();
-      if (chartContainer) {
-        chartContainer.addEventListener('mouseenter', (e) => {
-          const rect = chartContainer.getBoundingClientRect();
-          this.logInteraction('chart_enter', {
-            x: e.clientX,
-            y: e.clientY,
-            chart_x: e.clientX - rect.left,
-            chart_y: e.clientY - rect.top,
-            element: this.getElementMetadata(e.target, chartContainer),
-            timestamp: performance.now() - this.startTime
-          });
-        });
+      const getZone = (target) => {
+        if (chartContainer && chartContainer.contains(target)) return 'chart';
+        return 'controls';
+      };
 
-        chartContainer.addEventListener('mouseleave', (e) => {
-          const rect = chartContainer.getBoundingClientRect();
-          this.logInteraction('chart_leave', {
-            x: e.clientX,
-            y: e.clientY,
-            chart_x: e.clientX - rect.left,
-            chart_y: e.clientY - rect.top,
-            element: this.getElementMetadata(e.target, chartContainer),
-            timestamp: performance.now() - this.startTime
-          });
+      vizContent.addEventListener('mouseenter', (e) => {
+        const rect = vizContent.getBoundingClientRect();
+        this.logInteraction('chart_enter', {
+          x: e.clientX,
+          y: e.clientY,
+          chart_x: e.clientX - rect.left,
+          chart_y: e.clientY - rect.top,
+          zone: getZone(e.target),
+          element: this.getElementMetadata(e.target, vizContent),
+          timestamp: performance.now() - this.startTime
         });
+      });
 
-        chartContainer.addEventListener('mousemove', (e) => {
-          const rect = chartContainer.getBoundingClientRect();
-          this.logInteraction('chart_hover', { 
-            x: e.clientX, 
-            y: e.clientY,
-            chart_x: e.clientX - rect.left,
-            chart_y: e.clientY - rect.top,
-            element: this.getElementMetadata(e.target, chartContainer),
-            timestamp: performance.now() - this.startTime 
-          });
+      vizContent.addEventListener('mouseleave', (e) => {
+        const rect = vizContent.getBoundingClientRect();
+        this.logInteraction('chart_leave', {
+          x: e.clientX,
+          y: e.clientY,
+          chart_x: e.clientX - rect.left,
+          chart_y: e.clientY - rect.top,
+          zone: getZone(e.target),
+          element: this.getElementMetadata(e.target, vizContent),
+          timestamp: performance.now() - this.startTime
         });
+      });
 
-        chartContainer.addEventListener('click', (e) => {
-          const rect = chartContainer.getBoundingClientRect();
-          this.logInteraction('chart_click', { 
-            x: e.clientX, 
-            y: e.clientY,
-            chart_x: e.clientX - rect.left,
-            chart_y: e.clientY - rect.top,
-            element: this.getElementMetadata(e.target, chartContainer),
-            timestamp: performance.now() - this.startTime 
-          });
+      vizContent.addEventListener('mousemove', (e) => {
+        const rect = vizContent.getBoundingClientRect();
+        this.logInteraction('chart_hover', {
+          x: e.clientX,
+          y: e.clientY,
+          chart_x: e.clientX - rect.left,
+          chart_y: e.clientY - rect.top,
+          zone: getZone(e.target),
+          element: this.getElementMetadata(e.target, vizContent),
+          timestamp: performance.now() - this.startTime
         });
-      }
+      });
+
+      vizContent.addEventListener('click', (e) => {
+        const rect = vizContent.getBoundingClientRect();
+        this.logInteraction('chart_click', {
+          x: e.clientX,
+          y: e.clientY,
+          chart_x: e.clientX - rect.left,
+          chart_y: e.clientY - rect.top,
+          zone: getZone(e.target),
+          element: this.getElementMetadata(e.target, vizContent),
+          timestamp: performance.now() - this.startTime
+        });
+      });
     }
 
     logInteraction(type, data) {

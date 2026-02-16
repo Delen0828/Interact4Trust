@@ -89,49 +89,51 @@ export default class Condition16 {
 
     addTinySliderControls() {
         const chartContainer = document.querySelector(`#${this.svgId}`).parentElement;
-        const conditionPanel = chartContainer.parentElement;
 
         this.sliderContainer = document.createElement('div');
         this.sliderContainer.style.cssText = `
-            width: 100%;
-            margin-top: 10px;
-            padding: 6px 6px 4px 6px;
+            width: min(100%, 680px);
+            margin: 10px auto 0;
+            padding: 6px 8px;
             background: #f3f4f6;
-            border-radius: 4px;
+            border-radius: 6px;
             border-top: 1px solid #d1d5db;
+            text-align: center;
         `;
 
         const header = document.createElement('div');
-        header.textContent = 'Scroll tiny strip, then tick boxes:';
+        header.textContent = 'Select scenarios to display:';
         header.style.cssText = `
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             color: #4b5563;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         `;
         this.sliderContainer.appendChild(header);
 
         const sliderViewport = document.createElement('div');
         sliderViewport.style.cssText = `
-            overflow-x: hidden;
-            overflow-y: auto;
-            height: 24px;
-            width: 220px;
+            overflow: visible;
+            width: 100%;
             margin: 0 auto;
-            padding: 1px 2px;
-            border: 1px solid #d1d5db;
-            border-radius: 3px;
-            background: #ffffff;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+            background: transparent;
         `;
 
         const sliderTrack = document.createElement('div');
         sliderTrack.style.cssText = `
             display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 2px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
             width: 100%;
-            min-height: max-content;
         `;
 
         Object.keys(this.alternativeLines).sort().forEach((cityScenarioKey) => {
@@ -142,37 +144,37 @@ export default class Condition16 {
             checkboxWrapper.style.cssText = `
                 display: flex;
                 align-items: center;
-                height: 18px;
-                font-size: 8px;
+                min-height: 24px;
+                font-size: 10px;
                 color: #6b7280;
                 cursor: pointer;
-                padding: 0 3px;
+                padding: 2px 6px;
                 border: 1px solid #e5e7eb;
-                border-radius: 2px;
-                width: 100%;
+                border-radius: 3px;
+                white-space: nowrap;
             `;
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = `tiny-checkbox-${cityScenarioKey}-${this.svgId}`;
             checkbox.style.cssText = `
-                margin-right: 2px;
-                transform: scale(0.65);
+                margin-right: 4px;
+                transform: scale(0.8);
             `;
 
             const colorDot = document.createElement('div');
             colorDot.style.cssText = `
-                width: 5px;
-                height: 5px;
+                width: 6px;
+                height: 6px;
                 border-radius: 50%;
                 background: ${color};
-                margin-right: 2px;
+                margin-right: 3px;
                 flex: 0 0 auto;
             `;
 
             const labelText = document.createElement('span');
-            labelText.textContent = `${city} scenario ${scenarioName}`;
-            labelText.style.fontSize = '8px';
+            labelText.textContent = `${city}S${scenarioName}`;
+            labelText.style.fontSize = '9px';
 
             checkbox.addEventListener('change', () => {
                 this.toggleCityScenario(cityScenarioKey, checkbox.checked);
@@ -190,23 +192,23 @@ export default class Condition16 {
         selectAllWrapper.style.cssText = `
             display: flex;
             align-items: center;
-            height: 18px;
-            font-size: 8px;
+            min-height: 24px;
+            font-size: 10px;
             color: #111827;
             cursor: pointer;
-            padding: 0 4px;
+            padding: 2px 6px;
             border: 1px dashed #9ca3af;
-            border-radius: 2px;
-            width: 100%;
+            border-radius: 3px;
             font-weight: 600;
+            white-space: nowrap;
         `;
 
         const selectAllCheckbox = document.createElement('input');
         selectAllCheckbox.type = 'checkbox';
         selectAllCheckbox.id = `tiny-checkbox-select-all-${this.svgId}`;
         selectAllCheckbox.style.cssText = `
-            margin-right: 2px;
-            transform: scale(0.65);
+            margin-right: 4px;
+            transform: scale(0.8);
         `;
         this.selectAllCheckbox = selectAllCheckbox;
 
@@ -225,17 +227,20 @@ export default class Condition16 {
         this.sliderContainer.appendChild(sliderViewport);
 
         const instruction = document.createElement('div');
-        instruction.textContent = 'Worse UX: tiny vertical strip + vertical scrolling + mini checkboxes.';
+        instruction.textContent = 'Compact selection controls below chart.';
         instruction.style.cssText = `
-            font-size: 8px;
+            font-size: 9px;
             color: #6b7280;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 6px;
             font-style: italic;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         `;
         this.sliderContainer.appendChild(instruction);
 
-        conditionPanel.appendChild(this.sliderContainer);
+        chartContainer.appendChild(this.sliderContainer);
     }
 
     toggleCityScenario(cityScenarioKey, isVisible) {

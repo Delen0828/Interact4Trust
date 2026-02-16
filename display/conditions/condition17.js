@@ -106,21 +106,21 @@ export default class Condition17 {
     }
 
     addCheckboxControls() {
-        // Get the condition panel (parent of chart-container) to append controls below the chart
+        // Append controls inside chart container to keep them below chart (not side-by-side)
         const chartContainer = document.querySelector(`#${this.svgId}`).parentElement;
-        const conditionPanel = chartContainer.parentElement;
         
         // Create checkbox container beneath the chart
         this.checkboxContainer = document.createElement('div');
         this.checkboxContainer.style.cssText = `
             display: block;
-            width: 100%;
-            margin-top: 12px;
-            padding: 8px;
+            width: min(100%, 680px);
+            margin: 12px auto 0;
+            padding: 8px 10px;
             background: #f8f9fa;
-            border-radius: 4px;
+            border-radius: 6px;
             border-top: 1px solid #e9ecef;
             clear: both;
+            text-align: center;
         `;
         
         // Create header
@@ -131,14 +131,20 @@ export default class Condition17 {
             font-weight: 600;
             margin-bottom: 6px;
             color: #495057;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         `;
         this.checkboxContainer.appendChild(header);
         
         // Create checkbox grid (separate for each city/scenario combination)
         const checkboxGrid = document.createElement('div');
         checkboxGrid.style.cssText = `
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
             gap: 4px;
         `;
         
@@ -154,11 +160,13 @@ export default class Condition17 {
                 font-size: 10px;
                 color: #6c757d;
                 cursor: pointer;
-                padding: 3px 4px;
-                border-radius: 2px;
+                padding: 2px 5px;
+                border-radius: 3px;
                 transition: background-color 0.2s;
                 border: 1px solid #e9ecef;
-                margin: 1px;
+                margin: 0;
+                min-height: 24px;
+                white-space: nowrap;
             `;
             
             // Add hover effect
@@ -231,11 +239,13 @@ export default class Condition17 {
             font-size: 10px;
             color: #495057;
             cursor: pointer;
-            padding: 3px 4px;
-            border-radius: 2px;
+            padding: 2px 6px;
+            border-radius: 3px;
             border: 1px dashed #adb5bd;
-            margin: 1px;
+            margin: 0;
+            min-height: 24px;
             font-weight: 600;
+            white-space: nowrap;
         `;
 
         const selectAllCheckbox = document.createElement('input');
@@ -270,11 +280,14 @@ export default class Condition17 {
             color: #dc3545;
             text-align: center;
             margin-top: 6px;
-            font-weight: bold;
+            font-style: italic;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         `;
         this.checkboxContainer.appendChild(instruction);
         
-        conditionPanel.appendChild(this.checkboxContainer);
+        chartContainer.appendChild(this.checkboxContainer);
     }
 
     toggleCityScenario(cityScenarioKey, isVisible) {
