@@ -1,0 +1,13 @@
+condition_name,city_A_type,city_B_type,city_A_line_number,city_B_line_number,participant_number
+PI-2_cities_region_vs_region,region,region,0,0,20
+PI-1_city_region_vs_1_line_A_region,region,line,0,1,10
+PI-1_city_region_vs_1_line_B_region,line,region,1,0,10
+baseline_1_line_vs_1_line,line,line,1,1,20
+ensemble_1_city_5_vs_1_A_5,line,line,5,1,10
+ensemble_1_city_5_vs_1_B_5,line,line,1,5,10
+ensemble_1_city_10_vs_1_A_10,line,line,10,1,10
+ensemble_1_city_10_vs_1_B_10,line,line,1,10,10
+ensemble_2_cities_5_vs_5,line,line,5,5,20
+ensemble_2_cities_10_vs_10,line,line,10,10,20
+ensemble_2_cities_5_vs_10_A_5,line,line,5,10,10
+ensemble_2_cities_5_vs_10_B_5,line,line,10,5,10

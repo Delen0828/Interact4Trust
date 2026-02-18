@@ -1,0 +1,46 @@
+{
+  "name": "interact4trust-experiment2",
+  "version": "1.0.0",
+  "description": "Humidity Prediction Visualization Trust Study - Experiment 2: Per-city display format variations (region vs ensemble lines)",
+  "main": "index.html",
+  "scripts": {
+    "start": "./start_server.sh",
+    "serve": "./start_server.sh",
+    "dev": "./start_server.sh",
+    "start-php": "./start_server.sh",
+    "start-python": "python3 -m http.server 8080",
+    "test": "echo 'Open http://localhost:8010 in browser to test experiment'",
+    "clean": "rm -rf dist && echo 'Cleaned dist directory'",
+    "generate-data": "node generate_data.js",
+    "generate-versions": "node generate_versions.js",
+    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp -r display dist/ && cp save_data.php complete_study.php simple_index.html dist/ && mv dist/simple_index.html dist/index.html && mkdir -p dist/data && for d in versions/version*/; do cp -r \"$d\" dist/$(basename \"$d\"); done && echo 'Multi-version build complete'"
+  },
+  "keywords": [
+    "psychology",
+    "experiment",
+    "visualization",
+    "trust",
+    "uncertainty",
+    "prediction",
+    "jspsych",
+    "d3js"
+  ],
+  "author": "Research Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@jspsych/plugin-call-function": "^1.1.3",
+    "@jspsych/plugin-fullscreen": "^1.2.1",
+    "@jspsych/plugin-html-button-response": "^1.1.3",
+    "@jspsych/plugin-html-keyboard-response": "^1.1.3",
+    "@jspsych/plugin-instructions": "^1.1.4",
+    "@jspsych/plugin-preload": "^2.1.0",
+    "@jspsych/plugin-survey-likert": "^1.1.3",
+    "@jspsych/plugin-survey-multi-choice": "^1.1.3",
+    "@jspsych/plugin-survey-text": "^1.1.3",
+    "d3": "^7.8.5",
+    "jspsych": "^7.3.4"
+  }
+}
