@@ -422,7 +422,7 @@ function buildTimeline() {
 	// Trust Survey Page 1 - Interface Control
 	timeline.push({
 		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.trustQuestions,
+		questions: window.ExperimentConfig.interactionQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
                     <h3>Interface Assessment - Page 1</h3>

@@ -268,6 +268,11 @@ function buildTimeline() {
 	                <p><strong>This assessment will take approximately 5-10 minutes.</strong></p>
 	                <p>There are no right or wrong interpretations - we're interested in how you read visualizations.</p>
 	            </div>
+	            <div class="assessment-info">
+	                <h3>Main task (after the assessment):</h3>
+	                <p>You will make predictions about humidity in two hypothetical cities, <strong>City A</strong> and <strong>City B</strong>.</p>
+	                <p>Humidity is measured on a scale from 0 to 100, and your task is to predict which city is likely to have higher or lower humidity in the future.</p>
+	            </div>
 	        </div>
 	    `,
 	    choices: ['Begin Assessment'],
@@ -289,8 +294,7 @@ function buildTimeline() {
 	        window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
 	    }
 	});
-
-	// Instructions
+// Instructions
 	timeline.push({
 	    type: jsPsychInstructions,
 	    pages: [
@@ -299,7 +303,14 @@ function buildTimeline() {
 	            <p>You will be making predictions about humidity in two hypothetical cities: <br> <strong>City A</strong> and <strong>City B</strong>.</p>
 	            <p>Humidity is measured in a scale from 0 to 100.
 	            <p>Your task will be to predict which city is likely to have higher or lower humidity in the future.</p>
-	        </div>`
+	        </div>
+			<div class="section-intro">
+				<h2>Interaction Collection Notice</h2>
+				<p>In the next two pages, scrolling and zooming will be disabled for interaction collection.</p>
+				<p>If you encounter any problem, please contact the researchers on Prolific.</p>
+			</div>
+			`
+
 	    ],
 	    show_clickable_nav: true,
 	    data: { trial_type: 'instructions' }
@@ -417,7 +428,7 @@ function buildTimeline() {
 	// Trust Survey Page 1 - Interface Control
 	timeline.push({
 		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.trustQuestions,
+		questions: window.ExperimentConfig.interactionQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
                     <h3>Interface Assessment - Page 1</h3>

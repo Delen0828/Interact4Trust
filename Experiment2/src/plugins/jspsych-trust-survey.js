@@ -81,7 +81,7 @@ var jsPsychTrustSurvey = (function (jspsych) {
             padding-bottom: 0;
           }
           .question-prompt {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 500;
             margin-bottom: 20px;
             color: #333;

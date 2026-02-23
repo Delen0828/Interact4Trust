@@ -55,8 +55,11 @@ versions.forEach(({ version, conditionIndex, name }) => {
     
     // Generate HTML content
     let htmlContent = baseHtml;
-    htmlContent = htmlContent.replace(/Version 1: Baseline/g, `Version ${version}: ${name}`);
-    htmlContent = htmlContent.replace(/Version 1:/g, `Version ${version}:`);
+    // Keep browser title generic to avoid leaking condition content
+    htmlContent = htmlContent.replace(
+        /<title>Humidity Study - Version 1[^<]*<\/title>/g,
+        `<title>Humidity Study - Version ${version}</title>`
+    );
     
     // Write the HTML file
     const htmlPath = path.join(versionDir, 'index.html');

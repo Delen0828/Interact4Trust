@@ -58,9 +58,10 @@ conditions.forEach(({ version, conditionIndex, name }) => {
 
     // Generate HTML content
     let htmlContent = baseHtml;
+    // Keep browser title generic to avoid leaking condition content
     htmlContent = htmlContent.replace(
-        /Version 1: PI-2_cities_region_vs_region/g,
-        `Version ${version}: ${name}`
+        /<title>Humidity Study - Version 1[^<]*<\/title>/g,
+        `<title>Humidity Study - Version ${version}</title>`
     );
 
     fs.writeFileSync(path.join(versionDir, 'index.html'), htmlContent);

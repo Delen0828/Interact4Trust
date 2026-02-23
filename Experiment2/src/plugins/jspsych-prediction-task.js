@@ -638,8 +638,10 @@ var jsPsychPredictionTask = (function (jspsych) {
           if (!this.isActiveTrial(trialRunId)) return;
           const conditionElement = this.display_element.querySelector('#condition-display');
           if (conditionElement) {
-            const conditionName = this.condition?.name || 'Loading...';
-            conditionElement.textContent = `Condition: ${conditionName}`;
+            const conditionId = this.condition?.id || '';
+            const versionMatch = conditionId.match(/condition_(\d+)/i);
+            const versionLabel = versionMatch ? `Version ${versionMatch[1]}` : 'Assigned Version';
+            conditionElement.textContent = `Condition: ${versionLabel}`;
           }
         }, 0);
         

@@ -140,9 +140,8 @@ const ExperimentConfig = {
         travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower humidity, which city would you travel to?',
         travelChoices: ['City A', 'City B', 'No Preference']
     },
-
-    // Trust and Confidence Measurements - Page 1
-    trustQuestions: [
+    // Interaction - Page 1
+    interactionQuestions: [
         {
             prompt: "I was in control of my navigation through this interface.",
             labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
@@ -159,9 +158,9 @@ const ExperimentConfig = {
             type: "pace_control"
         },
         {
-            prompt: "I could communicate with the company directly for further questions about the company or its products if I wanted to.",
+            prompt: "I could explore the interface for further questions about the underlying data if I wanted to.",
             labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
-            type: "company_communication"
+            type: "interface_exploration"
         },
         {
             prompt: "The interface had the ability to respond to my specific questions quickly and efficiently.",
@@ -169,12 +168,12 @@ const ExperimentConfig = {
             type: "interface_responsiveness"
         },
         {
-            prompt: "I could communicate in real time with other customers who shared my interest in this interface.",
+            prompt: "I could communicate in real time with other users who shared my interest in this interface.",
             labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
-            type: "customer_communication"
+            type: "user_communication"
         },
         {
-            prompt: "I felt I just had a personal conversation with a sociable, knowledgeable and warm representative from the company.",
+            prompt: "Interacting with this visualization felt similar to having a personal discussion with an expert about the data.",
             labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "personal_conversation"
         },
@@ -184,7 +183,7 @@ const ExperimentConfig = {
             type: "interface_interaction"
         },
         {
-            prompt: "I perceived the interface to be sensitive to my needs for product information.",
+            prompt: "I perceived the interface to be sensitive to my needs for information.",
             labels: ["Strongly Disagree", "Disagree", "Slightly Disagree", "Neutral", "Slightly Agree", "Agree", "Strongly Agree"],
             type: "interface_sensitivity"
         }
