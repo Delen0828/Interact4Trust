@@ -121,8 +121,8 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.sliderMoved = false; // Reset slider tracking for new trial
       this.interactionLog = [];
       this.formValidityChecker = null;
-      this.visualizationInteractionRequired = !!trial.show_visualization;
-      this.visualizationInteractionSatisfied = !this.visualizationInteractionRequired;
+      this.visualizationInteractionRequired = false;
+      this.visualizationInteractionSatisfied = true;
       this.visualizationInteractionSource = null;
       this.visualizationInteractionRequirementBypassReason = null;
 
@@ -136,6 +136,12 @@ var jsPsychPredictionTask = (function (jspsych) {
       } else {
         this.condition = null;
       }
+
+      const interactionRequirement = this.resolveVisualizationInteractionRequirement();
+      this.visualizationInteractionRequired = interactionRequirement.required;
+      this.visualizationInteractionSatisfied = !interactionRequirement.required;
+      this.visualizationInteractionSource = null;
+      this.visualizationInteractionRequirementBypassReason = interactionRequirement.reason;
 
       // Render task synchronously first, then handle async visualization
       this.renderTask();
@@ -301,19 +307,23 @@ var jsPsychPredictionTask = (function (jspsych) {
           .content-area {
             grid-area: viz;
             width: 100%;
+            min-width: 0;
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
             margin-bottom: 0;
           }
           .visualization-panel {
-            width: 100%;
+            width: min(100%, 620px);
+            max-width: 620px;
+            min-width: 0;
             display: flex;
             flex-direction: column;
             align-items: stretch;
           }
           .visualization-content {
             width: 100%;
+            min-width: 0;
             display: flex;
             justify-content: flex-start;
           }
@@ -334,6 +344,8 @@ var jsPsychPredictionTask = (function (jspsych) {
           /* Tighten chart wrapper — SVG stays 600x400, just less wrapper padding */
           .chart-container {
             min-height: unset !important;
+            width: 100%;
+            box-sizing: border-box;
             padding: 8px !important;
             margin-bottom: 4px !important;
             margin-left: auto !important;
@@ -352,6 +364,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .chart-instructions {
             padding: 2px 10px !important;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             gap: 1px;
@@ -360,9 +375,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           .chart-hint-line {
             font-size: 12px;
             line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
             text-align: center;
           }
           .chart-description-line {
@@ -914,7 +929,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
           </div>
           <div class="slider-requirement viz-interaction-warning" id="viz-interaction-requirement" style="display: ${this.visualizationInteractionRequired ? 'block' : 'none'};">
-            ⚠️ Interaction required: hover over or click the visualization to continue
+            ⚠️ Interaction required: hover over or click an interactive chart element to continue
           </div>
           
           <style>
@@ -1252,6 +1267,93 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
     }
 
+    resolveVisualizationInteractionRequirement() {
+      if (!this.trial?.show_visualization) {
+        return { required: false, reason: null };
+      }
+
+      // Interaction gating is only intended for Phase 2.
+      if (this.trial.phase !== 2) {
+        return { required: false, reason: null };
+      }
+
+      const nonInteractiveDisplayFormats = new Set([
+        'aggregation_only',       // Condition 1
+        'confidence_bounds',      // Condition 2
+        'alternative_lines',      // Condition 3
+        'combined_pi_ensemble'    // Condition 9
+      ]);
+
+      const displayFormat = this.condition?.displayFormat || null;
+      if (displayFormat && nonInteractiveDisplayFormats.has(displayFormat)) {
+        return {
+          required: false,
+          reason: `no_interaction_required_${displayFormat}`
+        };
+      }
+
+      return { required: true, reason: null };
+    }
+
+    isMeaningfulHoverTarget(target, rootContainer) {
+      if (!target || !rootContainer) return false;
+
+      let element = target instanceof Element ? target : target.parentElement;
+      const containerRoot = this.getChartContainer();
+
+      while (element && element !== rootContainer) {
+        if (!(element instanceof Element)) {
+          element = element.parentElement;
+          continue;
+        }
+
+        // Ignore chart/background containers; hovering the whole chart should not satisfy the requirement.
+        if (
+          element === containerRoot ||
+          element.id === 'air-quality-chart' ||
+          element.classList?.contains('chart-container') ||
+          element.classList?.contains('visualization-content') ||
+          element.classList?.contains('visualization-panel') ||
+          element.classList?.contains('chart-svg') ||
+          element.classList?.contains('simple-chart-legend') ||
+          element.classList?.contains('chart-instructions')
+        ) {
+          element = element.parentElement;
+          continue;
+        }
+
+        if (element.matches('input, button, select, option, [role="button"]')) {
+          return true;
+        }
+
+        const classString = this.getElementClassString(element);
+        if (
+          classString.includes('hover-zone') ||
+          classString.includes('bad-hover-zone') ||
+          classString.includes('checkbox')
+        ) {
+          return true;
+        }
+
+        if (
+          element.hasAttribute('data-interaction') ||
+          element.hasAttribute('data-role') ||
+          element.hasAttribute('data-element')
+        ) {
+          return true;
+        }
+
+        const inlineCursor = element.style?.cursor;
+        if (inlineCursor === 'pointer' || inlineCursor === 'crosshair') {
+          return true;
+        }
+
+        element = element.parentElement;
+      }
+
+      return false;
+    }
+
     getElementClassString(element) {
       if (!element) return '';
       if (typeof element.className === 'string') return element.className;
@@ -1367,7 +1469,6 @@ var jsPsychPredictionTask = (function (jspsych) {
       };
 
       vizContent.addEventListener('mouseenter', (e) => {
-        this.markVisualizationInteractionSatisfied('hover');
         const rect = vizContent.getBoundingClientRect();
         this.logInteraction('chart_enter', {
           x: e.clientX,
@@ -1393,8 +1494,13 @@ var jsPsychPredictionTask = (function (jspsych) {
         });
       });
 
+      vizContent.addEventListener('mouseover', (e) => {
+        if (this.isMeaningfulHoverTarget(e.target, vizContent)) {
+          this.markVisualizationInteractionSatisfied('hover');
+        }
+      });
+
       vizContent.addEventListener('mousemove', (e) => {
-        this.markVisualizationInteractionSatisfied('hover');
         const rect = vizContent.getBoundingClientRect();
         this.logInteraction('chart_hover', {
           x: e.clientX,

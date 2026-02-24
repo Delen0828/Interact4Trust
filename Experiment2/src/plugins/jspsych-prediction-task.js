@@ -189,13 +189,16 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .content-area {
             width: 100%;
+            min-width: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 14px;
           }
           .visualization-content {
-            width: 100%;
+            width: min(100%, 620px);
+            max-width: 620px;
+            min-width: 0;
             display: flex;
             justify-content: center;
           }
@@ -210,6 +213,8 @@ var jsPsychPredictionTask = (function (jspsych) {
           /* Tighten chart wrapper — SVG stays 600x400, just less wrapper padding */
           .chart-container {
             min-height: unset !important;
+            width: 100%;
+            box-sizing: border-box;
             padding: 8px !important;
             margin-bottom: 4px !important;
             margin-left: auto !important;
@@ -228,6 +233,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .chart-instructions {
             padding: 2px 10px !important;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             gap: 1px;
@@ -236,9 +244,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           .chart-hint-line {
             font-size: 12px;
             line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
             text-align: center;
           }
           .chart-description-line {
