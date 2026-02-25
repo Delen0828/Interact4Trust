@@ -230,7 +230,7 @@
     <div class="container">
         <div class="header">
             <h1>Humidity Prediction Visualization Conditions</h1>
-            <p>Comparing different methods of presenting prediction uncertainty (13 conditions total)</p>
+            <p>Comparing different methods of presenting prediction uncertainty (14 conditions total, including experimental glitch hover)</p>
         </div>
 
         <div class="legend">
@@ -385,6 +385,15 @@
                 <div class="condition-description">Buggy: Select All button has 50% chance of doing nothing</div>
                 <div class="chart-container">
                     <svg id="chart-12" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 18: Glitch Hover (experimental) -->
+            <div class="condition-panel condition-18">
+                <div class="condition-title">Condition 18: Glitch Hover</div>
+                <div class="condition-description">Hover reveals alternatives except when the 2-digit millisecond value hits a random hidden set of 30 numbers (1-99)</div>
+                <div class="chart-container">
+                    <svg id="chart-13" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
         </div>

@@ -32,8 +32,8 @@ export class ConditionFactory {
     async createCondition(conditionNumber, svgId) {
         try {
             // Validate condition number
-            if (conditionNumber < 0 || conditionNumber > 17) {
-                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 17.`);
+            if (conditionNumber < 0 || conditionNumber > 18) {
+                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 18.`);
             }
 
             // Check if we have processed data
@@ -50,6 +50,13 @@ export class ConditionFactory {
             
             // Store instance for cleanup later
             const key = `${svgId}-${conditionNumber}`;
+            const existingCondition = this.conditionInstances.get(key);
+            if (existingCondition) {
+                try {
+                    existingCondition.cleanup();
+                } catch (error) {
+                }
+            }
             this.conditionInstances.set(key, condition);
             
             return condition;
@@ -96,7 +103,8 @@ export class ConditionFactory {
             { number: 9, svgId: 'chart-9' },
             { number: 11, svgId: 'chart-10' },  // Original condition 11
             { number: 16, svgId: 'chart-11' },  // Original condition 16
-            { number: 17, svgId: 'chart-12' }   // Original condition 17
+            { number: 17, svgId: 'chart-12' },  // Original condition 17
+            { number: 18, svgId: 'chart-13' }   // Experimental glitch hover
         ];
 
 
@@ -198,7 +206,8 @@ export class ConditionFactory {
             9: { name: 'Combined PI + Ensemble', description: 'Shows both confidence bounds and alternative prediction lines' },
             10: { name: 'Checkbox Selection', description: 'Bad: Tick all empty boxes to reveal each prediction line' },
             11: { name: 'Tiny Slider Checkbox Selection', description: 'Worse: tiny-height horizontal slider of selection boxes with mini targets' },
-            12: { name: 'Checkbox Selection with Buggy Select All', description: 'Buggy: Select All button has 50% chance of doing nothing' }
+            12: { name: 'Checkbox Selection with Buggy Select All', description: 'Buggy: Select All button has 50% chance of doing nothing' },
+            18: { name: 'Glitch Hover', description: 'Hover visibility is gated by the 2-digit millisecond value using a random hidden set of 30 numbers (1-99)' }
         };
     }
 }
