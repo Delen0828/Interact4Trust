@@ -230,7 +230,7 @@
     <div class="container">
         <div class="header">
             <h1>Humidity Prediction Visualization Conditions</h1>
-            <p>Comparing different methods of presenting prediction uncertainty (14 conditions total, including experimental glitch hover)</p>
+            <p>Comparing different methods of presenting prediction uncertainty (16 conditions total, including three experimental glitch conditions)</p>
         </div>
 
         <div class="legend">
@@ -307,19 +307,19 @@
                 </div>
             </div>
 
-            <!-- Condition 4: PI Plot + Hover -->
+            <!-- Condition 4: Ensemble + Hover -->
             <div class="condition-panel condition-4">
-                <div class="condition-title">Condition 4: PI Plot + Hover</div>
-                <div class="condition-description">PI plot with hover to reveal individual predictions</div>
+                <div class="condition-title">Condition 4: Ensemble + Hover</div>
+                <div class="condition-description">Aggregated by default, hover to reveal alternatives</div>
                 <div class="chart-container">
                     <svg id="chart-4" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
 
-            <!-- Condition 5: Ensemble + Hover -->
+            <!-- Condition 5:  PI Plot + Hover-->
             <div class="condition-panel condition-5">
-                <div class="condition-title">Condition 5: Ensemble + Hover</div>
-                <div class="condition-description">Aggregated by default, hover to reveal alternatives</div>
+                <div class="condition-title">Condition 5: PI Plot + Hover</div>
+                <div class="condition-description">PI plot with hover to reveal individual predictions</div>
                 <div class="chart-container">
                     <svg id="chart-5" class="chart-svg" width="400" height="300"></svg>
                 </div>
@@ -388,12 +388,30 @@
                 </div>
             </div>
 
-            <!-- Condition 18: Glitch Hover (experimental) -->
+            <!-- Condition 18: Glitch Ensemble + Hover -->
             <div class="condition-panel condition-18">
-                <div class="condition-title">Condition 18: Glitch Hover</div>
-                <div class="condition-description">Hover reveals alternatives except when the 2-digit millisecond value hits a random hidden set of 30 numbers (1-99)</div>
+                <div class="condition-title">Condition 18: Glitch Ensemble + Hover</div>
+                <div class="condition-description">Hover reveals ensemble alternatives except when the 2-digit millisecond value hits a random hidden set of 30 numbers (1-99)</div>
                 <div class="chart-container">
                     <svg id="chart-13" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 19: Glitch PI Plot + Hover -->
+            <div class="condition-panel condition-19">
+                <div class="condition-title">Condition 19: Glitch PI Plot + Hover</div>
+                <div class="condition-description">Hover reveals PI bounds except when the 2-digit millisecond value hits a random hidden set of 30 numbers (1-99)</div>
+                <div class="chart-container">
+                    <svg id="chart-14" class="chart-svg" width="400" height="300"></svg>
+                </div>
+            </div>
+
+            <!-- Condition 20: Glitch PI → Ensemble -->
+            <div class="condition-panel condition-20">
+                <div class="condition-title">Condition 20: Glitch PI → Ensemble</div>
+                <div class="condition-description">Hover transforms PI into ensemble lines except when the 2-digit millisecond value hits a random hidden set of 30 numbers (1-99)</div>
+                <div class="chart-container">
+                    <svg id="chart-15" class="chart-svg" width="400" height="300"></svg>
                 </div>
             </div>
         </div>

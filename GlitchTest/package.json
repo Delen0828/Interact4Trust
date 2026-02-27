@@ -1,0 +1,12 @@
+{
+  "name": "glitchtest-glitch-conditions-sanity",
+  "version": "1.0.0",
+  "description": "Simplified Experiment 1 sanity check for glitch conditions 18, 19, and 20",
+  "main": "index.html",
+  "scripts": {
+    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp -r display dist/ && cp index.html save_data.php complete_study.php synthetic_stock_data_norm.json dist/ && mkdir -p dist/data && echo 'GlitchTest build complete'",
+    "start": "./start_server.sh",
+    "serve": "./start_server.sh"
+  },
+  "license": "MIT"
+}
