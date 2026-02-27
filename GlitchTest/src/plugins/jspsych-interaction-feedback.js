@@ -1,8 +1,8 @@
 /**
  * jsPsych Interaction Feedback Plugin
  *
- * Single-page feedback survey with required Yes/No questions
- * and optional follow-up text boxes.
+ * Single-page user experience survey with required rating questions
+ * and optional follow-up comments.
  */
 
 var jsPsychInteractionFeedback = (function (jspsych) {
@@ -15,7 +15,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
 
   const info = {
     name: 'interaction-feedback',
-    description: 'Interaction feedback survey with required Yes/No and optional text input',
+    description: 'User experience survey with required responses and optional text input',
     parameters: {
       preamble: {
         type: jspsych.ParameterType.HTML_STRING,
@@ -76,17 +76,18 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             text-align: left;
             line-height: 1.4;
           }
-          .yes-no-row {
+          .option-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 12px;
             align-items: center;
           }
-          .yes-no-option {
+          .option-card {
             position: relative;
             cursor: pointer;
             min-width: 110px;
           }
-          .yes-no-option input[type="radio"] {
+          .option-card input[type="radio"] {
             opacity: 0;
             position: absolute;
             width: 100%;
@@ -94,7 +95,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             margin: 0;
             cursor: pointer;
           }
-          .yes-no-button {
+          .option-button {
             display: block;
             text-align: center;
             padding: 10px 14px;
@@ -106,14 +107,25 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             border: 2px solid #d1d5db;
             font-weight: 600;
           }
-          .yes-no-option:hover .yes-no-button {
+          .option-card:hover .option-button {
             border-color: #374151;
             background: #f9fafb;
           }
-          .yes-no-option input:checked + .yes-no-button {
+          .option-card input:checked + .option-button {
             background: #374151;
             color: white;
             border-color: #374151;
+          }
+          .option-card input:disabled + .option-button {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+          }
+          .follow-up-note {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6b7280;
           }
           .feedback-textarea {
             width: 100%;
@@ -169,31 +181,80 @@ var jsPsychInteractionFeedback = (function (jspsych) {
           ${this.trial.preamble || ''}
           <form id="interaction-feedback-form">
             <div class="interaction-feedback-question">
-              <div class="question-prompt">1. Do you think you encounter any bug in the interaction?</div>
-              <div class="yes-no-row">
-                <label class="yes-no-option">
-                  <input type="radio" name="encounter_bug" value="Yes" required>
-                  <span class="yes-no-button">Yes</span>
+              <div class="question-prompt">1. How do you like the system?</div>
+              <div class="option-row">
+                <label class="option-card">
+                  <input type="radio" name="system_rating" value="Dislike a lot" required>
+                  <span class="option-button">Dislike a lot</span>
                 </label>
-                <label class="yes-no-option">
-                  <input type="radio" name="encounter_bug" value="No" required>
-                  <span class="yes-no-button">No</span>
+                <label class="option-card">
+                  <input type="radio" name="system_rating" value="Dislike" required>
+                  <span class="option-button">Dislike</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="system_rating" value="Neutral" required>
+                  <span class="option-button">Neutral</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="system_rating" value="Like" required>
+                  <span class="option-button">Like</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="system_rating" value="Like a lot" required>
+                  <span class="option-button">Like a lot</span>
                 </label>
               </div>
             </div>
 
             <div class="interaction-feedback-question">
-              <div class="question-prompt">2. If Yes, elaborate in the text box below.</div>
+              <div class="question-prompt">2. Do you think there is any bug in the system?</div>
+              <div class="option-row">
+                <label class="option-card">
+                  <input type="radio" name="encounter_bug" value="Yes" required>
+                  <span class="option-button">Yes</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="encounter_bug" value="No" required>
+                  <span class="option-button">No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="interaction-feedback-question">
+              <div class="question-prompt">3. If yes in Question 2, what do you think the bug is?</div>
+              <div class="option-row">
+                <label class="option-card">
+                  <input type="radio" name="bug_type" value="Glitch" disabled>
+                  <span class="option-button">Glitch</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="bug_type" value="Inconsistency" disabled>
+                  <span class="option-button">Inconsistency</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="bug_type" value="Hard interaction" disabled>
+                  <span class="option-button">Hard interaction</span>
+                </label>
+                <label class="option-card">
+                  <input type="radio" name="bug_type" value="N/A" checked>
+                  <span class="option-button">N/A</span>
+                </label>
+              </div>
+              <div id="bug-type-note" class="follow-up-note">Select Question 2 first.</div>
+            </div>
+
+            <div class="interaction-feedback-question">
+              <div class="question-prompt">Additional comments</div>
               <textarea
                 class="feedback-textarea"
-                id="bug_elaboration"
-                name="bug_elaboration"
-                placeholder="Optional details..."
+                id="free_response"
+                name="free_response"
+                placeholder="Optional comments..."
               ></textarea>
             </div>
 
             <div id="validation-message" class="validation-message">
-              Please answer Question 1 before continuing.
+              Please answer the required questions before continuing.
             </div>
 
             <button type="submit" id="interaction-feedback-submit" class="submit-btn" disabled>
@@ -212,9 +273,13 @@ var jsPsychInteractionFeedback = (function (jspsych) {
 
       radios.forEach((radio) => {
         radio.addEventListener('change', () => {
+          this.updateBugTypeState();
           this.checkFormValidity();
         });
       });
+
+      this.updateBugTypeState();
+      this.checkFormValidity();
 
       form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -238,27 +303,80 @@ var jsPsychInteractionFeedback = (function (jspsych) {
       }
     }
 
+    updateBugTypeState() {
+      const bugAnswer = document.querySelector('input[name="encounter_bug"]:checked');
+      const bugTypeOptions = document.querySelectorAll('input[name="bug_type"]');
+      const bugTypeNote = document.getElementById('bug-type-note');
+      const naOption = document.querySelector('input[name="bug_type"][value="N/A"]');
+
+      if (!bugAnswer) {
+        bugTypeOptions.forEach((option) => {
+          option.disabled = option.value !== 'N/A';
+        });
+        if (naOption) {
+          naOption.checked = true;
+        }
+        if (bugTypeNote) {
+          bugTypeNote.textContent = 'Select Question 2 first.';
+        }
+        return;
+      }
+
+      if (bugAnswer.value === 'Yes') {
+        bugTypeOptions.forEach((option) => {
+          option.disabled = option.value === 'N/A';
+        });
+        if (naOption && naOption.checked) {
+          naOption.checked = false;
+        }
+        if (bugTypeNote) {
+          bugTypeNote.textContent = 'Please select the issue type that fits best.';
+        }
+      } else {
+        bugTypeOptions.forEach((option) => {
+          option.disabled = option.value !== 'N/A';
+        });
+        if (naOption) {
+          naOption.checked = true;
+        }
+        if (bugTypeNote) {
+          bugTypeNote.textContent = 'Question 3 is marked as N/A because you selected No in Question 2.';
+        }
+      }
+    }
+
     validateForm() {
+      const hasSystemRating = !!document.querySelector('input[name="system_rating"]:checked');
       const hasBugAnswer = !!document.querySelector('input[name="encounter_bug"]:checked');
-      return hasBugAnswer;
+      const bugAnswer = document.querySelector('input[name="encounter_bug"]:checked');
+      const bugType = document.querySelector('input[name="bug_type"]:checked');
+      const hasRequiredBugType = bugAnswer && bugAnswer.value === 'Yes' ? !!bugType && bugType.value !== 'N/A' : true;
+
+      return hasSystemRating && hasBugAnswer && hasRequiredBugType;
     }
 
     finishTrial() {
       const endTime = performance.now();
       const rt = endTime - this.startTime;
 
+      const systemRating = document.querySelector('input[name="system_rating"]:checked');
       const bugAnswer = document.querySelector('input[name="encounter_bug"]:checked');
-      const bugElaboration = document.getElementById('bug_elaboration').value.trim();
+      const bugType = document.querySelector('input[name="bug_type"]:checked');
+      const freeResponse = document.getElementById('free_response').value.trim();
 
       const trial_data = {
         response: {
+          system_rating: systemRating ? systemRating.value : null,
           encounter_bug: bugAnswer ? bugAnswer.value : null,
-          bug_elaboration: bugElaboration
+          bug_type: bugType ? bugType.value : null,
+          free_response: freeResponse
         },
         rt: rt,
         question_order: [
+          'system_rating',
           'encounter_bug',
-          'bug_elaboration'
+          'bug_type',
+          'free_response'
         ]
       };
 

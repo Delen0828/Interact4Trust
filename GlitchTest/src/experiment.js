@@ -53,17 +53,13 @@ async function initializeExperiment() {
 }
 
 function buildTimeline() {
-    const assignedConditionName = window.ParticipantConfig.assignedCondition
-        ? window.ParticipantConfig.assignedCondition.name
-        : 'Glitch Condition';
-
     timeline.push({
         type: jsPsychHtmlButtonResponse,
         stimulus: `
             <div class="welcome-screen">
-                <h1>Glitch Condition Sanity Check</h1>
+                <h1>Humidity Prediction Visualization</h1>
                 <p>In this experiment, you will read and interact with a visualization.</p>
-                <p>You will complete one visualization task for ${assignedConditionName} and then report whether the interaction felt buggy.</p>
+                <p>You will complete one visualization task and then answer a short report about your experience using the system.</p>
             </div>
         `,
         choices: ['Start']
@@ -125,8 +121,8 @@ function buildTimeline() {
         type: window.jsPsychInteractionFeedback,
         preamble: `
             <div class="interaction-feedback-preamble">
-                <h3>Bug Feedback</h3>
-                <p>Please tell us whether the interaction felt buggy.</p>
+                <h3>User Experience Report</h3>
+                <p>Please answer a few questions about your experience using the system.</p>
             </div>
         `,
         data: function() {
@@ -146,7 +142,7 @@ function buildTimeline() {
         stimulus: `
             <div class="debrief">
                 <h2>Thank You</h2>
-                <p>You have completed the glitch-condition sanity-check experiment.</p>
+                <p>You have completed this visualization session.</p>
             </div>
         `,
         choices: ['Finish'],

@@ -10,6 +10,14 @@ function getRequestedConditionNumber() {
     return [18, 19, 20].includes(requestedNumber) ? requestedNumber : 18;
 }
 
+function updateDocumentTitle(conditionNumber) {
+    if (typeof document === 'undefined') {
+        return;
+    }
+
+    document.title = `Humidity Prediction Visualization, Condition ${conditionNumber}`;
+}
+
 const ExperimentConfig = {
     studyType: 'phase2_glitch_conditions_sanity',
 
@@ -77,10 +85,12 @@ function initializeParticipant(participantId) {
     ParticipantConfig.id = participantId || null;
     ParticipantConfig.assignedCondition = ExperimentConfig.conditionAssignment.getAssignedCondition();
     ParticipantConfig.startTime = new Date().toISOString();
+    updateDocumentTitle(ParticipantConfig.assignedCondition.conditionNumber);
     return ParticipantConfig;
 }
 
 if (typeof window !== 'undefined') {
+    updateDocumentTitle(getRequestedConditionNumber());
     window.ExperimentConfig = ExperimentConfig;
     window.ParticipantConfig = ParticipantConfig;
     window.initializeParticipant = initializeParticipant;
