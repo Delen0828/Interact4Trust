@@ -85,6 +85,21 @@ function buildTimeline() {
     });
 
     timeline.push({
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `
+            <div class="section-intro">
+                <h2>Interaction Collection Notice</h2>
+                <p>On the next page, scrolling and zooming will be disabled for interaction collection.</p>
+                <p>Your interactions with the system will be logged, and actively interacting with the visualization is encouraged.</p>
+                <p>If no or very low interaction is detected, the study may be returned by the system.</p>
+                <p>If you encounter any problem, please contact the researchers on Prolific.</p>
+            </div>
+        `,
+        choices: ['Continue'],
+        data: { trial_type: 'interaction_collection_notice' }
+    });
+
+    timeline.push({
         type: window.jsPsychPredictionTask,
         phase: 2,
         round: 1,

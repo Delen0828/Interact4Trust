@@ -79,13 +79,15 @@ var jsPsychInteractionFeedback = (function (jspsych) {
           .option-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
+            padding: 4px 6px;
           }
           .option-card {
             position: relative;
             cursor: pointer;
-            min-width: 110px;
+            min-width: 0;
+            flex: 0 0 auto;
           }
           .option-card input[type="radio"] {
             opacity: 0;
@@ -98,7 +100,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
           .option-button {
             display: block;
             text-align: center;
-            padding: 10px 14px;
+            padding: 8px 12px;
             background: white;
             color: #333;
             border-radius: 6px;
@@ -106,6 +108,9 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             transition: all 0.2s ease;
             border: 2px solid #d1d5db;
             font-weight: 600;
+            font-size: 14px;
+            line-height: 1.2;
+            white-space: nowrap;
           }
           .option-card:hover .option-button {
             border-color: #374151;
@@ -175,6 +180,19 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             border-color: #6b7280;
             cursor: not-allowed;
             opacity: 0.75;
+          }
+          @media (max-width: 640px) {
+            .interaction-feedback-container {
+              padding: 16px;
+            }
+            .option-row {
+              gap: 6px;
+              padding: 6px 8px;
+            }
+            .option-button {
+              padding: 7px 10px;
+              font-size: 13px;
+            }
           }
         </style>
         <div class="interaction-feedback-container">

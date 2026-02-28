@@ -498,9 +498,11 @@
         // Main initialization
         async function initializeVisualization() {
             try {
+                const searchParams = new URLSearchParams(window.location.search);
+                const dataFile = searchParams.get('data') || searchParams.get('dataset') || 'synthetic_stock_data_aqi.json';
                 
                 // Load data
-                const rawDataResponse = await d3.json('synthetic_stock_data_aqi.json');
+                const rawDataResponse = await d3.json(dataFile);
                 const rawData = rawDataResponse.data;
                 
                 // Create and initialize condition factory
@@ -528,7 +530,7 @@
                         <div style="grid-column: 1/-1; text-align: center; color: red; padding: 20px;">
                             <h3>Error loading visualization</h3>
                             <p>Failed to load data or initialize conditions: ${error.message}</p>
-                            <p>Please ensure synthetic_stock_data_aqi.json is available and all modules are accessible.</p>
+                            <p>Please ensure the requested data file is available and all modules are accessible.</p>
                         </div>
                     `;
                 }
