@@ -23,10 +23,8 @@ async function initializeExperiment() {
         await waitForConfig();
 
         const predictionModule = await import('./plugins/jspsych-prediction-task.js');
-        const interactionFeedbackModule = await import('./plugins/jspsych-interaction-feedback.js');
 
         window.jsPsychPredictionTask = predictionModule.default || predictionModule.jsPsychPredictionTask;
-        window.jsPsychInteractionFeedback = interactionFeedbackModule.default || interactionFeedbackModule.jsPsychInteractionFeedback;
 
         if (typeof initJsPsych === 'undefined') {
             throw new Error('jsPsych library not loaded.');
@@ -133,22 +131,39 @@ function buildTimeline() {
     });
 
     timeline.push({
-        type: window.jsPsychInteractionFeedback,
+        type: jsPsychSurveyMultiChoice,
         preamble: `
-            <div class="interaction-feedback-preamble">
-                <h3>User Experience Report</h3>
-                <p>Please answer a few questions about your experience using the system.</p>
-            </div>
+            <h3>User Experience Report</h3>
+            <p>Please answer a few questions about your experience using the system.</p>
         `,
+        questions: [
+            {
+                prompt: '1. How do you like the system?',
+                name: 'system_rating',
+                options: ['Dislike a lot', 'Dislike', 'Neutral', 'Like', 'Like a lot'],
+                required: true
+            },
+            {
+                prompt: '2. Do you think there is any bug in the system?',
+                name: 'encounter_bug',
+                options: ['Yes', 'No'],
+                required: true
+            },
+            {
+                prompt: '3. If there is a bug, what is the bug?',
+                name: 'bug_type',
+                options: ['Glitchy Display', 'Inconsistant Data', 'Bad Interaction Design', 'N/A'],
+                required: true
+            }
+        ],
+        button_label: 'Continue',
         data: function() {
-            return {
-                trial_type: 'interaction_feedback',
-                phase: 2,
-                round: 1,
-                condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-                condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-                display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-            };
+            return getInteractionFeedbackData('interaction_feedback', 'single_page');
+        },
+        on_finish: function(data) {
+            data.system_rating = data.response.system_rating || '';
+            data.encounter_bug = data.response.encounter_bug || '';
+            data.bug_type = data.response.bug_type || '';
         }
     });
 
@@ -183,6 +198,18 @@ function buildTimeline() {
                 });
         }
     });
+}
+
+function getInteractionFeedbackData(trialType, feedbackPage) {
+    return {
+        trial_type: trialType,
+        feedback_page: feedbackPage,
+        phase: 2,
+        round: 1,
+        condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+        condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+        display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
+    };
 }
 
 async function getAirQualityData() {
