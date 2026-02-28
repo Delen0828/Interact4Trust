@@ -187,8 +187,8 @@ export class ChartRenderer {
     createAreaGenerator() {
         return d3.area()
             .x(d => this.xScale(d.date))
-            .y0(d => this.yScale(d.min))
-            .y1(d => this.yScale(d.max))
+            .y0(d => this.yScale(d.lower))
+            .y1(d => this.yScale(d.upper))
             .curve(d3.curveMonotoneX);
     }
 

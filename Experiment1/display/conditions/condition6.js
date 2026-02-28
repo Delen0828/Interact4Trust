@@ -54,7 +54,7 @@ export default class Condition6 {
             if (this.data.confidenceBounds[stock] && this.data.confidenceBounds[stock].length > 0) {
                 // Create area data including connection from last historical point
                 const areaData = [
-                    { date: lastHistorical.date, min: lastHistorical.price, max: lastHistorical.price },
+                    { date: lastHistorical.date, lower: lastHistorical.price, upper: lastHistorical.price },
                     ...this.data.confidenceBounds[stock]
                 ];
                 

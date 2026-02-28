@@ -19,7 +19,7 @@ const ExperimentConfig = {
             name: 'PI Plot',
             displayFormat: 'confidence_bounds',
             description: 'Shows aggregated prediction with confidence bounds',
-            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region'
+            instructions: 'Shade shows the 95% confidence interval around the average Humidity forecast'
         },
         { 
             id: 'condition_3_ensemble', 
@@ -40,14 +40,14 @@ const ExperimentConfig = {
             name: 'PI Plot + Hover',
             displayFormat: 'hover_bounds',
             description: 'PI plot with hover to reveal individual predictions',
-            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region.<br><br>Hint: Hover on the lines for more details'
+            instructions: 'Shade shows the 95% confidence interval around the average Humidity forecast.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_6_pi_to_ensemble', 
             name: 'PI → Ensemble',
             displayFormat: 'transform_hover',
             description: 'PI plot transforms to ensemble plot on hover',
-            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region. Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
+            instructions: 'Shade shows the 95% confidence interval around the average Humidity forecast. Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         { 
             id: 'condition_7_buggy', 
@@ -68,7 +68,7 @@ const ExperimentConfig = {
             name: 'Combined PI + Ensemble',
             displayFormat: 'combined_pi_ensemble',
             description: 'Shows both confidence bounds and alternative prediction lines',
-            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region. Each line represent the prediction from one Forecast Agency'
+            instructions: 'Shade shows the 95% confidence interval around the average Humidity forecast. Each line represent the prediction from one Forecast Agency'
         }
     ],
 

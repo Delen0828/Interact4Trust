@@ -9,6 +9,85 @@ export class DataProcessor {
     }
 
     /**
+     * Get the two-tailed 95% t critical value for a sample size.
+     * Falls back to the normal approximation for larger samples.
+     */
+    static getTValue95(sampleSize) {
+        const tValuesByDf = {
+            1: 12.706,
+            2: 4.303,
+            3: 3.182,
+            4: 2.776,
+            5: 2.571,
+            6: 2.447,
+            7: 2.365,
+            8: 2.306,
+            9: 2.262,
+            10: 2.228,
+            11: 2.201,
+            12: 2.179,
+            13: 2.160,
+            14: 2.145,
+            15: 2.131,
+            16: 2.120,
+            17: 2.110,
+            18: 2.101,
+            19: 2.093,
+            20: 2.086,
+            21: 2.080,
+            22: 2.074,
+            23: 2.069,
+            24: 2.064,
+            25: 2.060,
+            26: 2.056,
+            27: 2.052,
+            28: 2.048,
+            29: 2.045,
+            30: 2.042
+        };
+
+        if (sampleSize <= 1) {
+            return 0;
+        }
+
+        const degreesOfFreedom = sampleSize - 1;
+        return tValuesByDf[degreesOfFreedom] || 1.96;
+    }
+
+    /**
+     * Calculate a 95% confidence interval for the mean at one timestamp.
+     */
+    static calculateMeanConfidenceBounds(prices) {
+        const sampleSize = prices.length;
+        const meanPrice = prices.reduce((sum, price) => sum + price, 0) / sampleSize;
+
+        if (sampleSize <= 1) {
+            return {
+                mean: meanPrice,
+                lower: meanPrice,
+                upper: meanPrice,
+                marginOfError: 0,
+                sampleSize
+            };
+        }
+
+        const variance = prices.reduce((sum, price) => {
+            return sum + ((price - meanPrice) ** 2);
+        }, 0) / (sampleSize - 1);
+        const standardDeviation = Math.sqrt(variance);
+        const standardError = standardDeviation / Math.sqrt(sampleSize);
+        const marginOfError = DataProcessor.getTValue95(sampleSize) * standardError;
+
+        return {
+            mean: meanPrice,
+            lower: meanPrice - marginOfError,
+            upper: meanPrice + marginOfError,
+            marginOfError,
+            sampleSize
+        };
+    }
+
+    /**
      * Get fixed scenarios for consistent experiment conditions
      * Uses scenarios [1, 2, 3, 5, 8] as specified for the study
      */
@@ -68,21 +147,23 @@ export class DataProcessor {
             A: this.processStockData(stockA, currentStartDate),
             B: this.processStockData(stockB, currentStartDate)
         };
-        
-        // Calculate real-time aggregated data from sampled scenarios
-        const realTimeAggregated = this.calculateRealTimeAggregation(rawData);
-        
-        // Calculate confidence bounds from sampled scenarios
-        const confidenceBounds = this.calculateConfidenceBounds(rawData);
 
-        // Calculate global Y scale
-        const globalYScale = this.calculateGlobalYScale(stockData, realTimeAggregated);
+        return this.createProcessedData(stockData);
+    }
 
+    /**
+     * Build the processed data object with live-derived prediction statistics.
+     */
+    createProcessedData(stockData) {
         return {
             stockData,
-            realTimeAggregated,
-            confidenceBounds,
-            globalYScale,
+            get realTimeAggregated() {
+                return DataProcessor.calculateRealTimeAggregation(stockData);
+            },
+            get confidenceBounds() {
+                return DataProcessor.calculateConfidenceBounds(stockData);
+            },
+            globalYScale: this.calculateGlobalYScale(stockData),
             sampledScenarios: this.sampledScenarios
         };
     }
@@ -119,25 +200,30 @@ export class DataProcessor {
     /**
      * Calculate real-time aggregation from sampled scenarios
      */
-    calculateRealTimeAggregation(data) {
+    static getAlternativesGroupedByDate(alternatives) {
+        const groupedByDate = {};
+
+        alternatives.forEach(item => {
+            const dateKey = item.date.toISOString();
+            if (!groupedByDate[dateKey]) {
+                groupedByDate[dateKey] = [];
+            }
+            groupedByDate[dateKey].push(item.price);
+        });
+
+        return groupedByDate;
+    }
+
+    /**
+     * Calculate real-time aggregation directly from scenario alternatives.
+     */
+    static calculateRealTimeAggregation(stockData) {
         const realTimeAggregated = {};
         
         ['A', 'B'].forEach(stock => {
-            // Filter prediction data for this stock and sampled scenarios
-            const predictionData = data.filter(d => 
-                d.stock === stock && 
-                d.series === 'prediction' && 
-                this.sampledScenarios.includes(d.scenario)
+            const groupedByDate = DataProcessor.getAlternativesGroupedByDate(
+                stockData[stock].alternatives
             );
-            
-            // Group by date
-            const groupedByDate = {};
-            predictionData.forEach(item => {
-                if (!groupedByDate[item.date]) {
-                    groupedByDate[item.date] = [];
-                }
-                groupedByDate[item.date].push(item.price);
-            });
             
             // Calculate mean for each date
             const aggregatedData = [];
@@ -159,39 +245,33 @@ export class DataProcessor {
     /**
      * Calculate confidence bounds from sampled scenarios
      */
-    calculateConfidenceBounds(data) {
+    static calculateConfidenceBounds(stockData) {
         const confidenceBounds = {};
         
         ['A', 'B'].forEach(stock => {
-            // Filter prediction data for this stock and sampled scenarios
-            const predictionData = data.filter(d => 
-                d.stock === stock && 
-                d.series === 'prediction' && 
-                this.sampledScenarios.includes(d.scenario)
+            const groupedByDate = DataProcessor.getAlternativesGroupedByDate(
+                stockData[stock].alternatives
             );
             
-            // Group by date
-            const groupedByDate = {};
-            predictionData.forEach(item => {
-                if (!groupedByDate[item.date]) {
-                    groupedByDate[item.date] = [];
-                }
-                groupedByDate[item.date].push(item.price);
-            });
-            
-            // Calculate min/max bounds for each date
+            // Calculate 95% confidence bounds for the mean at each date
             const boundsData = [];
             Object.keys(groupedByDate).sort().forEach(date => {
                 const prices = groupedByDate[date];
-                const minPrice = Math.min(...prices);
-                const maxPrice = Math.max(...prices);
-                const meanPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+                const {
+                    mean,
+                    lower,
+                    upper,
+                    marginOfError,
+                    sampleSize
+                } = DataProcessor.calculateMeanConfidenceBounds(prices);
                 
                 boundsData.push({
                     date: new Date(date),
-                    min: minPrice,
-                    max: maxPrice,
-                    mean: meanPrice
+                    lower,
+                    upper,
+                    mean,
+                    marginOfError,
+                    sampleSize
                 });
             });
             
@@ -204,7 +284,7 @@ export class DataProcessor {
     /**
      * Calculate global Y scale domain
      */
-    calculateGlobalYScale(stockData, realTimeAggregated) {
+    calculateGlobalYScale(stockData) {
         // Fixed y-axis range for consistent visualization across all phases
         return [0, 100]; // Humidity range from 0 to 100
     }
@@ -237,18 +317,6 @@ export class DataProcessor {
             B: this.processStockData(this.originalData.B, currentStartDate)
         };
 
-        // Recalculate aggregation and bounds with original data
-        const fullData = [...this.originalData.A, ...this.originalData.B];
-        const realTimeAggregated = this.calculateRealTimeAggregation(fullData);
-        const confidenceBounds = this.calculateConfidenceBounds(fullData);
-        const globalYScale = this.calculateGlobalYScale(stockData, realTimeAggregated);
-
-        return {
-            stockData,
-            realTimeAggregated,
-            confidenceBounds,
-            globalYScale,
-            sampledScenarios: this.sampledScenarios
-        };
+        return this.createProcessedData(stockData);
     }
 }

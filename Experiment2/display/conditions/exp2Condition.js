@@ -2,7 +2,7 @@
  * Experiment 2: Unified Parameterized Condition
  *
  * Renders per-city display independently based on condition configuration:
- * - type "region": shaded PI band (min/max of all scenarios) + aggregated dashed line
+ * - type "region": shaded 95% CI band around the mean + aggregated dashed line
  * - type "line" + lineCount=1: aggregated prediction line only
  * - type "line" + lineCount=5: 5 sampled scenario lines + aggregated line
  * - type "line" + lineCount=10: all 10 scenario lines + aggregated line
@@ -73,7 +73,7 @@ export default class Exp2Condition {
         if (this.data.confidenceBounds[city] && this.data.confidenceBounds[city].length > 0) {
             // Connect from last historical point
             const areaData = [
-                { date: lastHistorical.date, min: lastHistorical.price, max: lastHistorical.price },
+                { date: lastHistorical.date, lower: lastHistorical.price, upper: lastHistorical.price },
                 ...this.data.confidenceBounds[city]
             ];
 
