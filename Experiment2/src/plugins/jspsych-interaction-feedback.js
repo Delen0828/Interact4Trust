@@ -53,6 +53,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
           .interaction-feedback-preamble {
             margin-bottom: 30px;
             text-align: center;
+            color: #374151;
           }
           .interaction-feedback-preamble h3 {
             color: #374151;
@@ -72,7 +73,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             font-size: 16px;
             font-weight: 500;
             margin-bottom: 12px;
-            color: #333;
+            color: #374151;
             text-align: left;
             line-height: 1.4;
           }
@@ -99,7 +100,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             text-align: center;
             padding: 10px 14px;
             background: white;
-            color: #333;
+            color: #374151;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -125,6 +126,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
             font-size: 14px;
             line-height: 1.5;
             resize: vertical;
+            color: #374151;
           }
           .feedback-textarea:focus {
             outline: none;

@@ -278,7 +278,7 @@ body {
 .confirm-btn.enabled:hover {
     background: var(--success-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.25);
 }
 
 .confirm-btn:disabled {
@@ -537,7 +537,7 @@ body {
 .submit-btn.enabled:hover {
     background: var(--success-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.25);
 }
 
 .submit-btn:disabled {
@@ -562,6 +562,48 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: all 0.3s ease;
+    color: var(--air-quality-accent);
+}
+
+.phase-intro-stack {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.phase-intro-stack .phase-intro {
+    margin: 0;
+}
+
+.phase-intro-tips {
+    margin-top: 0;
+    padding: 28px 28px 24px;
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    border: 1px solid #fdba74;
+    border-left: 6px solid #ea580c;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    color: #9a3412;
+    text-align: left;
+}
+
+.phase-intro-stack .phase-intro + .phase-intro-tips {
+    margin-top: 24px;
+}
+
+.phase-intro-tips h3 {
+    margin: 0 0 14px;
+    color: #9a3412;
+    font-size: 22px;
+}
+
+.phase-intro-tips ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.phase-intro-tips li {
+    margin: 8px 0;
+    line-height: 1.55;
 }
 
 .welcome-screen {
@@ -573,6 +615,7 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     text-align: left;
     transition: all 0.3s ease;
+    color: var(--air-quality-accent);
 }
 
 .consent-form {
@@ -584,6 +627,21 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     text-align: left;
     transition: all 0.3s ease;
+    color: var(--air-quality-accent);
+}
+
+.forecast-data-pill {
+    display: inline-block;
+    padding: 0.08em 0.55em;
+    border: 1px solid var(--air-quality-light-3);
+    border-radius: 999px;
+    background: var(--air-quality-light-4);
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    vertical-align: baseline;
 }
 
 
@@ -594,6 +652,7 @@ body {
     background: linear-gradient(135deg, var(--air-quality-light-4) 0%, var(--air-quality-light-3) 100%);
     border-radius: 8px;
     border: 1px solid var(--air-quality-primary);
+    color: var(--air-quality-accent);
 }
 
 .visualization-explanation h3 {
@@ -616,7 +675,7 @@ body {
     border-radius: 6px;
     padding: 12px;
     margin: 15px 0;
-    color: var(--air-quality-primary);
+    color: var(--air-quality-accent);
     font-size: 14px;
 }
 
@@ -1044,7 +1103,7 @@ body {
 .confirm-all-btn.enabled:hover {
     background: var(--success-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.25);
 }
 
 .confirm-all-btn:disabled {
@@ -1285,7 +1344,7 @@ body {
 .vis-literacy-intro p {
     font-size: 16px;
     line-height: 1.6;
-    color: var(--text-color);
+    color: var(--air-quality-accent);
     margin-bottom: 20px;
 }
 
@@ -1296,6 +1355,7 @@ body {
     background: linear-gradient(135deg, var(--air-quality-light-4) 0%, var(--air-quality-light-3) 100%);
     border-radius: 8px;
     border: 1px solid var(--air-quality-primary);
+    color: var(--air-quality-accent);
 }
 
 .assessment-info h3 {
@@ -1381,6 +1441,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: var(--air-quality-accent);
 }
 
 .question-panel .question-text {
@@ -1405,7 +1466,7 @@ body {
     width: 100%;
     padding: 15px 20px;
     background: white;
-    color: var(--text-color);
+    color: var(--air-quality-accent);
     border: 2px solid var(--border-color);
     border-radius: 8px;
     font-size: 16px;
@@ -1421,14 +1482,14 @@ body {
     color: white;
     border-color: var(--air-quality-accent);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.25);
 }
 
 .option-button.selected {
     background: var(--air-quality-accent);
     color: white;
     border-color: var(--air-quality-accent);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 4px 12px rgba(55, 65, 81, 0.25);
 }
 
 .minivlat-continue {

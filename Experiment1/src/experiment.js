@@ -301,19 +301,24 @@ function buildTimeline() {
 	        `<div class="instructions">
 	            <h2>Humidity Context</h2>
 	            <p>You will be making predictions about humidity in two hypothetical cities: <br> <strong>City A</strong> and <strong>City B</strong>.</p>
-	            <p>Humidity is measured in a scale from 0 to 100.
+	            <p>Humidity is measured in a scale from 0 to 100.</p>
 	            <p>Your task will be to predict which city is likely to have higher or lower humidity in the future.</p>
-	        </div>
-			<div class="section-intro">
-				<h2>Interaction Collection Notice</h2>
-				<p>In the next two pages, scrolling and zooming will be disabled for interaction collection.</p>
-				<p>If you encounter any problem, please contact the researchers on Prolific.</p>
-			</div>
-			`
-
+	        </div>`
 	    ],
 	    show_clickable_nav: true,
 	    data: { trial_type: 'instructions' }
+	});
+
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
+			<div class="phase-intro">
+				<h2>Prediction with Historical Data</h2>
+				<p>In the next page, you will predict humidity based on <strong>historical data only</strong>.</p>
+			</div>
+		`,
+		choices: ['Continue'],
+		data: { trial_type: 'phase1_intro', phase: 1 }
 	});
 
 
@@ -352,6 +357,29 @@ function buildTimeline() {
 		on_finish: function (_data) {
 			window.ParticipantConfig.phase1Complete = true;
 		}
+	});
+
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
+			<div class="phase-intro-stack">
+				<div class="phase-intro">
+					<h2>Prediction with Forecast Data</h2>
+					<p>In the next page you will predict humidity based on historical data, and <strong>predictions from five different agencies</strong>.</p>
+				</div>
+				<div class="phase-intro-tips">
+					<h3>Tips</h3>
+					<ul>
+						<li>Your interactions (hover, click, and mouse movement trial) will be recorded. </li>
+						<li>No or low interaction may result in auto return.</li>
+						<li>Scrolling is disabled for interaction logging.</li>
+						<li>If you cannot see the content, zoom in/out the browser. If the problem still persists, contact the research team on Prolific.</li>
+					</ul>
+				</div>
+			</div>
+		`,
+		choices: ['Continue'],
+		data: { trial_type: 'phase2_intro', phase: 2 }
 	});
 
 
@@ -416,45 +444,23 @@ function buildTimeline() {
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
 			<div class="section-intro">
-				<h2>Trust & Experience Assessment</h2>
+				<h2>Trust Questions</h2>
 				<p>Thank you for completing the prediction tasks!</p>
-				<p>Now we'd like to understand your experience with the forecast visualization you just used.</p>
+				<p>Now we'd like to understand how much you trusted the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
 			</div>
 		`,
-		choices: ['Continue to Trust Assessment'],
+		choices: ['Continue to Trust Questions'],
 		data: { trial_type: 'trust_intro' }
 	});
 
-	// Trust Survey Page 1 - Interface Control
-	timeline.push({
-		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.interactionQuestions,
-		preamble: `
-                <div class="trust-survey-preamble">
-                    <h3>Interface Assessment - Page 1</h3>
-                    <p>Please rate your agreement with the following statements based on your experience with the interface.</p>
-                </div>
-            `,
-		data: function() {
-			return {
-				trial_type: 'trust_survey_interface',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		}
-	});
-
-	// Trust Survey Page 2 - Visualization-specific  
+	// Trust Questions
 	timeline.push({
 		type: jsPsychTrustSurvey,
 		questions: window.ExperimentConfig.visualizationTrustQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
-                    <h3>Visualization Assessment - Page 2</h3>
-                    <p>Please rate your agreement with the following statements about the visualization you just used.</p>
+                    <h3>Trust Questions</h3>
+                    <p>Please rate your agreement with the following statements about the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
                 </div>
             `,
 		data: function() {
@@ -478,6 +484,28 @@ function buildTimeline() {
 			data.trust_composite = data.data_trust !== null ? data.data_trust : null;
 			data.usability_composite = data.usability_difficulty && data.comprehension_ease ?
 				Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
+		}
+	});
+
+	// Interaction Questions
+	timeline.push({
+		type: jsPsychTrustSurvey,
+		questions: window.ExperimentConfig.interactionQuestions,
+		preamble: `
+                <div class="trust-survey-preamble">
+                    <h3>Interaction Questions</h3>
+                    <p>Please rate your agreement with the following statements based on your experience with the <span class="forecast-data-pill">forecast data</span> interface.</p>
+                </div>
+            `,
+		data: function() {
+			return {
+				trial_type: 'trust_survey_interface',
+				phase: 2,
+				round: 1,
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
+			};
 		}
 	});
 
@@ -590,9 +618,10 @@ function buildTimeline() {
                 <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
                 
                 <h3>Study Background:</h3>
-                <p>You were randomly assigned to one of nine different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+                <p>You were randomly assigned to one of several different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
                 
                 <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
+                <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
                 
                 <h3>Questions?</h3>
                 <p>If you have questions about this research, please contact the research team.</p>

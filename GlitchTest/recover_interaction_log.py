@@ -60,7 +60,8 @@ def load_from_csv(
     """Read a CSV and return a list of dicts, one per matching prediction row.
 
     Each dict has keys: ``events`` (list), ``phase`` (int|None),
-    ``condition_id``, ``participant_id``, ``screen_width``, ``screen_height``.
+    ``condition``, ``condition_id``, ``condition_name``, ``participant_id``,
+    ``screen_width``, ``screen_height``.
     """
     results: List[Dict[str, Any]] = []
     with open(csv_path, newline="", encoding="utf-8") as fh:
@@ -94,7 +95,9 @@ def load_from_csv(
             results.append({
                 "events": events,
                 "phase": row_phase,
+                "condition": row.get("condition", ""),
                 "condition_id": row.get("condition_id", ""),
+                "condition_name": row.get("condition_name", ""),
                 "participant_id": row.get("participant_id", ""),
                 "screen_width": int(float(sw)) if sw else None,
                 "screen_height": int(float(sh)) if sh else None,

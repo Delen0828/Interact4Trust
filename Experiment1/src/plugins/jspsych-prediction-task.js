@@ -180,11 +180,19 @@ var jsPsychPredictionTask = (function (jspsych) {
       return Math.round(screenWidthCssPx * dpr);
     }
 
-    getPresetUiScale(screenWidthPx) {
-      // Practical 1K / 4K thresholds in device pixels
-      if (screenWidthPx >= 3840) return 1.5;
-      if (screenWidthPx > 1024) return 1.25;
-      return 1;
+    getViewportMetrics() {
+      const visualViewport = window.visualViewport;
+      const viewportWidth = visualViewport && typeof visualViewport.width === 'number'
+        ? visualViewport.width
+        : (window.innerWidth || document.documentElement?.clientWidth || 0);
+      const viewportHeight = visualViewport && typeof visualViewport.height === 'number'
+        ? visualViewport.height
+        : (window.innerHeight || document.documentElement?.clientHeight || 0);
+
+      return {
+        viewportWidth: Math.max(Math.round(viewportWidth), 360),
+        viewportHeight: Math.max(Math.round(viewportHeight), 520)
+      };
     }
 
     applyResponsiveUiScale() {
@@ -192,66 +200,38 @@ var jsPsychPredictionTask = (function (jspsych) {
       const taskContainer = this.display_element.querySelector('.prediction-task-container');
       if (!taskContainer) return;
 
-      const screenWidthPx = this.getEffectiveScreenWidthPx();
-      const scale = this.getPresetUiScale(screenWidthPx);
-      const viewportWidth = Math.max(window.innerWidth || 0, 360);
-      const horizontalPadding = 32;
-      const availableWidth = Math.max(viewportWidth - horizontalPadding, 320);
-      const baseWidth = Math.max(320, Math.min(1200, Math.floor(availableWidth / scale)));
       const canUseCssZoom = typeof CSS !== 'undefined' &&
         typeof CSS.supports === 'function' &&
         CSS.supports('zoom', '1');
+      const { viewportWidth, viewportHeight } = this.getViewportMetrics();
+      const horizontalPadding = 32;
+      const verticalPadding = 24;
+      const naturalWidth = viewportWidth <= 1100 ? 980 : 1180;
+      const availableWidth = Math.max(viewportWidth - horizontalPadding, 320);
+      const availableHeight = Math.max(viewportHeight - verticalPadding, 420);
+
+      taskContainer.style.setProperty('--task-ui-scale', '1');
+      taskContainer.style.maxWidth = 'none';
+      taskContainer.style.width = `${naturalWidth}px`;
+      taskContainer.style.zoom = '';
+      taskContainer.style.transform = 'none';
+
+      const measuredWidth = Math.max(taskContainer.scrollWidth, taskContainer.offsetWidth, naturalWidth);
+      const measuredHeight = Math.max(taskContainer.scrollHeight, taskContainer.offsetHeight, 1);
+      const scale = Math.min(availableWidth / measuredWidth, availableHeight / measuredHeight);
 
       taskContainer.style.setProperty('--task-ui-scale', String(scale));
-      taskContainer.style.width = `${baseWidth}px`;
+      taskContainer.style.width = `${measuredWidth}px`;
       taskContainer.style.maxWidth = 'none';
       taskContainer.style.zoom = canUseCssZoom ? String(scale) : '';
-      taskContainer.style.transform = canUseCssZoom ? 'none' : '';
+      taskContainer.style.transform = canUseCssZoom ? 'none' : `scale(${scale})`;
       taskContainer.dataset.uiScalePreset = `${Math.round(scale * 100)}%`;
+      taskContainer.dataset.uiScaleMode = 'viewport-fit';
     }
 
     setupViewportZoomControls() {
       this.teardownViewportZoomControls();
       this.applyResponsiveUiScale();
-
-      const preventBrowserZoomWheel = (event) => {
-        if (event.ctrlKey || event.metaKey) {
-          event.preventDefault();
-        }
-      };
-
-      const preventBrowserZoomKeys = (event) => {
-        if (!(event.ctrlKey || event.metaKey)) return;
-        const key = event.key;
-        if (key === '+' || key === '=' || key === '-' || key === '_' || key === '0') {
-          event.preventDefault();
-        }
-      };
-
-      const preventGestureZoom = (event) => {
-        event.preventDefault();
-      };
-
-      const handleResize = () => {
-        this.applyResponsiveUiScale();
-      };
-
-      window.addEventListener('wheel', preventBrowserZoomWheel, { passive: false });
-      window.addEventListener('keydown', preventBrowserZoomKeys);
-      window.addEventListener('resize', handleResize);
-      window.addEventListener('gesturestart', preventGestureZoom, { passive: false });
-      window.addEventListener('gesturechange', preventGestureZoom, { passive: false });
-      window.addEventListener('gestureend', preventGestureZoom, { passive: false });
-
-      this.viewportZoomCleanup = () => {
-        window.removeEventListener('wheel', preventBrowserZoomWheel);
-        window.removeEventListener('keydown', preventBrowserZoomKeys);
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('gesturestart', preventGestureZoom);
-        window.removeEventListener('gesturechange', preventGestureZoom);
-        window.removeEventListener('gestureend', preventGestureZoom);
-        this.viewportZoomCleanup = null;
-      };
     }
 
     teardownViewportZoomControls() {
@@ -332,6 +312,14 @@ var jsPsychPredictionTask = (function (jspsych) {
             text-align: center;
             margin-top: 2px;
           }
+          .visualization-zoom-notice {
+            width: 100%;
+            text-align: center;
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.35;
+          }
           .task-header {
             grid-area: header;
             margin-bottom: 4px !important;
@@ -381,10 +369,10 @@ var jsPsychPredictionTask = (function (jspsych) {
             text-align: center;
           }
           .chart-description-line {
-            color: #6b7280;
+            color: #374151;
           }
           .chart-hint-line {
-            color: #9ca3af;
+            color: #374151;
             font-style: italic;
           }
           .prediction-form {
@@ -401,6 +389,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             border-radius: 12px;
             padding: 10px 12px;
             box-sizing: border-box;
+            color: #374151;
           }
           .question-section,
           .air-quality-estimates-section,
@@ -414,7 +403,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             font-size: 16px;
             font-weight: 600;
             margin: 0 0 1px 0;
-            color: #333;
+            color: #374151;
             text-align: left;
           }
           .question-section .question-title {
@@ -536,7 +525,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             margin-top: 4px;
             font-size: 11px;
             font-weight: 500;
-            color: #4b5563;
+            color: #374151;
             line-height: 1.1;
           }
           .confidence-scale-label-left {
@@ -703,15 +692,15 @@ var jsPsychPredictionTask = (function (jspsych) {
             border: 1px solid rgba(55, 65, 81,0.3);
           }
           .submit-btn {
-            background: #333 !important;
-            border-color: #333 !important;
+            background: #374151 !important;
+            border-color: #374151 !important;
             padding: 6px !important;
             margin-top: 2px !important;
             width: 100%;
           }
           .submit-btn:hover:not(:disabled) {
-            background: #333 !important;
-            border-color: #333 !important;
+            background: #374151 !important;
+            border-color: #374151 !important;
           }
           @media (max-width: 1100px) {
             html, body, #jspsych-target, .jspsych-content, .jspsych-content-wrapper {
@@ -745,7 +734,7 @@ var jsPsychPredictionTask = (function (jspsych) {
         </style>
         <div class="prediction-task-container">
           <div class="task-header">
-            <h2 style="color: #333;">Humidity Prediction</h2>
+            <h2 style="color: #374151;">Humidity Prediction</h2>
             <div class="scene-label">
               ${this.trial.phase === 1 ? 'Historical Data' : 'Forecast Data'}
             </div>
@@ -826,7 +815,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
             <div class="submit-section">
               <button id="submit-prediction" class="submit-btn" disabled>
-                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Trust Survey'}
+                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Surveys'}
               </button>
             </div>
           </div>
@@ -848,9 +837,10 @@ var jsPsychPredictionTask = (function (jspsych) {
           const conditionElement = this.display_element.querySelector('#condition-display');
           if (conditionElement) {
             const conditionId = this.condition?.id || '';
-            const versionMatch = conditionId.match(/condition_(\d+)/i);
-            const versionLabel = versionMatch ? `Version ${versionMatch[1]}` : 'Assigned Version';
-            conditionElement.textContent = `Condition: ${versionLabel}`;
+            const conditionMatch = conditionId.match(/condition_(\d+)/i);
+            conditionElement.textContent = conditionMatch
+              ? `Condition ${conditionMatch[1]}`
+              : 'Assigned Condition';
           }
         }, 0);
         
@@ -866,6 +856,7 @@ var jsPsychPredictionTask = (function (jspsych) {
                 Visualization is taking longer than expected to load.<br>
                 Please continue with your best estimate or refresh the page.
               </div>`;
+            this.applyResponsiveUiScale();
           }
         }, 10000); // 10 second timeout
         
@@ -890,6 +881,7 @@ var jsPsychPredictionTask = (function (jspsych) {
                 this.disableVisualizationInteractionRequirement('render_task_catch');
                 chartElement.innerHTML = 
                   `<p class="error-message">Visualization failed to load: ${error.message}<br>Please continue with your best estimate.</p>`;
+                this.applyResponsiveUiScale();
               }
             });
         }, 100);
@@ -902,7 +894,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
       // Fallback message when no description is provided
       return `<div class="description-content">
-        <p style="text-align: center; color: #666; font-style: italic;">
+        <p style="text-align: center; color: #374151; font-style: italic;">
           Please review the information above and make your prediction below.
         </p>
       </div>`;
@@ -930,6 +922,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           </div>
           <div class="slider-requirement viz-interaction-warning" id="viz-interaction-requirement" style="display: ${this.visualizationInteractionRequired ? 'block' : 'none'};">
             ⚠️ Interaction required: hover over or click an interactive chart element to continue
+          </div>
+          <div class="visualization-zoom-notice">
+            If you cannot see the question block, zoom in/out with ctrl +/- or cmd +/-
           </div>
           
           <style>
@@ -1036,6 +1031,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
         // Add legend and instructions after visualization is loaded
         this.addLegendAndInstructions();
+        this.applyResponsiveUiScale();
 
 
       } catch (error) {
@@ -1085,6 +1081,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             `<p class="error-message">Error loading visualization: ${error.message}</p>
              <p>Please continue with your best estimate.</p>
              ${errorDetails}`;
+          this.applyResponsiveUiScale();
         }
       }
     }
@@ -1262,6 +1259,12 @@ var jsPsychPredictionTask = (function (jspsych) {
           return 16;  // Condition 16: Tiny Slider Checkbox
         case 'buggy_checkbox_selection':
           return 17;  // Condition 17: Buggy Checkbox Selection
+        case 'glitch_hover_alternatives':
+          return 18;  // Condition 18: Glitch Ensemble + Hover
+        case 'glitch_hover_bounds':
+          return 19;  // Condition 19: Glitch PI Plot + Hover
+        case 'glitch_transform_hover':
+          return 20;  // Condition 20: Glitch PI → Ensemble
         default:
           return 1;  // Fallback to Baseline
       }

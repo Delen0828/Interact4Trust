@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study Configuration
-// Version 12: Buggy Checkbox Selection Condition (Hardcoded)
+// Version 12: Condition 20 (Hardcoded)
 
 const ExperimentConfig = {
     // Study Design: Two-phase approach (No visualization → With visualization)
@@ -71,25 +71,25 @@ const ExperimentConfig = {
             instructions: 'Shade shows the 95% confidence interval around the average Humidity forecast. Each line represent the prediction from one Forecast Agency'
         },
         {
-            id: 'condition_11_checkbox',
-            name: 'Checkbox Selection',
-            displayFormat: 'checkbox_selection',
-            description: 'Bad: Tick all empty boxes to reveal each prediction line',
-            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Tick the checkboxes to reveal predictions'
+            id: 'condition_18_glitch_hover',
+            name: 'Glitch Ensemble + Hover',
+            displayFormat: 'glitch_hover_alternatives',
+            description: 'Aggregated by default, hover reveals alternative lines with glitchy visibility',
+            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         },
         {
-            id: 'condition_16_tiny_slider',
-            name: 'Tiny Slider Checkbox',
-            displayFormat: 'tiny_slider_checkbox',
-            description: 'Worse: tiny-height horizontal slider of selection boxes with mini targets',
-            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Scroll and tick the tiny checkboxes to reveal predictions'
+            id: 'condition_19_glitch_pi_hover',
+            name: 'Glitch PI Plot + Hover',
+            displayFormat: 'glitch_hover_bounds',
+            description: 'Hover reveals PI bounds with glitchy visibility',
+            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region.<br><br>Hint: Hover on the lines for more details'
         },
         {
-            id: 'condition_17_buggy_checkbox',
-            name: 'Buggy Checkbox Selection',
-            displayFormat: 'buggy_checkbox_selection',
-            description: 'Buggy: Clicking a checkbox selects the next one instead',
-            instructions: 'Each line represent the prediction from one Forecast Agency.<br><br>Hint: Tick the checkboxes to reveal predictions'
+            id: 'condition_20_glitch_pi_to_ensemble',
+            name: 'Glitch PI → Ensemble',
+            displayFormat: 'glitch_transform_hover',
+            description: 'Hover transforms PI into ensemble lines with glitchy visibility',
+            instructions: 'Shade represents the region that there are 95% chance the Humidity falls in this region. Each line represent the prediction from one Forecast Agency.<br><br>Hint: Hover on the lines for more details'
         }
     ],
 
@@ -250,7 +250,7 @@ const ExperimentConfig = {
     // Condition Assignment - HARDCODED FOR VERSION 12
     conditionAssignment: {
         getAssignedCondition: function() {
-            // HARDCODED: Always return condition 17 (Buggy Checkbox Selection) for Version 12
+            // HARDCODED: Always return condition 20 (Glitch PI → Ensemble) for Version 12
             return ExperimentConfig.conditions[11];
         }
     },

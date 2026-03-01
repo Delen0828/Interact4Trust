@@ -102,10 +102,12 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.activeTrialRunId = 0;
       this.loadingTimeoutId = null;
       this.visualizationRenderTimeoutId = null;
+      this.viewportZoomCleanup = null;
     }
 
     trial(display_element, trial) {
       this.clearPendingVisualizationTimers();
+      this.teardownViewportZoomControls();
       this.trialRunId += 1;
       this.activeTrialRunId = this.trialRunId;
       this.startTime = performance.now();
@@ -154,6 +156,66 @@ var jsPsychPredictionTask = (function (jspsych) {
       return this.display_element.querySelector('.visualization-content');
     }
 
+    getViewportMetrics() {
+      const visualViewport = window.visualViewport;
+      const viewportWidth = visualViewport && typeof visualViewport.width === 'number'
+        ? visualViewport.width
+        : (window.innerWidth || document.documentElement?.clientWidth || 0);
+      const viewportHeight = visualViewport && typeof visualViewport.height === 'number'
+        ? visualViewport.height
+        : (window.innerHeight || document.documentElement?.clientHeight || 0);
+
+      return {
+        viewportWidth: Math.max(Math.round(viewportWidth), 360),
+        viewportHeight: Math.max(Math.round(viewportHeight), 520)
+      };
+    }
+
+    applyResponsiveUiScale() {
+      if (!this.display_element) return;
+      const taskContainer = this.display_element.querySelector('.prediction-task-container');
+      if (!taskContainer) return;
+
+      const canUseCssZoom = typeof CSS !== 'undefined' &&
+        typeof CSS.supports === 'function' &&
+        CSS.supports('zoom', '1');
+      const { viewportWidth, viewportHeight } = this.getViewportMetrics();
+      const horizontalPadding = 32;
+      const verticalPadding = 24;
+      const naturalWidth = 1200;
+      const availableWidth = Math.max(viewportWidth - horizontalPadding, 320);
+      const availableHeight = Math.max(viewportHeight - verticalPadding, 420);
+
+      taskContainer.style.setProperty('--task-ui-scale', '1');
+      taskContainer.style.maxWidth = 'none';
+      taskContainer.style.width = `${naturalWidth}px`;
+      taskContainer.style.zoom = '';
+      taskContainer.style.transform = 'none';
+
+      const measuredWidth = Math.max(taskContainer.scrollWidth, taskContainer.offsetWidth, naturalWidth);
+      const measuredHeight = Math.max(taskContainer.scrollHeight, taskContainer.offsetHeight, 1);
+      const scale = Math.min(availableWidth / measuredWidth, availableHeight / measuredHeight);
+
+      taskContainer.style.setProperty('--task-ui-scale', String(scale));
+      taskContainer.style.width = `${measuredWidth}px`;
+      taskContainer.style.maxWidth = 'none';
+      taskContainer.style.zoom = canUseCssZoom ? String(scale) : '';
+      taskContainer.style.transform = canUseCssZoom ? 'none' : `scale(${scale})`;
+      taskContainer.dataset.uiScalePreset = `${Math.round(scale * 100)}%`;
+      taskContainer.dataset.uiScaleMode = 'viewport-fit';
+    }
+
+    setupViewportZoomControls() {
+      this.teardownViewportZoomControls();
+      this.applyResponsiveUiScale();
+    }
+
+    teardownViewportZoomControls() {
+      if (typeof this.viewportZoomCleanup === 'function') {
+        this.viewportZoomCleanup();
+      }
+    }
+
     renderTask() {
       // Note: roundText and phaseDescription available for future use if needed
       
@@ -195,12 +257,27 @@ var jsPsychPredictionTask = (function (jspsych) {
             align-items: center;
             margin-bottom: 14px;
           }
-          .visualization-content {
+          .visualization-panel {
             width: min(100%, 620px);
             max-width: 620px;
             min-width: 0;
             display: flex;
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .visualization-content {
+            width: 100%;
+            min-width: 0;
+            display: flex;
             justify-content: center;
+          }
+          .visualization-zoom-notice {
+            width: 100%;
+            text-align: center;
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.35;
           }
           .task-header {
             margin-bottom: 4px !important;
@@ -250,10 +327,10 @@ var jsPsychPredictionTask = (function (jspsych) {
             text-align: center;
           }
           .chart-description-line {
-            color: #6b7280;
+            color: #374151;
           }
           .chart-hint-line {
-            color: #9ca3af;
+            color: #374151;
             font-style: italic;
           }
           .prediction-form {
@@ -264,6 +341,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             max-width: 980px;
             margin: 0 auto;
             text-align: left;
+            color: #374151;
           }
           .question-section,
           .air-quality-estimates-section,
@@ -277,7 +355,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             font-size: 16px;
             font-weight: 600;
             margin: 0 0 1px 0;
-            color: #333;
+            color: #374151;
             text-align: left;
           }
           .q2-inline {
@@ -536,19 +614,19 @@ var jsPsychPredictionTask = (function (jspsych) {
             border: 1px solid rgba(55, 65, 81,0.3);
           }
           .submit-btn {
-            background: #333 !important;
-            border-color: #333 !important;
+            background: #374151 !important;
+            border-color: #374151 !important;
             padding: 6px !important;
             margin-top: 2px !important;
           }
           .submit-btn:hover:not(:disabled) {
-            background: #333 !important;
-            border-color: #333 !important;
+            background: #374151 !important;
+            border-color: #374151 !important;
           }
         </style>
         <div class="prediction-task-container">
           <div class="task-header">
-            <h2 style="color: #333;">Humidity Prediction</h2>
+            <h2 style="color: #374151;">Humidity Prediction</h2>
             <div class="scene-label">
               ${this.trial.phase === 1 ? 'Historical Data' : 'Forecast Data'}
             </div>
@@ -626,7 +704,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
             <div class="submit-section">
               <button id="submit-prediction" class="submit-btn" disabled>
-                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Trust Survey'}
+                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Surveys'}
               </button>
             </div>
           </div>
@@ -634,6 +712,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       `;
 
       this.display_element.innerHTML = html;
+      this.setupViewportZoomControls();
 
       this.setupEventListeners();
 
@@ -664,6 +743,7 @@ var jsPsychPredictionTask = (function (jspsych) {
                 Visualization is taking longer than expected to load.<br>
                 Please continue with your best estimate or refresh the page.
               </div>`;
+            this.applyResponsiveUiScale();
           }
         }, 10000); // 10 second timeout
         
@@ -687,6 +767,7 @@ var jsPsychPredictionTask = (function (jspsych) {
               if (chartElement) {
                 chartElement.innerHTML = 
                   `<p class="error-message">Visualization failed to load: ${error.message}<br>Please continue with your best estimate.</p>`;
+                this.applyResponsiveUiScale();
               }
             });
         }, 100);
@@ -699,7 +780,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
       // Fallback message when no description is provided
       return `<div class="description-content">
-        <p style="text-align: center; color: #666; font-style: italic;">
+        <p style="text-align: center; color: #374151; font-style: italic;">
           Please review the information above and make your prediction below.
         </p>
       </div>`;
@@ -709,19 +790,24 @@ var jsPsychPredictionTask = (function (jspsych) {
       
       // Create initial template with placeholder that will be updated
       const initialTemplate = `
-        <div class="visualization-content">
-          <div id="air-quality-chart" class="chart-container">
-            <div class="chart-placeholder" id="loading-placeholder">
-              <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 14px;">Loading visualization...</div>
-                <div style="margin-top: 8px; font-size: 11px; color: #999;">
-                  Phase ${this.trial.phase || 'Unknown'} • ${this.trial.show_predictions ? 'With Predictions' : 'Historical Only'}
-                </div>
-                <div style="margin-top: 15px; width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
-                  <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #0891B2 25%, #ffffff 25%, #ffffff 50%, #0891B2 50%, #0891B2 75%, #ffffff 75%); background-size: 40px 100%; animation: loading-stripe 1s linear infinite;"></div>
+        <div class="visualization-panel">
+          <div class="visualization-content">
+            <div id="air-quality-chart" class="chart-container">
+              <div class="chart-placeholder" id="loading-placeholder">
+                <div style="text-align: center; padding: 20px;">
+                  <div style="font-size: 14px;">Loading visualization...</div>
+                  <div style="margin-top: 8px; font-size: 11px; color: #999;">
+                    Phase ${this.trial.phase || 'Unknown'} • ${this.trial.show_predictions ? 'With Predictions' : 'Historical Only'}
+                  </div>
+                  <div style="margin-top: 15px; width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #0891B2 25%, #ffffff 25%, #ffffff 50%, #0891B2 50%, #0891B2 75%, #ffffff 75%); background-size: 40px 100%; animation: loading-stripe 1s linear infinite;"></div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="visualization-zoom-notice">
+            If you cannot see the question block, zoom in/out with ctrl +/- or cmd +/-
           </div>
           
           <style>
@@ -833,6 +919,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
         // Add legend and instructions after visualization is loaded
         this.addLegendAndInstructions();
+        this.applyResponsiveUiScale();
 
 
       } catch (error) {
@@ -881,6 +968,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             `<p class="error-message">Error loading visualization: ${error.message}</p>
              <p>Please continue with your best estimate.</p>
              ${errorDetails}`;
+          this.applyResponsiveUiScale();
         }
       }
     }

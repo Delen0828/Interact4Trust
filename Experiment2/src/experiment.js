@@ -349,6 +349,18 @@ function buildTimeline() {
 		window.initializeParticipant('test_participant');
 	}
 
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
+			<div class="phase-intro">
+				<h2>Prediction with Forecast Data</h2>
+				<p>In the next page you will predict humidity based on historical data, and <strong>predictions from five different agencies</strong>.</p>
+			</div>
+		`,
+		choices: ['Continue'],
+		data: { trial_type: 'phase2_intro', phase: 2 }
+	});
+
 	// Phase 2: Historical + Prediction Visualization
 	timeline.push({
 		type: window.jsPsychPredictionTask,
@@ -410,45 +422,23 @@ function buildTimeline() {
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
 			<div class="section-intro">
-				<h2>Trust & Experience Assessment</h2>
+				<h2>Trust Questions</h2>
 				<p>Thank you for completing the prediction tasks!</p>
-				<p>Now we'd like to understand your experience with the forecast visualization you just used.</p>
+				<p>Now we'd like to understand how much you trusted the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
 			</div>
 		`,
-		choices: ['Continue to Trust Assessment'],
+		choices: ['Continue to Trust Questions'],
 		data: { trial_type: 'trust_intro' }
 	});
 
-	// Trust Survey Page 1 - Interface Control
-	timeline.push({
-		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.interactionQuestions,
-		preamble: `
-                <div class="trust-survey-preamble">
-                    <h3>Interface Assessment - Page 1</h3>
-                    <p>Please rate your agreement with the following statements based on your experience with the interface.</p>
-                </div>
-            `,
-		data: function() {
-			return {
-				trial_type: 'trust_survey_interface',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		}
-	});
-
-	// Trust Survey Page 2 - Visualization-specific  
+	// Trust Questions
 	timeline.push({
 		type: jsPsychTrustSurvey,
 		questions: window.ExperimentConfig.visualizationTrustQuestions,
 		preamble: `
                 <div class="trust-survey-preamble">
-                    <h3>Visualization Assessment - Page 2</h3>
-                    <p>Please rate your agreement with the following statements about the visualization you just used.</p>
+                    <h3>Trust Questions</h3>
+                    <p>Please rate your agreement with the following statements about the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
                 </div>
             `,
 		data: function() {
@@ -472,6 +462,28 @@ function buildTimeline() {
 			data.trust_composite = data.data_trust !== null ? data.data_trust : null;
 			data.usability_composite = data.usability_difficulty && data.comprehension_ease ?
 				Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
+		}
+	});
+
+	// Interaction Questions
+	timeline.push({
+		type: jsPsychTrustSurvey,
+		questions: window.ExperimentConfig.interactionQuestions,
+		preamble: `
+                <div class="trust-survey-preamble">
+                    <h3>Interaction Questions</h3>
+                    <p>Please rate your agreement with the following statements based on your experience with the <span class="forecast-data-pill">forecast data</span> interface.</p>
+                </div>
+            `,
+		data: function() {
+			return {
+				trial_type: 'trust_survey_interface',
+				phase: 2,
+				round: 1,
+				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
+				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
+				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
+			};
 		}
 	});
 
@@ -587,6 +599,7 @@ function buildTimeline() {
                 <p>You were randomly assigned to one of twelve different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
                 
                 <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
+                <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
                 
                 <h3>Questions?</h3>
                 <p>If you have questions about this research, please contact the research team.</p>

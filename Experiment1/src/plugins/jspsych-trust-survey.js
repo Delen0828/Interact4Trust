@@ -66,10 +66,16 @@ var jsPsychTrustSurvey = (function (jspsych) {
           .trust-survey-preamble {
             margin-bottom: 30px;
             text-align: center;
+            color: #374151;
           }
           .trust-survey-preamble h3 {
             color: #374151;
             margin-bottom: 15px;
+            font-size: 30px;
+          }
+          .trust-survey-preamble p {
+            font-size: 18px;
+            line-height: 1.6;
           }
           .trust-question {
             margin-bottom: 40px;
@@ -80,11 +86,11 @@ var jsPsychTrustSurvey = (function (jspsych) {
             border-bottom: none;
             padding-bottom: 0;
           }
-          .question-prompt {
-            font-size: 18px;
+          .trust-question-prompt {
+            font-size: 22px;
             font-weight: 500;
             margin-bottom: 20px;
-            color: #333;
+            color: #374151;
             text-align: left;
             line-height: 1.4;
           }
@@ -100,7 +106,7 @@ var jsPsychTrustSurvey = (function (jspsych) {
             position: relative;
             cursor: pointer;
             flex: 1;
-            min-width: 140px;
+            min-width: 156px;
           }
           .trust-option input[type="radio"] {
             opacity: 0;
@@ -116,12 +122,12 @@ var jsPsychTrustSurvey = (function (jspsych) {
             align-items: center;
             padding: 0;
             background: white;
-            color: #333;
+            color: #374151;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid #ddd;
-            height: 80px;
+            min-height: 104px;
             box-sizing: border-box;
             position: relative;
           }
@@ -136,34 +142,34 @@ var jsPsychTrustSurvey = (function (jspsych) {
           }
           .trust-number {
             font-weight: 600;
-            font-size: 18px;
+            font-size: 24px;
             text-align: center;
             line-height: 1;
-            margin-top: 15px;
+            margin-top: 16px;
             margin-bottom: 0;
           }
           .trust-label {
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 500;
-            line-height: 1.1;
+            line-height: 1.25;
             text-align: center;
             word-wrap: break-word;
             hyphens: auto;
             margin-top: 8px;
-            padding: 0 4px;
+            padding: 0 8px 12px;
           }
           .submit-btn {
             background: #374151 !important;
             border-color: #374151 !important;
             color: white;
             padding: 12px 24px;
-            font-size: 16px;
+            font-size: 18px;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
             margin-top: 30px;
-            width: 200px;
+            width: 220px;
             display: block;
             margin: 30px auto 0;
           }
@@ -179,7 +185,7 @@ var jsPsychTrustSurvey = (function (jspsych) {
           }
           .validation-message {
             color: #dc3545;
-            font-size: 14px;
+            font-size: 16px;
             margin-top: 15px;
             text-align: center;
             display: none;
@@ -191,7 +197,7 @@ var jsPsychTrustSurvey = (function (jspsych) {
           <form id="trust-survey-form">
             ${this.trial.questions.map((question, qIndex) => `
               <div class="trust-question">
-                <div class="question-prompt">${question.prompt}</div>
+                <div class="trust-question-prompt">${question.prompt}</div>
                 <div class="trust-scale">
                   ${question.labels.map((label, index) => `
                     <label class="trust-option">
