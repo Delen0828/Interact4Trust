@@ -13,9 +13,10 @@ For each interaction event with positional data this script reads
 import argparse
 import csv
 import json
+import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 # The interaction_log column can easily exceed the default 128 KB CSV field
 # size limit, so raise it before any CSV reading happens.
@@ -53,6 +54,118 @@ def parse_events_json(raw_text: str) -> List[dict[str, Any]]:
     raise ValueError(f"Could not parse interaction log as JSON: {last_error}")
 
 
+def parse_json_value(raw_text: str) -> Any:
+    """Parse a JSON value that may be CSV-escaped."""
+    text = raw_text.strip()
+    if not text:
+        raise ValueError("Input is empty.")
+
+    candidates = [text]
+    if text.startswith('"') and text.endswith('"') and '""' in text:
+        candidates.append(text[1:-1].replace('""', '"'))
+
+    last_error: Optional[Exception] = None
+    for candidate in candidates:
+        try:
+            parsed = json.loads(candidate)
+            if isinstance(parsed, str):
+                parsed = json.loads(parsed)
+            return parsed
+        except Exception as exc:
+            last_error = exc
+
+    raise ValueError(f"Could not parse JSON value: {last_error}")
+
+
+def parse_resolution(value: str) -> Tuple[int, int]:
+    parts = value.lower().split("x")
+    if len(parts) != 2:
+        raise ValueError(
+            f"Invalid resolution format '{value}', expected WxH (e.g. 1920x1080)"
+        )
+
+    width = int(parts[0])
+    height = int(parts[1])
+    if width <= 0 or height <= 0:
+        raise ValueError("Resolution values must be positive integers.")
+    return width, height
+
+
+def normalize_condition_selector(value: str) -> str:
+    text = value.strip()
+    if not text:
+        raise ValueError("Condition selectors cannot be empty.")
+
+    if text.isdigit():
+        return str(int(text))
+    return text
+
+
+def build_condition_aliases(*values: str) -> Set[str]:
+    aliases: Set[str] = set()
+    for value in values:
+        text = value.strip()
+        if not text:
+            continue
+        aliases.add(text)
+        for match in re.findall(r"\d+", text):
+            aliases.add(str(int(match)))
+    return aliases
+
+
+def normalize_yes_no(value: Any) -> Optional[str]:
+    if not isinstance(value, str):
+        return None
+
+    text = value.strip().lower()
+    if text == "yes":
+        return "yes"
+    if text == "no":
+        return "no"
+    return None
+
+
+def classify_report_group(rows: List[Dict[str, str]]) -> Optional[str]:
+    """Classify a participant as report or noreport from the feedback row."""
+    for row in rows:
+        if (row.get("trial_type") or "").strip() != "interaction-feedback":
+            continue
+
+        raw_feedback = (
+            row.get("response", "").strip()
+            or row.get("responses", "").strip()
+        )
+        if not raw_feedback:
+            continue
+
+        try:
+            parsed = parse_json_value(raw_feedback)
+        except ValueError:
+            continue
+
+        if not isinstance(parsed, dict):
+            continue
+
+        encounter_bug = normalize_yes_no(parsed.get("encounter_bug"))
+        annoying_design = normalize_yes_no(parsed.get("annoying_design"))
+        if encounter_bug is None or annoying_design is None:
+            continue
+
+        if encounter_bug == "no" and annoying_design == "no":
+            return "noreport"
+        return "report"
+
+    return None
+
+
+def first_nonempty(rows: List[Dict[str, str]], key: str) -> str:
+    for row in rows:
+        value = (row.get(key) or "").strip()
+        if value:
+            return value
+    return ""
+
+
 def load_from_csv(
     csv_path: Path,
     phase: Optional[int] = None,
@@ -60,7 +173,8 @@ def load_from_csv(
     """Read a CSV and return a list of dicts, one per matching prediction row.
 
     Each dict has keys: ``events`` (list), ``phase`` (int|None),
-    ``condition_id``, ``participant_id``, ``screen_width``, ``screen_height``.
+    ``condition``, ``condition_id``, ``condition_name``, ``participant_id``,
+    ``screen_width``, ``screen_height``, ``report_group``.
     """
     results: List[Dict[str, Any]] = []
     with open(csv_path, newline="", encoding="utf-8") as fh:
@@ -70,7 +184,15 @@ def load_from_csv(
                 f"{csv_path.name} has no 'interaction_log' column. "
                 "Is this the right CSV?"
             )
-        for row in reader:
+        rows = list(reader)
+
+        csv_report_group = classify_report_group(rows)
+        csv_condition = first_nonempty(rows, "condition")
+        csv_condition_id = first_nonempty(rows, "condition_id")
+        csv_condition_name = first_nonempty(rows, "condition_name")
+        csv_participant_id = first_nonempty(rows, "participant_id")
+
+        for row in rows:
             log_raw = row.get("interaction_log", "").strip()
             if not log_raw:
                 continue
@@ -94,10 +216,13 @@ def load_from_csv(
             results.append({
                 "events": events,
                 "phase": row_phase,
-                "condition_id": row.get("condition_id", ""),
-                "participant_id": row.get("participant_id", ""),
+                "condition": row.get("condition", "").strip() or csv_condition,
+                "condition_id": row.get("condition_id", "").strip() or csv_condition_id,
+                "condition_name": row.get("condition_name", "").strip() or csv_condition_name,
+                "participant_id": row.get("participant_id", "").strip() or csv_participant_id,
                 "screen_width": int(float(sw)) if sw else None,
                 "screen_height": int(float(sh)) if sh else None,
+                "report_group": csv_report_group,
             })
 
     if not results:
@@ -139,6 +264,65 @@ def extract_points(events: Iterable[dict[str, Any]]) -> List[Tuple[float, float,
     return points
 
 
+def resolve_source_resolution(
+    row: Dict[str, Any],
+    fallback: Tuple[int, int],
+) -> Tuple[int, int]:
+    width = row.get("screen_width")
+    height = row.get("screen_height")
+    if isinstance(width, int) and isinstance(height, int) and width > 0 and height > 0:
+        return width, height
+    return fallback
+
+
+def load_traces_from_directory(
+    input_dir: Path,
+    input_glob: str,
+    phase: Optional[int],
+    fallback_resolution: Tuple[int, int],
+    condition_selector: Optional[str] = None,
+    report_group: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    traces: List[Dict[str, Any]] = []
+    for csv_path in sorted(input_dir.rglob(input_glob)):
+        if not csv_path.is_file():
+            continue
+
+        try:
+            rows = load_from_csv(csv_path, phase=phase)
+        except ValueError:
+            continue
+
+        for row in rows:
+            if condition_selector is not None:
+                aliases = build_condition_aliases(
+                    str(row.get("condition") or ""),
+                    str(row.get("condition_id") or ""),
+                    str(row.get("condition_name") or ""),
+                )
+                if condition_selector not in aliases:
+                    continue
+
+            if report_group is not None and row.get("report_group") != report_group:
+                continue
+
+            points = extract_points(row["events"])
+            if not points:
+                continue
+
+            traces.append({
+                "participant_id": str(row.get("participant_id") or csv_path.stem),
+                "condition_id": str(row.get("condition_id") or ""),
+                "phase": row.get("phase"),
+                "report_group": row.get("report_group"),
+                "points": points,
+                "source_resolution": resolve_source_resolution(
+                    row, fallback_resolution
+                ),
+            })
+    return traces
+
+
 # ---------------------------------------------------------------------------
 # Plotting
 # ---------------------------------------------------------------------------
@@ -152,6 +336,28 @@ _TYPE_COLORS: Dict[str, str] = {
     "hover_leave":  "#8c564b",   # brown
 }
 _DEFAULT_COLOR = "#7f7f7f"       # grey for unknown types
+
+
+def build_legend_handles(event_types: Iterable[str]) -> List[object]:
+    import matplotlib.patches as mpatches
+
+    ordered_types: List[str] = []
+    for event_type in _TYPE_COLORS:
+        if event_type in event_types:
+            ordered_types.append(event_type)
+
+    extra_types = sorted(
+        event_type for event_type in set(event_types) if event_type not in _TYPE_COLORS
+    )
+    ordered_types.extend(extra_types)
+
+    return [
+        mpatches.Patch(
+            color=_TYPE_COLORS.get(event_type, _DEFAULT_COLOR),
+            label=event_type,
+        )
+        for event_type in ordered_types
+    ]
 
 
 def plot_points(
@@ -299,6 +505,188 @@ def plot_points(
         plt.close(fig)
 
 
+def plot_traces(
+    traces: List[Dict[str, Any]],
+    output_path: Path,
+    title: Optional[str] = None,
+    screenshot_path: Optional[Path] = None,
+    fallback_resolution: Tuple[int, int] = (1920, 1080),
+    point_alpha: float = 0.14,
+    click_alpha: float = 0.10,
+    line_alpha: float = 0.05,
+    point_size: float = 18,
+    click_size: float = 160,
+) -> Tuple[int, int]:
+    """Plot multiple traces onto one figure without connecting separate traces."""
+    try:
+        import matplotlib.image as mpimg
+        import matplotlib.pyplot as plt
+    except ImportError as exc:
+        raise RuntimeError(
+            "matplotlib is required. Install it with: pip install matplotlib"
+        ) from exc
+
+    if not traces:
+        raise ValueError("No traces available to plot.")
+
+    event_types: Set[str] = set()
+    total_points = 0
+
+    if screenshot_path is not None:
+        img = mpimg.imread(str(screenshot_path))
+        img_h, img_w = img.shape[:2]
+        dpi = 100
+        fig, ax = plt.subplots(figsize=(img_w / dpi, img_h / dpi), dpi=dpi)
+        ax.imshow(img, extent=[0, img_w, img_h, 0], aspect="auto")
+
+        for trace in traces:
+            src_w, src_h = trace.get("source_resolution") or fallback_resolution
+            xs = [x * (img_w / src_w) for _, x, _, _ in trace["points"]]
+            ys = [y * (img_h / src_h) for _, _, y, _ in trace["points"]]
+            types = [event_type for _, _, _, event_type in trace["points"]]
+            colors = [_TYPE_COLORS.get(event_type, _DEFAULT_COLOR) for event_type in types]
+
+            event_types.update(types)
+            total_points += len(trace["points"])
+
+            non_click = [
+                (x, y, color)
+                for x, y, color, event_type in zip(xs, ys, colors, types)
+                if event_type != "chart_click"
+            ]
+            clicks = [
+                (x, y, color)
+                for x, y, color, event_type in zip(xs, ys, colors, types)
+                if event_type == "chart_click"
+            ]
+
+            if non_click:
+                nc_xs, nc_ys, nc_colors = zip(*non_click)
+                ax.scatter(
+                    nc_xs,
+                    nc_ys,
+                    c=list(nc_colors),
+                    s=point_size,
+                    alpha=point_alpha,
+                    edgecolors="none",
+                )
+            if clicks:
+                click_xs, click_ys, click_colors = zip(*clicks)
+                ax.scatter(
+                    click_xs,
+                    click_ys,
+                    c=list(click_colors),
+                    s=click_size,
+                    alpha=click_alpha,
+                    edgecolors="white",
+                    linewidths=0.3,
+                )
+            if len(xs) > 1 and line_alpha > 0:
+                ax.plot(xs, ys, linewidth=0.5, alpha=line_alpha, color="#ffffff")
+
+        ax.set_xlim(0, img_w)
+        ax.set_ylim(img_h, 0)
+        ax.set_aspect("equal", adjustable="box")
+        ax.axis("off")
+
+        legend_handles = build_legend_handles(event_types)
+        fig.suptitle(title or "Interaction Trace Overlay", fontsize=10)
+        if legend_handles:
+            fig.legend(
+                handles=legend_handles,
+                loc="lower center",
+                ncol=max(1, min(4, len(legend_handles))),
+                fontsize=8,
+                frameon=False,
+            )
+            fig.tight_layout(rect=[0, 0.05, 1, 1])
+        else:
+            fig.tight_layout()
+    else:
+        canvas_w = max(
+            int((trace.get("source_resolution") or fallback_resolution)[0])
+            for trace in traces
+        )
+        canvas_h = max(
+            int((trace.get("source_resolution") or fallback_resolution)[1])
+            for trace in traces
+        )
+        fig, ax = plt.subplots(figsize=(9, 7))
+
+        for trace in traces:
+            src_w, src_h = trace.get("source_resolution") or fallback_resolution
+            xs = [x for _, x, _, _ in trace["points"]]
+            ys = [src_h - y for _, _, y, _ in trace["points"]]
+            types = [event_type for _, _, _, event_type in trace["points"]]
+            colors = [_TYPE_COLORS.get(event_type, _DEFAULT_COLOR) for event_type in types]
+
+            event_types.update(types)
+            total_points += len(trace["points"])
+
+            non_click = [
+                (x, y, color)
+                for x, y, color, event_type in zip(xs, ys, colors, types)
+                if event_type != "chart_click"
+            ]
+            clicks = [
+                (x, y, color)
+                for x, y, color, event_type in zip(xs, ys, colors, types)
+                if event_type == "chart_click"
+            ]
+
+            if non_click:
+                nc_xs, nc_ys, nc_colors = zip(*non_click)
+                ax.scatter(
+                    nc_xs,
+                    nc_ys,
+                    c=list(nc_colors),
+                    s=point_size,
+                    alpha=point_alpha,
+                    edgecolors="none",
+                )
+            if clicks:
+                click_xs, click_ys, click_colors = zip(*clicks)
+                ax.scatter(
+                    click_xs,
+                    click_ys,
+                    c=list(click_colors),
+                    s=click_size,
+                    alpha=click_alpha,
+                    edgecolors="none",
+                )
+            if len(xs) > 1 and line_alpha > 0:
+                ax.plot(xs, ys, linewidth=0.5, alpha=line_alpha, color="#333333")
+
+        ax.set_xlabel("x")
+        ax.set_ylabel(f"{canvas_h} - y")
+        ax.set_xlim(0, canvas_w)
+        ax.set_ylim(0, canvas_h)
+        ax.grid(alpha=0.2)
+        ax.set_aspect("equal", adjustable="box")
+
+        legend_handles = build_legend_handles(event_types)
+        fig.suptitle(title or "Recovered Interaction Trace")
+        if legend_handles:
+            fig.legend(
+                handles=legend_handles,
+                loc="lower center",
+                ncol=max(1, min(4, len(legend_handles))),
+                fontsize=8,
+                frameon=False,
+            )
+            fig.tight_layout(rect=[0, 0.05, 1, 1])
+        else:
+            fig.tight_layout()
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    save_kwargs = {"dpi": 100 if screenshot_path is not None else 180}
+    if screenshot_path is not None:
+        save_kwargs["bbox_inches"] = "tight"
+    fig.savefig(output_path, **save_kwargs)
+    plt.close(fig)
+    return len(traces), total_points
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -310,7 +698,10 @@ def main() -> None:
     )
     parser.add_argument(
         "input",
-        help="Path to input file (.csv with interaction_log column, or .json array).",
+        help=(
+            "Path to input file (.csv with interaction_log column, or .json array), "
+            "or a directory of participant CSVs for aggregated overlays."
+        ),
     )
     parser.add_argument(
         "output", nargs="?", default=None,
@@ -332,11 +723,120 @@ def main() -> None:
         help="Which phase to extract from a CSV (1 or 2). "
              "If omitted, all prediction-task rows with interaction data are used.",
     )
+    parser.add_argument(
+        "--condition", default=None,
+        help=(
+            "Condition selector for directory input. Accepts numeric IDs such as 18 "
+            "or full labels such as condition_18_glitch_hover."
+        ),
+    )
+    parser.add_argument(
+        "--input-glob", default="*.csv",
+        help="Glob used to discover CSV files when input is a directory.",
+    )
+    parser.add_argument(
+        "--report-group", choices=["report", "noreport"], default=None,
+        help=(
+            "Optional feedback-group filter for directory input. "
+            "'report' keeps participants who answered Yes to encounter_bug or "
+            "annoying_design. 'noreport' keeps only No/No participants."
+        ),
+    )
+    parser.add_argument(
+        "--allow-empty", action="store_true",
+        help="Exit successfully without writing output when directory filters match no traces.",
+    )
+    parser.add_argument(
+        "--point-alpha", type=float, default=0.14,
+        help="Alpha value for non-click points in aggregated overlays.",
+    )
+    parser.add_argument(
+        "--click-alpha", type=float, default=0.10,
+        help="Alpha value for click points in aggregated overlays.",
+    )
+    parser.add_argument(
+        "--line-alpha", type=float, default=0.05,
+        help="Alpha value for per-trace path lines in aggregated overlays.",
+    )
+    parser.add_argument(
+        "--point-size", type=float, default=18,
+        help="Marker size for non-click points in aggregated overlays.",
+    )
+    parser.add_argument(
+        "--click-size", type=float, default=160,
+        help="Marker size for click points in aggregated overlays.",
+    )
     args = parser.parse_args()
 
     try:
         input_path = Path(args.input)
         ss = Path(args.screenshot) if args.screenshot else None
+
+        if not input_path.exists():
+            raise ValueError(f"Input path not found: {input_path}")
+
+        res = parse_resolution(args.resolution) if args.resolution else None
+
+        if input_path.is_dir():
+            if args.condition is None:
+                raise ValueError("--condition is required when input is a directory.")
+
+            condition_selector = normalize_condition_selector(args.condition)
+            fallback_resolution = res or (1920, 1080)
+            if args.output is not None:
+                default_output = args.output
+            else:
+                report_suffix = f"-{args.report_group}" if args.report_group else ""
+                default_output = f"overlay-c{condition_selector}{report_suffix}.png"
+
+            traces = load_traces_from_directory(
+                input_dir=input_path,
+                input_glob=args.input_glob,
+                phase=args.phase,
+                fallback_resolution=fallback_resolution,
+                condition_selector=condition_selector,
+                report_group=args.report_group,
+            )
+            if not traces:
+                message = f"No traces matched condition '{condition_selector}'"
+                if args.report_group:
+                    message += f" with report group '{args.report_group}'"
+                if args.phase is not None:
+                    message += f" in phase {args.phase}"
+
+                if args.allow_empty:
+                    print(message)
+                    return
+                raise ValueError(message)
+
+            title = args.title
+            if title is None:
+                title = f"Condition {condition_selector} Overlay"
+                if args.report_group == "report":
+                    title += " (Bug or Bad Design)"
+                elif args.report_group == "noreport":
+                    title += " (No Bug / No Bad Design)"
+
+            trace_count, point_count = plot_traces(
+                traces,
+                Path(default_output),
+                title=title,
+                screenshot_path=ss,
+                fallback_resolution=fallback_resolution,
+                point_alpha=args.point_alpha,
+                click_alpha=args.click_alpha,
+                line_alpha=args.line_alpha,
+                point_size=args.point_size,
+                click_size=args.click_size,
+            )
+            mode = "overlay" if ss else "standalone"
+            group_label = f", group={args.report_group}" if args.report_group else ""
+            print(
+                f"Condition {condition_selector}: "
+                f"{trace_count} traces, {point_count} points -> {default_output} "
+                f"({mode}{group_label})"
+            )
+            return
 
         # Derive default output base from screenshot name (or input name).
         if args.output is not None:
@@ -345,16 +845,6 @@ def main() -> None:
             default_output = f"{ss.stem}_recover.png"
         else:
             default_output = f"{input_path.stem}_recover.png"
-
-        res = None
-        if args.resolution:
-            parts = args.resolution.lower().split("x")
-            if len(parts) != 2:
-                raise ValueError(
-                    f"Invalid resolution format '{args.resolution}', "
-                    "expected WxH (e.g. 1920x1080)"
-                )
-            res = (int(parts[0]), int(parts[1]))
 
         # --- Detect input format ---
         if input_path.suffix.lower() == ".csv":
