@@ -1,9 +1,7 @@
 /**
  * jsPsych Prediction Task Plugin
  * 
- * Two-phase Humidity prediction task with optional visualization
- * Phase 1: Text-based prediction
- * Phase 2: Visualization-based prediction (8 conditions)
+ * Humidity prediction task with visualization-based decision inputs
  */
 
 var jsPsychPredictionTask = (function (jspsych) {
@@ -22,7 +20,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       phase: {
         type: jspsych.ParameterType.INT,
         pretty_name: 'Phase',
-        description: 'Study phase (1 = historical only, 2 = historical + predictions)',
+        description: 'Study phase slot number',
         default: 1
       },
       round: {
@@ -40,7 +38,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       show_predictions: {
         type: jspsych.ParameterType.BOOL,
         pretty_name: 'Show Predictions',
-        description: 'Whether to show prediction data (Phase 2)',
+        description: 'Whether to show forecast prediction data',
         default: false
       },
       visualization_condition: {
@@ -52,7 +50,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       description: {
         type: jspsych.ParameterType.FUNCTION,
         pretty_name: 'Description',
-        description: 'Text description for Phase 1',
+        description: 'Optional fallback description text',
         default: null
       },
       air_quality_data: {
@@ -736,7 +734,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           <div class="task-header">
             <h2 style="color: #374151;">Humidity Prediction</h2>
             <div class="scene-label">
-              ${this.trial.phase === 1 ? 'Historical Data' : 'Forecast Data'}
+              ${this.trial.show_predictions ? 'Forecast Data' : 'Historical Data'}
             </div>
           </div>
 
@@ -815,7 +813,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
             <div class="submit-section">
               <button id="submit-prediction" class="submit-btn" disabled>
-                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Surveys'}
+                ${this.trial.show_predictions ? 'Continue to Surveys' : 'Continue to Forecast'}
               </button>
             </div>
           </div>
@@ -991,7 +989,8 @@ var jsPsychPredictionTask = (function (jspsych) {
         
         
         // Initialize with data (pass data array directly, not wrapped)
-        await conditionFactory.initialize(config, data, '05/01', this.trial.phase);
+        const renderingPhase = this.trial.show_predictions ? 2 : 1;
+        await conditionFactory.initialize(config, data, '05/01', renderingPhase);
         if (!this.isActiveTrial(trialRunId)) return;
         
         // Set up interaction logging before rendering
@@ -1197,8 +1196,8 @@ var jsPsychPredictionTask = (function (jspsych) {
       `;
       chartContainer.insertAdjacentHTML('beforeend', legendHTML);
 
-      // Add instructions for Phase 2 only
-      if (this.trial.phase === 2 && this.condition && this.condition.instructions) {
+      // Add instructions for forecast phases only
+      if (this.trial.show_predictions && this.condition && this.condition.instructions) {
         const rawInstructions = String(this.condition.instructions || '');
         const instructionLines = rawInstructions
           .replace(/<br\s*\/?>/gi, '\n')
@@ -1275,8 +1274,8 @@ var jsPsychPredictionTask = (function (jspsych) {
         return { required: false, reason: null };
       }
 
-      // Interaction gating is only intended for Phase 2.
-      if (this.trial.phase !== 2) {
+      // Interaction gating is only intended for forecast phases.
+      if (!this.trial.show_predictions) {
         return { required: false, reason: null };
       }
 
@@ -1681,8 +1680,8 @@ var jsPsychPredictionTask = (function (jspsych) {
         effective_screen_width_px: this.getEffectiveScreenWidthPx(),
         ui_scale_preset: this.display_element?.querySelector('.prediction-task-container')?.dataset.uiScalePreset || null,
         
-        // Additional data for Phase 2
-        ...(this.trial.phase === 2 && {
+        // Additional data for forecast phases
+        ...(this.trial.show_predictions && {
           hover_events: this.interactionLog.filter(i => i.type === 'chart_hover').length,
           click_events: this.interactionLog.filter(i => i.type === 'chart_click').length,
           time_on_viz: this.interactionLog.length > 0 ? 

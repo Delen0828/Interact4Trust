@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study
-// Two-Phase Study Design: No Visualization → With Visualization
+// Four-Phase Within-Participants Study Design
 
 let jsPsych;
 let timeline = [];
@@ -166,10 +166,19 @@ function buildTimeline() {
 	    on_finish: function(data) {
 	        // Store participant ID for use throughout experiment
 	        const participantId = data.response.participant_id;
-	        jsPsych.data.addProperties({participant_id: participantId});
 	        
 	        // Initialize participant configuration
 	        window.initializeParticipant(participantId);
+	        
+	        // Add participant/session-level metadata to every trial row
+	        jsPsych.data.addProperties({
+	        	participant_id: participantId,
+	        	study_type: window.ExperimentConfig.studyType || null,
+	        	version: window.ParticipantConfig.version || null,
+	        	version_descriptor: window.ParticipantConfig.versionDescriptor || null,
+	        	phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+	        	phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
+	        });
 	    },
 	    data: { trial_type: 'participant_id_collection' }
 	});
@@ -286,15 +295,16 @@ function buildTimeline() {
 	    data: function() {
 	        return {
 	            trial_type: 'mini_vlat',
-	            condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-	            condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
+	            phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+	            phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
 	        };
 	    },
 	    on_finish: function(data) {
 	        window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
 	    }
 	});
-// Instructions
+
+	// Instructions
 	timeline.push({
 	    type: jsPsychInstructions,
 	    pages: [
@@ -302,7 +312,9 @@ function buildTimeline() {
 	            <h2>Humidity Context</h2>
 	            <p>You will be making predictions about humidity in two hypothetical cities: <br> <strong>City A</strong> and <strong>City B</strong>.</p>
 	            <p>Humidity is measured in a scale from 0 to 100.</p>
-	            <p>Your task will be to predict which city is likely to have higher or lower humidity in the future.</p>
+	            <p>Your task is to predict which city is likely to have higher or lower humidity in the future.</p>
+	            <p>You will complete <strong>4 phases</strong>. Each phase includes one prediction page, one bug feedback page, trust questions, and interaction questions.</p>
+	            <p>The order and condition sequence for Phases 2-4 are determined by the study version ID.</p>
 	        </div>`
 	    ],
 	    show_clickable_nav: true,
@@ -312,65 +324,15 @@ function buildTimeline() {
 	timeline.push({
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
-			<div class="phase-intro">
-				<h2>Prediction with Historical Data</h2>
-				<p>In the next page, you will predict humidity based on <strong>historical data only</strong>.</p>
-			</div>
-		`,
-		choices: ['Continue'],
-		data: { trial_type: 'phase1_intro', phase: 1 }
-	});
-
-
-	// Phase 1: Historical Visualization Only (Condition 0)
-	timeline.push({
-		type: window.jsPsychPredictionTask,
-		phase: 1,
-		round: 1, // Single round for now
-		show_visualization: true,
-		show_predictions: false, // Historical only, no predictions
-		visualization_condition: function () {
-			return {
-				id: 'condition_0_historical',
-				name: 'Historical Only',
-				displayFormat: 'historical_only',
-				description: 'Shows only historical data, no predictions',
-				instructions: 'You will see historical humidity data for both cities. No prediction forecasts are shown.'
-			};
-		},
-		air_quality_data: async function () {
-			return await getAirQualityData();
-		},
-		question: window.ExperimentConfig.predictionTask.question,
-		confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-		travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
-		travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
-		data: {
-			trial_type: 'phase1_prediction',
-			phase: 1,
-			round: 1,
-			visualization_shown: true,
-			predictions_shown: false,
-			condition_id: 'condition_0_historical',
-			condition_name: 'Historical Only'
-		},
-		on_finish: function (_data) {
-			window.ParticipantConfig.phase1Complete = true;
-		}
-	});
-
-	timeline.push({
-		type: jsPsychHtmlButtonResponse,
-		stimulus: `
 			<div class="phase-intro-stack">
 				<div class="phase-intro">
-					<h2>Prediction with Forecast Data</h2>
-					<p>In the next page you will predict humidity based on historical data, and <strong>predictions from five different agencies</strong>.</p>
+					<h2>Prediction Phases</h2>
+					<p>You will now complete all 4 phases in sequence.</p>
 				</div>
 				<div class="phase-intro-tips">
 					<h3>Tips</h3>
 					<ul>
-						<li>Your interactions (hover, click, and mouse movement trial) will be recorded. </li>
+						<li>Your interactions (hover, click, and mouse movement trial) will be recorded.</li>
 						<li>No or low interaction may result in auto return.</li>
 						<li>Scrolling is disabled for interaction logging.</li>
 						<li>If you cannot see the content, zoom in/out the browser. If the problem still persists, contact the research team on Prolific.</li>
@@ -378,136 +340,161 @@ function buildTimeline() {
 				</div>
 			</div>
 		`,
-		choices: ['Continue'],
-		data: { trial_type: 'phase2_intro', phase: 2 }
+		choices: ['Start Phase 1'],
+		data: { trial_type: 'phases_intro' }
 	});
 
+	const fallbackPhaseOrder = ['phase1', 'phase2', 'phase3', 'phase4'];
 
-	// Phase 2: Historical + Prediction Visualization  
-	timeline.push({
-		type: window.jsPsychPredictionTask,
-		phase: 2,
-		round: 1, // Single round for now
-		show_visualization: true,
-		show_predictions: true,
-		visualization_condition: function () {
-			
-			return window.ParticipantConfig.assignedCondition;
-		},
-		air_quality_data: async function () {
-			return await getAirQualityData();
-		},
-		question: window.ExperimentConfig.predictionTask.question,
-		confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-		travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
-		travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
-		data: function() {
-			return {
-				trial_type: 'phase2_prediction',
-				phase: 2,
-				round: 1,
-				visualization_shown: true,
-				predictions_shown: true,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		},
-		on_finish: function (_data) {
-			window.ParticipantConfig.phase2Complete = true;
+	function getPhaseExecutionOrder() {
+		const configuredOrder = window.ParticipantConfig.phaseExecutionOrder;
+		if (Array.isArray(configuredOrder) && configuredOrder.length === 4) {
+			return configuredOrder;
 		}
-	});
+		return fallbackPhaseOrder;
+	}
 
-	// Interaction Feedback (single page)
-	timeline.push({
-		type: window.jsPsychInteractionFeedback,
-		preamble: `
-			<div class="interaction-feedback-preamble">
-				<h3>Interaction Feedback</h3>
-				<p>Please share your feedback about the interaction you just experienced.</p>
-			</div>
-		`,
-		data: function() {
-			return {
-				trial_type: 'interaction_feedback',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
+	function getPhaseKeyForSlot(phaseSlot) {
+		const order = getPhaseExecutionOrder();
+		return order[phaseSlot - 1] || fallbackPhaseOrder[phaseSlot - 1] || `phase${phaseSlot}`;
+	}
+
+	function getPhaseConditionForSlot(phaseSlot) {
+		const phaseKey = getPhaseKeyForSlot(phaseSlot);
+		const assignments = window.ParticipantConfig.phaseAssignments || {};
+		return assignments[phaseKey] || null;
+	}
+
+	function getPhaseMetadataForSlot(phaseSlot) {
+		const phaseKey = getPhaseKeyForSlot(phaseSlot);
+		const phaseCondition = getPhaseConditionForSlot(phaseSlot);
+		const phaseNumber = Number.parseInt(String(phaseKey).replace('phase', ''), 10) || phaseSlot;
+
+		return {
+			phaseSlot,
+			phaseKey,
+			phaseNumber,
+			conditionId: phaseCondition ? phaseCondition.id : null,
+			conditionName: phaseCondition ? phaseCondition.name : null,
+			displayFormat: phaseCondition ? phaseCondition.displayFormat : null,
+			technique: phaseCondition ? phaseCondition.technique : null
+		};
+	}
+
+	function getPhaseTrialData(trialType, phaseSlot, extraData = {}) {
+		const phaseMetadata = getPhaseMetadataForSlot(phaseSlot);
+		return {
+			trial_type: trialType,
+			phase_slot: phaseMetadata.phaseSlot,
+			phase_key: phaseMetadata.phaseKey,
+			phase_number: phaseMetadata.phaseNumber,
+			condition_id: phaseMetadata.conditionId,
+			condition_name: phaseMetadata.conditionName,
+			display_format: phaseMetadata.displayFormat,
+			visualization_technique: phaseMetadata.technique,
+			...extraData
+		};
+	}
+
+	function markPhaseCompleted(phaseSlot) {
+		const phaseKey = getPhaseKeyForSlot(phaseSlot);
+		if (!window.ParticipantConfig.phaseCompletion) {
+			window.ParticipantConfig.phaseCompletion = {};
 		}
-	});
+		window.ParticipantConfig.phaseCompletion[phaseKey] = true;
 
-	// Trust Survey Introduction
-	timeline.push({
-		type: jsPsychHtmlButtonResponse,
-		stimulus: `
-			<div class="section-intro">
-				<h2>Trust Questions</h2>
-				<p>Thank you for completing the prediction tasks!</p>
-				<p>Now we'd like to understand how much you trusted the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
-			</div>
-		`,
-		choices: ['Continue to Trust Questions'],
-		data: { trial_type: 'trust_intro' }
-	});
+		if (phaseKey === 'phase1') window.ParticipantConfig.phase1Complete = true;
+		if (phaseKey === 'phase2') window.ParticipantConfig.phase2Complete = true;
+		if (phaseKey === 'phase3') window.ParticipantConfig.phase3Complete = true;
+		if (phaseKey === 'phase4') window.ParticipantConfig.phase4Complete = true;
+	}
 
-	// Trust Questions
-	timeline.push({
-		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.visualizationTrustQuestions,
-		preamble: `
+	function appendWithinParticipantPhase(phaseSlot) {
+		timeline.push({
+			type: window.jsPsychPredictionTask,
+			phase: phaseSlot,
+			round: 1,
+			show_visualization: true,
+			show_predictions: true,
+			visualization_condition: function () {
+				return getPhaseConditionForSlot(phaseSlot);
+			},
+			air_quality_data: async function () {
+				return await getAirQualityData();
+			},
+			question: window.ExperimentConfig.predictionTask.question,
+			confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
+			travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
+			travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
+			data: function() {
+				return getPhaseTrialData('phase_prediction', phaseSlot, {
+					round: 1,
+					visualization_shown: true,
+					predictions_shown: true
+				});
+			},
+			on_finish: function () {
+				markPhaseCompleted(phaseSlot);
+			}
+		});
+
+		timeline.push({
+			type: window.jsPsychInteractionFeedback,
+			preamble: `
+				<div class="interaction-feedback-preamble">
+					<h3>Interaction Feedback</h3>
+					<p>Please share your feedback about the interaction you just experienced.</p>
+				</div>
+			`,
+			data: function() {
+				return getPhaseTrialData('interaction_feedback', phaseSlot, { round: 1 });
+			}
+		});
+
+		timeline.push({
+			type: jsPsychTrustSurvey,
+			questions: window.ExperimentConfig.visualizationTrustQuestions,
+			preamble: `
                 <div class="trust-survey-preamble">
                     <h3>Trust Questions</h3>
                     <p>Please rate your agreement with the following statements about the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
                 </div>
             `,
-		data: function() {
-			return {
-				trial_type: 'trust_survey_visualization',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		},
-		on_finish: function (data) {
-			// Convert 0-based to 1-7 scale indexing and rename response fields for consistency
-			data.skeptical_rating = data.response.skeptical_rating !== null ? data.response.skeptical_rating + 1 : null;
-			data.data_trust = data.response.data_trust !== null ? data.response.data_trust + 1 : null;
-			data.usability_difficulty = data.response.usability_difficulty !== null ? data.response.usability_difficulty + 1 : null;
-			data.comprehension_ease = data.response.comprehension_ease !== null ? data.response.comprehension_ease + 1 : null;
+			data: function() {
+				return getPhaseTrialData('trust_survey_visualization', phaseSlot, { round: 1 });
+			},
+			on_finish: function (data) {
+				// Convert 0-based to 1-7 scale indexing and rename response fields for consistency
+				data.skeptical_rating = data.response.skeptical_rating !== null ? data.response.skeptical_rating + 1 : null;
+				data.data_trust = data.response.data_trust !== null ? data.response.data_trust + 1 : null;
+				data.usability_difficulty = data.response.usability_difficulty !== null ? data.response.usability_difficulty + 1 : null;
+				data.comprehension_ease = data.response.comprehension_ease !== null ? data.response.comprehension_ease + 1 : null;
 
-			// Calculate composite metrics
-			data.trust_composite = data.data_trust !== null ? data.data_trust : null;
-			data.usability_composite = data.usability_difficulty && data.comprehension_ease ?
-				Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
-		}
-	});
+				// Calculate composite metrics
+				data.trust_composite = data.data_trust !== null ? data.data_trust : null;
+				data.usability_composite = data.usability_difficulty && data.comprehension_ease ?
+					Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
+			}
+		});
 
-	// Interaction Questions
-	timeline.push({
-		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.interactionQuestions,
-		preamble: `
+		timeline.push({
+			type: jsPsychTrustSurvey,
+			questions: window.ExperimentConfig.interactionQuestions,
+			preamble: `
                 <div class="trust-survey-preamble">
                     <h3>Interaction Questions</h3>
                     <p>Please rate your agreement with the following statements based on your experience with the <span class="forecast-data-pill">forecast data</span> interface.</p>
                 </div>
             `,
-		data: function() {
-			return {
-				trial_type: 'trust_survey_interface',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		}
-	});
+			data: function() {
+				return getPhaseTrialData('trust_survey_interface', phaseSlot, { round: 1 });
+			}
+		});
+	}
+
+	for (let phaseSlot = 1; phaseSlot <= 4; phaseSlot += 1) {
+		appendWithinParticipantPhase(phaseSlot);
+	}
 
 	// Demographics Introduction
 	timeline.push({
@@ -532,14 +519,14 @@ function buildTimeline() {
 				<p>Please rate your agreement with the following statements about yourself.</p>
 			</div>
 		`,
-		data: function() {
-			return {
-				trial_type: 'personality',
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
-			};
-		}
-	});
+			data: function() {
+				return {
+					trial_type: 'personality',
+					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+					phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
+				};
+			}
+		});
 
 	// Age and Major Questions (Text Input)
 	timeline.push({
@@ -559,14 +546,14 @@ function buildTimeline() {
 				columns: 40
 			}
 		],
-		data: function() {
-			return {
-				trial_type: 'demographics_text_1',
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
-			};
-		}
-	});
+			data: function() {
+				return {
+					trial_type: 'demographics_text_1',
+					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+					phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
+				};
+			}
+		});
 
 	// Education and Visualization Experience (Multiple Choice)
 	timeline.push({
@@ -585,14 +572,14 @@ function buildTimeline() {
 				options: ['Daily', 'Weekly', 'Monthly', 'A few times per year', 'Rarely', 'Never']
 			}
 		],
-		data: function() {
-			return {
-				trial_type: 'demographics_mc',
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
-			};
-		}
-	});
+			data: function() {
+				return {
+					trial_type: 'demographics_mc',
+					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+					phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
+				};
+			}
+		});
 
 	// Exit fullscreen
 	timeline.push({
@@ -618,7 +605,7 @@ function buildTimeline() {
                 <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
                 
                 <h3>Study Background:</h3>
-                <p>You were randomly assigned to one of several different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+	                <p>You completed a baseline phase and three additional visualization phases in a predefined version-specific order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
                 
                 <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
                 <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
@@ -631,14 +618,18 @@ function buildTimeline() {
         `,
 		choices: ['Close Study'],
 		data: { trial_type: 'debrief' },
-		on_finish: function() {
-			// Securely validate completion and get redirect URL from server
-			const completionData = {
-				study_complete: true,
-				phase1_complete: window.ParticipantConfig.phase1Complete,
-				phase2_complete: window.ParticipantConfig.phase2Complete,
-				end_time: new Date().toISOString()
-			};
+			on_finish: function() {
+				// Securely validate completion and get redirect URL from server
+				const completionData = {
+					study_complete: true,
+					phase1_complete: window.ParticipantConfig.phase1Complete,
+					phase2_complete: window.ParticipantConfig.phase2Complete,
+					phase3_complete: window.ParticipantConfig.phase3Complete,
+					phase4_complete: window.ParticipantConfig.phase4Complete,
+					phase_completion: window.ParticipantConfig.phaseCompletion || null,
+					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+					end_time: new Date().toISOString()
+				};
 
 			
 			fetch('/complete_study.php', {
@@ -750,12 +741,19 @@ function saveData(data) {
 	// Add participant summary
 	const summary = {
 		participant_id: window.ParticipantConfig.id,
-		condition: window.ParticipantConfig.assignedCondition,
+		condition: window.ParticipantConfig.assignedCondition, // Backward-compatible alias (phase2 canonical condition)
+		phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+		phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+		phase_completion: window.ParticipantConfig.phaseCompletion || null,
+		version_descriptor: window.ParticipantConfig.versionDescriptor || null,
+		version: window.ParticipantConfig.version || null,
 		start_time: window.ParticipantConfig.startTime,
 		end_time: new Date().toISOString(),
 		visualization_literacy_score: window.ParticipantConfig.visualizationLiteracyScore,
 		phase1_complete: window.ParticipantConfig.phase1Complete,
-		phase2_complete: window.ParticipantConfig.phase2Complete
+		phase2_complete: window.ParticipantConfig.phase2Complete,
+		phase3_complete: window.ParticipantConfig.phase3Complete,
+		phase4_complete: window.ParticipantConfig.phase4Complete
 	};
 
 	if (window.ExperimentConfig.dataCollection.saveToServer) {

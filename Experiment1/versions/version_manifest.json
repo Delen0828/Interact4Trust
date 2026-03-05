@@ -1,0 +1,470 @@
+[
+  {
+    "version_id": "version_B-H-S_CI-CIEP-EP",
+    "interaction_order": [
+      "B",
+      "H",
+      "S"
+    ],
+    "display_order": [
+      "CI",
+      "CIEP",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_B-H-S_CI-EP-CIEP",
+    "interaction_order": [
+      "B",
+      "H",
+      "S"
+    ],
+    "display_order": [
+      "CI",
+      "EP",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_B-H-S_CIEP-CI-EP",
+    "interaction_order": [
+      "B",
+      "H",
+      "S"
+    ],
+    "display_order": [
+      "CIEP",
+      "CI",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_B-H-S_CIEP-EP-CI",
+    "interaction_order": [
+      "B",
+      "H",
+      "S"
+    ],
+    "display_order": [
+      "CIEP",
+      "EP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_B-H-S_EP-CI-CIEP",
+    "interaction_order": [
+      "B",
+      "H",
+      "S"
+    ],
+    "display_order": [
+      "EP",
+      "CI",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_B-H-S_EP-CIEP-CI",
+    "interaction_order": [
+      "B",
+      "H",
+      "S"
+    ],
+    "display_order": [
+      "EP",
+      "CIEP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_B-S-H_CI-CIEP-EP",
+    "interaction_order": [
+      "B",
+      "S",
+      "H"
+    ],
+    "display_order": [
+      "CI",
+      "CIEP",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_B-S-H_CI-EP-CIEP",
+    "interaction_order": [
+      "B",
+      "S",
+      "H"
+    ],
+    "display_order": [
+      "CI",
+      "EP",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_B-S-H_CIEP-CI-EP",
+    "interaction_order": [
+      "B",
+      "S",
+      "H"
+    ],
+    "display_order": [
+      "CIEP",
+      "CI",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_B-S-H_CIEP-EP-CI",
+    "interaction_order": [
+      "B",
+      "S",
+      "H"
+    ],
+    "display_order": [
+      "CIEP",
+      "EP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_B-S-H_EP-CI-CIEP",
+    "interaction_order": [
+      "B",
+      "S",
+      "H"
+    ],
+    "display_order": [
+      "EP",
+      "CI",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_B-S-H_EP-CIEP-CI",
+    "interaction_order": [
+      "B",
+      "S",
+      "H"
+    ],
+    "display_order": [
+      "EP",
+      "CIEP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_H-B-S_CI-CIEP-EP",
+    "interaction_order": [
+      "H",
+      "B",
+      "S"
+    ],
+    "display_order": [
+      "CI",
+      "CIEP",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_H-B-S_CI-EP-CIEP",
+    "interaction_order": [
+      "H",
+      "B",
+      "S"
+    ],
+    "display_order": [
+      "CI",
+      "EP",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_H-B-S_CIEP-CI-EP",
+    "interaction_order": [
+      "H",
+      "B",
+      "S"
+    ],
+    "display_order": [
+      "CIEP",
+      "CI",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_H-B-S_CIEP-EP-CI",
+    "interaction_order": [
+      "H",
+      "B",
+      "S"
+    ],
+    "display_order": [
+      "CIEP",
+      "EP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_H-B-S_EP-CI-CIEP",
+    "interaction_order": [
+      "H",
+      "B",
+      "S"
+    ],
+    "display_order": [
+      "EP",
+      "CI",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_H-B-S_EP-CIEP-CI",
+    "interaction_order": [
+      "H",
+      "B",
+      "S"
+    ],
+    "display_order": [
+      "EP",
+      "CIEP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_H-S-B_CI-CIEP-EP",
+    "interaction_order": [
+      "H",
+      "S",
+      "B"
+    ],
+    "display_order": [
+      "CI",
+      "CIEP",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_H-S-B_CI-EP-CIEP",
+    "interaction_order": [
+      "H",
+      "S",
+      "B"
+    ],
+    "display_order": [
+      "CI",
+      "EP",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_H-S-B_CIEP-CI-EP",
+    "interaction_order": [
+      "H",
+      "S",
+      "B"
+    ],
+    "display_order": [
+      "CIEP",
+      "CI",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_H-S-B_CIEP-EP-CI",
+    "interaction_order": [
+      "H",
+      "S",
+      "B"
+    ],
+    "display_order": [
+      "CIEP",
+      "EP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_H-S-B_EP-CI-CIEP",
+    "interaction_order": [
+      "H",
+      "S",
+      "B"
+    ],
+    "display_order": [
+      "EP",
+      "CI",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_H-S-B_EP-CIEP-CI",
+    "interaction_order": [
+      "H",
+      "S",
+      "B"
+    ],
+    "display_order": [
+      "EP",
+      "CIEP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_S-B-H_CI-CIEP-EP",
+    "interaction_order": [
+      "S",
+      "B",
+      "H"
+    ],
+    "display_order": [
+      "CI",
+      "CIEP",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_S-B-H_CI-EP-CIEP",
+    "interaction_order": [
+      "S",
+      "B",
+      "H"
+    ],
+    "display_order": [
+      "CI",
+      "EP",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_S-B-H_CIEP-CI-EP",
+    "interaction_order": [
+      "S",
+      "B",
+      "H"
+    ],
+    "display_order": [
+      "CIEP",
+      "CI",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_S-B-H_CIEP-EP-CI",
+    "interaction_order": [
+      "S",
+      "B",
+      "H"
+    ],
+    "display_order": [
+      "CIEP",
+      "EP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_S-B-H_EP-CI-CIEP",
+    "interaction_order": [
+      "S",
+      "B",
+      "H"
+    ],
+    "display_order": [
+      "EP",
+      "CI",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_S-B-H_EP-CIEP-CI",
+    "interaction_order": [
+      "S",
+      "B",
+      "H"
+    ],
+    "display_order": [
+      "EP",
+      "CIEP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_S-H-B_CI-CIEP-EP",
+    "interaction_order": [
+      "S",
+      "H",
+      "B"
+    ],
+    "display_order": [
+      "CI",
+      "CIEP",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_S-H-B_CI-EP-CIEP",
+    "interaction_order": [
+      "S",
+      "H",
+      "B"
+    ],
+    "display_order": [
+      "CI",
+      "EP",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_S-H-B_CIEP-CI-EP",
+    "interaction_order": [
+      "S",
+      "H",
+      "B"
+    ],
+    "display_order": [
+      "CIEP",
+      "CI",
+      "EP"
+    ]
+  },
+  {
+    "version_id": "version_S-H-B_CIEP-EP-CI",
+    "interaction_order": [
+      "S",
+      "H",
+      "B"
+    ],
+    "display_order": [
+      "CIEP",
+      "EP",
+      "CI"
+    ]
+  },
+  {
+    "version_id": "version_S-H-B_EP-CI-CIEP",
+    "interaction_order": [
+      "S",
+      "H",
+      "B"
+    ],
+    "display_order": [
+      "EP",
+      "CI",
+      "CIEP"
+    ]
+  },
+  {
+    "version_id": "version_S-H-B_EP-CIEP-CI",
+    "interaction_order": [
+      "S",
+      "H",
+      "B"
+    ],
+    "display_order": [
+      "EP",
+      "CIEP",
+      "CI"
+    ]
+  }
+]
