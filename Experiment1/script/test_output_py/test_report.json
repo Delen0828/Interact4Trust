@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-05T05:18:28.112290+00:00",
+  "generatedAt": "2026-03-06T00:15:20.725499+00:00",
   "outputDir": "/Users/songwen/Documents/Code Lab/Interact4Trust/Experiment1/script/test_output_py",
   "summary": {
     "totalChecks": 14,
@@ -41,15 +41,15 @@
     },
     {
       "ok": true,
-      "message": "noiseLevel: historical residual variance rises from 0.10 to 8.61"
+      "message": "noiseLevel: historical residual variance rises from 0.10 to 10.20"
     },
     {
       "ok": true,
-      "message": "noiseLevel: prediction residual variance rises from 0.11 to 9.81"
+      "message": "noiseLevel: prediction residual variance rises from 0.12 to 11.46"
     },
     {
       "ok": true,
-      "message": "predVariance: endpoint spread rises from 1.00 to 225.02"
+      "message": "predVariance: endpoint spread rises from 1.00 to 225.00"
     },
     {
       "ok": true,
@@ -92,15 +92,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.99999999999999,
-        "predEndMean": 40.00099999999999,
+        "predStartMean": 36.00000000000001,
+        "predEndMean": 40.0005,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.5195668822466182,
-        "predictionResidualVariance": 1.4375527955840453,
-        "predictionEndVariance": 63.995021111111114,
+        "historicalResidualVariance": 1.659207674267006,
+        "predictionResidualVariance": 1.8065381543803418,
+        "predictionEndVariance": 63.995716111111115,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -133,14 +133,14 @@
         "histStartMean": 42.0,
         "histEndMean": 36.0,
         "predStartMean": 35.998333333333335,
-        "predEndMean": 40.00000000000001,
+        "predEndMean": 39.99666666666667,
         "scenarioCounts": {
           "A": 3,
           "B": 3
         },
-        "historicalResidualVariance": 1.4801187938871354,
-        "predictionResidualVariance": 1.5213454657610914,
-        "predictionEndVariance": 64.0636,
+        "historicalResidualVariance": 1.6522685322014308,
+        "predictionResidualVariance": 1.566758728886854,
+        "predictionEndVariance": 64.00403333333335,
         "positiveEndpointRatio": 0.6666666666666666,
         "negativeEndpointRatio": 0.3333333333333333
       }
@@ -172,15 +172,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.999375,
-        "predEndMean": 39.999687500000014,
+        "predStartMean": 35.999687500000014,
+        "predEndMean": 39.99968750000001,
         "scenarioCounts": {
           "A": 16,
           "B": 16
         },
-        "historicalResidualVariance": 1.553208007392921,
-        "predictionResidualVariance": 1.4794071254483363,
-        "predictionEndVariance": 63.992963125,
+        "historicalResidualVariance": 1.5861070145043485,
+        "predictionResidualVariance": 1.5672393267322955,
+        "predictionEndVariance": 64.01057645833333,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -212,15 +212,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 55.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.999,
-        "predEndMean": 40.0005,
+        "predStartMean": 35.9995,
+        "predEndMean": 40.0,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.5037964587166828,
-        "predictionResidualVariance": 1.6892194895960515,
-        "predictionEndVariance": 64.0041938888889,
+        "historicalResidualVariance": 1.48059954359453,
+        "predictionResidualVariance": 1.731020948438136,
+        "predictionEndVariance": 64.00939999999999,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -252,15 +252,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 18.0,
-        "predStartMean": 17.999499999999998,
-        "predEndMean": 40.00150000000001,
+        "predStartMean": 18.0,
+        "predEndMean": 40.000000000000014,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.6630246805339488,
-        "predictionResidualVariance": 1.6109481074481073,
-        "predictionEndVariance": 63.97056944444446,
+        "historicalResidualVariance": 1.6436982838052057,
+        "predictionResidualVariance": 1.4869629194647949,
+        "predictionEndVariance": 64.00155555555554,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -292,15 +292,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 61.99950000000001,
-        "predEndMean": 39.99999999999999,
+        "predStartMean": 62.001,
+        "predEndMean": 40.00000000000001,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.6589364269671238,
-        "predictionResidualVariance": 1.5273397734788368,
-        "predictionEndVariance": 63.9877888888889,
+        "historicalResidualVariance": 1.6614766614219882,
+        "predictionResidualVariance": 1.7258973117623118,
+        "predictionEndVariance": 63.972321111111114,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -332,15 +332,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 36.0005,
-        "predEndMean": 15.000499999999999,
+        "predStartMean": 36.0,
+        "predEndMean": 14.999,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.5321557334844513,
-        "predictionResidualVariance": 1.4647189148351654,
-        "predictionEndVariance": 63.990082777777786,
+        "historicalResidualVariance": 1.541499230291717,
+        "predictionResidualVariance": 1.6373196853378105,
+        "predictionEndVariance": 63.995909999999995,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -372,15 +372,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.99900000000001,
-        "predEndMean": 39.99899999999999,
+        "predStartMean": 36.00000000000001,
+        "predEndMean": 40.00000000000001,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 0.09896968983806693,
-        "predictionResidualVariance": 0.11225181216931224,
-        "predictionEndVariance": 64.01938666666668,
+        "historicalResidualVariance": 0.09799536825340396,
+        "predictionResidualVariance": 0.11979248880748875,
+        "predictionEndVariance": 64.00342222222221,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -412,17 +412,17 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.99950000000001,
-        "predEndMean": 40.000499999999995,
+        "predStartMean": 35.9995,
+        "predEndMean": 40.0005,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 8.605271355452832,
-        "predictionResidualVariance": 9.806706277981275,
-        "predictionEndVariance": 63.998805000000004,
+        "historicalResidualVariance": 10.196751934797103,
+        "predictionResidualVariance": 11.456544805148557,
+        "predictionEndVariance": 63.987882777777784,
         "positiveEndpointRatio": 0.5,
-        "negativeEndpointRatio": 0.5
+        "negativeEndpointRatio": 0.45
       }
     },
     {
@@ -452,15 +452,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.99999999999999,
-        "predEndMean": 39.9995,
+        "predStartMean": 36.0,
+        "predEndMean": 40.0,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.4983728642458178,
-        "predictionResidualVariance": 1.3565046368793245,
-        "predictionEndVariance": 1.0028049999999988,
+        "historicalResidualVariance": 1.6642621754448346,
+        "predictionResidualVariance": 1.5931200450244203,
+        "predictionEndVariance": 0.9987655555555548,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -492,15 +492,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 36.00000000000001,
-        "predEndMean": 39.9995,
+        "predStartMean": 36.0,
+        "predEndMean": 39.998999999999995,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.6017765325273712,
-        "predictionResidualVariance": 1.4460391482244603,
-        "predictionEndVariance": 225.0194272222222,
+        "historicalResidualVariance": 1.6037897069054927,
+        "predictionResidualVariance": 1.592651167836792,
+        "predictionEndVariance": 224.99907666666664,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }
@@ -532,15 +532,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 36.0005,
-        "predEndMean": 39.9995,
+        "predStartMean": 36.0,
+        "predEndMean": 40.0,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.3287645221269093,
-        "predictionResidualVariance": 1.5090165183658937,
-        "predictionEndVariance": 64.00647166666667,
+        "historicalResidualVariance": 1.415757107886276,
+        "predictionResidualVariance": 1.707190518671143,
+        "predictionEndVariance": 63.98746555555555,
         "positiveEndpointRatio": 0.7,
         "negativeEndpointRatio": 0.3
       }
@@ -572,15 +572,15 @@
         "predEndDate": "2025-06-30",
         "histStartMean": 42.0,
         "histEndMean": 36.0,
-        "predStartMean": 35.999,
-        "predEndMean": 39.9995,
+        "predStartMean": 36.0005,
+        "predEndMean": 39.999500000000005,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.5339524112775385,
-        "predictionResidualVariance": 1.5580130513583637,
-        "predictionEndVariance": 64.00526055555554,
+        "historicalResidualVariance": 1.258203137176467,
+        "predictionResidualVariance": 1.6302808020451773,
+        "predictionEndVariance": 63.98938277777778,
         "positiveEndpointRatio": 0.3,
         "negativeEndpointRatio": 0.7
       }
@@ -613,14 +613,14 @@
         "histStartMean": 42.0,
         "histEndMean": 36.0,
         "predStartMean": 35.99999999999999,
-        "predEndMean": 39.999,
+        "predEndMean": 39.998999999999995,
         "scenarioCounts": {
           "A": 10,
           "B": 10
         },
-        "historicalResidualVariance": 1.6144176775856698,
-        "predictionResidualVariance": 1.6684886757224255,
-        "predictionEndVariance": 64.0047422222222,
+        "historicalResidualVariance": 1.684220320073484,
+        "predictionResidualVariance": 1.7876464687627194,
+        "predictionEndVariance": 63.98645333333333,
         "positiveEndpointRatio": 0.5,
         "negativeEndpointRatio": 0.5
       }

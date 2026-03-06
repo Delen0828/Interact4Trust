@@ -120,7 +120,7 @@ function buildTimeline() {
 	//     stimulus: `
 	//         <div class="welcome-screen">
 	//             <h1>Humidity Prediction Study</h1>
-	//             <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 15 minutes.</p>
+	//             <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 30 minutes.</p>
 	//             <div class="study-info">
 	//                 <h3>What you'll do:</h3>
 	//                 <ul>

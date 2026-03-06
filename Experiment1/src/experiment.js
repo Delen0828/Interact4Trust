@@ -3,6 +3,24 @@
 
 let jsPsych;
 let timeline = [];
+const airQualityDataCache = new Map();
+const instructionStimulusPath = new URL('./stimuli/Instruction.png', import.meta.url).href;
+const defaultOrganizationLabelsBySlot = Object.freeze([
+	'Organization A',
+	'Organization B',
+	'Organization C',
+	'Organization D'
+]);
+const defaultPhaseDatasetConfig = Object.freeze({
+	file: 'synthetic_stock_data_norm.json',
+	organization: defaultOrganizationLabelsBySlot[0],
+	cityA: 'City A',
+	cityB: 'City B',
+	colors: {
+		cityA: '#0891B2',
+		cityB: '#7C3AED'
+	}
+});
 
 // Wait for config to be loaded
 function waitForConfig() {
@@ -106,7 +124,8 @@ function buildTimeline() {
 			'../src/stimuli/minivlat-images/StackedArea.png',
 			'../src/stimuli/minivlat-images/BubbleChart.png',
 			'../src/stimuli/minivlat-images/Choropleth.png',
-			'../src/stimuli/minivlat-images/TreeMap.png'
+			'../src/stimuli/minivlat-images/TreeMap.png',
+			instructionStimulusPath
 		],
 		message: 'Loading assessment images...',
 		show_progress_bar: true,
@@ -120,7 +139,7 @@ function buildTimeline() {
 	    stimulus: `
 	        <div class="welcome-screen">
 	            <h1>Humidity Prediction Study</h1>
-	            <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 15 minutes.</p>
+	            <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 30 minutes.</p>
 	            <div class="study-info">
 	                <h3>What you'll do:</h3>
 	                <ul>
@@ -277,11 +296,11 @@ function buildTimeline() {
 	                <p><strong>This assessment will take approximately 5-10 minutes.</strong></p>
 	                <p>There are no right or wrong interpretations - we're interested in how you read visualizations.</p>
 	            </div>
-	            <div class="assessment-info">
-	                <h3>Main task (after the assessment):</h3>
-	                <p>You will make predictions about humidity in two hypothetical cities, <strong>City A</strong> and <strong>City B</strong>.</p>
-	                <p>Humidity is measured on a scale from 0 to 100, and your task is to predict which city is likely to have higher or lower humidity in the future.</p>
-	            </div>
+		            <div class="assessment-info">
+		                <h3>Main task (after the assessment):</h3>
+		                <p>You will make predictions about humidity in two hypothetical cities (the names vary by forecast round).</p>
+		                <p>Humidity is measured on a scale from 0 to 100, and your task is to predict which city is likely to have higher or lower humidity in the future.</p>
+		            </div>
 	        </div>
 	    `,
 	    choices: ['Begin Assessment'],
@@ -307,40 +326,47 @@ function buildTimeline() {
 	// Instructions
 	timeline.push({
 	    type: jsPsychInstructions,
-	    pages: [
-	        `<div class="instructions">
-	            <h2>Humidity Context</h2>
-	            <p>You will be making predictions about humidity in two hypothetical cities: <br> <strong>City A</strong> and <strong>City B</strong>.</p>
-	            <p>Humidity is measured in a scale from 0 to 100.</p>
-	            <p>Your task is to predict which city is likely to have higher or lower humidity in the future.</p>
-	            <p>You will complete <strong>4 phases</strong>. Each phase includes one prediction page, one bug feedback page, trust questions, and interaction questions.</p>
-	            <p>The order and condition sequence for Phases 2-4 are determined by the study version ID.</p>
-	        </div>`
-	    ],
+		    pages: [
+		        `<div class="instructions">
+		            <h2>Humidity Context</h2>
+		            <p>You will be making predictions about humidity in two hypothetical cities (names shown in each forecast round).</p>
+		            <p>Humidity is measured in a scale from 0 to 100.</p>
+		            <p>Your task is to predict which city is likely to have higher or lower humidity in the future.</p>
+		        </div>`,
+		        `<div class="instructions">
+		            <h2>Humidity Context</h2>
+		            <p>You will complete <strong>4 forecast rounds</strong>. Each round includes one prediction page, one bug feedback page, trust questions, and interaction questions.</p>
+		            <p>Each round is provided by a different source: <span class="organization-badge">Organization A</span>, <span class="organization-badge">Organization B</span>, <span class="organization-badge">Organization C</span>, and <span class="organization-badge">Organization D</span>.</p>
+		            <p>The order and condition sequence for Forecast Rounds 2-4 are determined by the study version ID.</p>
+		        </div>`
+		    ],
 	    show_clickable_nav: true,
 	    data: { trial_type: 'instructions' }
 	});
 
 	timeline.push({
-		type: jsPsychHtmlButtonResponse,
-		stimulus: `
-			<div class="phase-intro-stack">
-				<div class="phase-intro">
-					<h2>Prediction Phases</h2>
-					<p>You will now complete all 4 phases in sequence.</p>
-				</div>
-				<div class="phase-intro-tips">
-					<h3>Tips</h3>
-					<ul>
-						<li>Your interactions (hover, click, and mouse movement trial) will be recorded.</li>
-						<li>No or low interaction may result in auto return.</li>
-						<li>Scrolling is disabled for interaction logging.</li>
-						<li>If you cannot see the content, zoom in/out the browser. If the problem still persists, contact the research team on Prolific.</li>
-					</ul>
-				</div>
+		type: jsPsychImageButtonResponse,
+		stimulus: instructionStimulusPath,
+		prompt: `
+			<style>
+				#jspsych-image-button-response-stimulus {
+					max-width: min(94vw, 1200px);
+					max-height: 68vh;
+					width: auto !important;
+					height: auto !important;
+					object-fit: contain;
+				}
+				.phase-intro {
+					max-width: min(94vw, 1200px);
+					margin: 0 auto;
+				}
+			</style>
+			<div class="phase-intro">
+				<h2>Humidity Forecast Rounds</h2>
+				<p>Read the instruction below carefully before you proceed</p>
 			</div>
 		`,
-		choices: ['Start Phase 1'],
+		choices: ['Start Forecast Round 1'],
 		data: { trial_type: 'phases_intro' }
 	});
 
@@ -365,6 +391,71 @@ function buildTimeline() {
 		return assignments[phaseKey] || null;
 	}
 
+	function getPhaseDatasetConfig(phaseSlot) {
+		return resolveDatasetConfigForPhase(phaseSlot);
+	}
+
+	function getPhaseCityLabels(phaseSlot) {
+		const datasetConfig = getPhaseDatasetConfig(phaseSlot);
+		return {
+			cityA: datasetConfig.cityA,
+			cityB: datasetConfig.cityB
+		};
+	}
+
+	function getPhaseCityColors(phaseSlot) {
+		const datasetConfig = getPhaseDatasetConfig(phaseSlot);
+		return {
+			cityA: datasetConfig.colors.cityA,
+			cityB: datasetConfig.colors.cityB
+		};
+	}
+
+	function escapeHtml(value) {
+		return String(value ?? '')
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;');
+	}
+
+	function getPhaseOrganizationLabel(phaseSlot) {
+		const datasetConfig = getPhaseDatasetConfig(phaseSlot);
+		return datasetConfig.organization || getDefaultOrganizationForPhaseSlot(phaseSlot);
+	}
+
+	function getOrganizationBadgeHtml(organizationLabel) {
+		return `<span class="organization-badge">${escapeHtml(organizationLabel)}</span>`;
+	}
+
+	function getPhaseOrganizationBadgeHtml(phaseSlot) {
+		return getOrganizationBadgeHtml(getPhaseOrganizationLabel(phaseSlot));
+	}
+
+	function replaceCityNames(text, cityA, cityB) {
+		return String(text || '')
+			.replace(/\bCity A\b/g, cityA)
+			.replace(/\bCity B\b/g, cityB);
+	}
+
+	function getPhaseQuestionText(phaseSlot) {
+		const cityLabels = getPhaseCityLabels(phaseSlot);
+		return replaceCityNames(window.ExperimentConfig.predictionTask.question, cityLabels.cityA, cityLabels.cityB);
+	}
+
+	function getPhaseTravelQuestionText(phaseSlot) {
+		const cityLabels = getPhaseCityLabels(phaseSlot);
+		return replaceCityNames(window.ExperimentConfig.predictionTask.travelQuestion, cityLabels.cityA, cityLabels.cityB);
+	}
+
+	function getPhaseTravelChoices(phaseSlot) {
+		const cityLabels = getPhaseCityLabels(phaseSlot);
+		return window.ExperimentConfig.predictionTask.travelChoices.map((choice) => {
+			return replaceCityNames(choice, cityLabels.cityA, cityLabels.cityB);
+		});
+	}
+
 	function getPhaseMetadataForSlot(phaseSlot) {
 		const phaseKey = getPhaseKeyForSlot(phaseSlot);
 		const phaseCondition = getPhaseConditionForSlot(phaseSlot);
@@ -383,6 +474,7 @@ function buildTimeline() {
 
 	function getPhaseTrialData(trialType, phaseSlot, extraData = {}) {
 		const phaseMetadata = getPhaseMetadataForSlot(phaseSlot);
+		const phaseDataset = getPhaseDatasetConfig(phaseSlot);
 		return {
 			trial_type: trialType,
 			phase_slot: phaseMetadata.phaseSlot,
@@ -392,6 +484,12 @@ function buildTimeline() {
 			condition_name: phaseMetadata.conditionName,
 			display_format: phaseMetadata.displayFormat,
 			visualization_technique: phaseMetadata.technique,
+			phase_dataset_file: phaseDataset.file,
+			forecast_organization: phaseDataset.organization,
+			city_a_label: phaseDataset.cityA,
+			city_b_label: phaseDataset.cityB,
+			city_a_color: phaseDataset.colors.cityA,
+			city_b_color: phaseDataset.colors.cityB,
 			...extraData
 		};
 	}
@@ -410,22 +508,44 @@ function buildTimeline() {
 	}
 
 	function appendWithinParticipantPhase(phaseSlot) {
+		const phaseCityLabels = getPhaseCityLabels(phaseSlot);
+		const phaseOrganization = getPhaseOrganizationLabel(phaseSlot);
+		const phaseOrganizationBadge = getPhaseOrganizationBadgeHtml(phaseSlot);
+
+		timeline.push({
+			type: jsPsychHtmlButtonResponse,
+			stimulus: `
+				<div class="phase-intro">
+					<h2>Forecast Round ${phaseSlot}</h2>
+					<p>You will be comparing <strong>${escapeHtml(phaseCityLabels.cityA)}</strong> and <strong>${escapeHtml(phaseCityLabels.cityB)}</strong>.</p>
+					<p>The prediction is provided by ${phaseOrganizationBadge}.</p>
+				</div>
+			`,
+			choices: [`Start Forecast Round ${phaseSlot}`],
+			data: function() {
+				return getPhaseTrialData('forecast_round_intro', phaseSlot, { round: 1 });
+			}
+		});
+
 		timeline.push({
 			type: window.jsPsychPredictionTask,
 			phase: phaseSlot,
 			round: 1,
 			show_visualization: true,
 			show_predictions: true,
+			forecast_organization: phaseOrganization,
 			visualization_condition: function () {
 				return getPhaseConditionForSlot(phaseSlot);
 			},
 			air_quality_data: async function () {
-				return await getAirQualityData();
+				return await getAirQualityData(phaseSlot);
 			},
-			question: window.ExperimentConfig.predictionTask.question,
+			question: getPhaseQuestionText(phaseSlot),
 			confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-			travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
-			travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
+			travel_question: getPhaseTravelQuestionText(phaseSlot),
+			travel_choices: getPhaseTravelChoices(phaseSlot),
+			city_labels: getPhaseCityLabels(phaseSlot),
+			city_colors: getPhaseCityColors(phaseSlot),
 			data: function() {
 				return getPhaseTrialData('phase_prediction', phaseSlot, {
 					round: 1,
@@ -443,7 +563,7 @@ function buildTimeline() {
 			preamble: `
 				<div class="interaction-feedback-preamble">
 					<h3>Interaction Feedback</h3>
-					<p>Please share your feedback about the interaction you just experienced.</p>
+					<p>Please share your feedback about the interaction you just experienced for ${phaseOrganizationBadge}.</p>
 				</div>
 			`,
 			data: function() {
@@ -453,15 +573,18 @@ function buildTimeline() {
 
 		timeline.push({
 			type: jsPsychTrustSurvey,
-			questions: window.ExperimentConfig.visualizationTrustQuestions,
+			questions: [
+				...window.ExperimentConfig.visualizationTrustQuestions,
+				...window.ExperimentConfig.interactionQuestions
+			],
 			preamble: `
                 <div class="trust-survey-preamble">
-                    <h3>Trust Questions</h3>
-                    <p>Please rate your agreement with the following statements about the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
+                    <h3>Trust and Interaction Questions</h3>
+					<p>Please answer these questions for the forecast from ${phaseOrganizationBadge}.</p>
                 </div>
             `,
 			data: function() {
-				return getPhaseTrialData('trust_survey_visualization', phaseSlot, { round: 1 });
+				return getPhaseTrialData('trust_survey_combined', phaseSlot, { round: 1 });
 			},
 			on_finish: function (data) {
 				// Convert 0-based to 1-7 scale indexing and rename response fields for consistency
@@ -476,21 +599,7 @@ function buildTimeline() {
 					Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
 			}
 		});
-
-		timeline.push({
-			type: jsPsychTrustSurvey,
-			questions: window.ExperimentConfig.interactionQuestions,
-			preamble: `
-                <div class="trust-survey-preamble">
-                    <h3>Interaction Questions</h3>
-                    <p>Please rate your agreement with the following statements based on your experience with the <span class="forecast-data-pill">forecast data</span> interface.</p>
-                </div>
-            `,
-			data: function() {
-				return getPhaseTrialData('trust_survey_interface', phaseSlot, { round: 1 });
-			}
-		});
-	}
+		}
 
 	for (let phaseSlot = 1; phaseSlot <= 4; phaseSlot += 1) {
 		appendWithinParticipantPhase(phaseSlot);
@@ -605,7 +714,7 @@ function buildTimeline() {
                 <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
                 
                 <h3>Study Background:</h3>
-	                <p>You completed a baseline phase and three additional visualization phases in a predefined version-specific order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+		                <p>You completed one baseline forecast round and three additional visualization forecast rounds in a predefined version-specific order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
                 
                 <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
                 <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
@@ -661,76 +770,160 @@ function buildTimeline() {
 
 // Helper Functions
 
+function getDefaultOrganizationForPhaseSlot(phaseSlot) {
+	return defaultOrganizationLabelsBySlot[phaseSlot - 1] || `Organization ${phaseSlot}`;
+}
 
-// Get Humidity data for specific round  
-async function getAirQualityData() {
+
+function resolveDatasetConfigForPhase(phaseSlot) {
+	const datasets = window.ExperimentConfig?.phaseDatasets || {};
+	const phaseKey = `phase${phaseSlot}`;
+	const configured = datasets[phaseKey];
+	const fallbackOrganization = getDefaultOrganizationForPhaseSlot(phaseSlot);
+
+	if (!configured || !configured.file) {
+		return {
+			...defaultPhaseDatasetConfig,
+			organization: fallbackOrganization,
+			colors: { ...defaultPhaseDatasetConfig.colors }
+		};
+	}
+
+	return {
+		file: configured.file,
+		organization: configured.organization || fallbackOrganization,
+		cityA: configured.cityA || defaultPhaseDatasetConfig.cityA,
+		cityB: configured.cityB || defaultPhaseDatasetConfig.cityB,
+		colors: {
+			cityA: configured.colors?.cityA || defaultPhaseDatasetConfig.colors.cityA,
+			cityB: configured.colors?.cityB || defaultPhaseDatasetConfig.colors.cityB
+		}
+	};
+}
+
+function normalizePhaseDatasetRows(rawRows, datasetConfig) {
+	if (!Array.isArray(rawRows)) {
+		throw new Error(`Expected dataset rows to be an array, got ${typeof rawRows}`);
+	}
+	if (rawRows.length === 0) {
+		throw new Error('Dataset rows array is empty');
+	}
+
+	const observedNames = [...new Set(
+		rawRows
+			.map((row) => row?.stock ?? row?.city)
+			.filter((value) => typeof value === 'string' && value.trim().length > 0)
+	)];
+
+	const fallbackCityA = observedNames[0] || datasetConfig.cityA || defaultPhaseDatasetConfig.cityA;
+	const fallbackCityB = observedNames[1] || datasetConfig.cityB || defaultPhaseDatasetConfig.cityB;
+
+	const cityAName = observedNames.includes(datasetConfig.cityA) ? datasetConfig.cityA : fallbackCityA;
+	const cityBName = observedNames.includes(datasetConfig.cityB) ? datasetConfig.cityB : fallbackCityB;
+
+	const nameToKey = new Map([
+		['A', 'A'],
+		['B', 'B'],
+		[cityAName, 'A'],
+		[cityBName, 'B']
+	]);
+
+	const normalizedRows = rawRows
+		.map((row) => {
+			if (!row || typeof row !== 'object') return null;
+			const sourceName = row.stock ?? row.city;
+			const mappedStock = nameToKey.get(sourceName);
+			if (!mappedStock) return null;
+			return {
+				...row,
+				stock: mappedStock
+			};
+		})
+		.filter(Boolean);
+
+	const mappedStocks = new Set(normalizedRows.map((row) => row.stock));
+	if (!mappedStocks.has('A') || !mappedStocks.has('B')) {
+		throw new Error(
+			`Normalized dataset must include two mapped city series (A and B). Found: ${Array.from(mappedStocks).join(', ')}`
+		);
+	}
+
+	return normalizedRows;
+}
+
+// Get Humidity data for a specific phase.
+async function getAirQualityData(phaseSlot = 1) {
+	const datasetConfig = resolveDatasetConfigForPhase(phaseSlot);
+	const cacheKey = `${phaseSlot}:${datasetConfig.file}`;
+	if (airQualityDataCache.has(cacheKey)) {
+		return airQualityDataCache.get(cacheKey);
+	}
+
 	try {
-		// Load synthetic Humidity data (used by display system)
-		// Try multiple possible paths depending on where experiment is running from
-		let response;
-		const possiblePaths = [
-			'synthetic_stock_data_norm.json',        // From main directory
-			'../synthetic_stock_data_norm.json',     // From src/ subdirectory  
-			'../../synthetic_stock_data_norm.json'   // From versions/versionN/ subdirectory
-		];
-		
-		for (const path of possiblePaths) {
-			try {
-				response = await fetch(path);
-				if (response.ok) {
-					break; // Found working path
-				}
-			} catch (e) {
-				// Continue to next path
-				continue;
-			}
-		}
-		
-		if (!response || !response.ok) {
-			throw new Error(`Failed to load data from any of the expected paths. Tried: ${possiblePaths.join(', ')}`);
-		}
-		const cityData = await response.json();
-		
-		// Robustly extract data array from JSON structure
-		let data;
-		if (cityData && typeof cityData === 'object') {
-			// Handle wrapped format: { "data": [...] }
-			if (cityData.data && Array.isArray(cityData.data)) {
-				data = cityData.data;
-			} 
-			// Handle direct array format: [...]
-			else if (Array.isArray(cityData)) {
-				data = cityData;
-			}
-			// Handle unexpected object format
-			else {
-				console.error('Unexpected data structure:', cityData);
-				throw new Error(`Data is not in expected format. Expected array or {data: array}, got object with keys: ${Object.keys(cityData).join(', ')}`);
-			}
-		} else {
-			throw new Error(`Invalid JSON structure: expected object, got ${typeof cityData}`);
-		}
-		
-		// Validate data format and content
-		if (!Array.isArray(data)) {
-			throw new Error(`Expected data to be an array, got ${typeof data}`);
-		}
-		
-		if (data.length === 0) {
-			throw new Error('Data array is empty');
-		}
-		
-		// Validate data structure by checking first few items
-		const sampleSize = Math.min(3, data.length);
-		for (let i = 0; i < sampleSize; i++) {
-			const item = data[i];
-		}
-		
-		return data;
+		const candidatePaths = new Set();
+		const fileName = String(datasetConfig.file || '').trim();
+		const baseCandidates = fileName.includes('/')
+			? [fileName]
+			: [`generated/${fileName}`, `/${fileName}`, `/generated/${fileName}`, fileName];
+		const prefixes = ['', '../', '../../', '../../../'];
+		prefixes.forEach((prefix) => {
+			baseCandidates.forEach((candidate) => {
+				candidatePaths.add(`${prefix}${candidate}`);
+			});
+		});
+		const attemptedErrors = [];
 
+		for (const path of candidatePaths) {
+			try {
+				const response = await fetch(path, { cache: 'no-store' });
+				if (!response.ok) {
+					attemptedErrors.push(`${path} -> HTTP ${response.status}`);
+					continue;
+				}
+
+				const responseText = await response.text();
+				const trimmed = responseText.trim();
+				if (!trimmed) {
+					attemptedErrors.push(`${path} -> empty response body`);
+					continue;
+				}
+
+				const contentType = (response.headers.get('content-type') || '').toLowerCase();
+				if (contentType.includes('text/html') || trimmed.startsWith('<')) {
+					attemptedErrors.push(`${path} -> received HTML instead of JSON`);
+					continue;
+				}
+
+				let parsed;
+				try {
+					parsed = JSON.parse(responseText);
+				} catch (parseError) {
+					attemptedErrors.push(`${path} -> invalid JSON (${parseError.message})`);
+					continue;
+				}
+
+				const rows = Array.isArray(parsed) ? parsed : parsed?.data;
+				if (!Array.isArray(rows)) {
+					attemptedErrors.push(`${path} -> JSON missing data array`);
+					continue;
+				}
+
+				const normalizedRows = normalizePhaseDatasetRows(rows, datasetConfig);
+				airQualityDataCache.set(cacheKey, normalizedRows);
+				return normalizedRows;
+			} catch (error) {
+				attemptedErrors.push(`${path} -> ${error.message}`);
+			}
+		}
+
+		const summarizedErrors = attemptedErrors.slice(0, 6).join(' | ');
+		throw new Error(
+			`Failed to load dataset for phase ${phaseSlot}. Tried ${candidatePaths.size} paths. ` +
+			(summarizedErrors || 'No successful JSON response.')
+		);
 	} catch (error) {
-		console.error('Error loading Humidity data:', error);
-		throw new Error(`Failed to load required data file: ${error.message}`);
+		console.error(`Error loading Humidity data for phase ${phaseSlot}:`, error);
+		throw new Error(`Failed to load required phase dataset: ${error.message}`);
 	}
 }
 

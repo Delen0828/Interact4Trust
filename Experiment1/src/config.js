@@ -206,6 +206,49 @@ const ExperimentConfig = {
         }
     },
 
+    phaseDatasets: {
+        phase1: {
+            file: 'virexa_talmori_incHist_incPred.json',
+            organization: 'Organization A',
+            cityA: 'Virexa',
+            cityB: 'Talmori',
+            colors: {
+                cityA: '#2563EB',
+                cityB: '#D97706'
+            }
+        },
+        phase2: {
+            file: 'qelvane_rostiva_incHist_decPred.json',
+            organization: 'Organization B',
+            cityA: 'Qelvane',
+            cityB: 'Rostiva',
+            colors: {
+                cityA: '#059669',
+                cityB: '#DC2626'
+            }
+        },
+        phase3: {
+            file: 'nexari_pulveth_decHist_incPred.json',
+            organization: 'Organization C',
+            cityA: 'Nexari',
+            cityB: 'Pulveth',
+            colors: {
+                cityA: '#7C3AED',
+                cityB: '#0EA5E9'
+            }
+        },
+        phase4: {
+            file: 'zorvani_kelthar_decHist_decPred.json',
+            organization: 'Organization D',
+            cityA: 'Zorvani',
+            cityB: 'Kelthar',
+            colors: {
+                cityA: '#BE123C',
+                cityB: '#0F766E'
+            }
+        }
+    },
+
     predictionTask: {
         question: 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%',
         confidenceScale: {
@@ -213,7 +256,7 @@ const ExperimentConfig = {
             max: 7,
             labels: ['Very Uncertain', 'Uncertain', 'Somewhat Uncertain', 'Neutral', 'Somewhat Certain', 'Certain', 'Very Certain']
         },
-        travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower humidity, which city would you travel to?',
+        travelQuestion: 'If you are planning to travel after 6/01 and want the lower-humidity option, which city would you travel to: City A or City B?',
         travelChoices: ['City A', 'City B', 'No Preference']
     },
 

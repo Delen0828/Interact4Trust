@@ -30,7 +30,7 @@ Usage:
   node script/generate_synthetic_stock_data.js [options]
 
 Options:
-  --numPred <int>         Number of prediction models (scenarios) per timestamp
+  --numPred <int>         Number of prediction models (scenarios) per stock/series per timestamp
   --histStart <number>    Historical starting value
   --histEnd <number>      Historical ending value
   --predEnd <number>      Mean ending value of prediction data

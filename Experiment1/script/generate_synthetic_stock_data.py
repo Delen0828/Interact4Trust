@@ -118,13 +118,24 @@ def build_trajectory(
     if n == 1:
         return [round_price(start_value)]
 
+    # Add a smooth, endpoint-preserving seasonal component so the lines are
+    # less linear while still honoring exact start/end anchors.
+    seasonal_phase = rng.uniform(0.0, 2.0 * math.pi)
+    seasonal_cycles = 3.0
+
     values = []
     for i in range(n):
         t = i / (n - 1)
         base = start_value + (end_value - start_value) * t
         stock_shape_bias = (1 if stock_index == 0 else -1) * noise_std_dev * 0.3 * math.sin(math.pi * t)
+        seasonal_wave = (
+            noise_std_dev
+            * 0.9
+            * math.sin(math.pi * t)
+            * math.sin((2.0 * math.pi * seasonal_cycles * t) + seasonal_phase)
+        )
         noise = 0.0 if i == 0 or i == n - 1 else rng.gauss(0, noise_std_dev)
-        values.append(round_price(base + stock_shape_bias + noise))
+        values.append(round_price(base + stock_shape_bias + seasonal_wave + noise))
     return values
 
 
@@ -233,7 +244,12 @@ def parse_args() -> Dict:
         description="Generate synthetic stock-format dataset for Experiment1.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--numPred", type=int, default=DEFAULTS["numPred"], help="Prediction models per timestamp")
+    parser.add_argument(
+        "--numPred",
+        type=int,
+        default=DEFAULTS["numPred"],
+        help="Prediction models per stock/series per timestamp",
+    )
     parser.add_argument("--histStart", type=float, default=DEFAULTS["histStart"], help="Historical start value")
     parser.add_argument("--histEnd", type=float, default=DEFAULTS["histEnd"], help="Historical end value")
     parser.add_argument("--predStart", type=float, default=DEFAULTS["predStart"], help="Prediction start mean")

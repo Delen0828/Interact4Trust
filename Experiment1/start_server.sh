@@ -13,5 +13,15 @@ for dir in dist/version*; do
     [ -d "$dir" ] && cp dist/synthetic_*.json "$dir"/
 done
 
+# Ensure generated phase datasets are available in dist and each version folder.
+mkdir -p dist/generated
+cp generated/*.json dist/generated/
+for dir in dist/version*; do
+    if [ -d "$dir" ]; then
+        mkdir -p "$dir/generated"
+        cp dist/generated/*.json "$dir/generated"/
+    fi
+done
+
 # Start PHP server in dist directory
 cd dist && php -S localhost:8011

@@ -56,6 +56,7 @@ function buildIndexHtml(versionId) {
     <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.2.1/dist/index.browser.min.js"></script>
     <script src="https://unpkg.com/@jspsych/plugin-call-function@1.1.3/dist/index.browser.min.js"></script>
     <script src="https://unpkg.com/@jspsych/plugin-preload@2.1.0/dist/index.browser.min.js"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-button-response@2.1.0/dist/index.browser.min.js"></script>
 
     <script src="../src/config.js"></script>
     <script src="../src/data/airQualityData.js"></script>

@@ -95,18 +95,17 @@ var jsPsychTrustSurvey = (function (jspsych) {
             line-height: 1.4;
           }
           .trust-scale {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(var(--scale-count), minmax(0, 1fr));
+            gap: 8px;
             align-items: flex-start;
             margin-top: 10px;
-            justify-content: flex-start;
+            justify-content: stretch;
           }
           .trust-option {
             position: relative;
             cursor: pointer;
-            flex: 1;
-            min-width: 156px;
+            min-width: 0;
           }
           .trust-option input[type="radio"] {
             opacity: 0;
@@ -118,8 +117,8 @@ var jsPsychTrustSurvey = (function (jspsych) {
           }
           .trust-button {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
             padding: 0;
             background: white;
             color: #374151;
@@ -127,7 +126,7 @@ var jsPsychTrustSurvey = (function (jspsych) {
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid #ddd;
-            min-height: 104px;
+            min-height: 54px;
             box-sizing: border-box;
             position: relative;
           }
@@ -142,21 +141,36 @@ var jsPsychTrustSurvey = (function (jspsych) {
           }
           .trust-number {
             font-weight: 600;
-            font-size: 24px;
+            font-size: 20px;
             text-align: center;
             line-height: 1;
-            margin-top: 16px;
-            margin-bottom: 0;
+            margin: 0;
           }
-          .trust-label {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.25;
-            text-align: center;
-            word-wrap: break-word;
-            hyphens: auto;
+          .trust-scale-labels {
+            display: grid;
+            grid-template-columns: repeat(var(--scale-count), minmax(0, 1fr));
+            gap: 8px;
             margin-top: 8px;
-            padding: 0 8px 12px;
+            align-items: start;
+          }
+          .trust-scale-label {
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.2;
+            max-width: 120px;
+          }
+          .trust-scale-label-left {
+            justify-self: start;
+            text-align: left;
+          }
+          .trust-scale-label-center {
+            justify-self: center;
+            text-align: center;
+          }
+          .trust-scale-label-right {
+            justify-self: end;
+            text-align: right;
           }
           .submit-btn {
             background: #374151 !important;
@@ -198,16 +212,20 @@ var jsPsychTrustSurvey = (function (jspsych) {
             ${this.trial.questions.map((question, qIndex) => `
               <div class="trust-question">
                 <div class="trust-question-prompt">${question.prompt}</div>
-                <div class="trust-scale">
+                <div class="trust-scale" style="--scale-count: ${question.labels.length};">
                   ${question.labels.map((label, index) => `
                     <label class="trust-option">
                       <input type="radio" name="question_${qIndex}" value="${index}">
-                      <span class="trust-button">
+                      <span class="trust-button" title="${label}">
                         <span class="trust-number">${index + 1}</span>
-                        <span class="trust-label">${label}</span>
                       </span>
                     </label>
                   `).join('')}
+                </div>
+                <div class="trust-scale-labels" style="--scale-count: ${question.labels.length};">
+                  <span class="trust-scale-label trust-scale-label-left" style="grid-column: 1;">${question.labels[0] || ''}</span>
+                  <span class="trust-scale-label trust-scale-label-center" style="grid-column: ${Math.floor(question.labels.length / 2) + 1};">${question.labels[Math.floor(question.labels.length / 2)] || ''}</span>
+                  <span class="trust-scale-label trust-scale-label-right" style="grid-column: ${question.labels.length};">${question.labels[question.labels.length - 1] || ''}</span>
                 </div>
               </div>
             `).join('')}

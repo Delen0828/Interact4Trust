@@ -1,6 +1,6 @@
 # Python Generator Option Test Report
 
-Generated at: 2026-03-05T05:18:28.112290+00:00
+Generated at: 2026-03-06T00:15:20.725499+00:00
 Checks: 14, Passed: 14, Failed: 0
 
 ## Check Results
@@ -12,9 +12,9 @@ Checks: 14, Passed: 14, Failed: 0
 - PASS: histEnd_18: historical end mean 18.00 ~= 18.0
 - PASS: predStart_62: prediction start mean 62.00 ~= 62.0
 - PASS: predEnd_15: prediction end mean 15.00 ~= 15.0
-- PASS: noiseLevel: historical residual variance rises from 0.10 to 8.61
-- PASS: noiseLevel: prediction residual variance rises from 0.11 to 9.81
-- PASS: predVariance: endpoint spread rises from 1.00 to 225.02
+- PASS: noiseLevel: historical residual variance rises from 0.10 to 10.20
+- PASS: noiseLevel: prediction residual variance rises from 0.12 to 11.46
+- PASS: predVariance: endpoint spread rises from 1.00 to 225.00
 - PASS: skew_up: positive endpoint ratio 0.70 > 0.55
 - PASS: skew_down: positive endpoint ratio 0.30 < 0.45
 - PASS: skew_bimodel: positive endpoint ratio 0.50 is near 0.50

@@ -89,10 +89,10 @@ export class DataProcessor {
 
     /**
      * Get fixed scenarios for consistent experiment conditions
-     * Uses scenarios [1, 2, 3, 5, 8] as specified for the study
+     * Uses scenarios [1, 2, 3, 4, 5] for a fixed 5-line-per-series view
      */
     static getFixedScenarios() {
-        return ['scenario_1', 'scenario_2', 'scenario_3', 'scenario_5', 'scenario_8'];
+        return ['scenario_1', 'scenario_2', 'scenario_3', 'scenario_4', 'scenario_5'];
     }
 
     /**
@@ -134,7 +134,7 @@ export class DataProcessor {
                 .map(d => d.scenario)
             )];
             
-            // Use fixed scenarios for consistency: [1, 2, 3, 5, 8]
+            // Use fixed scenarios for consistency: [1, 2, 3, 4, 5]
             const fixedScenarios = DataProcessor.getFixedScenarios();
             
             // Only include scenarios that exist in the data
