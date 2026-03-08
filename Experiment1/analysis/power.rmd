@@ -1,0 +1,630 @@
+---
+title: "Composite Trust Regression and Power Analysis"
+output: html_document
+params:
+  data_dir: "../data/0306/data"
+  csv_pattern: "^user_.*\\.csv$"
+  alpha: 0.05
+  power_target: 0.8
+  power_nsim: 100
+  power_cores: 8
+  power_grid: [30, 45, 60, 75, 90, 120, 150, 200, 250, 300, 350, 375, 400, 425, 450]
+  seed: 20260307
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## Goal
+
+This report follows the preprocessing used in `analysis-0306.ipynb`, excludes the baseline condition, and analyzes:
+
+`composite_trust ~ interaction_availability + vis_type`
+
+Because each participant contributes three non-baseline trust responses, the regression is fit as a mixed-effects model with a participant random intercept:
+
+`composite_trust ~ interaction_availability + vis_type + (1 | participant_id)`
+
+The power analysis below uses the fitted pilot model and the observed three-row-per-participant design templates to estimate how many participants are needed for statistically significant main effects.
+
+## Packages
+
+```{r packages}
+library(dplyr)
+library(ggplot2)
+library(jsonlite)
+library(knitr)
+library(lme4)
+library(lmerTest)
+```
+
+## Paths
+
+```{r paths}
+report_dir <- local({
+  current_input <- tryCatch(
+    knitr::current_input(),
+    error = function(e) character(0)
+  )
+
+  if (length(current_input) == 1 && nzchar(current_input)) {
+    input_path <- current_input
+
+    if (!grepl("^(/|[A-Za-z]:[/\\\\])", input_path)) {
+      input_path <- file.path(getwd(), input_path)
+    }
+
+    if (grepl("\\.[Rr]md$", input_path) || file.exists(input_path)) {
+      return(normalizePath(dirname(input_path), winslash = "/", mustWork = TRUE))
+    }
+  }
+
+  current_input_dir <- tryCatch(
+    knitr::current_input(dir = TRUE),
+    error = function(e) character(0)
+  )
+
+  if (length(current_input_dir) == 1 && nzchar(current_input_dir)) {
+    if (grepl("\\.[Rr]md$", current_input_dir)) {
+      return(normalizePath(dirname(current_input_dir), winslash = "/", mustWork = TRUE))
+    }
+
+    if (dir.exists(current_input_dir)) {
+      return(normalizePath(current_input_dir, winslash = "/", mustWork = TRUE))
+    }
+  }
+
+  fallback_dir <- file.path(getwd(), "Experiment1", "analysis")
+  normalizePath(fallback_dir, winslash = "/", mustWork = TRUE)
+})
+
+resolve_report_path <- function(path_value) {
+  if (grepl("^(/|[A-Za-z]:[/\\\\])", path_value)) {
+    return(normalizePath(path_value, winslash = "/", mustWork = TRUE))
+  }
+
+  normalizePath(
+    file.path(report_dir, path_value),
+    winslash = "/",
+    mustWork = TRUE
+  )
+}
+
+data_dir <- resolve_report_path(params$data_dir)
+```
+
+## Helper Functions
+
+```{r helpers}
+extract_condition_number <- function(condition_id) {
+  if (is.na(condition_id) || !nzchar(condition_id)) {
+    return(NA_real_)
+  }
+
+  parts <- strsplit(as.character(condition_id), "_")[[1]]
+  hits <- parts[grepl("^[0-9]+$", parts)]
+
+  if (length(hits) == 0) {
+    return(NA_real_)
+  }
+
+  as.numeric(hits[[1]])
+}
+
+load_participant_data <- function(file_path) {
+  df <- read.csv(file_path, stringsAsFactors = FALSE)
+  df$source_file <- basename(file_path)
+
+  if (!"participant_id" %in% names(df) || all(is.na(df$participant_id))) {
+    participant_id <- strsplit(
+      tools::file_path_sans_ext(basename(file_path)),
+      "_"
+    )[[1]][2]
+    df$participant_id <- participant_id
+  }
+
+  if ("condition_id" %in% names(df)) {
+    df$condition_id[is.na(df$condition_id)] <- "unknown"
+    df$condition_number <- vapply(
+      df$condition_id,
+      extract_condition_number,
+      numeric(1)
+    )
+  } else {
+    df$condition_id <- "unknown"
+    df$condition_number <- NA_real_
+  }
+
+  df
+}
+
+parse_response_json <- function(value) {
+  if (is.na(value) || !nzchar(value)) {
+    return(list())
+  }
+
+  parsed <- tryCatch(
+    fromJSON(value, simplifyVector = TRUE),
+    error = function(e) list()
+  )
+
+  if (is.null(parsed)) {
+    return(list())
+  }
+
+  parsed
+}
+
+expand_response_columns <- function(data) {
+  parsed <- lapply(data$response, parse_response_json)
+  expanded <- bind_rows(
+    lapply(parsed, function(x) {
+      if (length(x) == 0) {
+        return(data.frame())
+      }
+
+      as.data.frame(x, stringsAsFactors = FALSE)
+    })
+  )
+
+  if (nrow(expanded) == 0) {
+    expanded <- data.frame(row.names = seq_len(nrow(data)))
+  }
+
+  if (nrow(expanded) < nrow(data)) {
+    expanded[(nrow(expanded) + 1):nrow(data), ] <- NA
+  }
+
+  overlap <- intersect(names(expanded), names(data))
+  if (length(overlap) > 0) {
+    data <- data[, setdiff(names(data), overlap), drop = FALSE]
+  }
+
+  bind_cols(data, expanded)
+}
+
+normalize_likert_0_6_to_1_7 <- function(values) {
+  numeric_values <- suppressWarnings(as.numeric(values))
+  valid <- numeric_values[!is.na(numeric_values)]
+
+  if (length(valid) == 0) {
+    return(numeric_values)
+  }
+
+  if (all(valid >= 0 & valid <= 6)) {
+    return(pmin(pmax(numeric_values + 1, 1), 7))
+  }
+
+  numeric_values
+}
+
+reverse_likert_1_7 <- function(values) {
+  8 - suppressWarnings(as.numeric(values))
+}
+
+map_interaction_availability <- function(condition_number) {
+  dplyr::case_when(
+    condition_number %in% c(2, 3, 9) ~ "static",
+    condition_number %in% c(4, 5, 6) ~ "interactive",
+    condition_number %in% c(18, 19, 20) ~ "buggy",
+    TRUE ~ NA_character_
+  )
+}
+
+map_vis_type <- function(condition_number) {
+  dplyr::case_when(
+    condition_number %in% c(2, 5, 19) ~ "CI",
+    condition_number %in% c(3, 4, 18) ~ "Ensemble",
+    condition_number %in% c(6, 9, 20) ~ "Combined",
+    TRUE ~ NA_character_
+  )
+}
+
+fit_trust_model <- function(data, reml = TRUE) {
+  contrasts(data$interaction_availability) <- contr.sum(3)
+  contrasts(data$vis_type) <- contr.sum(3)
+
+  lmer(
+    composite_trust ~ interaction_availability + vis_type + (1 | participant_id),
+    data = data,
+    REML = reml
+  )
+}
+
+build_power_context <- function(pilot_data, pilot_model) {
+  participant_templates <- pilot_data %>%
+    group_by(participant_id) %>%
+    summarise(
+      interaction_levels = list(as.character(interaction_availability)),
+      vis_levels = list(as.character(vis_type)),
+      .groups = "drop"
+    )
+
+  vc <- as.data.frame(VarCorr(pilot_model))
+  list(
+    participant_templates = participant_templates,
+    participant_sd = vc$sdcor[vc$grp == "participant_id"][1],
+    residual_sd = sigma(pilot_model),
+    fixed_effects = fixef(pilot_model),
+    interaction_levels = levels(pilot_data$interaction_availability),
+    vis_levels = levels(pilot_data$vis_type)
+  )
+}
+
+simulate_dataset_from_context <- function(n_participants, power_context) {
+  template_idx <- sample(
+    seq_len(nrow(power_context$participant_templates)),
+    size = n_participants,
+    replace = TRUE
+  )
+
+  simulated_rows <- vector("list", n_participants)
+
+  for (i in seq_len(n_participants)) {
+    design <- data.frame(
+      participant_id = factor(paste0("sim_", i)),
+      interaction_availability = factor(
+        power_context$participant_templates$interaction_levels[[template_idx[i]]],
+        levels = power_context$interaction_levels
+      ),
+      vis_type = factor(
+        power_context$participant_templates$vis_levels[[template_idx[i]]],
+        levels = power_context$vis_levels
+      )
+    )
+
+    contrasts(design$interaction_availability) <- contr.sum(3)
+    contrasts(design$vis_type) <- contr.sum(3)
+
+    subject_effect <- rnorm(1, mean = 0, sd = power_context$participant_sd)
+    mu <- as.numeric(
+      model.matrix(~ interaction_availability + vis_type, design) %*% power_context$fixed_effects
+    )
+
+    design$composite_trust <- rnorm(
+      n = nrow(design),
+      mean = mu + subject_effect,
+      sd = power_context$residual_sd
+    )
+
+    simulated_rows[[i]] <- design
+  }
+
+  bind_rows(simulated_rows)
+}
+
+estimate_power <- function(n_participants, power_context, alpha = 0.05, nsim = 40) {
+  hits_interaction <- logical(nsim)
+  hits_vis <- logical(nsim)
+
+  for (sim_idx in seq_len(nsim)) {
+    sim_data <- simulate_dataset_from_context(
+      n_participants = n_participants,
+      power_context = power_context
+    )
+
+    sim_fit <- suppressWarnings(fit_trust_model(sim_data, reml = FALSE))
+    sim_anova <- suppressMessages(anova(sim_fit, type = 3))
+    row_names <- rownames(sim_anova)
+
+    p_interaction <- sim_anova[
+      grep("^interaction_availability$", row_names),
+      "Pr(>F)"
+    ]
+    p_vis <- sim_anova[
+      grep("^vis_type$", row_names),
+      "Pr(>F)"
+    ]
+
+    hits_interaction[sim_idx] <- length(p_interaction) == 1 && !is.na(p_interaction) && p_interaction < alpha
+    hits_vis[sim_idx] <- length(p_vis) == 1 && !is.na(p_vis) && p_vis < alpha
+  }
+
+  data.frame(
+    n_participants = n_participants,
+    power_interaction = mean(hits_interaction),
+    power_vis_type = mean(hits_vis),
+    power_both = mean(hits_interaction & hits_vis)
+  )
+}
+
+first_n_at_target <- function(power_table, column_name, target) {
+  hits <- power_table[power_table[[column_name]] >= target, "n_participants", drop = TRUE]
+  if (length(hits) == 0) {
+    return(NA_real_)
+  }
+  min(hits)
+}
+```
+
+## Load the 0306 Data
+
+```{r load-data}
+csv_files <- sort(list.files(
+  data_dir,
+  pattern = params$csv_pattern,
+  full.names = TRUE
+))
+
+raw_data <- bind_rows(lapply(csv_files, load_participant_data)) %>%
+  filter(!is.na(participant_id)) %>%
+  filter(tolower(as.character(participant_id)) != "test")
+
+relevant_trial_types <- c(
+  "prediction-task",
+  "vis-literacy",
+  "trust-survey",
+  "personality-survey",
+  "survey-multi-choice",
+  "survey-text",
+  "interaction-feedback"
+)
+
+relevant_trials <- raw_data %>%
+  filter(trial_type %in% relevant_trial_types) %>%
+  mutate(
+    interaction_freq = log1p(
+      nchar(ifelse(is.na(interaction_log), "", as.character(interaction_log)))
+    )
+  )
+
+trust_survey_rows <- relevant_trials %>%
+  filter(trial_type == "trust-survey")
+
+trust_survey_expanded <- expand_response_columns(trust_survey_rows)
+
+trust_question_keys <- c(
+  "skeptical_rating",
+  "data_trust",
+  "usability_difficulty",
+  "comprehension_ease"
+)
+
+for (col in trust_question_keys) {
+  if (col %in% names(trust_survey_expanded)) {
+    trust_survey_expanded[[col]] <- normalize_likert_0_6_to_1_7(
+      trust_survey_expanded[[col]]
+    )
+  }
+}
+```
+
+## Build the Analysis Dataset
+
+This keeps only the nine treatment conditions and excludes baseline (`condition_1_baseline`).
+
+```{r analysis-data}
+analysis_data <- trust_survey_expanded %>%
+  filter(!is.na(skeptical_rating)) %>%
+  mutate(
+    condition_number = suppressWarnings(as.numeric(condition_number)),
+    interaction_availability = map_interaction_availability(condition_number),
+    vis_type = map_vis_type(condition_number),
+    skeptical_rating_scored = reverse_likert_1_7(skeptical_rating),
+    data_trust_scored = suppressWarnings(as.numeric(data_trust)),
+    usability_difficulty_scored = reverse_likert_1_7(usability_difficulty),
+    comprehension_ease_scored = suppressWarnings(as.numeric(comprehension_ease)),
+    composite_trust = rowMeans(
+      cbind(
+        skeptical_rating_scored,
+        data_trust_scored,
+        usability_difficulty_scored,
+        comprehension_ease_scored
+      ),
+      na.rm = TRUE
+    )
+  ) %>%
+  filter(!is.na(interaction_availability)) %>%
+  filter(!is.na(vis_type)) %>%
+  filter(is.finite(composite_trust)) %>%
+  mutate(
+    interaction_availability = factor(
+      interaction_availability,
+      levels = c("static", "interactive", "buggy")
+    ),
+    vis_type = factor(
+      vis_type,
+      levels = c("CI", "Ensemble", "Combined")
+    ),
+    participant_id = factor(participant_id)
+  ) %>%
+  group_by(participant_id, interaction_availability, vis_type) %>%
+  summarise(
+    composite_trust = mean(composite_trust),
+    .groups = "drop"
+  )
+
+participant_row_counts <- analysis_data %>%
+  count(participant_id, name = "treatment_rows")
+
+complete_participants <- participant_row_counts %>%
+  filter(treatment_rows == 3) %>%
+  pull(participant_id)
+
+analysis_data <- analysis_data %>%
+  filter(participant_id %in% complete_participants) %>%
+  droplevels()
+
+analysis_overview <- data.frame(
+  metric = c(
+    "Participant CSV files",
+    "Participants after dropping test IDs",
+    "Trust-survey rows",
+    "Participants in final treatment dataset",
+    "Treatment observations in final dataset"
+  ),
+  value = c(
+    length(csv_files),
+    dplyr::n_distinct(raw_data$participant_id),
+    nrow(trust_survey_rows),
+    dplyr::n_distinct(analysis_data$participant_id),
+    nrow(analysis_data)
+  )
+)
+
+kable(analysis_overview, align = c("l", "r"))
+```
+
+### Cell Counts
+
+```{r cell-counts}
+cell_counts <- analysis_data %>%
+  count(interaction_availability, vis_type, name = "n")
+
+kable(cell_counts)
+```
+
+### Factor Means
+
+```{r factor-means}
+interaction_summary <- analysis_data %>%
+  group_by(interaction_availability) %>%
+  summarise(
+    participants = n_distinct(participant_id),
+    rows = n(),
+    mean_composite_trust = mean(composite_trust),
+    sd_composite_trust = sd(composite_trust),
+    .groups = "drop"
+  )
+
+vis_summary <- analysis_data %>%
+  group_by(vis_type) %>%
+  summarise(
+    participants = n_distinct(participant_id),
+    rows = n(),
+    mean_composite_trust = mean(composite_trust),
+    sd_composite_trust = sd(composite_trust),
+    .groups = "drop"
+  )
+
+kable(interaction_summary, digits = 3)
+kable(vis_summary, digits = 3)
+```
+
+## Regression
+
+```{r model-fit}
+trust_model <- fit_trust_model(analysis_data, reml = TRUE)
+
+model_summary <- summary(trust_model)
+anova_summary <- anova(trust_model, type = 3)
+
+model_summary
+anova_summary
+```
+
+```{r observed-plot, fig.width=8, fig.height=5}
+ggplot(
+  analysis_data,
+  aes(x = vis_type, y = composite_trust, color = interaction_availability)
+) +
+  stat_summary(fun = mean, geom = "point", size = 3, position = position_dodge(width = 0.2)) +
+  stat_summary(
+    fun.data = mean_se,
+    geom = "errorbar",
+    width = 0.15,
+    position = position_dodge(width = 0.2)
+  ) +
+  labs(
+    title = "Composite Trust by Interaction Availability and Visualization Type",
+    x = "Visualization type",
+    y = "Composite trust score",
+    color = "Interaction availability"
+  ) +
+  theme_minimal(base_size = 12)
+```
+
+## Power Analysis
+
+The simulation below uses the fitted pilot model, the observed participant-level three-row treatment design, and `r params$power_nsim` simulated datasets per candidate sample size.
+
+```{r power-analysis}
+set.seed(params$seed)
+
+power_context <- build_power_context(analysis_data, trust_model)
+
+power_runner <- function(n_value) {
+  estimate_power(
+    n_participants = n_value,
+    power_context = power_context,
+    alpha = params$alpha,
+    nsim = params$power_nsim
+  )
+}
+
+power_results <- if (.Platform$OS.type != "windows" && params$power_cores > 1) {
+  bind_rows(
+    parallel::mclapply(
+      params$power_grid,
+      power_runner,
+      mc.cores = params$power_cores,
+      mc.set.seed = TRUE
+    )
+  )
+} else {
+  bind_rows(lapply(params$power_grid, power_runner))
+}
+
+power_results <- power_results %>%
+  arrange(n_participants)
+
+recommended_n_interaction <- first_n_at_target(
+  power_results,
+  "power_interaction",
+  params$power_target
+)
+recommended_n_vis <- first_n_at_target(
+  power_results,
+  "power_vis_type",
+  params$power_target
+)
+recommended_n_both <- first_n_at_target(
+  power_results,
+  "power_both",
+  params$power_target
+)
+
+kable(power_results, digits = 3)
+```
+
+```{r power-plot, fig.width=8, fig.height=5}
+power_long <- bind_rows(
+  data.frame(
+    n_participants = power_results$n_participants,
+    outcome = "interaction_availability",
+    power = power_results$power_interaction
+  ),
+  data.frame(
+    n_participants = power_results$n_participants,
+    outcome = "vis_type",
+    power = power_results$power_vis_type
+  ),
+  data.frame(
+    n_participants = power_results$n_participants,
+    outcome = "both main effects",
+    power = power_results$power_both
+  )
+)
+
+ggplot(power_long, aes(x = n_participants, y = power, color = outcome)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2) +
+  geom_hline(
+    yintercept = params$power_target,
+    linetype = "dashed",
+    color = "gray45"
+  ) +
+  scale_y_continuous(limits = c(0, 1)) +
+  labs(
+    title = "Simulation-Based Power Curve",
+    x = "Participants",
+    y = "Estimated power",
+    color = "Target"
+  ) +
+  theme_minimal(base_size = 12)
+```
