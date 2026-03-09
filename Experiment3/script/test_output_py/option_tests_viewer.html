@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Generator Option Tests</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f6f8;
+      color: #1f2937;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      min-height: 100vh;
+    }
+    .panel {
+      padding: 16px;
+      border-right: 1px solid #d1d5db;
+      background: white;
+      overflow-y: auto;
+    }
+    .panel h1 { font-size: 18px; margin: 0 0 8px 0; }
+    .panel p { font-size: 13px; line-height: 1.4; color: #4b5563; margin: 0 0 12px 0; }
+    .case-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+      cursor: pointer;
+    }
+    .case-btn:hover { background: #eef2ff; }
+    .case-btn.active { border-color: #2563eb; background: #eff6ff; }
+    .case-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .case-desc { font-size: 12px; color: #4b5563; }
+    .viewer { display: grid; grid-template-rows: auto 1fr; min-height: 100vh; }
+    .meta {
+      padding: 10px 14px;
+      border-bottom: 1px solid #d1d5db;
+      background: white;
+      font-size: 13px;
+    }
+    iframe {
+      width: 100%;
+      height: calc(100vh - 46px);
+      border: 0;
+      background: white;
+    }
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .panel { border-right: 0; border-bottom: 1px solid #d1d5db; max-height: 45vh; }
+      iframe { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div class="panel">
+      <h1>Python Option Test Viewer</h1>
+      <p>Each case reuses <code>conditions.html</code> and loads a Python-generated dataset for visual validation.</p>
+      <div id="caseList"></div>
+    </div>
+    <div class="viewer">
+      <div class="meta" id="meta"></div>
+      <iframe id="frame" src="" title="Visualization"></iframe>
+    </div>
+  </div>
+  <script>
+    const cases = [
+  {
+    "id": "baseline",
+    "title": "baseline (baseline)",
+    "description": "Reference run with balanced bimodal endpoints.",
+    "dataRelativePath": "script/test_output_py/data/baseline.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/baseline.json"
+  },
+  {
+    "id": "numPred_3",
+    "title": "numPred_3 (numPred)",
+    "description": "3 prediction models per timestamp.",
+    "dataRelativePath": "script/test_output_py/data/numPred_3.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/numPred_3.json"
+  },
+  {
+    "id": "numPred_16",
+    "title": "numPred_16 (numPred)",
+    "description": "16 prediction models per timestamp.",
+    "dataRelativePath": "script/test_output_py/data/numPred_16.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/numPred_16.json"
+  },
+  {
+    "id": "histStart_55",
+    "title": "histStart_55 (histStart)",
+    "description": "Historical start shifted high.",
+    "dataRelativePath": "script/test_output_py/data/histStart_55.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/histStart_55.json"
+  },
+  {
+    "id": "histEnd_18",
+    "title": "histEnd_18 (histEnd)",
+    "description": "Historical end shifted low.",
+    "dataRelativePath": "script/test_output_py/data/histEnd_18.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/histEnd_18.json"
+  },
+  {
+    "id": "predStart_62",
+    "title": "predStart_62 (predStart)",
+    "description": "Prediction start mean moved to 62.",
+    "dataRelativePath": "script/test_output_py/data/predStart_62.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/predStart_62.json"
+  },
+  {
+    "id": "predEnd_15",
+    "title": "predEnd_15 (predEnd)",
+    "description": "Prediction end mean moved to 15.",
+    "dataRelativePath": "script/test_output_py/data/predEnd_15.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/predEnd_15.json"
+  },
+  {
+    "id": "noise_0_1",
+    "title": "noise_0_1 (noiseLevel)",
+    "description": "Very low within-series variance.",
+    "dataRelativePath": "script/test_output_py/data/noise_0_1.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/noise_0_1.json"
+  },
+  {
+    "id": "noise_9",
+    "title": "noise_9 (noiseLevel)",
+    "description": "High within-series variance.",
+    "dataRelativePath": "script/test_output_py/data/noise_9.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/noise_9.json"
+  },
+  {
+    "id": "predVar_1",
+    "title": "predVar_1 (predVariance)",
+    "description": "Tight agreement at prediction end.",
+    "dataRelativePath": "script/test_output_py/data/predVar_1.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/predVar_1.json"
+  },
+  {
+    "id": "predVar_225",
+    "title": "predVar_225 (predVariance)",
+    "description": "Wide spread at prediction end.",
+    "dataRelativePath": "script/test_output_py/data/predVar_225.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/predVar_225.json"
+  },
+  {
+    "id": "skew_up",
+    "title": "skew_up (skew)",
+    "description": "Majority of models diverge upward at the end.",
+    "dataRelativePath": "script/test_output_py/data/skew_up.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/skew_up.json"
+  },
+  {
+    "id": "skew_down",
+    "title": "skew_down (skew)",
+    "description": "Majority of models diverge downward at the end.",
+    "dataRelativePath": "script/test_output_py/data/skew_down.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/skew_down.json"
+  },
+  {
+    "id": "skew_bimodel",
+    "title": "skew_bimodel (skew)",
+    "description": "Roughly half diverge up and half down.",
+    "dataRelativePath": "script/test_output_py/data/skew_bimodel.json",
+    "viewerUrl": "../../conditions.html?data=script/test_output_py/data/skew_bimodel.json"
+  }
+];
+    const listEl = document.getElementById("caseList");
+    const frameEl = document.getElementById("frame");
+    const metaEl = document.getElementById("meta");
+
+    function setActive(id) {
+      const selected = cases.find(c => c.id === id);
+      if (!selected) return;
+      frameEl.src = selected.viewerUrl;
+      metaEl.textContent = selected.title + " | " + selected.description + " | Data: " + selected.dataRelativePath;
+      for (const btn of document.querySelectorAll(".case-btn")) {
+        btn.classList.toggle("active", btn.dataset.id === id);
+      }
+    }
+
+    for (const c of cases) {
+      const btn = document.createElement("button");
+      btn.className = "case-btn";
+      btn.dataset.id = c.id;
+      btn.innerHTML = '<div class="case-title">' + c.title + '</div><div class="case-desc">' + c.description + '</div>';
+      btn.addEventListener("click", () => setActive(c.id));
+      listEl.appendChild(btn);
+    }
+
+    setActive(cases[0].id);
+  </script>
+</body>
+</html>

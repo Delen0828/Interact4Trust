@@ -1,0 +1,4162 @@
+{
+  "data": [
+    {
+      "date": "2025-01-01",
+      "stock": "Virexa",
+      "price": 30.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-02",
+      "stock": "Virexa",
+      "price": 26.44,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-03",
+      "stock": "Virexa",
+      "price": 29.08,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-04",
+      "stock": "Virexa",
+      "price": 28.91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-05",
+      "stock": "Virexa",
+      "price": 29.02,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-06",
+      "stock": "Virexa",
+      "price": 40.14,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-07",
+      "stock": "Virexa",
+      "price": 31.45,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-08",
+      "stock": "Virexa",
+      "price": 29.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-09",
+      "stock": "Virexa",
+      "price": 35.43,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-10",
+      "stock": "Virexa",
+      "price": 27.34,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-11",
+      "stock": "Virexa",
+      "price": 25.49,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-12",
+      "stock": "Virexa",
+      "price": 23.18,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-13",
+      "stock": "Virexa",
+      "price": 30.32,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-14",
+      "stock": "Virexa",
+      "price": 34.31,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-15",
+      "stock": "Virexa",
+      "price": 38.49,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-16",
+      "stock": "Virexa",
+      "price": 34.39,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-17",
+      "stock": "Virexa",
+      "price": 34.21,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-18",
+      "stock": "Virexa",
+      "price": 26.6,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-19",
+      "stock": "Virexa",
+      "price": 30.8,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-20",
+      "stock": "Virexa",
+      "price": 28.71,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-21",
+      "stock": "Virexa",
+      "price": 33.16,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-22",
+      "stock": "Virexa",
+      "price": 30.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-23",
+      "stock": "Virexa",
+      "price": 27.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-24",
+      "stock": "Virexa",
+      "price": 26.33,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-25",
+      "stock": "Virexa",
+      "price": 26.04,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-26",
+      "stock": "Virexa",
+      "price": 30.66,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-27",
+      "stock": "Virexa",
+      "price": 28.99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-28",
+      "stock": "Virexa",
+      "price": 30.33,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-29",
+      "stock": "Virexa",
+      "price": 32.22,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-30",
+      "stock": "Virexa",
+      "price": 28.43,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-31",
+      "stock": "Virexa",
+      "price": 38.7,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-01",
+      "stock": "Virexa",
+      "price": 33.91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-02",
+      "stock": "Virexa",
+      "price": 24.8,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-03",
+      "stock": "Virexa",
+      "price": 32.04,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-04",
+      "stock": "Virexa",
+      "price": 33.75,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-05",
+      "stock": "Virexa",
+      "price": 26.81,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-06",
+      "stock": "Virexa",
+      "price": 38.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-07",
+      "stock": "Virexa",
+      "price": 32.65,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-08",
+      "stock": "Virexa",
+      "price": 43.78,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-09",
+      "stock": "Virexa",
+      "price": 33.47,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-10",
+      "stock": "Virexa",
+      "price": 36.87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-11",
+      "stock": "Virexa",
+      "price": 37.85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-12",
+      "stock": "Virexa",
+      "price": 38.68,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-13",
+      "stock": "Virexa",
+      "price": 37.77,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-14",
+      "stock": "Virexa",
+      "price": 35.27,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-15",
+      "stock": "Virexa",
+      "price": 40.14,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-16",
+      "stock": "Virexa",
+      "price": 33.7,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-17",
+      "stock": "Virexa",
+      "price": 35.4,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-18",
+      "stock": "Virexa",
+      "price": 36.02,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-19",
+      "stock": "Virexa",
+      "price": 35.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-20",
+      "stock": "Virexa",
+      "price": 40.22,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-21",
+      "stock": "Virexa",
+      "price": 44.16,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-22",
+      "stock": "Virexa",
+      "price": 47.14,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-23",
+      "stock": "Virexa",
+      "price": 36.44,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-24",
+      "stock": "Virexa",
+      "price": 38.97,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-25",
+      "stock": "Virexa",
+      "price": 45.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-26",
+      "stock": "Virexa",
+      "price": 40.75,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-27",
+      "stock": "Virexa",
+      "price": 44.28,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-28",
+      "stock": "Virexa",
+      "price": 39.18,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-01",
+      "stock": "Virexa",
+      "price": 40.15,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-02",
+      "stock": "Virexa",
+      "price": 42.15,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-03",
+      "stock": "Virexa",
+      "price": 41.01,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-04",
+      "stock": "Virexa",
+      "price": 33.03,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-05",
+      "stock": "Virexa",
+      "price": 42.86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-06",
+      "stock": "Virexa",
+      "price": 39.22,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-07",
+      "stock": "Virexa",
+      "price": 37.32,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-08",
+      "stock": "Virexa",
+      "price": 41.47,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-09",
+      "stock": "Virexa",
+      "price": 30.57,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-10",
+      "stock": "Virexa",
+      "price": 48.56,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-11",
+      "stock": "Virexa",
+      "price": 34.43,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-12",
+      "stock": "Virexa",
+      "price": 37.56,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-13",
+      "stock": "Virexa",
+      "price": 44.65,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-14",
+      "stock": "Virexa",
+      "price": 33.21,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-15",
+      "stock": "Virexa",
+      "price": 37.06,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-16",
+      "stock": "Virexa",
+      "price": 33.47,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-17",
+      "stock": "Virexa",
+      "price": 34.61,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-18",
+      "stock": "Virexa",
+      "price": 32.62,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-19",
+      "stock": "Virexa",
+      "price": 30.85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-20",
+      "stock": "Virexa",
+      "price": 44.21,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-21",
+      "stock": "Virexa",
+      "price": 33.86,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-22",
+      "stock": "Virexa",
+      "price": 39.43,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-23",
+      "stock": "Virexa",
+      "price": 42.83,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-24",
+      "stock": "Virexa",
+      "price": 37.35,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-25",
+      "stock": "Virexa",
+      "price": 41.66,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-26",
+      "stock": "Virexa",
+      "price": 33.5,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-27",
+      "stock": "Virexa",
+      "price": 45.36,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-28",
+      "stock": "Virexa",
+      "price": 44.95,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-29",
+      "stock": "Virexa",
+      "price": 40.29,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-30",
+      "stock": "Virexa",
+      "price": 49.56,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-31",
+      "stock": "Virexa",
+      "price": 43.63,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-01",
+      "stock": "Virexa",
+      "price": 43.67,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-02",
+      "stock": "Virexa",
+      "price": 45.79,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-03",
+      "stock": "Virexa",
+      "price": 46.01,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-04",
+      "stock": "Virexa",
+      "price": 48.18,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-05",
+      "stock": "Virexa",
+      "price": 41.41,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-06",
+      "stock": "Virexa",
+      "price": 49.8,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-07",
+      "stock": "Virexa",
+      "price": 48.06,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-08",
+      "stock": "Virexa",
+      "price": 45.88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-09",
+      "stock": "Virexa",
+      "price": 46.1,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-10",
+      "stock": "Virexa",
+      "price": 51.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-11",
+      "stock": "Virexa",
+      "price": 48.54,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-12",
+      "stock": "Virexa",
+      "price": 44.9,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-13",
+      "stock": "Virexa",
+      "price": 44.26,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-14",
+      "stock": "Virexa",
+      "price": 44.23,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-15",
+      "stock": "Virexa",
+      "price": 44.91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-16",
+      "stock": "Virexa",
+      "price": 41.82,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-17",
+      "stock": "Virexa",
+      "price": 46.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-18",
+      "stock": "Virexa",
+      "price": 46.36,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-19",
+      "stock": "Virexa",
+      "price": 52.6,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-20",
+      "stock": "Virexa",
+      "price": 48.9,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-21",
+      "stock": "Virexa",
+      "price": 45.23,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-22",
+      "stock": "Virexa",
+      "price": 51.49,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-23",
+      "stock": "Virexa",
+      "price": 49.07,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-24",
+      "stock": "Virexa",
+      "price": 44.6,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-25",
+      "stock": "Virexa",
+      "price": 46.88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-26",
+      "stock": "Virexa",
+      "price": 49.09,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-27",
+      "stock": "Virexa",
+      "price": 47.37,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-28",
+      "stock": "Virexa",
+      "price": 48.82,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-29",
+      "stock": "Virexa",
+      "price": 46.56,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-30",
+      "stock": "Virexa",
+      "price": 44.85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-01",
+      "stock": "Virexa",
+      "price": 43.07,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-02",
+      "stock": "Virexa",
+      "price": 44.56,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-03",
+      "stock": "Virexa",
+      "price": 40.18,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-04",
+      "stock": "Virexa",
+      "price": 43.43,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-05",
+      "stock": "Virexa",
+      "price": 48.36,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-06",
+      "stock": "Virexa",
+      "price": 44.09,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-07",
+      "stock": "Virexa",
+      "price": 42.41,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-08",
+      "stock": "Virexa",
+      "price": 46.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-09",
+      "stock": "Virexa",
+      "price": 48.39,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-10",
+      "stock": "Virexa",
+      "price": 47.85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-11",
+      "stock": "Virexa",
+      "price": 50.62,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-12",
+      "stock": "Virexa",
+      "price": 43.27,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-13",
+      "stock": "Virexa",
+      "price": 44.69,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-14",
+      "stock": "Virexa",
+      "price": 55.16,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-15",
+      "stock": "Virexa",
+      "price": 52.64,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-16",
+      "stock": "Virexa",
+      "price": 44.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-17",
+      "stock": "Virexa",
+      "price": 42.34,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-18",
+      "stock": "Virexa",
+      "price": 48.44,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-19",
+      "stock": "Virexa",
+      "price": 44.63,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-20",
+      "stock": "Virexa",
+      "price": 44.28,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-21",
+      "stock": "Virexa",
+      "price": 50.5,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-22",
+      "stock": "Virexa",
+      "price": 48.02,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-23",
+      "stock": "Virexa",
+      "price": 41.6,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-24",
+      "stock": "Virexa",
+      "price": 50.07,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-25",
+      "stock": "Virexa",
+      "price": 48.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-26",
+      "stock": "Virexa",
+      "price": 51.91,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-27",
+      "stock": "Virexa",
+      "price": 52.64,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-28",
+      "stock": "Virexa",
+      "price": 55.15,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-29",
+      "stock": "Virexa",
+      "price": 49.67,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-30",
+      "stock": "Virexa",
+      "price": 53.11,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-31",
+      "stock": "Virexa",
+      "price": 50.01,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-01",
+      "stock": "Virexa",
+      "price": 50.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Virexa",
+      "price": 50.76,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Virexa",
+      "price": 52.41,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Virexa",
+      "price": 45.61,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Virexa",
+      "price": 53.59,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Virexa",
+      "price": 53.56,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Virexa",
+      "price": 59.41,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Virexa",
+      "price": 58.56,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Virexa",
+      "price": 56.89,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Virexa",
+      "price": 58.59,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Virexa",
+      "price": 54.08,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Virexa",
+      "price": 48.71,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Virexa",
+      "price": 63.14,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Virexa",
+      "price": 64.66,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Virexa",
+      "price": 58.09,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Virexa",
+      "price": 64.98,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Virexa",
+      "price": 60.85,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Virexa",
+      "price": 62.9,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Virexa",
+      "price": 56.03,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Virexa",
+      "price": 66.03,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Virexa",
+      "price": 60.4,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Virexa",
+      "price": 67.59,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Virexa",
+      "price": 65.34,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Virexa",
+      "price": 67.53,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Virexa",
+      "price": 67.11,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Virexa",
+      "price": 70.39,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Virexa",
+      "price": 68.62,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Virexa",
+      "price": 71.48,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Virexa",
+      "price": 71.46,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Virexa",
+      "price": 69.21,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Virexa",
+      "price": 50.13,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Virexa",
+      "price": 46.85,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Virexa",
+      "price": 46.4,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Virexa",
+      "price": 50.43,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Virexa",
+      "price": 48.01,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Virexa",
+      "price": 48.42,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Virexa",
+      "price": 51.85,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Virexa",
+      "price": 44.98,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Virexa",
+      "price": 43.53,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Virexa",
+      "price": 46.45,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Virexa",
+      "price": 56.16,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Virexa",
+      "price": 57.75,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Virexa",
+      "price": 51.93,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Virexa",
+      "price": 64.98,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Virexa",
+      "price": 55.71,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Virexa",
+      "price": 45.65,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Virexa",
+      "price": 49.8,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Virexa",
+      "price": 47.0,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Virexa",
+      "price": 46.75,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Virexa",
+      "price": 47.79,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Virexa",
+      "price": 52.19,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Virexa",
+      "price": 47.15,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Virexa",
+      "price": 46.75,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Virexa",
+      "price": 51.56,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Virexa",
+      "price": 43.91,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Virexa",
+      "price": 52.12,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Virexa",
+      "price": 44.67,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Virexa",
+      "price": 43.38,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Virexa",
+      "price": 47.65,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Virexa",
+      "price": 54.21,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Virexa",
+      "price": 48.75,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Virexa",
+      "price": 53.64,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Virexa",
+      "price": 60.07,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Virexa",
+      "price": 56.76,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Virexa",
+      "price": 59.73,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Virexa",
+      "price": 55.95,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Virexa",
+      "price": 62.39,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Virexa",
+      "price": 57.43,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Virexa",
+      "price": 50.58,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Virexa",
+      "price": 50.45,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Virexa",
+      "price": 51.72,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Virexa",
+      "price": 51.01,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Virexa",
+      "price": 49.98,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Virexa",
+      "price": 64.3,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Virexa",
+      "price": 63.01,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Virexa",
+      "price": 55.18,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Virexa",
+      "price": 56.49,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Virexa",
+      "price": 48.23,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Virexa",
+      "price": 46.78,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Virexa",
+      "price": 53.37,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Virexa",
+      "price": 51.52,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Virexa",
+      "price": 55.44,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Virexa",
+      "price": 45.44,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Virexa",
+      "price": 56.7,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Virexa",
+      "price": 50.51,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Virexa",
+      "price": 50.53,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Virexa",
+      "price": 48.36,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Virexa",
+      "price": 50.52,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Virexa",
+      "price": 44.67,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Virexa",
+      "price": 50.07,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Virexa",
+      "price": 48.75,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Virexa",
+      "price": 46.48,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Virexa",
+      "price": 53.38,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Virexa",
+      "price": 48.54,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Virexa",
+      "price": 56.73,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Virexa",
+      "price": 57.11,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Virexa",
+      "price": 55.3,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Virexa",
+      "price": 56.1,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Virexa",
+      "price": 47.22,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Virexa",
+      "price": 59.86,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Virexa",
+      "price": 63.98,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Virexa",
+      "price": 61.5,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Virexa",
+      "price": 61.26,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Virexa",
+      "price": 71.89,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Virexa",
+      "price": 61.74,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Virexa",
+      "price": 68.48,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Virexa",
+      "price": 64.31,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Virexa",
+      "price": 67.13,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Virexa",
+      "price": 62.87,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Virexa",
+      "price": 69.18,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Virexa",
+      "price": 68.83,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Virexa",
+      "price": 76.05,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Virexa",
+      "price": 73.07,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Virexa",
+      "price": 79.5,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Virexa",
+      "price": 76.37,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Virexa",
+      "price": 77.55,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Virexa",
+      "price": 80.38,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Virexa",
+      "price": 50.23,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Virexa",
+      "price": 45.29,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Virexa",
+      "price": 56.93,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Virexa",
+      "price": 47.62,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Virexa",
+      "price": 45.37,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Virexa",
+      "price": 40.48,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Virexa",
+      "price": 37.82,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Virexa",
+      "price": 54.88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Virexa",
+      "price": 53.19,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Virexa",
+      "price": 48.76,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Virexa",
+      "price": 54.5,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Virexa",
+      "price": 50.42,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Virexa",
+      "price": 49.7,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Virexa",
+      "price": 46.06,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Virexa",
+      "price": 41.82,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Virexa",
+      "price": 43.35,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Virexa",
+      "price": 49.93,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Virexa",
+      "price": 48.84,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Virexa",
+      "price": 58.37,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Virexa",
+      "price": 47.73,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Virexa",
+      "price": 53.81,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Virexa",
+      "price": 56.1,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Virexa",
+      "price": 42.3,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Virexa",
+      "price": 51.75,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Virexa",
+      "price": 48.39,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Virexa",
+      "price": 48.27,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Virexa",
+      "price": 45.33,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Virexa",
+      "price": 45.97,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Virexa",
+      "price": 47.25,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-01-01",
+      "stock": "Talmori",
+      "price": 30.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-02",
+      "stock": "Talmori",
+      "price": 31.28,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-03",
+      "stock": "Talmori",
+      "price": 27.58,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-04",
+      "stock": "Talmori",
+      "price": 25.42,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-05",
+      "stock": "Talmori",
+      "price": 28.69,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-06",
+      "stock": "Talmori",
+      "price": 29.75,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-07",
+      "stock": "Talmori",
+      "price": 35.19,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-08",
+      "stock": "Talmori",
+      "price": 30.61,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-09",
+      "stock": "Talmori",
+      "price": 28.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-10",
+      "stock": "Talmori",
+      "price": 26.44,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-11",
+      "stock": "Talmori",
+      "price": 30.59,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-12",
+      "stock": "Talmori",
+      "price": 28.53,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-13",
+      "stock": "Talmori",
+      "price": 26.88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-14",
+      "stock": "Talmori",
+      "price": 30.13,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-15",
+      "stock": "Talmori",
+      "price": 28.94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-16",
+      "stock": "Talmori",
+      "price": 30.32,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-17",
+      "stock": "Talmori",
+      "price": 37.18,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-18",
+      "stock": "Talmori",
+      "price": 29.58,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-19",
+      "stock": "Talmori",
+      "price": 26.75,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-20",
+      "stock": "Talmori",
+      "price": 25.12,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-21",
+      "stock": "Talmori",
+      "price": 36.26,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-22",
+      "stock": "Talmori",
+      "price": 31.93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-23",
+      "stock": "Talmori",
+      "price": 30.45,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-24",
+      "stock": "Talmori",
+      "price": 28.08,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-25",
+      "stock": "Talmori",
+      "price": 28.76,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-26",
+      "stock": "Talmori",
+      "price": 30.76,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-27",
+      "stock": "Talmori",
+      "price": 38.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-28",
+      "stock": "Talmori",
+      "price": 28.87,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-29",
+      "stock": "Talmori",
+      "price": 27.03,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-30",
+      "stock": "Talmori",
+      "price": 36.57,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-01-31",
+      "stock": "Talmori",
+      "price": 30.07,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-01",
+      "stock": "Talmori",
+      "price": 29.69,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-02",
+      "stock": "Talmori",
+      "price": 27.33,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-03",
+      "stock": "Talmori",
+      "price": 32.65,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-04",
+      "stock": "Talmori",
+      "price": 34.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-05",
+      "stock": "Talmori",
+      "price": 26.26,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-06",
+      "stock": "Talmori",
+      "price": 33.62,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-07",
+      "stock": "Talmori",
+      "price": 36.61,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-08",
+      "stock": "Talmori",
+      "price": 29.27,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-09",
+      "stock": "Talmori",
+      "price": 41.4,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-10",
+      "stock": "Talmori",
+      "price": 36.85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-11",
+      "stock": "Talmori",
+      "price": 35.93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-12",
+      "stock": "Talmori",
+      "price": 41.11,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-13",
+      "stock": "Talmori",
+      "price": 30.25,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-14",
+      "stock": "Talmori",
+      "price": 33.6,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-15",
+      "stock": "Talmori",
+      "price": 33.49,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-16",
+      "stock": "Talmori",
+      "price": 42.68,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-17",
+      "stock": "Talmori",
+      "price": 35.69,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-18",
+      "stock": "Talmori",
+      "price": 37.5,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-19",
+      "stock": "Talmori",
+      "price": 42.61,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-20",
+      "stock": "Talmori",
+      "price": 34.77,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-21",
+      "stock": "Talmori",
+      "price": 34.65,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-22",
+      "stock": "Talmori",
+      "price": 33.4,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-23",
+      "stock": "Talmori",
+      "price": 34.28,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-24",
+      "stock": "Talmori",
+      "price": 37.88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-25",
+      "stock": "Talmori",
+      "price": 46.96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-26",
+      "stock": "Talmori",
+      "price": 36.99,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-27",
+      "stock": "Talmori",
+      "price": 34.34,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-02-28",
+      "stock": "Talmori",
+      "price": 38.54,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-01",
+      "stock": "Talmori",
+      "price": 37.46,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-02",
+      "stock": "Talmori",
+      "price": 39.22,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-03",
+      "stock": "Talmori",
+      "price": 40.51,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-04",
+      "stock": "Talmori",
+      "price": 35.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-05",
+      "stock": "Talmori",
+      "price": 36.41,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-06",
+      "stock": "Talmori",
+      "price": 32.33,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-07",
+      "stock": "Talmori",
+      "price": 35.03,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-08",
+      "stock": "Talmori",
+      "price": 31.11,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-09",
+      "stock": "Talmori",
+      "price": 36.01,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-10",
+      "stock": "Talmori",
+      "price": 33.13,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-11",
+      "stock": "Talmori",
+      "price": 37.84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-12",
+      "stock": "Talmori",
+      "price": 28.85,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-13",
+      "stock": "Talmori",
+      "price": 33.4,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-14",
+      "stock": "Talmori",
+      "price": 40.77,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-15",
+      "stock": "Talmori",
+      "price": 37.58,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-16",
+      "stock": "Talmori",
+      "price": 34.39,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-17",
+      "stock": "Talmori",
+      "price": 32.68,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-18",
+      "stock": "Talmori",
+      "price": 36.46,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-19",
+      "stock": "Talmori",
+      "price": 37.57,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-20",
+      "stock": "Talmori",
+      "price": 34.79,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-21",
+      "stock": "Talmori",
+      "price": 32.75,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-22",
+      "stock": "Talmori",
+      "price": 40.14,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-23",
+      "stock": "Talmori",
+      "price": 30.52,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-24",
+      "stock": "Talmori",
+      "price": 35.64,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-25",
+      "stock": "Talmori",
+      "price": 38.51,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-26",
+      "stock": "Talmori",
+      "price": 37.88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-27",
+      "stock": "Talmori",
+      "price": 37.32,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-28",
+      "stock": "Talmori",
+      "price": 38.3,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-29",
+      "stock": "Talmori",
+      "price": 38.03,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-30",
+      "stock": "Talmori",
+      "price": 37.72,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-03-31",
+      "stock": "Talmori",
+      "price": 37.78,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-01",
+      "stock": "Talmori",
+      "price": 50.67,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-02",
+      "stock": "Talmori",
+      "price": 43.67,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-03",
+      "stock": "Talmori",
+      "price": 38.05,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-04",
+      "stock": "Talmori",
+      "price": 42.72,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-05",
+      "stock": "Talmori",
+      "price": 42.84,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-06",
+      "stock": "Talmori",
+      "price": 45.14,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-07",
+      "stock": "Talmori",
+      "price": 51.38,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-08",
+      "stock": "Talmori",
+      "price": 43.55,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-09",
+      "stock": "Talmori",
+      "price": 37.94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-10",
+      "stock": "Talmori",
+      "price": 44.34,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-11",
+      "stock": "Talmori",
+      "price": 41.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-12",
+      "stock": "Talmori",
+      "price": 45.03,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-13",
+      "stock": "Talmori",
+      "price": 47.31,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-14",
+      "stock": "Talmori",
+      "price": 49.31,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-15",
+      "stock": "Talmori",
+      "price": 42.77,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-16",
+      "stock": "Talmori",
+      "price": 49.4,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-17",
+      "stock": "Talmori",
+      "price": 41.18,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-18",
+      "stock": "Talmori",
+      "price": 49.76,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-19",
+      "stock": "Talmori",
+      "price": 43.44,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-20",
+      "stock": "Talmori",
+      "price": 43.88,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-21",
+      "stock": "Talmori",
+      "price": 40.06,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-22",
+      "stock": "Talmori",
+      "price": 40.93,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-23",
+      "stock": "Talmori",
+      "price": 50.64,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-24",
+      "stock": "Talmori",
+      "price": 46.67,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-25",
+      "stock": "Talmori",
+      "price": 43.5,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-26",
+      "stock": "Talmori",
+      "price": 43.98,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-27",
+      "stock": "Talmori",
+      "price": 44.37,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-28",
+      "stock": "Talmori",
+      "price": 34.71,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-29",
+      "stock": "Talmori",
+      "price": 39.45,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-04-30",
+      "stock": "Talmori",
+      "price": 42.01,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-01",
+      "stock": "Talmori",
+      "price": 45.71,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-02",
+      "stock": "Talmori",
+      "price": 50.56,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-03",
+      "stock": "Talmori",
+      "price": 45.04,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-04",
+      "stock": "Talmori",
+      "price": 45.64,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-05",
+      "stock": "Talmori",
+      "price": 42.96,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-06",
+      "stock": "Talmori",
+      "price": 43.02,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-07",
+      "stock": "Talmori",
+      "price": 41.89,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-08",
+      "stock": "Talmori",
+      "price": 46.59,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-09",
+      "stock": "Talmori",
+      "price": 48.78,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-10",
+      "stock": "Talmori",
+      "price": 46.07,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-11",
+      "stock": "Talmori",
+      "price": 49.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-12",
+      "stock": "Talmori",
+      "price": 50.63,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-13",
+      "stock": "Talmori",
+      "price": 45.76,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-14",
+      "stock": "Talmori",
+      "price": 45.06,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-15",
+      "stock": "Talmori",
+      "price": 39.17,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-16",
+      "stock": "Talmori",
+      "price": 48.94,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-17",
+      "stock": "Talmori",
+      "price": 47.34,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-18",
+      "stock": "Talmori",
+      "price": 57.24,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-19",
+      "stock": "Talmori",
+      "price": 43.13,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-20",
+      "stock": "Talmori",
+      "price": 47.81,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-21",
+      "stock": "Talmori",
+      "price": 51.3,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-22",
+      "stock": "Talmori",
+      "price": 55.78,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-23",
+      "stock": "Talmori",
+      "price": 49.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-24",
+      "stock": "Talmori",
+      "price": 53.44,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-25",
+      "stock": "Talmori",
+      "price": 47.62,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-26",
+      "stock": "Talmori",
+      "price": 42.13,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-27",
+      "stock": "Talmori",
+      "price": 48.3,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-28",
+      "stock": "Talmori",
+      "price": 52.21,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-29",
+      "stock": "Talmori",
+      "price": 46.1,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-30",
+      "stock": "Talmori",
+      "price": 54.71,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-05-31",
+      "stock": "Talmori",
+      "price": 51.72,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-01",
+      "stock": "Talmori",
+      "price": 50.0,
+      "series": "historical",
+      "scenario": null
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Talmori",
+      "price": 44.96,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Talmori",
+      "price": 32.89,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Talmori",
+      "price": 51.57,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Talmori",
+      "price": 39.64,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Talmori",
+      "price": 45.9,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Talmori",
+      "price": 44.77,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Talmori",
+      "price": 49.37,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Talmori",
+      "price": 44.48,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Talmori",
+      "price": 45.09,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Talmori",
+      "price": 45.61,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Talmori",
+      "price": 40.7,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Talmori",
+      "price": 46.1,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Talmori",
+      "price": 37.05,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Talmori",
+      "price": 41.04,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Talmori",
+      "price": 43.62,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Talmori",
+      "price": 41.44,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Talmori",
+      "price": 41.81,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Talmori",
+      "price": 45.69,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Talmori",
+      "price": 41.07,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Talmori",
+      "price": 47.07,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Talmori",
+      "price": 36.55,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Talmori",
+      "price": 40.96,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Talmori",
+      "price": 38.56,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Talmori",
+      "price": 42.7,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Talmori",
+      "price": 39.87,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Talmori",
+      "price": 44.71,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Talmori",
+      "price": 44.82,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Talmori",
+      "price": 39.59,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Talmori",
+      "price": 42.32,
+      "series": "prediction",
+      "scenario": "scenario_1"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Talmori",
+      "price": 43.48,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Talmori",
+      "price": 40.67,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Talmori",
+      "price": 52.52,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Talmori",
+      "price": 46.21,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Talmori",
+      "price": 54.32,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Talmori",
+      "price": 49.69,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Talmori",
+      "price": 48.87,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Talmori",
+      "price": 48.75,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Talmori",
+      "price": 48.59,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Talmori",
+      "price": 47.86,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Talmori",
+      "price": 49.61,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Talmori",
+      "price": 58.17,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Talmori",
+      "price": 58.34,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Talmori",
+      "price": 56.32,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Talmori",
+      "price": 68.49,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Talmori",
+      "price": 58.78,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Talmori",
+      "price": 60.61,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Talmori",
+      "price": 60.64,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Talmori",
+      "price": 66.13,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Talmori",
+      "price": 54.71,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Talmori",
+      "price": 58.05,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Talmori",
+      "price": 69.84,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Talmori",
+      "price": 72.59,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Talmori",
+      "price": 70.93,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Talmori",
+      "price": 68.25,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Talmori",
+      "price": 80.83,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Talmori",
+      "price": 73.45,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Talmori",
+      "price": 70.37,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Talmori",
+      "price": 77.44,
+      "series": "prediction",
+      "scenario": "scenario_2"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Talmori",
+      "price": 50.73,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Talmori",
+      "price": 56.27,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Talmori",
+      "price": 46.09,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Talmori",
+      "price": 47.96,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Talmori",
+      "price": 52.35,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Talmori",
+      "price": 50.91,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Talmori",
+      "price": 53.79,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Talmori",
+      "price": 48.39,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Talmori",
+      "price": 50.66,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Talmori",
+      "price": 47.5,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Talmori",
+      "price": 43.51,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Talmori",
+      "price": 49.08,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Talmori",
+      "price": 50.63,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Talmori",
+      "price": 50.03,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Talmori",
+      "price": 57.28,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Talmori",
+      "price": 50.98,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Talmori",
+      "price": 46.42,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Talmori",
+      "price": 46.63,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Talmori",
+      "price": 39.02,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Talmori",
+      "price": 50.11,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Talmori",
+      "price": 39.84,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Talmori",
+      "price": 55.24,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Talmori",
+      "price": 52.0,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Talmori",
+      "price": 50.8,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Talmori",
+      "price": 50.46,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Talmori",
+      "price": 45.83,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Talmori",
+      "price": 45.26,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Talmori",
+      "price": 49.62,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Talmori",
+      "price": 49.18,
+      "series": "prediction",
+      "scenario": "scenario_3"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Talmori",
+      "price": 58.7,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Talmori",
+      "price": 48.53,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Talmori",
+      "price": 59.45,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Talmori",
+      "price": 49.54,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Talmori",
+      "price": 55.78,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Talmori",
+      "price": 54.02,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Talmori",
+      "price": 52.41,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Talmori",
+      "price": 64.72,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Talmori",
+      "price": 54.1,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Talmori",
+      "price": 58.07,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Talmori",
+      "price": 64.46,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Talmori",
+      "price": 56.36,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Talmori",
+      "price": 56.08,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Talmori",
+      "price": 46.19,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Talmori",
+      "price": 51.38,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Talmori",
+      "price": 50.93,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Talmori",
+      "price": 66.04,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Talmori",
+      "price": 45.04,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Talmori",
+      "price": 55.76,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Talmori",
+      "price": 59.66,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Talmori",
+      "price": 53.18,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Talmori",
+      "price": 45.42,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Talmori",
+      "price": 52.69,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Talmori",
+      "price": 49.56,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Talmori",
+      "price": 53.81,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Talmori",
+      "price": 52.96,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Talmori",
+      "price": 55.28,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Talmori",
+      "price": 58.19,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Talmori",
+      "price": 54.29,
+      "series": "prediction",
+      "scenario": "scenario_4"
+    },
+    {
+      "date": "2025-06-02",
+      "stock": "Talmori",
+      "price": 52.13,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-03",
+      "stock": "Talmori",
+      "price": 51.12,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-04",
+      "stock": "Talmori",
+      "price": 52.03,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-05",
+      "stock": "Talmori",
+      "price": 50.37,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-06",
+      "stock": "Talmori",
+      "price": 54.89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-07",
+      "stock": "Talmori",
+      "price": 49.21,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-08",
+      "stock": "Talmori",
+      "price": 46.81,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-09",
+      "stock": "Talmori",
+      "price": 52.4,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-10",
+      "stock": "Talmori",
+      "price": 60.43,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-11",
+      "stock": "Talmori",
+      "price": 53.89,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-12",
+      "stock": "Talmori",
+      "price": 58.37,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-13",
+      "stock": "Talmori",
+      "price": 61.36,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-14",
+      "stock": "Talmori",
+      "price": 60.96,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-15",
+      "stock": "Talmori",
+      "price": 65.31,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-16",
+      "stock": "Talmori",
+      "price": 64.85,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-17",
+      "stock": "Talmori",
+      "price": 65.74,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-18",
+      "stock": "Talmori",
+      "price": 69.25,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-19",
+      "stock": "Talmori",
+      "price": 63.81,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-20",
+      "stock": "Talmori",
+      "price": 57.7,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-21",
+      "stock": "Talmori",
+      "price": 63.88,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-22",
+      "stock": "Talmori",
+      "price": 66.64,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-23",
+      "stock": "Talmori",
+      "price": 71.03,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-24",
+      "stock": "Talmori",
+      "price": 70.16,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-25",
+      "stock": "Talmori",
+      "price": 67.73,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-26",
+      "stock": "Talmori",
+      "price": 68.5,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-27",
+      "stock": "Talmori",
+      "price": 71.91,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-28",
+      "stock": "Talmori",
+      "price": 73.31,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-29",
+      "stock": "Talmori",
+      "price": 72.13,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    },
+    {
+      "date": "2025-06-30",
+      "stock": "Talmori",
+      "price": 71.77,
+      "series": "prediction",
+      "scenario": "scenario_5"
+    }
+  ]
+}

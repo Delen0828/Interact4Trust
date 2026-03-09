@@ -1,0 +1,35 @@
+[
+  {
+    "version_id": "version_EP",
+    "technique_token": "EP",
+    "technique_key": "ensemble_plot",
+    "randomized_within_participant_interactions": [
+      "hover_show_one",
+      "hover_show_all",
+      "click_show_one",
+      "click_show_all"
+    ]
+  },
+  {
+    "version_id": "version_CI",
+    "technique_token": "CI",
+    "technique_key": "confidence_interval",
+    "randomized_within_participant_interactions": [
+      "hover_show_one",
+      "hover_show_all",
+      "click_show_one",
+      "click_show_all"
+    ]
+  },
+  {
+    "version_id": "version_CIEP",
+    "technique_token": "CIEP",
+    "technique_key": "combined_plot",
+    "randomized_within_participant_interactions": [
+      "hover_show_one",
+      "hover_show_all",
+      "click_show_one",
+      "click_show_all"
+    ]
+  }
+]

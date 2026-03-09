@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Condition 3 Static Visualization</title>
+  <style>
+    :root {
+      --bg: #f7fafc;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --grid: #e5e7eb;
+      --stock-a: #0891b2;
+      --stock-b: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 16px 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-title {
+      margin: 0 0 3px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .card-meta {
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 16px;
+      height: 0;
+      border-top: 2px solid;
+      display: inline-block;
+    }
+
+    .swatch.dashed {
+      border-top-style: dashed;
+    }
+
+    svg.chart {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .axis path,
+    .axis line {
+      stroke: #9ca3af;
+      shape-rendering: crispEdges;
+    }
+
+    .axis text {
+      fill: #4b5563;
+      font-size: 11px;
+    }
+
+    .grid-line line {
+      stroke: var(--grid);
+      stroke-opacity: 0.8;
+      shape-rendering: crispEdges;
+    }
+
+    .grid-line path {
+      display: none;
+    }
+
+    .historical-line {
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .aggregated-line {
+      fill: none;
+      stroke-width: 2;
+      stroke-dasharray: 5, 5;
+    }
+
+    .alternative-line {
+      fill: none;
+      stroke-width: 1.5;
+      opacity: 0.4;
+    }
+
+    .reference-line {
+      stroke: #9ca3af;
+      stroke-width: 1;
+      opacity: 0.8;
+    }
+
+    .today-label {
+      font-size: 11px;
+      fill: #6b7280;
+      text-anchor: middle;
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>Condition 3 Static Visualization</h1>
+    <p class="subtitle">
+      Ensemble plot: historical lines + alternative prediction lines + aggregated prediction lines (no hover/click interactions).
+    </p>
+    <section class="grid" id="chart-grid"></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="./visualize_condition1.js" defer></script>
+</body>
+</html>

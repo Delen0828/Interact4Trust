@@ -1,0 +1,3754 @@
+[
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1019,
+      "y": 375,
+      "chart_x": 666.5,
+      "chart_y": 268.1802062988281,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 286.20000000298023
+    },
+    "timestamp": 286.30000000447035
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1020,
+      "y": 375,
+      "chart_x": 667.5,
+      "chart_y": 268.1865997314453,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 293.8999999985099
+    },
+    "timestamp": 293.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1022,
+      "y": 379,
+      "chart_x": 669.5,
+      "chart_y": 272.1918487548828,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 302.20000000298023
+    },
+    "timestamp": 302.20000000298023
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1025,
+      "y": 382,
+      "chart_x": 672.5,
+      "chart_y": 275.1960754394531,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 310.6000000014901
+    },
+    "timestamp": 310.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1028,
+      "y": 386,
+      "chart_x": 675.5,
+      "chart_y": 279.19921875,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 318.80000000447035
+    },
+    "timestamp": 318.80000000447035
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1033,
+      "y": 394,
+      "chart_x": 680.5,
+      "chart_y": 287.2014389038086,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 327.3999999985099
+    },
+    "timestamp": 327.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1037,
+      "y": 400,
+      "chart_x": 684.5,
+      "chart_y": 293.2027130126953,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 335.70000000298023
+    },
+    "timestamp": 335.80000000447035
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1043,
+      "y": 403,
+      "chart_x": 690.5,
+      "chart_y": 296.203125,
+      "element": {
+        "label": "line",
+        "tag": "line",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.grid > g.tick > line"
+      },
+      "timestamp": 344.20000000298023
+    },
+    "timestamp": 344.20000000298023
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1047,
+      "y": 404,
+      "chart_x": 694.5,
+      "chart_y": 297.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 351.70000000298023
+    },
+    "timestamp": 351.70000000298023
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1059,
+      "y": 411,
+      "chart_x": 706.5,
+      "chart_y": 304.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 360.70000000298023
+    },
+    "timestamp": 360.70000000298023
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1066,
+      "y": 417,
+      "chart_x": 713.5,
+      "chart_y": 310.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 369.20000000298023
+    },
+    "timestamp": 369.20000000298023
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1071,
+      "y": 422,
+      "chart_x": 718.5,
+      "chart_y": 315.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 378.20000000298023
+    },
+    "timestamp": 378.20000000298023
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1072,
+      "y": 428,
+      "chart_x": 719.5,
+      "chart_y": 321.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 385.6000000014901
+    },
+    "timestamp": 385.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1073,
+      "y": 431,
+      "chart_x": 720.5,
+      "chart_y": 324.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 394.30000000447035
+    },
+    "timestamp": 394.30000000447035
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1072,
+      "y": 432,
+      "chart_x": 719.5,
+      "chart_y": 325.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 713.3000000044703
+    },
+    "timestamp": 713.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1071,
+      "y": 432,
+      "chart_x": 718.5,
+      "chart_y": 325.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 719
+    },
+    "timestamp": 719
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1065,
+      "y": 432,
+      "chart_x": 712.5,
+      "chart_y": 325.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 727.7000000029802
+    },
+    "timestamp": 727.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1061,
+      "y": 431,
+      "chart_x": 708.5,
+      "chart_y": 324.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 735.8999999985099
+    },
+    "timestamp": 735.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1056,
+      "y": 427,
+      "chart_x": 703.5,
+      "chart_y": 320.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 745.2000000029802
+    },
+    "timestamp": 745.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1051,
+      "y": 424,
+      "chart_x": 698.5,
+      "chart_y": 317.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 752.2000000029802
+    },
+    "timestamp": 752.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1047,
+      "y": 421,
+      "chart_x": 694.5,
+      "chart_y": 314.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 760.5
+    },
+    "timestamp": 760.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1043,
+      "y": 417,
+      "chart_x": 690.5,
+      "chart_y": 310.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 768.8999999985099
+    },
+    "timestamp": 768.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1038,
+      "y": 413,
+      "chart_x": 685.5,
+      "chart_y": 306.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 777.1000000014901
+    },
+    "timestamp": 777.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1033,
+      "y": 409,
+      "chart_x": 680.5,
+      "chart_y": 302.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 786.2000000029802
+    },
+    "timestamp": 786.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1027,
+      "y": 403,
+      "chart_x": 674.5,
+      "chart_y": 296.203125,
+      "element": {
+        "label": "line",
+        "tag": "line",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.grid > g.tick > line"
+      },
+      "timestamp": 794
+    },
+    "timestamp": 794
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1021,
+      "y": 398,
+      "chart_x": 668.5,
+      "chart_y": 291.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 802.1000000014901
+    },
+    "timestamp": 802.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1013,
+      "y": 392,
+      "chart_x": 660.5,
+      "chart_y": 285.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 810.5
+    },
+    "timestamp": 810.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1004,
+      "y": 387,
+      "chart_x": 651.5,
+      "chart_y": 280.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 818.8000000044703
+    },
+    "timestamp": 818.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 995,
+      "y": 380,
+      "chart_x": 642.5,
+      "chart_y": 273.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 827.3000000044703
+    },
+    "timestamp": 827.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 987,
+      "y": 374,
+      "chart_x": 634.5,
+      "chart_y": 267.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 835.6000000014901
+    },
+    "timestamp": 835.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 979,
+      "y": 368,
+      "chart_x": 626.5,
+      "chart_y": 261.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 844.3000000044703
+    },
+    "timestamp": 844.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 973,
+      "y": 361,
+      "chart_x": 620.5,
+      "chart_y": 254.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 852.2000000029802
+    },
+    "timestamp": 852.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 967,
+      "y": 355,
+      "chart_x": 614.5,
+      "chart_y": 248.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 860.5
+    },
+    "timestamp": 860.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 966,
+      "y": 349,
+      "chart_x": 613.5,
+      "chart_y": 242.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 868.8000000044703
+    },
+    "timestamp": 868.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 965,
+      "y": 345,
+      "chart_x": 612.5,
+      "chart_y": 238.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 877.2000000029802
+    },
+    "timestamp": 877.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 964,
+      "y": 339,
+      "chart_x": 611.5,
+      "chart_y": 232.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 886.2000000029802
+    },
+    "timestamp": 886.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 963,
+      "y": 336,
+      "chart_x": 610.5,
+      "chart_y": 229.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 893.8000000044703
+    },
+    "timestamp": 893.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 963,
+      "y": 333,
+      "chart_x": 610.5,
+      "chart_y": 226.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 902.1000000014901
+    },
+    "timestamp": 902.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 331,
+      "chart_x": 609.5,
+      "chart_y": 224.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 910.3999999985099
+    },
+    "timestamp": 910.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 330,
+      "chart_x": 609.5,
+      "chart_y": 223.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 918.8000000044703
+    },
+    "timestamp": 918.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 329,
+      "chart_x": 609.5,
+      "chart_y": 222.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 927.1000000014901
+    },
+    "timestamp": 927.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 328,
+      "chart_x": 609.5,
+      "chart_y": 221.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 935.5
+    },
+    "timestamp": 935.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 327,
+      "chart_x": 609.5,
+      "chart_y": 220.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 962.3999999985099
+    },
+    "timestamp": 962.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 326,
+      "chart_x": 609.5,
+      "chart_y": 219.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 971.7000000029802
+    },
+    "timestamp": 971.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 326,
+      "chart_x": 609.5,
+      "chart_y": 219.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 978.1000000014901
+    },
+    "timestamp": 978.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 325,
+      "chart_x": 609.5,
+      "chart_y": 218.203125,
+      "element": {
+        "label": "path.historical-line.stock-b-line",
+        "tag": "path",
+        "classes": [
+          "historical-line",
+          "stock-b-line"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg > g > g.historical-data > path.historical-line.stock-b-line"
+      },
+      "timestamp": 986
+    },
+    "timestamp": 986
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 324,
+      "chart_x": 609.5,
+      "chart_y": 217.203125,
+      "element": {
+        "label": "path.historical-line.stock-b-line",
+        "tag": "path",
+        "classes": [
+          "historical-line",
+          "stock-b-line"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg > g > g.historical-data > path.historical-line.stock-b-line"
+      },
+      "timestamp": 994.3000000044703
+    },
+    "timestamp": 994.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 323,
+      "chart_x": 609.5,
+      "chart_y": 216.203125,
+      "element": {
+        "label": "path.historical-line.stock-b-line",
+        "tag": "path",
+        "classes": [
+          "historical-line",
+          "stock-b-line"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg > g > g.historical-data > path.historical-line.stock-b-line"
+      },
+      "timestamp": 1002.7000000029802
+    },
+    "timestamp": 1002.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 322,
+      "chart_x": 609.5,
+      "chart_y": 215.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1011
+    },
+    "timestamp": 1011
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 962,
+      "y": 321,
+      "chart_x": 609.5,
+      "chart_y": 214.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1019.2000000029802
+    },
+    "timestamp": 1019.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 963,
+      "y": 321,
+      "chart_x": 610.5,
+      "chart_y": 214.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1131.1000000014901
+    },
+    "timestamp": 1131.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 966,
+      "y": 319,
+      "chart_x": 613.5,
+      "chart_y": 212.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1151.8999999985099
+    },
+    "timestamp": 1151.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 966,
+      "y": 319,
+      "chart_x": 613.5,
+      "chart_y": 212.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1160.7000000029802
+    },
+    "timestamp": 1160.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 968,
+      "y": 318,
+      "chart_x": 615.5,
+      "chart_y": 211.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1169.1000000014901
+    },
+    "timestamp": 1169.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 969,
+      "y": 318,
+      "chart_x": 616.5,
+      "chart_y": 211.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1177.5
+    },
+    "timestamp": 1177.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 970,
+      "y": 317,
+      "chart_x": 617.5,
+      "chart_y": 210.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1186.7000000029802
+    },
+    "timestamp": 1186.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 971,
+      "y": 317,
+      "chart_x": 618.5,
+      "chart_y": 210.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1225.3999999985099
+    },
+    "timestamp": 1225.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 972,
+      "y": 317,
+      "chart_x": 619.5,
+      "chart_y": 210.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1243.8000000044703
+    },
+    "timestamp": 1243.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 973,
+      "y": 317,
+      "chart_x": 620.5,
+      "chart_y": 210.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1252.6000000014901
+    },
+    "timestamp": 1252.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 974,
+      "y": 317,
+      "chart_x": 621.5,
+      "chart_y": 210.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1260.8000000044703
+    },
+    "timestamp": 1260.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 978,
+      "y": 318,
+      "chart_x": 625.5,
+      "chart_y": 211.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1269
+    },
+    "timestamp": 1269
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 981,
+      "y": 318,
+      "chart_x": 628.5,
+      "chart_y": 211.203125,
+      "element": {
+        "label": "line.vertical-reference-line",
+        "tag": "line",
+        "classes": [
+          "vertical-reference-line"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg > g > line.vertical-reference-line"
+      },
+      "timestamp": 1278.3000000044703
+    },
+    "timestamp": 1278.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 984,
+      "y": 319,
+      "chart_x": 631.5,
+      "chart_y": 212.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1285.8999999985099
+    },
+    "timestamp": 1285.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 987,
+      "y": 319,
+      "chart_x": 634.5,
+      "chart_y": 212.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1294.6000000014901
+    },
+    "timestamp": 1294.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 989,
+      "y": 320,
+      "chart_x": 636.5,
+      "chart_y": 213.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1302.6000000014901
+    },
+    "timestamp": 1302.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 991,
+      "y": 320,
+      "chart_x": 638.5,
+      "chart_y": 213.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1310.8000000044703
+    },
+    "timestamp": 1310.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 993,
+      "y": 321,
+      "chart_x": 640.5,
+      "chart_y": 214.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1320
+    },
+    "timestamp": 1320
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 994,
+      "y": 321,
+      "chart_x": 641.5,
+      "chart_y": 214.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1330
+    },
+    "timestamp": 1330
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 994,
+      "y": 323,
+      "chart_x": 641.5,
+      "chart_y": 216.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1336.5
+    },
+    "timestamp": 1336.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 994,
+      "y": 324,
+      "chart_x": 641.5,
+      "chart_y": 217.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1344
+    },
+    "timestamp": 1344
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 995,
+      "y": 326,
+      "chart_x": 642.5,
+      "chart_y": 219.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1352.3999999985099
+    },
+    "timestamp": 1352.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 996,
+      "y": 329,
+      "chart_x": 643.5,
+      "chart_y": 222.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1361.8000000044703
+    },
+    "timestamp": 1361.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 997,
+      "y": 332,
+      "chart_x": 644.5,
+      "chart_y": 225.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1373.8000000044703
+    },
+    "timestamp": 1373.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 997,
+      "y": 333,
+      "chart_x": 644.5,
+      "chart_y": 226.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1378
+    },
+    "timestamp": 1378
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 999,
+      "y": 336,
+      "chart_x": 646.5,
+      "chart_y": 229.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1386.2000000029802
+    },
+    "timestamp": 1386.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1000,
+      "y": 340,
+      "chart_x": 647.5,
+      "chart_y": 233.203125,
+      "element": {
+        "label": "line",
+        "tag": "line",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.grid > g.tick > line"
+      },
+      "timestamp": 1394.3999999985099
+    },
+    "timestamp": 1394.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1001,
+      "y": 342,
+      "chart_x": 648.5,
+      "chart_y": 235.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1402.8000000044703
+    },
+    "timestamp": 1402.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1001,
+      "y": 346,
+      "chart_x": 648.5,
+      "chart_y": 239.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1410.8999999985099
+    },
+    "timestamp": 1410.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1002,
+      "y": 349,
+      "chart_x": 649.5,
+      "chart_y": 242.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1419.6000000014901
+    },
+    "timestamp": 1419.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1003,
+      "y": 352,
+      "chart_x": 650.5,
+      "chart_y": 245.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1427.2000000029802
+    },
+    "timestamp": 1427.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1005,
+      "y": 355,
+      "chart_x": 652.5,
+      "chart_y": 248.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1435.5
+    },
+    "timestamp": 1435.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1008,
+      "y": 360,
+      "chart_x": 655.5,
+      "chart_y": 253.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1443.8999999985099
+    },
+    "timestamp": 1443.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1011,
+      "y": 365,
+      "chart_x": 658.5,
+      "chart_y": 258.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1452.2000000029802
+    },
+    "timestamp": 1452.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1015,
+      "y": 371,
+      "chart_x": 662.5,
+      "chart_y": 264.203125,
+      "element": {
+        "label": "line",
+        "tag": "line",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.grid > g.tick > line"
+      },
+      "timestamp": 1460.6000000014901
+    },
+    "timestamp": 1460.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1021,
+      "y": 377,
+      "chart_x": 668.5,
+      "chart_y": 270.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1469.3999999985099
+    },
+    "timestamp": 1469.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1027,
+      "y": 384,
+      "chart_x": 674.5,
+      "chart_y": 277.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1477.2000000029802
+    },
+    "timestamp": 1477.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1033,
+      "y": 393,
+      "chart_x": 680.5,
+      "chart_y": 286.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1485.8000000044703
+    },
+    "timestamp": 1485.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1039,
+      "y": 401,
+      "chart_x": 686.5,
+      "chart_y": 294.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1493.8999999985099
+    },
+    "timestamp": 1493.8999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1046,
+      "y": 410,
+      "chart_x": 693.5,
+      "chart_y": 303.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1502.2000000029802
+    },
+    "timestamp": 1502.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1053,
+      "y": 419,
+      "chart_x": 700.5,
+      "chart_y": 312.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1510.6000000014901
+    },
+    "timestamp": 1510.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1059,
+      "y": 430,
+      "chart_x": 706.5,
+      "chart_y": 323.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1518.8000000044703
+    },
+    "timestamp": 1518.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1065,
+      "y": 440,
+      "chart_x": 712.5,
+      "chart_y": 333.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1527.3000000044703
+    },
+    "timestamp": 1527.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1071,
+      "y": 451,
+      "chart_x": 718.5,
+      "chart_y": 344.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1535.6000000014901
+    },
+    "timestamp": 1535.6000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1076,
+      "y": 462,
+      "chart_x": 723.5,
+      "chart_y": 355.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1544.2000000029802
+    },
+    "timestamp": 1544.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1080,
+      "y": 472,
+      "chart_x": 727.5,
+      "chart_y": 365.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1552.1000000014901
+    },
+    "timestamp": 1552.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1084,
+      "y": 482,
+      "chart_x": 731.5,
+      "chart_y": 375.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1560.3999999985099
+    },
+    "timestamp": 1560.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1087,
+      "y": 493,
+      "chart_x": 734.5,
+      "chart_y": 386.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1568.8000000044703
+    },
+    "timestamp": 1568.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1089,
+      "y": 502,
+      "chart_x": 736.5,
+      "chart_y": 395.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1577.1000000014901
+    },
+    "timestamp": 1577.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1090,
+      "y": 512,
+      "chart_x": 737.5,
+      "chart_y": 405.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1585.5
+    },
+    "timestamp": 1585.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1090,
+      "y": 522,
+      "chart_x": 737.5,
+      "chart_y": 415.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 1593.8000000044703
+    },
+    "timestamp": 1593.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1090,
+      "y": 532,
+      "chart_x": 737.5,
+      "chart_y": 425.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 1602.2000000029802
+    },
+    "timestamp": 1602.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1088,
+      "y": 542,
+      "chart_x": 735.5,
+      "chart_y": 435.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 1610.3999999985099
+    },
+    "timestamp": 1610.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1085,
+      "y": 550,
+      "chart_x": 732.5,
+      "chart_y": 443.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 1618.7000000029802
+    },
+    "timestamp": 1618.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1083,
+      "y": 557,
+      "chart_x": 730.5,
+      "chart_y": 450.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 1627.1000000014901
+    },
+    "timestamp": 1627.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1080,
+      "y": 565,
+      "chart_x": 727.5,
+      "chart_y": 458.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 1635.3999999985099
+    },
+    "timestamp": 1635.3999999985099
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1077,
+      "y": 573,
+      "chart_x": 724.5,
+      "chart_y": 466.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 1644.2000000029802
+    },
+    "timestamp": 1644.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1076,
+      "y": 576,
+      "chart_x": 723.5,
+      "chart_y": 469.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 1652.3000000044703
+    },
+    "timestamp": 1652.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1071,
+      "y": 586,
+      "chart_x": 718.5,
+      "chart_y": 479.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 1661.2000000029802
+    },
+    "timestamp": 1661.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1068,
+      "y": 592,
+      "chart_x": 715.5,
+      "chart_y": 485.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 1668.7000000029802
+    },
+    "timestamp": 1668.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1064,
+      "y": 596,
+      "chart_x": 711.5,
+      "chart_y": 489.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 1677.1000000014901
+    },
+    "timestamp": 1677.1000000014901
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1059,
+      "y": 601,
+      "chart_x": 706.5,
+      "chart_y": 494.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 1685.3999999985099
+    },
+    "timestamp": 1685.3999999985099
+  },
+  {
+    "type": "chart_leave",
+    "data": {
+      "x": 1054,
+      "y": 607,
+      "chart_x": 701.5,
+      "chart_y": 500.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 1694
+    },
+    "timestamp": 1694
+  },
+  {
+    "type": "chart_enter",
+    "data": {
+      "x": 1036,
+      "y": 396,
+      "chart_x": 683.5,
+      "chart_y": 484.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 3136.10000000149
+    },
+    "timestamp": 3136.10000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1036,
+      "y": 396,
+      "chart_x": 683.5,
+      "chart_y": 484.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 3136.10000000149
+    },
+    "timestamp": 3136.10000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1047,
+      "y": 379,
+      "chart_x": 694.5,
+      "chart_y": 467.203125,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 3144
+    },
+    "timestamp": 3144
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1062,
+      "y": 356,
+      "chart_x": 709.5,
+      "chart_y": 444.21800994873047,
+      "element": {
+        "label": "div.simple-chart-legend",
+        "tag": "div",
+        "classes": [
+          "simple-chart-legend"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend"
+      },
+      "timestamp": 3152.3000000044703
+    },
+    "timestamp": 3152.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1076,
+      "y": 336,
+      "chart_x": 723.5,
+      "chart_y": 424.24153900146484,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 3160.60000000149
+    },
+    "timestamp": 3160.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1088,
+      "y": 317,
+      "chart_x": 735.5,
+      "chart_y": 405.2738952636719,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3168.10000000149
+    },
+    "timestamp": 3168.10000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1103,
+      "y": 293,
+      "chart_x": 750.5,
+      "chart_y": 381.3105697631836,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3177.39999999851
+    },
+    "timestamp": 3177.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1113,
+      "y": 276,
+      "chart_x": 760.5,
+      "chart_y": 364.36644744873047,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3185.60000000149
+    },
+    "timestamp": 3185.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1118,
+      "y": 269,
+      "chart_x": 765.5,
+      "chart_y": 357.42374420166016,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3193.89999999851
+    },
+    "timestamp": 3193.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1128,
+      "y": 248,
+      "chart_x": 775.5,
+      "chart_y": 336.4861602783203,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3201.39999999851
+    },
+    "timestamp": 3201.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1131,
+      "y": 237,
+      "chart_x": 778.5,
+      "chart_y": 325.5425109863281,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3210.60000000149
+    },
+    "timestamp": 3210.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1132,
+      "y": 231,
+      "chart_x": 779.5,
+      "chart_y": 319.61157989501953,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3218.8000000044703
+    },
+    "timestamp": 3218.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1132,
+      "y": 228,
+      "chart_x": 779.5,
+      "chart_y": 316.6710739135742,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3226.39999999851
+    },
+    "timestamp": 3226.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1132,
+      "y": 227,
+      "chart_x": 779.5,
+      "chart_y": 315.72161865234375,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3234.7000000029802
+    },
+    "timestamp": 3234.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1129,
+      "y": 226,
+      "chart_x": 776.5,
+      "chart_y": 314.82666778564453,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3252.2000000029802
+    },
+    "timestamp": 3252.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1127,
+      "y": 226,
+      "chart_x": 774.5,
+      "chart_y": 314.86914825439453,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3259.7000000029802
+    },
+    "timestamp": 3259.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1122,
+      "y": 226,
+      "chart_x": 769.5,
+      "chart_y": 314.9050979614258,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3268.89999999851
+    },
+    "timestamp": 3268.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1118,
+      "y": 226,
+      "chart_x": 765.5,
+      "chart_y": 314.94451904296875,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3277.3000000044703
+    },
+    "timestamp": 3277.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1113,
+      "y": 226,
+      "chart_x": 760.5,
+      "chart_y": 314.97618103027344,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3285.5
+    },
+    "timestamp": 3285.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1107,
+      "y": 226,
+      "chart_x": 754.5,
+      "chart_y": 315.00550079345703,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3293.89999999851
+    },
+    "timestamp": 3293.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1102,
+      "y": 226,
+      "chart_x": 749.5,
+      "chart_y": 315.0316467285156,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3302
+    },
+    "timestamp": 3302
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1095,
+      "y": 227,
+      "chart_x": 742.5,
+      "chart_y": 316.0546646118164,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3310.60000000149
+    },
+    "timestamp": 3310.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1090,
+      "y": 228,
+      "chart_x": 737.5,
+      "chart_y": 317.07688903808594,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3318.89999999851
+    },
+    "timestamp": 3318.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1086,
+      "y": 228,
+      "chart_x": 733.5,
+      "chart_y": 317.09564208984375,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3326.3000000044703
+    },
+    "timestamp": 3326.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1084,
+      "y": 228,
+      "chart_x": 731.5,
+      "chart_y": 317.11107635498047,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3335.60000000149
+    },
+    "timestamp": 3335.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1079,
+      "y": 230,
+      "chart_x": 726.5,
+      "chart_y": 319.1281051635742,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3343.89999999851
+    },
+    "timestamp": 3343.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1071,
+      "y": 233,
+      "chart_x": 718.5,
+      "chart_y": 322.1413345336914,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3352.2000000029802
+    },
+    "timestamp": 3352.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1064,
+      "y": 237,
+      "chart_x": 711.5,
+      "chart_y": 326.1532745361328,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3360.60000000149
+    },
+    "timestamp": 3360.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1055,
+      "y": 242,
+      "chart_x": 702.5,
+      "chart_y": 331.16357421875,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3368.89999999851
+    },
+    "timestamp": 3368.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1049,
+      "y": 246,
+      "chart_x": 696.5,
+      "chart_y": 335.17259216308594,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3377.2000000029802
+    },
+    "timestamp": 3377.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1045,
+      "y": 248,
+      "chart_x": 692.5,
+      "chart_y": 337.1801986694336,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3384.8000000044703
+    },
+    "timestamp": 3384.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1042,
+      "y": 249,
+      "chart_x": 689.5,
+      "chart_y": 338.1859588623047,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3394
+    },
+    "timestamp": 3394
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1042,
+      "y": 250,
+      "chart_x": 689.5,
+      "chart_y": 339.19195556640625,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3402.2000000029802
+    },
+    "timestamp": 3402.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1042,
+      "y": 251,
+      "chart_x": 689.5,
+      "chart_y": 340.1992492675781,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3418.89999999851
+    },
+    "timestamp": 3418.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1043,
+      "y": 255,
+      "chart_x": 690.5,
+      "chart_y": 344.201416015625,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3427.2000000029802
+    },
+    "timestamp": 3427.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1043,
+      "y": 261,
+      "chart_x": 690.5,
+      "chart_y": 350.2027053833008,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3435.60000000149
+    },
+    "timestamp": 3435.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1043,
+      "y": 266,
+      "chart_x": 690.5,
+      "chart_y": 355.203125,
+      "element": {
+        "label": "line",
+        "tag": "line",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.grid > g.tick > line"
+      },
+      "timestamp": 3444
+    },
+    "timestamp": 3444
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1042,
+      "y": 271,
+      "chart_x": 689.5,
+      "chart_y": 360.203125,
+      "element": {
+        "label": "path.domain",
+        "tag": "path",
+        "classes": [
+          "domain"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg > g > g.axis > path.domain"
+      },
+      "timestamp": 3452.3000000044703
+    },
+    "timestamp": 3452.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1041,
+      "y": 277,
+      "chart_x": 688.5,
+      "chart_y": 366.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3460.7000000029802
+    },
+    "timestamp": 3460.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1040,
+      "y": 284,
+      "chart_x": 687.5,
+      "chart_y": 373.203125,
+      "element": {
+        "label": "text",
+        "tag": "text",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.axis > g.tick > text"
+      },
+      "timestamp": 3468.8000000044703
+    },
+    "timestamp": 3468.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1039,
+      "y": 291,
+      "chart_x": 686.5,
+      "chart_y": 380.203125,
+      "element": {
+        "label": "text",
+        "tag": "text",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.axis > g.tick > text"
+      },
+      "timestamp": 3477.10000000149
+    },
+    "timestamp": 3477.10000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1038,
+      "y": 294,
+      "chart_x": 685.5,
+      "chart_y": 383.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3485.5
+    },
+    "timestamp": 3485.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1036,
+      "y": 304,
+      "chart_x": 683.5,
+      "chart_y": 392.703125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3496.8000000044703
+    },
+    "timestamp": 3496.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1036,
+      "y": 306,
+      "chart_x": 683.5,
+      "chart_y": 392.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3505.3000000044703
+    },
+    "timestamp": 3505.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1036,
+      "y": 307,
+      "chart_x": 683.5,
+      "chart_y": 387.703125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3513.60000000149
+    },
+    "timestamp": 3513.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1035,
+      "y": 311,
+      "chart_x": 682.5,
+      "chart_y": 368.703125,
+      "element": {
+        "label": "text",
+        "tag": "text",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.axis > g.tick > text"
+      },
+      "timestamp": 3530.39999999851
+    },
+    "timestamp": 3530.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1034,
+      "y": 313,
+      "chart_x": 681.5,
+      "chart_y": 354.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3535.60000000149
+    },
+    "timestamp": 3535.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1033,
+      "y": 316,
+      "chart_x": 680.5,
+      "chart_y": 339.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3546
+    },
+    "timestamp": 3546
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1032,
+      "y": 317,
+      "chart_x": 679.5,
+      "chart_y": 275.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3571
+    },
+    "timestamp": 3571
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1032,
+      "y": 319,
+      "chart_x": 679.5,
+      "chart_y": 257.703125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3579.3000000044703
+    },
+    "timestamp": 3579.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1031,
+      "y": 323,
+      "chart_x": 678.5,
+      "chart_y": 245.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3587.7000000029802
+    },
+    "timestamp": 3587.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1031,
+      "y": 325,
+      "chart_x": 678.5,
+      "chart_y": 234.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3596
+    },
+    "timestamp": 3596
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1031,
+      "y": 328,
+      "chart_x": 678.5,
+      "chart_y": 228.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3604.3000000044703
+    },
+    "timestamp": 3604.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1031,
+      "y": 332,
+      "chart_x": 678.5,
+      "chart_y": 227.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3612.60000000149
+    },
+    "timestamp": 3612.60000000149
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1030,
+      "y": 335,
+      "chart_x": 677.5,
+      "chart_y": 228.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3621
+    },
+    "timestamp": 3621
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1029,
+      "y": 338,
+      "chart_x": 676.5,
+      "chart_y": 231.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3629.3000000044703
+    },
+    "timestamp": 3629.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1029,
+      "y": 344,
+      "chart_x": 676.5,
+      "chart_y": 237.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3643.89999999851
+    },
+    "timestamp": 3643.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1027,
+      "y": 348,
+      "chart_x": 674.5,
+      "chart_y": 241.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3652.8000000044703
+    },
+    "timestamp": 3652.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1025,
+      "y": 352,
+      "chart_x": 672.5,
+      "chart_y": 245.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3660.39999999851
+    },
+    "timestamp": 3660.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1022,
+      "y": 355,
+      "chart_x": 669.5,
+      "chart_y": 248.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3668.8000000044703
+    },
+    "timestamp": 3668.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1021,
+      "y": 360,
+      "chart_x": 668.5,
+      "chart_y": 253.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3677.2000000029802
+    },
+    "timestamp": 3677.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1018,
+      "y": 364,
+      "chart_x": 665.5,
+      "chart_y": 257.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3685.5
+    },
+    "timestamp": 3685.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1015,
+      "y": 369,
+      "chart_x": 662.5,
+      "chart_y": 262.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3693.8000000044703
+    },
+    "timestamp": 3693.8000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1015,
+      "y": 370,
+      "chart_x": 662.5,
+      "chart_y": 263.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3702.2000000029802
+    },
+    "timestamp": 3702.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1010,
+      "y": 379,
+      "chart_x": 657.5,
+      "chart_y": 272.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3710.5
+    },
+    "timestamp": 3710.5
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1007,
+      "y": 383,
+      "chart_x": 654.5,
+      "chart_y": 276.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3718.89999999851
+    },
+    "timestamp": 3718.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 1002,
+      "y": 390,
+      "chart_x": 649.5,
+      "chart_y": 283.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3727.3000000044703
+    },
+    "timestamp": 3727.3000000044703
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 999,
+      "y": 397,
+      "chart_x": 646.5,
+      "chart_y": 290.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3734.7000000029802
+    },
+    "timestamp": 3734.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 994,
+      "y": 407,
+      "chart_x": 641.5,
+      "chart_y": 300.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3743.89999999851
+    },
+    "timestamp": 3743.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 988,
+      "y": 417,
+      "chart_x": 635.5,
+      "chart_y": 310.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3752.2000000029802
+    },
+    "timestamp": 3752.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 987,
+      "y": 421,
+      "chart_x": 634.5,
+      "chart_y": 314.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3758.60000000149
+    },
+    "timestamp": 3758.7000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 984,
+      "y": 424,
+      "chart_x": 631.5,
+      "chart_y": 317.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3763.39999999851
+    },
+    "timestamp": 3763.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 981,
+      "y": 430,
+      "chart_x": 628.5,
+      "chart_y": 323.703125,
+      "element": {
+        "label": "line.vertical-reference-line",
+        "tag": "line",
+        "classes": [
+          "vertical-reference-line"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg > g > line.vertical-reference-line"
+      },
+      "timestamp": 3771.89999999851
+    },
+    "timestamp": 3771.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 980,
+      "y": 432,
+      "chart_x": 627.5,
+      "chart_y": 328.203125,
+      "element": {
+        "label": "line",
+        "tag": "line",
+        "path": "svg#jspsych-chart-svg.chart-svg > g > g.grid > g.tick > line"
+      },
+      "timestamp": 3780.39999999851
+    },
+    "timestamp": 3780.39999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 980,
+      "y": 433,
+      "chart_x": 627.5,
+      "chart_y": 335.203125,
+      "element": {
+        "label": "svg#jspsych-chart-svg.chart-svg",
+        "tag": "svg",
+        "id": "jspsych-chart-svg",
+        "classes": [
+          "chart-svg"
+        ],
+        "path": "div#air-quality-chart.chart-container > svg#jspsych-chart-svg.chart-svg"
+      },
+      "timestamp": 3788.2000000029802
+    },
+    "timestamp": 3788.2000000029802
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 979,
+      "y": 437,
+      "chart_x": 626.5,
+      "chart_y": 443.703125,
+      "element": {
+        "label": "div.legend-line",
+        "tag": "div",
+        "classes": [
+          "legend-line"
+        ],
+        "path": "div#air-quality-chart.chart-container > div.simple-chart-legend > div.legend-line"
+      },
+      "timestamp": 3829.89999999851
+    },
+    "timestamp": 3829.89999999851
+  },
+  {
+    "type": "chart_hover",
+    "data": {
+      "x": 979,
+      "y": 438,
+      "chart_x": 626.5,
+      "chart_y": 479.703125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 3838.8000000044703
+    },
+    "timestamp": 3838.8000000044703
+  },
+  {
+    "type": "chart_leave",
+    "data": {
+      "x": 979,
+      "y": 441,
+      "chart_x": 626.5,
+      "chart_y": 591.203125,
+      "element": {
+        "label": "div#air-quality-chart.chart-container",
+        "tag": "div",
+        "id": "air-quality-chart",
+        "classes": [
+          "chart-container"
+        ],
+        "path": "div#air-quality-chart.chart-container"
+      },
+      "timestamp": 3888.5
+    },
+    "timestamp": 3888.5
+  }
+]

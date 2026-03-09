@@ -1,0 +1,629 @@
+{
+  "generatedAt": "2026-03-06T00:15:20.725499+00:00",
+  "outputDir": "/Users/songwen/Documents/Code Lab/Interact4Trust/Experiment1/script/test_output_py",
+  "summary": {
+    "totalChecks": 14,
+    "passed": 14,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "ok": true,
+      "message": "numPred_3: stock A has 3 scenarios (expected 3)"
+    },
+    {
+      "ok": true,
+      "message": "numPred_3: stock B has 3 scenarios (expected 3)"
+    },
+    {
+      "ok": true,
+      "message": "numPred_16: stock A has 16 scenarios (expected 16)"
+    },
+    {
+      "ok": true,
+      "message": "numPred_16: stock B has 16 scenarios (expected 16)"
+    },
+    {
+      "ok": true,
+      "message": "histStart_55: historical start mean 55.00 ~= 55.0"
+    },
+    {
+      "ok": true,
+      "message": "histEnd_18: historical end mean 18.00 ~= 18.0"
+    },
+    {
+      "ok": true,
+      "message": "predStart_62: prediction start mean 62.00 ~= 62.0"
+    },
+    {
+      "ok": true,
+      "message": "predEnd_15: prediction end mean 15.00 ~= 15.0"
+    },
+    {
+      "ok": true,
+      "message": "noiseLevel: historical residual variance rises from 0.10 to 10.20"
+    },
+    {
+      "ok": true,
+      "message": "noiseLevel: prediction residual variance rises from 0.12 to 11.46"
+    },
+    {
+      "ok": true,
+      "message": "predVariance: endpoint spread rises from 1.00 to 225.00"
+    },
+    {
+      "ok": true,
+      "message": "skew_up: positive endpoint ratio 0.70 > 0.55"
+    },
+    {
+      "ok": true,
+      "message": "skew_down: positive endpoint ratio 0.30 < 0.45"
+    },
+    {
+      "ok": true,
+      "message": "skew_bimodel: positive endpoint ratio 0.50 is near 0.50"
+    }
+  ],
+  "cases": [
+    {
+      "id": "baseline",
+      "focus": "baseline",
+      "description": "Reference run with balanced bimodal endpoints.",
+      "file": "script/test_output_py/data/baseline.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "py-option-test-baseline",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.00000000000001,
+        "predEndMean": 40.0005,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.659207674267006,
+        "predictionResidualVariance": 1.8065381543803418,
+        "predictionEndVariance": 63.995716111111115,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "numPred_3",
+      "focus": "numPred",
+      "description": "3 prediction models per timestamp.",
+      "file": "script/test_output_py/data/numPred_3.json",
+      "options": {
+        "numPred": 3,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-numPred-3",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 478,
+        "historicalRecords": 304,
+        "predictionRecords": 174,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 35.998333333333335,
+        "predEndMean": 39.99666666666667,
+        "scenarioCounts": {
+          "A": 3,
+          "B": 3
+        },
+        "historicalResidualVariance": 1.6522685322014308,
+        "predictionResidualVariance": 1.566758728886854,
+        "predictionEndVariance": 64.00403333333335,
+        "positiveEndpointRatio": 0.6666666666666666,
+        "negativeEndpointRatio": 0.3333333333333333
+      }
+    },
+    {
+      "id": "numPred_16",
+      "focus": "numPred",
+      "description": "16 prediction models per timestamp.",
+      "file": "script/test_output_py/data/numPred_16.json",
+      "options": {
+        "numPred": 16,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-numPred-16",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 1232,
+        "historicalRecords": 304,
+        "predictionRecords": 928,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 35.999687500000014,
+        "predEndMean": 39.99968750000001,
+        "scenarioCounts": {
+          "A": 16,
+          "B": 16
+        },
+        "historicalResidualVariance": 1.5861070145043485,
+        "predictionResidualVariance": 1.5672393267322955,
+        "predictionEndVariance": 64.01057645833333,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "histStart_55",
+      "focus": "histStart",
+      "description": "Historical start shifted high.",
+      "file": "script/test_output_py/data/histStart_55.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 55.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-histStart-55",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 55.0,
+        "histEndMean": 36.0,
+        "predStartMean": 35.9995,
+        "predEndMean": 40.0,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.48059954359453,
+        "predictionResidualVariance": 1.731020948438136,
+        "predictionEndVariance": 64.00939999999999,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "histEnd_18",
+      "focus": "histEnd",
+      "description": "Historical end shifted low.",
+      "file": "script/test_output_py/data/histEnd_18.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 18.0,
+        "predStart": 18.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-histEnd-18",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 18.0,
+        "predStartMean": 18.0,
+        "predEndMean": 40.000000000000014,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.6436982838052057,
+        "predictionResidualVariance": 1.4869629194647949,
+        "predictionEndVariance": 64.00155555555554,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "predStart_62",
+      "focus": "predStart",
+      "description": "Prediction start mean moved to 62.",
+      "file": "script/test_output_py/data/predStart_62.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 62.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-predStart-62",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 62.001,
+        "predEndMean": 40.00000000000001,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.6614766614219882,
+        "predictionResidualVariance": 1.7258973117623118,
+        "predictionEndVariance": 63.972321111111114,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "predEnd_15",
+      "focus": "predEnd",
+      "description": "Prediction end mean moved to 15.",
+      "file": "script/test_output_py/data/predEnd_15.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 15.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-predEnd-15",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.0,
+        "predEndMean": 14.999,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.541499230291717,
+        "predictionResidualVariance": 1.6373196853378105,
+        "predictionEndVariance": 63.995909999999995,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "noise_0_1",
+      "focus": "noiseLevel",
+      "description": "Very low within-series variance.",
+      "file": "script/test_output_py/data/noise_0_1.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 0.1,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-noise-0.1",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.00000000000001,
+        "predEndMean": 40.00000000000001,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 0.09799536825340396,
+        "predictionResidualVariance": 0.11979248880748875,
+        "predictionEndVariance": 64.00342222222221,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "noise_9",
+      "focus": "noiseLevel",
+      "description": "High within-series variance.",
+      "file": "script/test_output_py/data/noise_9.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 9.0,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-noise-9",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 35.9995,
+        "predEndMean": 40.0005,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 10.196751934797103,
+        "predictionResidualVariance": 11.456544805148557,
+        "predictionEndVariance": 63.987882777777784,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.45
+      }
+    },
+    {
+      "id": "predVar_1",
+      "focus": "predVariance",
+      "description": "Tight agreement at prediction end.",
+      "file": "script/test_output_py/data/predVar_1.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 1.0,
+        "skew": "bimodel",
+        "seed": "test-predVar-1",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.0,
+        "predEndMean": 40.0,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.6642621754448346,
+        "predictionResidualVariance": 1.5931200450244203,
+        "predictionEndVariance": 0.9987655555555548,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "predVar_225",
+      "focus": "predVariance",
+      "description": "Wide spread at prediction end.",
+      "file": "script/test_output_py/data/predVar_225.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 225.0,
+        "skew": "bimodel",
+        "seed": "test-predVar-225",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.0,
+        "predEndMean": 39.998999999999995,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.6037897069054927,
+        "predictionResidualVariance": 1.592651167836792,
+        "predictionEndVariance": 224.99907666666664,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    },
+    {
+      "id": "skew_up",
+      "focus": "skew",
+      "description": "Majority of models diverge upward at the end.",
+      "file": "script/test_output_py/data/skew_up.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "up",
+        "seed": "test-skew-up",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.0,
+        "predEndMean": 40.0,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.415757107886276,
+        "predictionResidualVariance": 1.707190518671143,
+        "predictionEndVariance": 63.98746555555555,
+        "positiveEndpointRatio": 0.7,
+        "negativeEndpointRatio": 0.3
+      }
+    },
+    {
+      "id": "skew_down",
+      "focus": "skew",
+      "description": "Majority of models diverge downward at the end.",
+      "file": "script/test_output_py/data/skew_down.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "down",
+        "seed": "test-skew-down",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 36.0005,
+        "predEndMean": 39.999500000000005,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.258203137176467,
+        "predictionResidualVariance": 1.6302808020451773,
+        "predictionEndVariance": 63.98938277777778,
+        "positiveEndpointRatio": 0.3,
+        "negativeEndpointRatio": 0.7
+      }
+    },
+    {
+      "id": "skew_bimodel",
+      "focus": "skew",
+      "description": "Roughly half diverge up and half down.",
+      "file": "script/test_output_py/data/skew_bimodel.json",
+      "options": {
+        "numPred": 10,
+        "histStart": 42.0,
+        "histEnd": 36.0,
+        "predStart": 36.0,
+        "predEnd": 40.0,
+        "noiseLevel": 1.5,
+        "predVariance": 64.0,
+        "skew": "bimodel",
+        "seed": "test-skew-bimodel",
+        "fileName": "unused.json"
+      },
+      "metrics": {
+        "totalRecords": 884,
+        "historicalRecords": 304,
+        "predictionRecords": 580,
+        "histStartDate": "2025-01-01",
+        "histEndDate": "2025-06-01",
+        "predStartDate": "2025-06-02",
+        "predEndDate": "2025-06-30",
+        "histStartMean": 42.0,
+        "histEndMean": 36.0,
+        "predStartMean": 35.99999999999999,
+        "predEndMean": 39.998999999999995,
+        "scenarioCounts": {
+          "A": 10,
+          "B": 10
+        },
+        "historicalResidualVariance": 1.684220320073484,
+        "predictionResidualVariance": 1.7876464687627194,
+        "predictionEndVariance": 63.98645333333333,
+        "positiveEndpointRatio": 0.5,
+        "negativeEndpointRatio": 0.5
+      }
+    }
+  ]
+}
