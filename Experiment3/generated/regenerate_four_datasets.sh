@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Regenerates the 4 custom datasets in this folder using the Python generator
+# Regenerates the 5 custom datasets in this folder using the Python generator
 # with sine-wave trajectories.
 #
 # Usage:
@@ -37,12 +37,18 @@ python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
   --histStart 70 --histEnd 50 --predEnd 41 \
   --fileName zorvani_kelthar_decHist_decPred.json
 
+python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
+  --seed trend-fixed-v1-ranax-baseline \
+  --histStart 48 --histEnd 54 --predEnd 50 \
+  --fileName ranax_leer_city_baseline.json
+
 # Rename stock labels A/B to custom pair names in each dataset.
 python3 - <<'PY'
 import json
 from pathlib import Path
 
 datasets = [
+    ("ranax_leer_city_baseline.json", "Ranax", "Leer City"),
     ("virexa_talmori_incHist_incPred.json", "Virexa", "Talmori"),
     ("qelvane_rostiva_incHist_decPred.json", "Qelvane", "Rostiva"),
     ("nexari_pulveth_decHist_incPred.json", "Nexari", "Pulveth"),
@@ -59,5 +65,5 @@ for file_name, stock_a, stock_b in datasets:
             row["stock"] = stock_b
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
-print("Done: regenerated and relabeled 4 datasets.")
+print("Done: regenerated and relabeled 5 datasets.")
 PY

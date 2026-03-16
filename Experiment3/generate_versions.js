@@ -100,6 +100,12 @@ const manifest = VERSION_DEFINITIONS.map((definition) => {
     version_id: definition.versionId,
     technique_token: definition.techniqueToken,
     technique_key: definition.techniqueKey,
+    fixed_baseline_phase: {
+      phase_key: 'phase1',
+      condition_id: 'condition_1_baseline',
+      display_format: 'aggregation_only'
+    },
+    randomized_interaction_phases_start_at: 'phase2',
     randomized_within_participant_interactions: [
       'hover_show_one',
       'hover_show_all',

@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study Configuration
-// Experiment 3: Four interaction types within participants, fixed visualization technique by version
+// Experiment 3: Baseline + four interaction types within participants, fixed visualization technique by version
 
 const TECHNIQUE_TOKEN_TO_KEY = Object.freeze({
     EP: 'ensemble_plot',
@@ -87,6 +87,14 @@ const ExperimentConfig = {
 
     // Available visualization conditions
     conditions: [
+        {
+            id: 'condition_1_baseline',
+            name: 'Baseline',
+            displayFormat: 'aggregation_only',
+            technique: 'baseline',
+            description: 'Shows only aggregated prediction lines without uncertainty details.',
+            instructions: ''
+        },
         {
             id: 'condition_21_hover_show_one_ep',
             name: 'Hover Show One (Ensemble)',
@@ -211,7 +219,7 @@ const ExperimentConfig = {
 
     phaseDesign: {
         defaultVersionId: 'version_EP',
-        phaseOrder: ['phase1', 'phase2', 'phase3', 'phase4'],
+        phaseOrder: ['phase1', 'phase2', 'phase3', 'phase4', 'phase5'],
         interactionKeys: INTERACTION_SEQUENCE_KEYS.slice(),
         conditionMatrix: {
             ensemble_plot: {
@@ -237,21 +245,26 @@ const ExperimentConfig = {
 
     phases: {
         phase1: {
+            name: 'Baseline',
+            description: 'Baseline condition (Condition 1) with no uncertainty visualization or interaction.',
+            measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
+        },
+        phase2: {
             name: 'Interaction Round 1',
             description: 'First randomized interaction style for the assigned visualization technique.',
             measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
         },
-        phase2: {
+        phase3: {
             name: 'Interaction Round 2',
             description: 'Second randomized interaction style for the assigned visualization technique.',
             measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
         },
-        phase3: {
+        phase4: {
             name: 'Interaction Round 3',
             description: 'Third randomized interaction style for the assigned visualization technique.',
             measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
         },
-        phase4: {
+        phase5: {
             name: 'Interaction Round 4',
             description: 'Fourth randomized interaction style for the assigned visualization technique.',
             measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
@@ -260,8 +273,18 @@ const ExperimentConfig = {
 
     phaseDatasets: {
         phase1: {
-            file: 'virexa_talmori_incHist_incPred.json',
+            file: 'ranax_leer_city_baseline.json',
             organization: 'Organization A',
+            cityA: 'Ranax',
+            cityB: 'Leer City',
+            colors: {
+                cityA: '#1D4ED8',
+                cityB: '#C2410C'
+            }
+        },
+        phase2: {
+            file: 'virexa_talmori_incHist_incPred.json',
+            organization: 'Organization B',
             cityA: 'Virexa',
             cityB: 'Talmori',
             colors: {
@@ -269,9 +292,9 @@ const ExperimentConfig = {
                 cityB: '#D97706'
             }
         },
-        phase2: {
+        phase3: {
             file: 'qelvane_rostiva_incHist_decPred.json',
-            organization: 'Organization B',
+            organization: 'Organization C',
             cityA: 'Qelvane',
             cityB: 'Rostiva',
             colors: {
@@ -279,9 +302,9 @@ const ExperimentConfig = {
                 cityB: '#DC2626'
             }
         },
-        phase3: {
+        phase4: {
             file: 'nexari_pulveth_decHist_incPred.json',
-            organization: 'Organization C',
+            organization: 'Organization D',
             cityA: 'Nexari',
             cityB: 'Pulveth',
             colors: {
@@ -289,9 +312,9 @@ const ExperimentConfig = {
                 cityB: '#0EA5E9'
             }
         },
-        phase4: {
+        phase5: {
             file: 'zorvani_kelthar_decHist_decPred.json',
-            organization: 'Organization D',
+            organization: 'Organization E',
             cityA: 'Zorvani',
             cityB: 'Kelthar',
             colors: {
@@ -458,8 +481,15 @@ const ExperimentConfig = {
             const phaseAssignments = {};
             const phaseAssignmentLog = {};
 
+            const baselineCondition = this.getConditionById('condition_1_baseline');
+            if (!baselineCondition) {
+                throw new Error('Missing baseline condition: condition_1_baseline.');
+            }
+            phaseAssignments.phase1 = baselineCondition;
+            phaseAssignmentLog.phase1 = serializeCondition(baselineCondition);
+
             for (let slotIndex = 0; slotIndex < 4; slotIndex += 1) {
-                const phaseKey = `phase${slotIndex + 1}`;
+                const phaseKey = `phase${slotIndex + 2}`;
                 const interactionKey = interactionOrder[slotIndex];
                 const conditionId = ExperimentConfig.phaseDesign.conditionMatrix[techniqueKey][interactionKey];
                 const condition = this.getConditionById(conditionId);
@@ -500,7 +530,7 @@ const ExperimentConfig = {
                 versionId || ExperimentConfig.phaseDesign.defaultVersionId,
                 participantId
             );
-            return assignment.phaseAssignments.phase1;
+            return assignment.phaseAssignments.phase2;
         }
     },
 
@@ -539,26 +569,30 @@ let ParticipantConfig = {
         phase1: null,
         phase2: null,
         phase3: null,
-        phase4: null
+        phase4: null,
+        phase5: null
     },
     phaseAssignmentLog: {
         phase1: null,
         phase2: null,
         phase3: null,
-        phase4: null
+        phase4: null,
+        phase5: null
     },
-    phaseExecutionOrder: ['phase1', 'phase2', 'phase3', 'phase4'],
+    phaseExecutionOrder: ['phase1', 'phase2', 'phase3', 'phase4', 'phase5'],
     phaseCompletion: {
         phase1: false,
         phase2: false,
         phase3: false,
-        phase4: false
+        phase4: false,
+        phase5: false
     },
     startTime: null,
     phase1Complete: false,
     phase2Complete: false,
     phase3Complete: false,
     phase4Complete: false,
+    phase5Complete: false,
     visualizationLiteracyScore: null,
     versionDescriptor: null,
     version: 'version_EP'
@@ -570,7 +604,7 @@ function initializeParticipant(participantId) {
     const assignment = ExperimentConfig.conditionAssignment.assignByVersionPath(path, normalizedParticipantId);
 
     ParticipantConfig.id = normalizedParticipantId;
-    ParticipantConfig.assignedCondition = assignment.phaseAssignments.phase1;
+    ParticipantConfig.assignedCondition = assignment.phaseAssignments.phase2;
     ParticipantConfig.phaseAssignments = assignment.phaseAssignments;
     ParticipantConfig.phaseAssignmentLog = assignment.phaseAssignmentLog;
     ParticipantConfig.phaseExecutionOrder = assignment.phaseExecutionOrder;
@@ -578,13 +612,15 @@ function initializeParticipant(participantId) {
         phase1: false,
         phase2: false,
         phase3: false,
-        phase4: false
+        phase4: false,
+        phase5: false
     };
     ParticipantConfig.startTime = new Date().toISOString();
     ParticipantConfig.phase1Complete = false;
     ParticipantConfig.phase2Complete = false;
     ParticipantConfig.phase3Complete = false;
     ParticipantConfig.phase4Complete = false;
+    ParticipantConfig.phase5Complete = false;
     ParticipantConfig.visualizationLiteracyScore = null;
     ParticipantConfig.versionDescriptor = assignment.versionDescriptor;
     ParticipantConfig.version = assignment.versionId;
