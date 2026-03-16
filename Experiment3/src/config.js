@@ -50,6 +50,34 @@ function serializeCondition(condition) {
     };
 }
 
+function cloneDatasetConfig(datasetConfig) {
+    if (!datasetConfig || typeof datasetConfig !== 'object') return null;
+    return {
+        file: datasetConfig.file || null,
+        organization: datasetConfig.organization || null,
+        cityA: datasetConfig.cityA || 'City A',
+        cityB: datasetConfig.cityB || 'City B',
+        colors: {
+            cityA: datasetConfig.colors?.cityA || '#0891B2',
+            cityB: datasetConfig.colors?.cityB || '#7C3AED'
+        }
+    };
+}
+
+function serializeDatasetAssignment(datasetAssignment) {
+    if (!datasetAssignment || !datasetAssignment.dataset) return null;
+    const datasetConfig = cloneDatasetConfig(datasetAssignment.dataset);
+    return {
+        source_phase_key: datasetAssignment.sourcePhaseKey || null,
+        source_phase_index: datasetAssignment.sourcePhaseIndex || null,
+        file: datasetConfig.file,
+        organization: datasetConfig.organization,
+        cityA: datasetConfig.cityA,
+        cityB: datasetConfig.cityB,
+        colors: datasetConfig.colors
+    };
+}
+
 function hashString(input) {
     const source = String(input || '');
     let hash = 2166136261;
@@ -473,36 +501,105 @@ const ExperimentConfig = {
             }
 
             const techniqueKey = TECHNIQUE_TOKEN_TO_KEY[parsedDescriptor.techniqueToken];
-            const interactionOrder = deterministicShuffle(
-                ExperimentConfig.phaseDesign.interactionKeys,
-                `${participantId || 'anon'}|${parsedDescriptor.versionId}|experiment3`
-            );
-
             const phaseAssignments = {};
             const phaseAssignmentLog = {};
+            const phaseDatasetAssignments = {};
+            const phaseDatasetAssignmentLog = {};
 
             const baselineCondition = this.getConditionById('condition_1_baseline');
             if (!baselineCondition) {
                 throw new Error('Missing baseline condition: condition_1_baseline.');
             }
-            phaseAssignments.phase1 = baselineCondition;
-            phaseAssignmentLog.phase1 = serializeCondition(baselineCondition);
 
-            for (let slotIndex = 0; slotIndex < 4; slotIndex += 1) {
-                const phaseKey = `phase${slotIndex + 2}`;
-                const interactionKey = interactionOrder[slotIndex];
+            const interactionConditionsByKey = {};
+            for (let i = 0; i < ExperimentConfig.phaseDesign.interactionKeys.length; i += 1) {
+                const interactionKey = ExperimentConfig.phaseDesign.interactionKeys[i];
                 const conditionId = ExperimentConfig.phaseDesign.conditionMatrix[techniqueKey][interactionKey];
                 const condition = this.getConditionById(conditionId);
                 if (!condition) {
                     throw new Error(`Missing condition for ${techniqueKey}/${interactionKey} (${conditionId}).`);
                 }
+                interactionConditionsByKey[interactionKey] = condition;
+            }
+
+            // Step 1: random assignment of all 5 condition identities to the 5 dataset bundles.
+            const datasetAssignmentOrder = [
+                { condition: baselineCondition, interactionKey: 'baseline' },
+                ...ExperimentConfig.phaseDesign.interactionKeys.map((interactionKey) => ({
+                    condition: interactionConditionsByKey[interactionKey],
+                    interactionKey
+                }))
+            ];
+
+            const datasetPool = ExperimentConfig.phaseDesign.phaseOrder.map((phaseKey, index) => {
+                const dataset = cloneDatasetConfig(ExperimentConfig.phaseDatasets[phaseKey]);
+                if (!dataset || !dataset.file) {
+                    throw new Error(`Missing dataset configuration for ${phaseKey}.`);
+                }
+                return {
+                    sourcePhaseKey: phaseKey,
+                    sourcePhaseIndex: index + 1,
+                    dataset
+                };
+            });
+
+            if (datasetPool.length !== datasetAssignmentOrder.length) {
+                throw new Error(
+                    `Dataset pool size (${datasetPool.length}) must match assigned conditions (${datasetAssignmentOrder.length}).`
+                );
+            }
+
+            const shuffledDatasetPool = deterministicShuffle(
+                datasetPool,
+                `${participantId || 'anon'}|${parsedDescriptor.versionId}|experiment3|dataset-assignment`
+            );
+
+            const datasetByConditionId = {};
+            datasetAssignmentOrder.forEach((entry, index) => {
+                datasetByConditionId[entry.condition.id] = shuffledDatasetPool[index];
+            });
+
+            // Step 2: keep baseline first and shuffle only the 4 interaction conditions.
+            const interactionOrder = deterministicShuffle(
+                ExperimentConfig.phaseDesign.interactionKeys,
+                `${participantId || 'anon'}|${parsedDescriptor.versionId}|experiment3|interaction-order`
+            );
+
+            const baselineDatasetAssignment = datasetByConditionId[baselineCondition.id];
+            if (!baselineDatasetAssignment) {
+                throw new Error(`Missing dataset assignment for baseline condition (${baselineCondition.id}).`);
+            }
+            phaseAssignments.phase1 = baselineCondition;
+            phaseDatasetAssignments.phase1 = cloneDatasetConfig(baselineDatasetAssignment.dataset);
+            phaseDatasetAssignmentLog.phase1 = serializeDatasetAssignment(baselineDatasetAssignment);
+            phaseAssignmentLog.phase1 = {
+                ...serializeCondition(baselineCondition),
+                interaction_type: 'baseline',
+                interaction_order_index: 0,
+                technique_token: parsedDescriptor.techniqueToken,
+                dataset_source_phase_key: baselineDatasetAssignment.sourcePhaseKey,
+                dataset_file: baselineDatasetAssignment.dataset.file
+            };
+
+            for (let slotIndex = 0; slotIndex < 4; slotIndex += 1) {
+                const phaseKey = `phase${slotIndex + 2}`;
+                const interactionKey = interactionOrder[slotIndex];
+                const condition = interactionConditionsByKey[interactionKey];
+                const datasetAssignment = datasetByConditionId[condition.id];
+                if (!datasetAssignment) {
+                    throw new Error(`Missing dataset assignment for condition ${condition.id}.`);
+                }
 
                 phaseAssignments[phaseKey] = condition;
+                phaseDatasetAssignments[phaseKey] = cloneDatasetConfig(datasetAssignment.dataset);
+                phaseDatasetAssignmentLog[phaseKey] = serializeDatasetAssignment(datasetAssignment);
                 phaseAssignmentLog[phaseKey] = {
                     ...serializeCondition(condition),
                     interaction_type: interactionKey,
                     interaction_order_index: slotIndex + 1,
-                    technique_token: parsedDescriptor.techniqueToken
+                    technique_token: parsedDescriptor.techniqueToken,
+                    dataset_source_phase_key: datasetAssignment.sourcePhaseKey,
+                    dataset_file: datasetAssignment.dataset.file
                 };
             }
 
@@ -511,10 +608,21 @@ const ExperimentConfig = {
                 versionDescriptor: {
                     technique_token: parsedDescriptor.techniqueToken,
                     technique_key: techniqueKey,
-                    interaction_order: interactionOrder
+                    interaction_order: interactionOrder,
+                    dataset_assignment: datasetAssignmentOrder.map((entry) => {
+                        const assignment = datasetByConditionId[entry.condition.id];
+                        return {
+                            condition_id: entry.condition.id,
+                            interaction_type: entry.interactionKey,
+                            dataset_source_phase_key: assignment.sourcePhaseKey,
+                            dataset_file: assignment.dataset.file
+                        };
+                    })
                 },
                 phaseAssignments,
                 phaseAssignmentLog,
+                phaseDatasetAssignments,
+                phaseDatasetAssignmentLog,
                 phaseExecutionOrder: ExperimentConfig.phaseDesign.phaseOrder.slice()
             };
         },
@@ -550,6 +658,7 @@ const ExperimentConfig = {
             condition_name: 'string',
             display_format: 'string',
             phase_assignment_log: 'object',
+            phase_dataset_assignment_log: 'object',
             phase_execution_order: 'array',
             phase_completion: 'object',
             version_descriptor: 'object',
@@ -573,6 +682,20 @@ let ParticipantConfig = {
         phase5: null
     },
     phaseAssignmentLog: {
+        phase1: null,
+        phase2: null,
+        phase3: null,
+        phase4: null,
+        phase5: null
+    },
+    phaseDatasetAssignments: {
+        phase1: null,
+        phase2: null,
+        phase3: null,
+        phase4: null,
+        phase5: null
+    },
+    phaseDatasetAssignmentLog: {
         phase1: null,
         phase2: null,
         phase3: null,
@@ -607,6 +730,8 @@ function initializeParticipant(participantId) {
     ParticipantConfig.assignedCondition = assignment.phaseAssignments.phase2;
     ParticipantConfig.phaseAssignments = assignment.phaseAssignments;
     ParticipantConfig.phaseAssignmentLog = assignment.phaseAssignmentLog;
+    ParticipantConfig.phaseDatasetAssignments = assignment.phaseDatasetAssignments;
+    ParticipantConfig.phaseDatasetAssignmentLog = assignment.phaseDatasetAssignmentLog;
     ParticipantConfig.phaseExecutionOrder = assignment.phaseExecutionOrder;
     ParticipantConfig.phaseCompletion = {
         phase1: false,

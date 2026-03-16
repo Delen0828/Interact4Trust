@@ -345,25 +345,32 @@ function buildTimeline() {
 	});
 
 	timeline.push({
-		type: jsPsychImageButtonResponse,
-		stimulus: instructionStimulusPath,
-		prompt: `
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
 			<style>
-				#jspsych-image-button-response-stimulus {
-					max-width: min(94vw, 1200px);
-					max-height: 68vh;
-					width: auto !important;
-					height: auto !important;
-					object-fit: contain;
-				}
-				.phase-intro {
+				.phase-intro-wrapper {
 					max-width: min(94vw, 1200px);
 					margin: 0 auto;
 				}
+				.phase-intro {
+					margin-bottom: 20px;
+				}
+				#phase-intro-instruction-stimulus {
+					display: block;
+					max-width: min(94vw, 1200px);
+					max-height: 68vh;
+					width: auto;
+					height: auto;
+					object-fit: contain;
+					margin: 0 auto;
+				}
 			</style>
-			<div class="phase-intro">
-				<h2>Humidity Forecast Rounds</h2>
-				<p>Read the instruction below carefully before you proceed</p>
+			<div class="phase-intro-wrapper">
+				<div class="phase-intro">
+					<h2>Humidity Forecast Rounds</h2>
+					<p>Read the instruction below carefully before you proceed</p>
+				</div>
+				<img id="phase-intro-instruction-stimulus" src="${instructionStimulusPath}" alt="Forecast round instructions" />
 			</div>
 		`,
 		choices: ['Start Forecast Round 1'],

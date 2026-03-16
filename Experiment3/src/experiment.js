@@ -140,7 +140,7 @@ function buildTimeline() {
 	    stimulus: `
 	        <div class="welcome-screen">
 	            <h1>Humidity Prediction Study</h1>
-	            <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 30 minutes.</p>
+	            <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 15 minutes.</p>
 	            <div class="study-info">
 	                <h3>What you'll do:</h3>
 	                <ul>
@@ -191,17 +191,18 @@ function buildTimeline() {
 	        window.initializeParticipant(participantId);
 	        
 	        // Add participant/session-level metadata to every trial row
-	        jsPsych.data.addProperties({
-	        	participant_id: participantId,
-	        	study_type: window.ExperimentConfig.studyType || null,
-	        	version: window.ParticipantConfig.version || null,
-	        	version_descriptor: window.ParticipantConfig.versionDescriptor || null,
-	        	phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-	        	phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
-	        });
-	    },
-	    data: { trial_type: 'participant_id_collection' }
-	});
+		        jsPsych.data.addProperties({
+		        	participant_id: participantId,
+		        	study_type: window.ExperimentConfig.studyType || null,
+		        	version: window.ParticipantConfig.version || null,
+		        	version_descriptor: window.ParticipantConfig.versionDescriptor || null,
+		        	phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+		        	phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+		        	phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null
+		        });
+		    },
+		    data: { trial_type: 'participant_id_collection' }
+		});
 
 	// Consent form
 	timeline.push({
@@ -312,15 +313,16 @@ function buildTimeline() {
 	timeline.push({
 	    type: jsPsychVisLiteracy,
 	    randomize_order: false, // Keep original question order
-	    data: function() {
-	        return {
-	            trial_type: 'mini_vlat',
-	            phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-	            phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
-	        };
-	    },
-	    on_finish: function(data) {
-	        window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
+		    data: function() {
+		        return {
+		            trial_type: 'mini_vlat',
+		            phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+		            phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+		            phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null
+		        };
+		    },
+		    on_finish: function(data) {
+		        window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
 	    }
 	});
 
@@ -346,25 +348,32 @@ function buildTimeline() {
 	});
 
 	timeline.push({
-		type: jsPsychImageButtonResponse,
-		stimulus: instructionStimulusPath,
-		prompt: `
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
 			<style>
-				#jspsych-image-button-response-stimulus {
-					max-width: min(94vw, 1200px);
-					max-height: 68vh;
-					width: auto !important;
-					height: auto !important;
-					object-fit: contain;
-				}
-				.phase-intro {
+				.phase-intro-wrapper {
 					max-width: min(94vw, 1200px);
 					margin: 0 auto;
 				}
+				.phase-intro {
+					margin-bottom: 20px;
+				}
+				#phase-intro-instruction-stimulus {
+					display: block;
+					max-width: min(94vw, 1200px);
+					max-height: 68vh;
+					width: auto;
+					height: auto;
+					object-fit: contain;
+					margin: 0 auto;
+				}
 			</style>
-			<div class="phase-intro">
-				<h2>Humidity Forecast Rounds</h2>
-				<p>Read the instruction below carefully before you proceed</p>
+			<div class="phase-intro-wrapper">
+				<div class="phase-intro">
+					<h2>Humidity Forecast Rounds</h2>
+					<p>Read the instruction below carefully before you proceed</p>
+				</div>
+				<img id="phase-intro-instruction-stimulus" src="${instructionStimulusPath}" alt="Forecast round instructions" />
 			</div>
 		`,
 		choices: ['Start Forecast Round 1'],
@@ -510,19 +519,19 @@ function buildTimeline() {
 	}
 
 	function appendWithinParticipantPhase(phaseSlot) {
-		const phaseCityLabels = getPhaseCityLabels(phaseSlot);
-		const phaseOrganization = getPhaseOrganizationLabel(phaseSlot);
-		const phaseOrganizationBadge = getPhaseOrganizationBadgeHtml(phaseSlot);
-
 		timeline.push({
 			type: jsPsychHtmlButtonResponse,
-			stimulus: `
-				<div class="phase-intro">
-					<h2>Forecast Round ${phaseSlot}</h2>
-					<p>You will be comparing <strong>${escapeHtml(phaseCityLabels.cityA)}</strong> and <strong>${escapeHtml(phaseCityLabels.cityB)}</strong>.</p>
-					<p>The prediction is provided by ${phaseOrganizationBadge}.</p>
-				</div>
-			`,
+			stimulus: function() {
+				const phaseCityLabels = getPhaseCityLabels(phaseSlot);
+				const phaseOrganizationBadge = getPhaseOrganizationBadgeHtml(phaseSlot);
+				return `
+					<div class="phase-intro">
+						<h2>Forecast Round ${phaseSlot}</h2>
+						<p>You will be comparing <strong>${escapeHtml(phaseCityLabels.cityA)}</strong> and <strong>${escapeHtml(phaseCityLabels.cityB)}</strong>.</p>
+						<p>The prediction is provided by ${phaseOrganizationBadge}.</p>
+					</div>
+				`;
+			},
 			choices: [`Start Forecast Round ${phaseSlot}`],
 			data: function() {
 				return getPhaseTrialData('forecast_round_intro', phaseSlot, { round: 1 });
@@ -535,19 +544,31 @@ function buildTimeline() {
 			round: 1,
 			show_visualization: true,
 			show_predictions: true,
-			forecast_organization: phaseOrganization,
+			forecast_organization: function () {
+				return getPhaseOrganizationLabel(phaseSlot);
+			},
 			visualization_condition: function () {
 				return getPhaseConditionForSlot(phaseSlot);
 			},
 			air_quality_data: async function () {
 				return await getAirQualityData(phaseSlot);
 			},
-			question: getPhaseQuestionText(phaseSlot),
+			question: function () {
+				return getPhaseQuestionText(phaseSlot);
+			},
 			confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-			travel_question: getPhaseTravelQuestionText(phaseSlot),
-			travel_choices: getPhaseTravelChoices(phaseSlot),
-			city_labels: getPhaseCityLabels(phaseSlot),
-			city_colors: getPhaseCityColors(phaseSlot),
+			travel_question: function () {
+				return getPhaseTravelQuestionText(phaseSlot);
+			},
+			travel_choices: function () {
+				return getPhaseTravelChoices(phaseSlot);
+			},
+			city_labels: function () {
+				return getPhaseCityLabels(phaseSlot);
+			},
+			city_colors: function () {
+				return getPhaseCityColors(phaseSlot);
+			},
 			data: function() {
 				return getPhaseTrialData('phase_prediction', phaseSlot, {
 					round: 1,
@@ -562,12 +583,15 @@ function buildTimeline() {
 
 		timeline.push({
 			type: window.jsPsychInteractionFeedback,
-			preamble: `
-				<div class="interaction-feedback-preamble">
-					<h3>Interaction Feedback</h3>
-					<p>Please share your feedback about the interaction you just experienced for ${phaseOrganizationBadge}.</p>
-				</div>
-			`,
+			preamble: function () {
+				const phaseOrganizationBadge = getPhaseOrganizationBadgeHtml(phaseSlot);
+				return `
+					<div class="interaction-feedback-preamble">
+						<h3>Interaction Feedback</h3>
+						<p>Please share your feedback about the interaction you just experienced for ${phaseOrganizationBadge}.</p>
+					</div>
+				`;
+			},
 			data: function() {
 				return getPhaseTrialData('interaction_feedback', phaseSlot, { round: 1 });
 			}
@@ -579,12 +603,15 @@ function buildTimeline() {
 				...window.ExperimentConfig.visualizationTrustQuestions,
 				...window.ExperimentConfig.interactionQuestions
 			],
-			preamble: `
-                <div class="trust-survey-preamble">
-                    <h3>Trust and Interaction Questions</h3>
-					<p>Please answer these questions for the forecast from ${phaseOrganizationBadge}.</p>
-                </div>
-            `,
+			preamble: function () {
+				const phaseOrganizationBadge = getPhaseOrganizationBadgeHtml(phaseSlot);
+				return `
+					<div class="trust-survey-preamble">
+						<h3>Trust and Interaction Questions</h3>
+						<p>Please answer these questions for the forecast from ${phaseOrganizationBadge}.</p>
+					</div>
+				`;
+			},
 			data: function() {
 				return getPhaseTrialData('trust_survey_combined', phaseSlot, { round: 1 });
 			},
@@ -630,14 +657,15 @@ function buildTimeline() {
 				<p>Please rate your agreement with the following statements about yourself.</p>
 			</div>
 		`,
-			data: function() {
-				return {
-					trial_type: 'personality',
-					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-					phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
-				};
-			}
-		});
+				data: function() {
+					return {
+						trial_type: 'personality',
+						phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+						phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+						phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null
+					};
+				}
+			});
 
 	// Age and Major Questions (Text Input)
 	timeline.push({
@@ -657,14 +685,15 @@ function buildTimeline() {
 				columns: 40
 			}
 		],
-			data: function() {
-				return {
-					trial_type: 'demographics_text_1',
-					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-					phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
-				};
-			}
-		});
+				data: function() {
+					return {
+						trial_type: 'demographics_text_1',
+						phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+						phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+						phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null
+					};
+				}
+			});
 
 	// Education and Visualization Experience (Multiple Choice)
 	timeline.push({
@@ -683,14 +712,15 @@ function buildTimeline() {
 				options: ['Daily', 'Weekly', 'Monthly', 'A few times per year', 'Rarely', 'Never']
 			}
 		],
-			data: function() {
-				return {
-					trial_type: 'demographics_mc',
-					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-					phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null
-				};
-			}
-		});
+				data: function() {
+					return {
+						trial_type: 'demographics_mc',
+						phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+						phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+						phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null
+					};
+				}
+			});
 
 	// Exit fullscreen
 	timeline.push({
@@ -711,15 +741,15 @@ function buildTimeline() {
 	timeline.push({
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
-            <div class="debrief">
-                <h2>Thank You!</h2>
-                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
-                
-	                <h3>Study Background:</h3>
-			                <p>You completed one baseline forecast round and four additional visualization forecast rounds in a predefined version-specific order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
-                
-                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
-                <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
+	            <div class="debrief">
+	                <h2>Thank You!</h2>
+	                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
+	                
+		                <h3>Study Background:</h3>
+				                <p>You completed one baseline forecast round and four additional visualization forecast rounds in a version-specific randomized order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+	                
+	                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
+	                <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
                 
                 <h3>Questions?</h3>
                 <p>If you have questions about this research, please contact the research team.</p>
@@ -731,17 +761,18 @@ function buildTimeline() {
 		data: { trial_type: 'debrief' },
 			on_finish: function() {
 				// Securely validate completion and get redirect URL from server
-				const completionData = {
-					study_complete: true,
-					phase1_complete: window.ParticipantConfig.phase1Complete,
-					phase2_complete: window.ParticipantConfig.phase2Complete,
-					phase3_complete: window.ParticipantConfig.phase3Complete,
-					phase4_complete: window.ParticipantConfig.phase4Complete,
-					phase5_complete: window.ParticipantConfig.phase5Complete,
-					phase_completion: window.ParticipantConfig.phaseCompletion || null,
-					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-					end_time: new Date().toISOString()
-				};
+					const completionData = {
+						study_complete: true,
+						phase1_complete: window.ParticipantConfig.phase1Complete,
+						phase2_complete: window.ParticipantConfig.phase2Complete,
+						phase3_complete: window.ParticipantConfig.phase3Complete,
+						phase4_complete: window.ParticipantConfig.phase4Complete,
+						phase5_complete: window.ParticipantConfig.phase5Complete,
+						phase_completion: window.ParticipantConfig.phaseCompletion || null,
+						phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+						phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null,
+						end_time: new Date().toISOString()
+					};
 
 			
 			fetch('/complete_study.php', {
@@ -779,9 +810,10 @@ function getDefaultOrganizationForPhaseSlot(phaseSlot) {
 
 
 function resolveDatasetConfigForPhase(phaseSlot) {
+	const participantDatasets = window.ParticipantConfig?.phaseDatasetAssignments || {};
 	const datasets = window.ExperimentConfig?.phaseDatasets || {};
 	const phaseKey = `phase${phaseSlot}`;
-	const configured = datasets[phaseKey];
+	const configured = participantDatasets[phaseKey]?.file ? participantDatasets[phaseKey] : datasets[phaseKey];
 	const fallbackOrganization = getDefaultOrganizationForPhaseSlot(phaseSlot);
 
 	if (!configured || !configured.file) {
@@ -939,6 +971,7 @@ function saveData(data) {
 		participant_id: window.ParticipantConfig.id,
 		condition: window.ParticipantConfig.assignedCondition, // Backward-compatible alias (phase2 canonical condition)
 		phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
+		phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null,
 		phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
 		phase_completion: window.ParticipantConfig.phaseCompletion || null,
 		version_descriptor: window.ParticipantConfig.versionDescriptor || null,

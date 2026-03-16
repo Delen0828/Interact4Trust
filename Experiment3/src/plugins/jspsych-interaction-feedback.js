@@ -30,15 +30,28 @@ var jsPsychInteractionFeedback = (function (jspsych) {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
       this.startTime = null;
+      this.preamble = '';
     }
 
     trial(display_element, trial) {
       this.startTime = performance.now();
       this.display_element = display_element;
       this.trial = trial;
+      this.preamble = this.resolvePreamble(trial.preamble);
 
       this.renderSurvey();
       this.setupEventListeners();
+    }
+
+    resolvePreamble(value) {
+      if (typeof value === 'function') {
+        try {
+          value = value();
+        } catch (error) {
+          value = '';
+        }
+      }
+      return String(value || '');
     }
 
     renderSurvey() {
@@ -168,7 +181,7 @@ var jsPsychInteractionFeedback = (function (jspsych) {
           }
         </style>
         <div class="interaction-feedback-container">
-          ${this.trial.preamble || ''}
+          ${this.preamble || ''}
           <form id="interaction-feedback-form">
             <div class="interaction-feedback-question">
               <div class="question-prompt">1. Do you think you encounter any bug in the interaction?</div>

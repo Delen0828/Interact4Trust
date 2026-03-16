@@ -133,6 +133,9 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.cityLabels = { cityA: 'City A', cityB: 'City B' };
       this.cityColors = { cityA: '#0891B2', cityB: '#7C3AED' };
       this.forecastOrganization = '';
+      this.questionText = 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%';
+      this.travelQuestionText = 'If you were planning to visit one of these cities, which would you choose?';
+      this.travelChoices = ['City A', 'City B', 'No Preference'];
     }
 
     trial(display_element, trial) {
@@ -170,6 +173,9 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.cityLabels = this.resolveCityLabels();
       this.cityColors = this.resolveCityColors();
       this.forecastOrganization = this.resolveForecastOrganization();
+      this.questionText = this.resolveQuestionText();
+      this.travelQuestionText = this.resolveTravelQuestionText();
+      this.travelChoices = this.resolveTravelChoices();
 
       // Render task synchronously first, then handle async visualization
       this.renderTask();
@@ -226,6 +232,47 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     getForecastOrganization() {
       return this.forecastOrganization || '';
+    }
+
+    replaceCityPlaceholders(value) {
+      const cityLabels = this.getCityLabels();
+      return String(value || '')
+        .replace(/\bCity A\b/g, cityLabels.cityA)
+        .replace(/\bCity B\b/g, cityLabels.cityB);
+    }
+
+    resolveTrialValue(value, fallbackValue) {
+      if (typeof value === 'function') {
+        try {
+          value = value();
+        } catch (error) {
+          value = fallbackValue;
+        }
+      }
+      return value ?? fallbackValue;
+    }
+
+    resolveQuestionText() {
+      const fallbackQuestion = 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%';
+      const questionValue = this.resolveTrialValue(this.trial?.question, fallbackQuestion);
+      return this.replaceCityPlaceholders(questionValue);
+    }
+
+    resolveTravelQuestionText() {
+      const fallbackQuestion = 'If you were planning to visit one of these cities, which would you choose?';
+      const questionValue = this.resolveTrialValue(this.trial?.travel_question, fallbackQuestion);
+      return this.replaceCityPlaceholders(questionValue);
+    }
+
+    resolveTravelChoices() {
+      const fallbackChoices = ['City A', 'City B', 'No Preference'];
+      const choicesValue = this.resolveTrialValue(this.trial?.travel_choices, fallbackChoices);
+      if (!Array.isArray(choicesValue) || choicesValue.length === 0) {
+        return fallbackChoices.map((choice) => this.replaceCityPlaceholders(choice));
+      }
+      return choicesValue
+        .map((choice) => this.replaceCityPlaceholders(choice))
+        .filter((choice) => String(choice).trim().length > 0);
     }
 
     insertOrganizationBadgeIntoChartContainer(chartContainer) {
@@ -341,7 +388,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       // Note: roundText and phaseDescription available for future use if needed
       const cityLabels = this.getCityLabels();
       const cityColors = this.getCityColors();
-      const questionPrompt = String(this.trial.question || '').replace(' ____%', '');
+      const questionPrompt = String(this.questionText || '').replace(' ____%', '');
       const estimateQuestion = `What is the estimated Humidity of ${cityLabels.cityA} and ${cityLabels.cityB} on 06/30?`;
       
       let html = `
@@ -919,9 +966,9 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
 
             <div class="travel-section">
-              <h3 class="question-title">Q4. ${this.trial.travel_question}</h3>
-              <div class="travel-choices" style="--travel-choice-count: ${this.trial.travel_choices.length};">
-                ${this.trial.travel_choices.map((choice) => `
+              <h3 class="question-title">Q4. ${this.travelQuestionText}</h3>
+              <div class="travel-choices" style="--travel-choice-count: ${this.travelChoices.length};">
+                ${this.travelChoices.map((choice) => `
                   <label class="travel-option">
                     <input type="radio" name="travel-choice" value="${choice}">
                     <span class="travel-button">

@@ -43,15 +43,28 @@ var jsPsychTrustSurvey = (function (jspsych) {
     constructor(jsPsych) {
       this.jsPsych = jsPsych;
       this.startTime = null;
+      this.preamble = '';
     }
 
     trial(display_element, trial) {
       this.startTime = performance.now();
       this.display_element = display_element;
       this.trial = trial;
+      this.preamble = this.resolvePreamble(trial.preamble);
 
       this.renderSurvey();
       this.setupEventListeners();
+    }
+
+    resolvePreamble(value) {
+      if (typeof value === 'function') {
+        try {
+          value = value();
+        } catch (error) {
+          value = '';
+        }
+      }
+      return String(value || '');
     }
 
     renderSurvey() {
@@ -206,7 +219,7 @@ var jsPsychTrustSurvey = (function (jspsych) {
           }
         </style>
         <div class="trust-survey-container">
-          ${this.trial.preamble || ''}
+          ${this.preamble || ''}
           
           <form id="trust-survey-form">
             ${this.trial.questions.map((question, qIndex) => `
