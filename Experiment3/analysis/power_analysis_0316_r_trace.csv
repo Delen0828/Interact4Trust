@@ -1,0 +1,191 @@
+"scope","outcome","target_power","n_participants","power"
+"PI","Trust",0.8,6,0.312333333333333
+"PI","Trust",0.8,9,0.508666666666667
+"PI","Trust",0.8,13,0.707
+"PI","Trust",0.8,14,0.776
+"PI","Trust",0.8,15,0.8
+"PI","Trust",0.8,17,0.840666666666667
+"PI","Trust",0.8,21,0.921333333333333
+"PI","Trust",0.9,6,0.329
+"PI","Trust",0.9,9,0.519333333333333
+"PI","Trust",0.9,13,0.735333333333333
+"PI","Trust",0.9,14,0.746
+"PI","Trust",0.9,17,0.842333333333333
+"PI","Trust",0.9,19,0.893666666666667
+"PI","Trust",0.9,20,0.919333333333333
+"PI","Trust",0.9,21,0.923333333333333
+"PI","Interaction",0.8,6,0.226666666666667
+"PI","Interaction",0.8,9,0.357
+"PI","Interaction",0.8,14,0.538666666666667
+"PI","Interaction",0.8,19,0.702
+"PI","Interaction",0.8,21,0.742666666666667
+"PI","Interaction",0.8,22,0.776666666666667
+"PI","Interaction",0.8,23,0.8
+"PI","Interaction",0.8,26,0.850666666666667
+"PI","Interaction",0.8,32,0.921
+"PI","Interaction",0.9,6,0.220333333333333
+"PI","Interaction",0.9,9,0.341333333333333
+"PI","Interaction",0.9,14,0.545333333333333
+"PI","Interaction",0.9,19,0.718333333333333
+"PI","Interaction",0.9,21,0.75
+"PI","Interaction",0.9,26,0.838333333333333
+"PI","Interaction",0.9,29,0.899
+"PI","Interaction",0.9,30,0.901
+"PI","Interaction",0.9,31,0.914666666666667
+"PI","Interaction",0.9,32,0.926666666666667
+"Ensemble","Trust",0.8,6,0.153333333333333
+"Ensemble","Trust",0.8,9,0.206
+"Ensemble","Trust",0.8,14,0.291666666666667
+"Ensemble","Trust",0.8,21,0.425666666666667
+"Ensemble","Trust",0.8,27,0.542333333333333
+"Ensemble","Trust",0.8,32,0.612
+"Ensemble","Trust",0.8,38,0.711333333333333
+"Ensemble","Trust",0.8,43,0.775666666666667
+"Ensemble","Trust",0.8,45,0.796
+"Ensemble","Trust",0.8,46,0.816333333333333
+"Ensemble","Trust",0.8,48,0.84
+"Ensemble","Trust",0.9,6,0.152666666666667
+"Ensemble","Trust",0.9,9,0.207333333333333
+"Ensemble","Trust",0.9,14,0.286
+"Ensemble","Trust",0.9,21,0.414
+"Ensemble","Trust",0.9,32,0.632
+"Ensemble","Trust",0.9,39,0.749666666666667
+"Ensemble","Trust",0.9,48,0.833333333333333
+"Ensemble","Trust",0.9,56,0.895333333333333
+"Ensemble","Trust",0.9,57,0.896
+"Ensemble","Trust",0.9,58,0.908666666666667
+"Ensemble","Trust",0.9,60,0.921666666666667
+"Ensemble","Trust",0.9,64,0.941666666666667
+"Ensemble","Trust",0.9,72,0.962333333333333
+"Ensemble","Interaction",0.8,6,0.168
+"Ensemble","Interaction",0.8,9,0.206
+"Ensemble","Interaction",0.8,14,0.290333333333333
+"Ensemble","Interaction",0.8,21,0.418
+"Ensemble","Interaction",0.8,32,0.588333333333333
+"Ensemble","Interaction",0.8,39,0.649333333333333
+"Ensemble","Interaction",0.8,48,0.765333333333333
+"Ensemble","Interaction",0.8,52,0.792666666666667
+"Ensemble","Interaction",0.8,53,0.801333333333333
+"Ensemble","Interaction",0.8,54,0.821
+"Ensemble","Interaction",0.8,56,0.837333333333333
+"Ensemble","Interaction",0.8,72,0.921
+"Ensemble","Interaction",0.9,6,0.168
+"Ensemble","Interaction",0.9,9,0.226333333333333
+"Ensemble","Interaction",0.9,14,0.308666666666667
+"Ensemble","Interaction",0.9,21,0.42
+"Ensemble","Interaction",0.9,32,0.584
+"Ensemble","Interaction",0.9,39,0.668333333333333
+"Ensemble","Interaction",0.9,48,0.773
+"Ensemble","Interaction",0.9,56,0.828333333333333
+"Ensemble","Interaction",0.9,64,0.879
+"Ensemble","Interaction",0.9,68,0.89
+"Ensemble","Interaction",0.9,69,0.912
+"Ensemble","Interaction",0.9,70,0.91
+"Ensemble","Interaction",0.9,72,0.918666666666667
+"PI + Ensemble","Trust",0.8,6,0.196666666666667
+"PI + Ensemble","Trust",0.8,9,0.284666666666667
+"PI + Ensemble","Trust",0.8,14,0.411333333333333
+"PI + Ensemble","Trust",0.8,21,0.561
+"PI + Ensemble","Trust",0.8,27,0.677
+"PI + Ensemble","Trust",0.8,32,0.743333333333333
+"PI + Ensemble","Trust",0.8,33,0.749666666666667
+"PI + Ensemble","Trust",0.8,36,0.799
+"PI + Ensemble","Trust",0.8,37,0.802
+"PI + Ensemble","Trust",0.8,38,0.802333333333333
+"PI + Ensemble","Trust",0.8,48,0.892
+"PI + Ensemble","Trust",0.9,6,0.189666666666667
+"PI + Ensemble","Trust",0.9,9,0.281
+"PI + Ensemble","Trust",0.9,14,0.406333333333333
+"PI + Ensemble","Trust",0.9,21,0.555333333333333
+"PI + Ensemble","Trust",0.9,32,0.731
+"PI + Ensemble","Trust",0.9,39,0.805333333333333
+"PI + Ensemble","Trust",0.9,48,0.885
+"PI + Ensemble","Trust",0.9,49,0.907666666666667
+"PI + Ensemble","Trust",0.9,50,0.9
+"PI + Ensemble","Trust",0.9,52,0.924333333333333
+"PI + Ensemble","Trust",0.9,56,0.926666666666667
+"PI + Ensemble","Trust",0.9,72,0.975
+"PI + Ensemble","Interaction",0.8,6,0.151666666666667
+"PI + Ensemble","Interaction",0.8,9,0.195333333333333
+"PI + Ensemble","Interaction",0.8,14,0.285666666666667
+"PI + Ensemble","Interaction",0.8,21,0.434333333333333
+"PI + Ensemble","Interaction",0.8,27,0.523
+"PI + Ensemble","Interaction",0.8,32,0.620333333333333
+"PI + Ensemble","Interaction",0.8,38,0.703666666666667
+"PI + Ensemble","Interaction",0.8,43,0.742333333333333
+"PI + Ensemble","Interaction",0.8,46,0.795333333333333
+"PI + Ensemble","Interaction",0.8,47,0.796666666666667
+"PI + Ensemble","Interaction",0.8,48,0.806333333333333
+"PI + Ensemble","Interaction",0.9,6,0.154
+"PI + Ensemble","Interaction",0.9,9,0.220333333333333
+"PI + Ensemble","Interaction",0.9,14,0.301666666666667
+"PI + Ensemble","Interaction",0.9,21,0.436
+"PI + Ensemble","Interaction",0.9,32,0.602333333333333
+"PI + Ensemble","Interaction",0.9,39,0.699
+"PI + Ensemble","Interaction",0.9,48,0.815
+"PI + Ensemble","Interaction",0.9,56,0.865666666666667
+"PI + Ensemble","Interaction",0.9,60,0.896
+"PI + Ensemble","Interaction",0.9,62,0.895
+"PI + Ensemble","Interaction",0.9,63,0.921666666666667
+"PI + Ensemble","Interaction",0.9,64,0.912666666666667
+"PI + Ensemble","Interaction",0.9,72,0.945666666666667
+"Combined","Trust",0.8,6,0.101
+"Combined","Trust",0.8,9,0.114333333333333
+"Combined","Trust",0.8,14,0.162
+"Combined","Trust",0.8,21,0.233333333333333
+"Combined","Trust",0.8,32,0.328666666666667
+"Combined","Trust",0.8,48,0.500666666666667
+"Combined","Trust",0.8,57,0.573333333333333
+"Combined","Trust",0.8,72,0.699333333333333
+"Combined","Trust",0.8,83,0.776
+"Combined","Trust",0.8,87,0.786
+"Combined","Trust",0.8,89,0.784666666666667
+"Combined","Trust",0.8,90,0.819333333333333
+"Combined","Trust",0.8,96,0.826333333333333
+"Combined","Trust",0.8,108,0.875333333333333
+"Combined","Trust",0.9,6,0.0943333333333333
+"Combined","Trust",0.9,9,0.125666666666667
+"Combined","Trust",0.9,14,0.167666666666667
+"Combined","Trust",0.9,21,0.220333333333333
+"Combined","Trust",0.9,32,0.353333333333333
+"Combined","Trust",0.9,48,0.490666666666667
+"Combined","Trust",0.9,72,0.708333333333333
+"Combined","Trust",0.9,84,0.781666666666667
+"Combined","Trust",0.9,104,0.857333333333333
+"Combined","Trust",0.9,108,0.880333333333333
+"Combined","Trust",0.9,114,0.898666666666667
+"Combined","Trust",0.9,115,0.911666666666667
+"Combined","Trust",0.9,116,0.909666666666667
+"Combined","Trust",0.9,117,0.906666666666667
+"Combined","Trust",0.9,119,0.910666666666667
+"Combined","Trust",0.9,123,0.925333333333333
+"Combined","Trust",0.9,162,0.975333333333333
+"Combined","Interaction",0.8,6,0.099
+"Combined","Interaction",0.8,9,0.135
+"Combined","Interaction",0.8,14,0.191333333333333
+"Combined","Interaction",0.8,21,0.275333333333333
+"Combined","Interaction",0.8,32,0.405333333333333
+"Combined","Interaction",0.8,48,0.581333333333333
+"Combined","Interaction",0.8,57,0.674666666666667
+"Combined","Interaction",0.8,70,0.756
+"Combined","Interaction",0.8,72,0.789666666666667
+"Combined","Interaction",0.8,74,0.799666666666667
+"Combined","Interaction",0.8,75,0.801333333333333
+"Combined","Interaction",0.8,76,0.802666666666667
+"Combined","Interaction",0.8,77,0.817333333333333
+"Combined","Interaction",0.8,83,0.844333333333333
+"Combined","Interaction",0.8,108,0.925666666666667
+"Combined","Interaction",0.9,6,0.101
+"Combined","Interaction",0.9,9,0.129666666666667
+"Combined","Interaction",0.9,14,0.200666666666667
+"Combined","Interaction",0.9,21,0.262666666666667
+"Combined","Interaction",0.9,32,0.384
+"Combined","Interaction",0.9,48,0.588666666666667
+"Combined","Interaction",0.9,57,0.668333333333333
+"Combined","Interaction",0.9,72,0.791666666666667
+"Combined","Interaction",0.9,83,0.841333333333333
+"Combined","Interaction",0.9,90,0.881666666666667
+"Combined","Interaction",0.9,93,0.897333333333333
+"Combined","Interaction",0.9,95,0.893
+"Combined","Interaction",0.9,96,0.903
+"Combined","Interaction",0.9,108,0.931

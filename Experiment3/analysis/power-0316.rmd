@@ -1,0 +1,829 @@
+---
+title: "Experiment 3 Composite Trust/Interaction Power Analysis"
+output: html_document
+params:
+  data_dir: "../data/dist 8/data"
+  csv_pattern: "^user_.*\\.csv$"
+  alpha: 0.05
+  power_targets: [0.8, 0.9]
+  power_nsim: 3000
+  n_min: 6
+  n_max: 220
+  seed: 20260317
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## Goal
+
+This report follows the preprocessing in `analysis-0316.ipynb` and estimates participant requirements for the main interaction-condition analysis:
+
+- Four within-participant interaction conditions:
+  - `Hover Show One`
+  - `Hover Show All`
+  - `Click Show One`
+  - `Click Show All`
+- Outcomes:
+  - `composite_trust_score`
+  - `composite_interaction_score`
+- Scopes:
+  - Panel-specific (`PI`, `Ensemble`, `PI + Ensemble`)
+  - Combined across visualization groups (`PI + Ensemble + CIEP`)
+
+Power is estimated with simulation for the omnibus repeated-measures ANOVA effect across the four interaction conditions.
+
+## Packages
+
+```{r packages}
+library(dplyr)
+library(ggplot2)
+library(jsonlite)
+library(knitr)
+library(MASS)
+library(tidyr)
+```
+
+## Paths
+
+```{r paths}
+report_dir <- local({
+  current_input <- tryCatch(
+    knitr::current_input(),
+    error = function(e) character(0)
+  )
+
+  if (length(current_input) == 1 && nzchar(current_input)) {
+    input_path <- current_input
+
+    if (!grepl("^(/|[A-Za-z]:[/\\\\])", input_path)) {
+      input_path <- file.path(getwd(), input_path)
+    }
+
+    if (grepl("\\.[Rr]md$", input_path) || file.exists(input_path)) {
+      return(normalizePath(dirname(input_path), winslash = "/", mustWork = TRUE))
+    }
+  }
+
+  current_input_dir <- tryCatch(
+    knitr::current_input(dir = TRUE),
+    error = function(e) character(0)
+  )
+
+  if (length(current_input_dir) == 1 && nzchar(current_input_dir)) {
+    if (grepl("\\.[Rr]md$", current_input_dir)) {
+      return(normalizePath(dirname(current_input_dir), winslash = "/", mustWork = TRUE))
+    }
+
+    if (dir.exists(current_input_dir)) {
+      return(normalizePath(current_input_dir, winslash = "/", mustWork = TRUE))
+    }
+  }
+
+  fallback_dir <- file.path(getwd(), "Experiment3", "analysis")
+  normalizePath(fallback_dir, winslash = "/", mustWork = TRUE)
+})
+
+resolve_report_path <- function(path_value) {
+  if (grepl("^(/|[A-Za-z]:[/\\\\])", path_value)) {
+    return(normalizePath(path_value, winslash = "/", mustWork = TRUE))
+  }
+
+  normalizePath(
+    file.path(report_dir, path_value),
+    winslash = "/",
+    mustWork = TRUE
+  )
+}
+
+data_dir <- resolve_report_path(params$data_dir)
+```
+
+## Constants
+
+```{r constants}
+INTERACTION_CONDITION_LABELS <- c(
+  "1" = "Baseline",
+  "21" = "Hover Show One",
+  "22" = "Hover Show All",
+  "23" = "Click Show One",
+  "24" = "Click Show All"
+)
+
+ROW_ORDER <- c("Hover Show One", "Hover Show All", "Click Show One", "Click Show All")
+VIS_LABELS <- c("PI", "Ensemble", "PI + Ensemble")
+BASELINE_CONDITION_NUMBER <- 1
+
+INTERACTION_QUESTION_KEYS <- c(
+  "navigation_control",
+  "content_control",
+  "pace_control",
+  "interface_exploration",
+  "interface_responsiveness",
+  "user_communication",
+  "personal_conversation",
+  "interface_interaction",
+  "interface_sensitivity"
+)
+
+TRUST_QUESTION_KEYS <- c(
+  "skeptical_rating",
+  "data_trust",
+  "usability_difficulty",
+  "comprehension_ease"
+)
+```
+
+## Helper Functions
+
+```{r helpers}
+extract_condition_number <- function(condition_id) {
+  if (is.na(condition_id) || !nzchar(as.character(condition_id))) {
+    return(NA_real_)
+  }
+
+  match <- regexpr("condition_([0-9]+)", as.character(condition_id), perl = TRUE)
+  if (match[1] == -1) {
+    return(NA_real_)
+  }
+
+  value <- sub(".*condition_([0-9]+).*", "\\1", as.character(condition_id), perl = TRUE)
+  suppressWarnings(as.numeric(value))
+}
+
+map_interaction_group <- function(condition_number) {
+  key <- as.character(suppressWarnings(as.integer(condition_number)))
+  if (is.na(condition_number) || !(key %in% names(INTERACTION_CONDITION_LABELS))) {
+    return("Other")
+  }
+  INTERACTION_CONDITION_LABELS[[key]]
+}
+
+map_visualization_group <- function(condition_number, visualization_technique, condition_id, condition_name) {
+  cn <- suppressWarnings(as.integer(condition_number))
+  if (!is.na(cn) && cn == BASELINE_CONDITION_NUMBER) {
+    return("Baseline")
+  }
+
+  technique_raw <- tolower(trimws(ifelse(is.na(visualization_technique), "", visualization_technique)))
+  if (technique_raw == "baseline") {
+    return("Baseline")
+  }
+  if (technique_raw == "confidence_interval") {
+    return("PI")
+  }
+  if (technique_raw == "ensemble_plot") {
+    return("Ensemble")
+  }
+  if (technique_raw == "combined_plot") {
+    return("PI + Ensemble")
+  }
+
+  condition_id_raw <- tolower(trimws(ifelse(is.na(condition_id), "", condition_id)))
+  if (grepl("_ci$", condition_id_raw)) {
+    return("PI")
+  }
+  if (grepl("_ep$", condition_id_raw)) {
+    return("Ensemble")
+  }
+  if (grepl("_ciep$", condition_id_raw)) {
+    return("PI + Ensemble")
+  }
+
+  condition_name_raw <- tolower(trimws(ifelse(is.na(condition_name), "", condition_name)))
+  if (grepl("baseline", condition_name_raw)) {
+    return("Baseline")
+  }
+  if (grepl("combined", condition_name_raw)) {
+    return("PI + Ensemble")
+  }
+  if (grepl("ensemble", condition_name_raw)) {
+    return("Ensemble")
+  }
+  if (grepl("\\(ci\\)|confidence", condition_name_raw)) {
+    return("PI")
+  }
+
+  "Other"
+}
+
+parse_response_json <- function(value) {
+  if (is.na(value) || !nzchar(as.character(value))) {
+    return(list())
+  }
+
+  parsed <- tryCatch(
+    fromJSON(as.character(value), simplifyVector = TRUE),
+    error = function(e) list()
+  )
+
+  if (is.null(parsed) || !is.list(parsed)) {
+    return(list())
+  }
+
+  parsed
+}
+
+normalize_likert_0_6_to_1_7 <- function(values) {
+  numeric_values <- suppressWarnings(as.numeric(values))
+  valid <- numeric_values[!is.na(numeric_values)]
+
+  if (length(valid) == 0) {
+    return(numeric_values)
+  }
+
+  if (all(valid >= 0 & valid <= 6)) {
+    return(numeric_values + 1)
+  }
+
+  numeric_values
+}
+
+ensure_likert_columns <- function(data, keys) {
+  if (nrow(data) == 0) {
+    return(data)
+  }
+
+  working <- data
+  parsed <- if ("response" %in% names(working)) {
+    lapply(working$response, parse_response_json)
+  } else {
+    replicate(nrow(working), list(), simplify = FALSE)
+  }
+
+  for (key in keys) {
+    existing <- if (key %in% names(working)) {
+      suppressWarnings(as.numeric(working[[key]]))
+    } else {
+      rep(NA_real_, nrow(working))
+    }
+
+    if (!(key %in% names(working)) || sum(!is.na(existing)) == 0) {
+      extracted_raw <- vapply(
+        parsed,
+        function(x) {
+          value <- x[[key]]
+          if (is.null(value) || length(value) == 0) {
+            return(NA_character_)
+          }
+          as.character(value[[1]])
+        },
+        character(1)
+      )
+
+      extracted <- normalize_likert_0_6_to_1_7(extracted_raw)
+      working[[key]] <- extracted
+    } else {
+      working[[key]] <- existing
+    }
+  }
+
+  working
+}
+
+compute_composite_scores <- function(data) {
+  if (is.null(data) || nrow(data) == 0) {
+    return(data.frame())
+  }
+
+  working <- data
+
+  all_keys <- c(TRUST_QUESTION_KEYS, INTERACTION_QUESTION_KEYS)
+  for (col in all_keys) {
+    if (col %in% names(working)) {
+      working[[col]] <- suppressWarnings(as.numeric(working[[col]]))
+    }
+  }
+
+  trust_required <- c("skeptical_rating", "data_trust", "usability_difficulty", "comprehension_ease")
+  if (all(trust_required %in% names(working))) {
+    working$skeptical_rating_rev <- 8 - working$skeptical_rating
+    working$usability_difficulty_rev <- 8 - working$usability_difficulty
+    working$composite_trust_score <- rowMeans(
+      cbind(
+        working$skeptical_rating_rev,
+        working$data_trust,
+        working$usability_difficulty_rev,
+        working$comprehension_ease
+      ),
+      na.rm = TRUE
+    )
+  }
+
+  interaction_available <- INTERACTION_QUESTION_KEYS[INTERACTION_QUESTION_KEYS %in% names(working)]
+  if (length(interaction_available) > 0) {
+    working$composite_interaction_score <- rowMeans(
+      as.matrix(working[, interaction_available, drop = FALSE]),
+      na.rm = TRUE
+    )
+  }
+
+  working
+}
+
+load_participant_data <- function(file_path) {
+  df <- read.csv(file_path, stringsAsFactors = FALSE)
+  df$source_file <- basename(file_path)
+
+  if (!"participant_id" %in% names(df) || all(is.na(df$participant_id))) {
+    pieces <- strsplit(tools::file_path_sans_ext(basename(file_path)), "_")[[1]]
+    participant_guess <- if (length(pieces) >= 2) pieces[[2]] else basename(file_path)
+    df$participant_id <- participant_guess
+  }
+
+  if (!"condition_id" %in% names(df)) {
+    df$condition_id <- NA_character_
+  }
+  if (!"condition_name" %in% names(df)) {
+    df$condition_name <- NA_character_
+  }
+  if (!"visualization_technique" %in% names(df)) {
+    df$visualization_technique <- NA_character_
+  }
+
+  df$condition_number <- vapply(df$condition_id, extract_condition_number, numeric(1))
+  df$interaction_group <- vapply(df$condition_number, map_interaction_group, character(1))
+  df$visualization_group <- mapply(
+    map_visualization_group,
+    condition_number = df$condition_number,
+    visualization_technique = df$visualization_technique,
+    condition_id = df$condition_id,
+    condition_name = df$condition_name,
+    USE.NAMES = FALSE
+  )
+
+  df
+}
+
+complete_case_matrix <- function(data, value_col, vis_label = NULL) {
+  working <- data %>%
+    filter(interaction_group %in% ROW_ORDER)
+
+  if (!is.null(vis_label) && !is.na(vis_label)) {
+    working <- working %>% filter(visualization_group == vis_label)
+  }
+
+  if (!(value_col %in% names(working))) {
+    return(matrix(numeric(0), nrow = 0, ncol = length(ROW_ORDER)))
+  }
+
+  working[[value_col]] <- suppressWarnings(as.numeric(working[[value_col]]))
+  working <- working %>%
+    filter(!is.na(participant_id), !is.na(interaction_group), !is.na(.data[[value_col]]))
+
+  complete_ids <- working %>%
+    group_by(participant_id) %>%
+    summarise(k = n_distinct(interaction_group), .groups = "drop") %>%
+    filter(k >= length(ROW_ORDER)) %>%
+    pull(participant_id)
+
+  if (length(complete_ids) == 0) {
+    return(matrix(numeric(0), nrow = 0, ncol = length(ROW_ORDER)))
+  }
+
+  wide <- working %>%
+    filter(participant_id %in% complete_ids) %>%
+    group_by(participant_id, interaction_group) %>%
+    summarise(value = mean(.data[[value_col]], na.rm = TRUE), .groups = "drop") %>%
+    mutate(interaction_group = factor(interaction_group, levels = ROW_ORDER)) %>%
+    tidyr::pivot_wider(names_from = interaction_group, values_from = value) %>%
+    arrange(participant_id)
+
+  if (nrow(wide) == 0) {
+    return(matrix(numeric(0), nrow = 0, ncol = length(ROW_ORDER)))
+  }
+
+  mat <- as.matrix(wide[, ROW_ORDER, drop = FALSE])
+  storage.mode(mat) <- "double"
+  mat <- mat[stats::complete.cases(mat), , drop = FALSE]
+  colnames(mat) <- ROW_ORDER
+  mat
+}
+
+nearest_pd <- function(sigma_matrix, tol = 1e-6) {
+  sym <- (sigma_matrix + t(sigma_matrix)) / 2
+  eig <- eigen(sym)
+  eig$values[eig$values < tol] <- tol
+  pd <- eig$vectors %*% diag(eig$values) %*% t(eig$vectors)
+  pd <- (pd + t(pd)) / 2
+  diag(pd) <- pmax(diag(pd), tol)
+  pd
+}
+
+rm_anova_stats <- function(y_matrix) {
+  n <- nrow(y_matrix)
+  k <- ncol(y_matrix)
+
+  if (n < 2 || k < 2) {
+    return(list(F = NA_real_, p = NA_real_, eta_p2 = NA_real_, cohen_f = NA_real_))
+  }
+
+  grand_mean <- mean(y_matrix)
+  condition_means <- colMeans(y_matrix)
+  subject_means <- rowMeans(y_matrix)
+
+  ss_condition <- n * sum((condition_means - grand_mean)^2)
+  ss_subject <- k * sum((subject_means - grand_mean)^2)
+  ss_total <- sum((y_matrix - grand_mean)^2)
+  ss_error <- ss_total - ss_condition - ss_subject
+
+  df1 <- k - 1
+  df2 <- (n - 1) * (k - 1)
+
+  if (!is.finite(ss_error) || ss_error <= 0) {
+    return(list(F = Inf, p = 0, eta_p2 = 1, cohen_f = Inf))
+  }
+
+  ms_condition <- ss_condition / df1
+  ms_error <- ss_error / df2
+  f_value <- ms_condition / ms_error
+  p_value <- pf(f_value, df1 = df1, df2 = df2, lower.tail = FALSE)
+  eta_p2 <- (f_value * df1) / (f_value * df1 + df2)
+  cohen_f <- sqrt(eta_p2 / (1 - eta_p2))
+
+  list(F = f_value, p = p_value, eta_p2 = eta_p2, cohen_f = cohen_f)
+}
+
+estimate_power_at_n <- function(mu, sigma_matrix, n_participants, alpha, nsim, seed) {
+  set.seed(seed + n_participants)
+  hits <- logical(nsim)
+
+  for (i in seq_len(nsim)) {
+    sim <- MASS::mvrnorm(n = n_participants, mu = mu, Sigma = sigma_matrix)
+    sim_stats <- rm_anova_stats(sim)
+    hits[[i]] <- is.finite(sim_stats$p) && !is.na(sim_stats$p) && (sim_stats$p < alpha)
+  }
+
+  mean(hits)
+}
+
+find_required_n <- function(mu, sigma_matrix, target_power, alpha, nsim, n_min, n_max, seed) {
+  cache <- new.env(parent = emptyenv())
+  evaluated_ns <- integer(0)
+
+  power_at <- function(n_value) {
+    key <- as.character(n_value)
+    if (!exists(key, envir = cache, inherits = FALSE)) {
+      value <- estimate_power_at_n(
+        mu = mu,
+        sigma_matrix = sigma_matrix,
+        n_participants = n_value,
+        alpha = alpha,
+        nsim = nsim,
+        seed = seed
+      )
+      assign(key, value, envir = cache)
+      evaluated_ns <<- c(evaluated_ns, n_value)
+    }
+    get(key, envir = cache, inherits = FALSE)
+  }
+
+  lo <- n_min
+  hi <- n_min
+
+  if (power_at(lo) >= target_power) {
+    required <- lo
+  } else {
+    required <- NA_real_
+    while (hi < n_max && power_at(hi) < target_power) {
+      hi <- min(n_max, ceiling(hi * 1.5))
+      if (hi <= lo) {
+        hi <- min(n_max, lo + 1)
+      }
+      lo <- hi
+    }
+
+    if (power_at(hi) >= target_power) {
+      left <- n_min
+      right <- hi
+      while (left < right) {
+        mid <- floor((left + right) / 2)
+        if (power_at(mid) >= target_power) {
+          right <- mid
+        } else {
+          left <- mid + 1
+        }
+      }
+      required <- left
+    }
+  }
+
+  unique_ns <- sort(unique(evaluated_ns))
+  evaluated <- data.frame(
+    n_participants = unique_ns,
+    power = vapply(unique_ns, power_at, numeric(1)),
+    target_power = target_power
+  )
+
+  list(required_n = required, evaluated = evaluated)
+}
+
+summarize_one_analysis <- function(data, scope_label, vis_label, value_col, outcome_label, base_seed) {
+  mat <- complete_case_matrix(data, value_col = value_col, vis_label = vis_label)
+
+  if (nrow(mat) < 5) {
+    empty_trace <- data.frame(
+      scope = character(0),
+      outcome = character(0),
+      target_power = numeric(0),
+      n_participants = numeric(0),
+      power = numeric(0)
+    )
+    return(list(
+      summary = data.frame(
+        scope = scope_label,
+        outcome = outcome_label,
+        usable_n = nrow(mat),
+        pilot_F = NA_real_,
+        pilot_p = NA_real_,
+        pilot_eta_p2 = NA_real_,
+        pilot_f = NA_real_,
+        required_n_80 = NA_real_,
+        required_n_90 = NA_real_
+      ),
+      trace = empty_trace
+    ))
+  }
+
+  pilot <- rm_anova_stats(mat)
+
+  sigma_matrix <- stats::cov(mat)
+  if (!all(dim(sigma_matrix) == c(ncol(mat), ncol(mat)))) {
+    sigma_matrix <- diag(stats::var(as.numeric(mat)), ncol(mat))
+  }
+  sigma_matrix <- nearest_pd(sigma_matrix)
+  mu <- colMeans(mat)
+
+  target_80 <- if (0.8 %in% params$power_targets) 0.8 else params$power_targets[[1]]
+  target_90 <- if (0.9 %in% params$power_targets) 0.9 else tail(params$power_targets, 1)
+
+  req_80 <- find_required_n(
+    mu = mu,
+    sigma_matrix = sigma_matrix,
+    target_power = target_80,
+    alpha = params$alpha,
+    nsim = params$power_nsim,
+    n_min = params$n_min,
+    n_max = params$n_max,
+    seed = base_seed
+  )
+
+  req_90 <- find_required_n(
+    mu = mu,
+    sigma_matrix = sigma_matrix,
+    target_power = target_90,
+    alpha = params$alpha,
+    nsim = params$power_nsim,
+    n_min = params$n_min,
+    n_max = params$n_max,
+    seed = base_seed + 1000
+  )
+
+  summary_row <- data.frame(
+    scope = scope_label,
+    outcome = outcome_label,
+    usable_n = nrow(mat),
+    pilot_F = pilot$F,
+    pilot_p = pilot$p,
+    pilot_eta_p2 = pilot$eta_p2,
+    pilot_f = pilot$cohen_f,
+    required_n_80 = req_80$required_n,
+    required_n_90 = req_90$required_n
+  )
+
+  trace <- bind_rows(
+    req_80$evaluated,
+    req_90$evaluated
+  ) %>%
+    distinct(target_power, n_participants, .keep_all = TRUE) %>%
+    mutate(
+      scope = scope_label,
+      outcome = outcome_label
+    ) %>%
+    dplyr::select(scope, outcome, target_power, n_participants, power)
+
+  list(summary = summary_row, trace = trace)
+}
+```
+
+## Load Experiment 3 Data
+
+```{r load-data}
+csv_files <- sort(list.files(
+  data_dir,
+  pattern = params$csv_pattern,
+  full.names = TRUE
+))
+
+if (length(csv_files) == 0) {
+  stop("No participant CSV files found in: ", data_dir)
+}
+
+combined_data <- bind_rows(lapply(csv_files, load_participant_data)) %>%
+  filter(!is.na(participant_id)) %>%
+  filter(tolower(as.character(participant_id)) != "test")
+
+relevant_trial_types <- c(
+  "prediction-task",
+  "vis-literacy",
+  "trust-survey",
+  "interaction-feedback",
+  "personality-survey",
+  "survey-text",
+  "survey-multi-choice"
+)
+
+relevant_trials <- combined_data %>%
+  filter(trial_type %in% relevant_trial_types)
+
+trust_survey_rows <- relevant_trials %>%
+  filter(trial_type == "trust-survey")
+
+trust_survey_expanded <- ensure_likert_columns(
+  trust_survey_rows,
+  c(TRUST_QUESTION_KEYS, INTERACTION_QUESTION_KEYS)
+)
+
+composite_source <- compute_composite_scores(trust_survey_expanded)
+
+raw_composite_treatment <- composite_source %>%
+  filter(condition_number %in% c(21, 22, 23, 24)) %>%
+  filter(interaction_group %in% ROW_ORDER)
+
+overview <- data.frame(
+  metric = c(
+    "Participant CSV files",
+    "Participants (non-test)",
+    "Trust-survey rows",
+    "Treatment trust rows (conditions 21/22/23/24)"
+  ),
+  value = c(
+    length(csv_files),
+    dplyr::n_distinct(combined_data$participant_id),
+    nrow(trust_survey_rows),
+    nrow(raw_composite_treatment)
+  )
+)
+
+kable(overview, align = c("l", "r"))
+```
+
+## Coverage and Complete Cases
+
+```{r coverage}
+assigned_counts <- raw_composite_treatment %>%
+  filter(visualization_group %in% VIS_LABELS) %>%
+  distinct(participant_id, visualization_group) %>%
+  count(visualization_group, name = "assigned_n") %>%
+  complete(visualization_group = VIS_LABELS, fill = list(assigned_n = 0))
+
+complete_counts <- raw_composite_treatment %>%
+  filter(visualization_group %in% VIS_LABELS) %>%
+  group_by(visualization_group, participant_id) %>%
+  summarise(k = n_distinct(interaction_group), .groups = "drop") %>%
+  filter(k >= length(ROW_ORDER)) %>%
+  count(visualization_group, name = "complete_n") %>%
+  complete(visualization_group = VIS_LABELS, fill = list(complete_n = 0))
+
+coverage_table <- assigned_counts %>%
+  left_join(complete_counts, by = "visualization_group") %>%
+  mutate(completion_rate = ifelse(assigned_n > 0, complete_n / assigned_n, NA_real_))
+
+kable(coverage_table, digits = 3)
+```
+
+## Power Analysis
+
+```{r power-analysis}
+set.seed(params$seed)
+
+analysis_specs <- bind_rows(
+  data.frame(scope = VIS_LABELS, vis_label = VIS_LABELS, stringsAsFactors = FALSE),
+  data.frame(scope = "Combined", vis_label = NA_character_, stringsAsFactors = FALSE)
+)
+
+outcome_specs <- data.frame(
+  outcome = c("Trust", "Interaction"),
+  value_col = c("composite_trust_score", "composite_interaction_score"),
+  stringsAsFactors = FALSE
+)
+
+summary_rows <- list()
+trace_rows <- list()
+row_idx <- 1
+
+for (s in seq_len(nrow(analysis_specs))) {
+  for (o in seq_len(nrow(outcome_specs))) {
+    result <- summarize_one_analysis(
+      data = raw_composite_treatment,
+      scope_label = analysis_specs$scope[[s]],
+      vis_label = analysis_specs$vis_label[[s]],
+      value_col = outcome_specs$value_col[[o]],
+      outcome_label = outcome_specs$outcome[[o]],
+      base_seed = params$seed + row_idx * 100
+    )
+
+    summary_rows[[length(summary_rows) + 1]] <- result$summary
+    trace_rows[[length(trace_rows) + 1]] <- result$trace
+    row_idx <- row_idx + 1
+  }
+}
+
+power_summary <- bind_rows(summary_rows) %>%
+  arrange(factor(scope, levels = c(VIS_LABELS, "Combined")), outcome)
+
+power_trace <- bind_rows(trace_rows)
+
+kable(power_summary, digits = 3)
+```
+
+## Recommended Sample Sizes
+
+```{r recommendations}
+panel_summary <- power_summary %>%
+  filter(scope %in% VIS_LABELS)
+
+recommended_panel_80 <- suppressWarnings(max(panel_summary$required_n_80, na.rm = TRUE))
+recommended_panel_90 <- suppressWarnings(max(panel_summary$required_n_90, na.rm = TRUE))
+
+if (!is.finite(recommended_panel_80)) {
+  recommended_panel_80 <- NA_real_
+}
+if (!is.finite(recommended_panel_90)) {
+  recommended_panel_90 <- NA_real_
+}
+
+combined_summary <- power_summary %>%
+  filter(scope == "Combined")
+
+recommendation_table <- data.frame(
+  analysis_target = c(
+    "Panel-specific (power all 3 visualization panels and both outcomes)",
+    "Combined-only Trust",
+    "Combined-only Interaction"
+  ),
+  n_for_80_power = c(
+    recommended_panel_80,
+    combined_summary$required_n_80[combined_summary$outcome == "Trust"],
+    combined_summary$required_n_80[combined_summary$outcome == "Interaction"]
+  ),
+  n_for_90_power = c(
+    recommended_panel_90,
+    combined_summary$required_n_90[combined_summary$outcome == "Trust"],
+    combined_summary$required_n_90[combined_summary$outcome == "Interaction"]
+  )
+)
+
+kable(recommendation_table, digits = 0)
+```
+
+## Power Trace Diagnostics
+
+```{r power-trace-plot, fig.width=9.5, fig.height=6.5}
+if (nrow(power_trace) > 0) {
+  ggplot(
+    power_trace,
+    aes(
+      x = n_participants,
+      y = power,
+      color = factor(target_power),
+      group = interaction(target_power, scope, outcome)
+    )
+  ) +
+    geom_line(linewidth = 0.9) +
+    geom_point(size = 1.8) +
+    geom_hline(yintercept = 0.8, linetype = "dashed", color = "gray45") +
+    geom_hline(yintercept = 0.9, linetype = "dotted", color = "gray45") +
+    facet_grid(outcome ~ scope) +
+    scale_y_continuous(limits = c(0, 1)) +
+    labs(
+      title = "Simulation-Based Power Traces for RM-ANOVA Omnibus Effect",
+      x = "Participants",
+      y = "Estimated power",
+      color = "Target power"
+    ) +
+    theme_minimal(base_size = 12)
+}
+```
+
+## Save Outputs
+
+```{r save-outputs}
+summary_path <- file.path(report_dir, "power_analysis_0316_r_summary.csv")
+trace_path <- file.path(report_dir, "power_analysis_0316_r_trace.csv")
+coverage_path <- file.path(report_dir, "power_analysis_0316_r_coverage.csv")
+
+write.csv(power_summary, summary_path, row.names = FALSE)
+write.csv(power_trace, trace_path, row.names = FALSE)
+write.csv(coverage_table, coverage_path, row.names = FALSE)
+
+data.frame(
+  file = c(summary_path, trace_path, coverage_path)
+) %>%
+  kable()
+```

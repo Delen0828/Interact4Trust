@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiment 3 Animation Interaction Prototype</title>
+  <style>
+    :root {
+      --bg: #f7fafc;
+      --panel: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --grid: #e5e7eb;
+      --city-a: #0891b2;
+      --city-b: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 16px 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .subtitle {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 16px;
+      color: #4b5563;
+      font-size: 12px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .swatch {
+      width: 16px;
+      height: 0;
+      border-top: 2px solid;
+      display: inline-block;
+    }
+
+    .swatch.dashed {
+      border-top-style: dashed;
+    }
+
+    .swatch.area {
+      width: 12px;
+      height: 10px;
+      border-top: 0;
+      border-radius: 2px;
+      opacity: 0.35;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .status {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: #374151;
+      min-height: 18px;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      background: #ffffff;
+      margin-top: 8px;
+    }
+
+    .axis path,
+    .axis line {
+      stroke: #9ca3af;
+      shape-rendering: crispEdges;
+    }
+
+    .axis text {
+      fill: #4b5563;
+      font-size: 11px;
+    }
+
+    .grid-line line {
+      stroke: var(--grid);
+      stroke-opacity: 0.85;
+      shape-rendering: crispEdges;
+    }
+
+    .grid-line path {
+      display: none;
+    }
+
+    .historical-line {
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .aggregated-line {
+      fill: none;
+      stroke-width: 2;
+      stroke-dasharray: 5, 5;
+    }
+
+    .alternative-line {
+      fill: none;
+      stroke-width: 1.4;
+    }
+
+    .bounds-area {
+      stroke: none;
+    }
+
+    .reference-line {
+      stroke: #9ca3af;
+      stroke-width: 1;
+      opacity: 0.8;
+    }
+
+    .today-label {
+      font-size: 11px;
+      fill: #6b7280;
+      text-anchor: middle;
+      font-weight: 600;
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Experiment 3 Animation Interaction Prototype</h1>
+    <p class="subtitle">
+      Starts after 2 seconds and loops. "Show One" randomizes which city starts first every cycle.
+    </p>
+
+    <div class="legend">
+      <span class="legend-item">
+        <span class="swatch" style="border-top-color:var(--city-a)"></span>City A historical
+      </span>
+      <span class="legend-item">
+        <span class="swatch dashed" style="border-top-color:var(--city-a)"></span>City A aggregated prediction
+      </span>
+      <span class="legend-item">
+        <span class="swatch area" style="background:var(--city-a)"></span>City A uncertainty
+      </span>
+      <span class="legend-item">
+        <span class="swatch" style="border-top-color:var(--city-b)"></span>City B historical
+      </span>
+      <span class="legend-item">
+        <span class="swatch dashed" style="border-top-color:var(--city-b)"></span>City B aggregated prediction
+      </span>
+      <span class="legend-item">
+        <span class="swatch area" style="background:var(--city-b)"></span>City B uncertainty
+      </span>
+    </div>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Animation Show All</h2>
+        <p>Both city uncertainty layers appear/hide at the same time.</p>
+        <div id="status-show-all" class="status"></div>
+        <svg id="chart-show-all" viewBox="0 0 600 400" role="img" aria-label="Animation show all chart"></svg>
+      </article>
+
+      <article class="card">
+        <h2>Animation Show One</h2>
+        <p>One city appears, then it hides while the other appears. First city is randomized every cycle.</p>
+        <div id="status-show-one" class="status"></div>
+        <svg id="chart-show-one" viewBox="0 0 600 400" role="img" aria-label="Animation show one chart"></svg>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="./animation_interactions_prototype.js" defer></script>
+</body>
+</html>
