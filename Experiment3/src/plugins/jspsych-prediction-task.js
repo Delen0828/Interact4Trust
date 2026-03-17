@@ -1357,6 +1357,10 @@ var jsPsychPredictionTask = (function (jspsych) {
           return 23; // Condition 23: Click show one city
         case 'click_show_all':
           return 24; // Condition 24: Click show all cities
+        case 'animation_show_one':
+          return 25; // Condition 25: Animation show one city
+        case 'animation_show_all':
+          return 26; // Condition 26: Animation show all cities
         case 'checkbox_selection':
           return 11;  // Condition 11: Checkbox Selection
         case 'tiny_slider_checkbox':
@@ -1388,7 +1392,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         'aggregation_only',       // Condition 1
         'confidence_bounds',      // Condition 2
         'alternative_lines',      // Condition 3
-        'combined_pi_ensemble'    // Condition 9
+        'combined_pi_ensemble',   // Condition 9
+        'animation_show_one',     // Condition 25
+        'animation_show_all'      // Condition 26
       ]);
 
       const displayFormat = this.condition?.displayFormat || null;

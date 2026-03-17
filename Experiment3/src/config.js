@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study Configuration
-// Experiment 3: Baseline + four interaction types within participants, fixed visualization technique by version
+// Experiment 3: Baseline + six interaction types within participants, fixed visualization technique by version
 
 const TECHNIQUE_TOKEN_TO_KEY = Object.freeze({
     EP: 'ensemble_plot',
@@ -12,7 +12,9 @@ const INTERACTION_SEQUENCE_KEYS = Object.freeze([
     'hover_show_one',
     'hover_show_all',
     'click_show_one',
-    'click_show_all'
+    'click_show_all',
+    'animation_show_one',
+    'animation_show_all'
 ]);
 
 function parseVersionDescriptor(versionId) {
@@ -156,6 +158,22 @@ const ExperimentConfig = {
             instructions: 'Thin lines show alternative forecasts.<br><br>Hint: Use the Show all checkbox below the chart to toggle details for both cities.'
         },
         {
+            id: 'condition_25_animation_show_one_ep',
+            name: 'Animation Show One (Ensemble)',
+            displayFormat: 'animation_show_one',
+            technique: 'ensemble_plot',
+            description: 'Alternative lines for one city are shown automatically, alternating between cities.',
+            instructions: 'Thin lines show alternative forecasts for one city at a time.<br><br>Hint: Details animate automatically; no hovering or clicking is needed.'
+        },
+        {
+            id: 'condition_26_animation_show_all_ep',
+            name: 'Animation Show All (Ensemble)',
+            displayFormat: 'animation_show_all',
+            technique: 'ensemble_plot',
+            description: 'Alternative lines for both cities are shown automatically together.',
+            instructions: 'Thin lines show alternative forecasts for both cities.<br><br>Hint: Details animate automatically; no hovering or clicking is needed.'
+        },
+        {
             id: 'condition_21_hover_show_one_ci',
             name: 'Hover Show One (CI)',
             displayFormat: 'hover_show_one',
@@ -186,6 +204,22 @@ const ExperimentConfig = {
             technique: 'confidence_interval',
             description: 'Use one Show All checkbox to toggle all confidence intervals together.',
             instructions: 'Shaded area shows the 95% confidence interval.<br><br>Hint: Use the Show all checkbox below the chart to toggle details for both cities.'
+        },
+        {
+            id: 'condition_25_animation_show_one_ci',
+            name: 'Animation Show One (CI)',
+            displayFormat: 'animation_show_one',
+            technique: 'confidence_interval',
+            description: 'Confidence interval for one city is shown automatically, alternating between cities.',
+            instructions: 'Shaded area shows the 95% confidence interval for one city at a time.<br><br>Hint: Details animate automatically; no hovering or clicking is needed.'
+        },
+        {
+            id: 'condition_26_animation_show_all_ci',
+            name: 'Animation Show All (CI)',
+            displayFormat: 'animation_show_all',
+            technique: 'confidence_interval',
+            description: 'Confidence intervals for both cities are shown automatically together.',
+            instructions: 'Shaded area shows the 95% confidence interval for both cities.<br><br>Hint: Details animate automatically; no hovering or clicking is needed.'
         },
         {
             id: 'condition_21_hover_show_one_ciep',
@@ -220,6 +254,22 @@ const ExperimentConfig = {
             instructions: 'Shaded areas plus thin lines show uncertainty.<br><br>Hint: Use the Show all checkbox below the chart to toggle details for both cities.'
         },
         {
+            id: 'condition_25_animation_show_one_ciep',
+            name: 'Animation Show One (Combined)',
+            displayFormat: 'animation_show_one',
+            technique: 'combined_plot',
+            description: 'Confidence interval and alternative lines for one city are shown automatically, alternating between cities.',
+            instructions: 'Shaded area plus thin lines show uncertainty for one city at a time.<br><br>Hint: Details animate automatically; no hovering or clicking is needed.'
+        },
+        {
+            id: 'condition_26_animation_show_all_ciep',
+            name: 'Animation Show All (Combined)',
+            displayFormat: 'animation_show_all',
+            technique: 'combined_plot',
+            description: 'Confidence intervals and alternative lines for both cities are shown automatically together.',
+            instructions: 'Shaded areas plus thin lines show uncertainty for both cities.<br><br>Hint: Details animate automatically; no hovering or clicking is needed.'
+        },
+        {
             id: 'condition_3_ensemble_reference',
             name: 'Static Ensemble (Reference)',
             displayFormat: 'alternative_lines',
@@ -247,26 +297,32 @@ const ExperimentConfig = {
 
     phaseDesign: {
         defaultVersionId: 'version_EP',
-        phaseOrder: ['phase1', 'phase2', 'phase3', 'phase4', 'phase5'],
+        phaseOrder: ['phase1', 'phase2', 'phase3', 'phase4', 'phase5', 'phase6', 'phase7'],
         interactionKeys: INTERACTION_SEQUENCE_KEYS.slice(),
         conditionMatrix: {
             ensemble_plot: {
                 hover_show_one: 'condition_21_hover_show_one_ep',
                 hover_show_all: 'condition_22_hover_show_all_ep',
                 click_show_one: 'condition_23_click_show_one_ep',
-                click_show_all: 'condition_24_click_show_all_ep'
+                click_show_all: 'condition_24_click_show_all_ep',
+                animation_show_one: 'condition_25_animation_show_one_ep',
+                animation_show_all: 'condition_26_animation_show_all_ep'
             },
             confidence_interval: {
                 hover_show_one: 'condition_21_hover_show_one_ci',
                 hover_show_all: 'condition_22_hover_show_all_ci',
                 click_show_one: 'condition_23_click_show_one_ci',
-                click_show_all: 'condition_24_click_show_all_ci'
+                click_show_all: 'condition_24_click_show_all_ci',
+                animation_show_one: 'condition_25_animation_show_one_ci',
+                animation_show_all: 'condition_26_animation_show_all_ci'
             },
             combined_plot: {
                 hover_show_one: 'condition_21_hover_show_one_ciep',
                 hover_show_all: 'condition_22_hover_show_all_ciep',
                 click_show_one: 'condition_23_click_show_one_ciep',
-                click_show_all: 'condition_24_click_show_all_ciep'
+                click_show_all: 'condition_24_click_show_all_ciep',
+                animation_show_one: 'condition_25_animation_show_one_ciep',
+                animation_show_all: 'condition_26_animation_show_all_ciep'
             }
         }
     },
@@ -295,6 +351,16 @@ const ExperimentConfig = {
         phase5: {
             name: 'Interaction Round 4',
             description: 'Fourth randomized interaction style for the assigned visualization technique.',
+            measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
+        },
+        phase6: {
+            name: 'Interaction Round 5',
+            description: 'Fifth randomized interaction style for the assigned visualization technique.',
+            measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
+        },
+        phase7: {
+            name: 'Interaction Round 6',
+            description: 'Sixth randomized interaction style for the assigned visualization technique.',
             measurements: ['probability_estimate', 'confidence_rating', 'travel_choice', 'interaction_feedback', 'trust_ratings', 'interaction_ratings']
         }
     },
@@ -348,6 +414,26 @@ const ExperimentConfig = {
             colors: {
                 cityA: '#BE123C',
                 cityB: '#0F766E'
+            }
+        },
+        phase6: {
+            file: 'virexa_talmori_incHist_incPred.json',
+            organization: 'Organization F',
+            cityA: 'Virexa',
+            cityB: 'Talmori',
+            colors: {
+                cityA: '#0369A1',
+                cityB: '#B45309'
+            }
+        },
+        phase7: {
+            file: 'qelvane_rostiva_incHist_decPred.json',
+            organization: 'Organization G',
+            cityA: 'Qelvane',
+            cityB: 'Rostiva',
+            colors: {
+                cityA: '#7E22CE',
+                cityB: '#0E7490'
             }
         }
     },
@@ -522,7 +608,7 @@ const ExperimentConfig = {
                 interactionConditionsByKey[interactionKey] = condition;
             }
 
-            // Step 1: random assignment of all 5 condition identities to the 5 dataset bundles.
+            // Step 1: random assignment of all condition identities to the dataset bundles.
             const datasetAssignmentOrder = [
                 { condition: baselineCondition, interactionKey: 'baseline' },
                 ...ExperimentConfig.phaseDesign.interactionKeys.map((interactionKey) => ({
@@ -559,7 +645,7 @@ const ExperimentConfig = {
                 datasetByConditionId[entry.condition.id] = shuffledDatasetPool[index];
             });
 
-            // Step 2: keep baseline first and shuffle only the 4 interaction conditions.
+            // Step 2: keep baseline first and shuffle all interaction conditions.
             const interactionOrder = deterministicShuffle(
                 ExperimentConfig.phaseDesign.interactionKeys,
                 `${participantId || 'anon'}|${parsedDescriptor.versionId}|experiment3|interaction-order`
@@ -581,7 +667,7 @@ const ExperimentConfig = {
                 dataset_file: baselineDatasetAssignment.dataset.file
             };
 
-            for (let slotIndex = 0; slotIndex < 4; slotIndex += 1) {
+            for (let slotIndex = 0; slotIndex < interactionOrder.length; slotIndex += 1) {
                 const phaseKey = `phase${slotIndex + 2}`;
                 const interactionKey = interactionOrder[slotIndex];
                 const condition = interactionConditionsByKey[interactionKey];
@@ -679,36 +765,46 @@ let ParticipantConfig = {
         phase2: null,
         phase3: null,
         phase4: null,
-        phase5: null
+        phase5: null,
+        phase6: null,
+        phase7: null
     },
     phaseAssignmentLog: {
         phase1: null,
         phase2: null,
         phase3: null,
         phase4: null,
-        phase5: null
+        phase5: null,
+        phase6: null,
+        phase7: null
     },
     phaseDatasetAssignments: {
         phase1: null,
         phase2: null,
         phase3: null,
         phase4: null,
-        phase5: null
+        phase5: null,
+        phase6: null,
+        phase7: null
     },
     phaseDatasetAssignmentLog: {
         phase1: null,
         phase2: null,
         phase3: null,
         phase4: null,
-        phase5: null
+        phase5: null,
+        phase6: null,
+        phase7: null
     },
-    phaseExecutionOrder: ['phase1', 'phase2', 'phase3', 'phase4', 'phase5'],
+    phaseExecutionOrder: ['phase1', 'phase2', 'phase3', 'phase4', 'phase5', 'phase6', 'phase7'],
     phaseCompletion: {
         phase1: false,
         phase2: false,
         phase3: false,
         phase4: false,
-        phase5: false
+        phase5: false,
+        phase6: false,
+        phase7: false
     },
     startTime: null,
     phase1Complete: false,
@@ -716,6 +812,8 @@ let ParticipantConfig = {
     phase3Complete: false,
     phase4Complete: false,
     phase5Complete: false,
+    phase6Complete: false,
+    phase7Complete: false,
     visualizationLiteracyScore: null,
     versionDescriptor: null,
     version: 'version_EP'
@@ -738,7 +836,9 @@ function initializeParticipant(participantId) {
         phase2: false,
         phase3: false,
         phase4: false,
-        phase5: false
+        phase5: false,
+        phase6: false,
+        phase7: false
     };
     ParticipantConfig.startTime = new Date().toISOString();
     ParticipantConfig.phase1Complete = false;
@@ -746,6 +846,8 @@ function initializeParticipant(participantId) {
     ParticipantConfig.phase3Complete = false;
     ParticipantConfig.phase4Complete = false;
     ParticipantConfig.phase5Complete = false;
+    ParticipantConfig.phase6Complete = false;
+    ParticipantConfig.phase7Complete = false;
     ParticipantConfig.visualizationLiteracyScore = null;
     ParticipantConfig.versionDescriptor = assignment.versionDescriptor;
     ParticipantConfig.version = assignment.versionId;

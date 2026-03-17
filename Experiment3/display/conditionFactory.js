@@ -32,8 +32,8 @@ export class ConditionFactory {
     async createCondition(conditionNumber, svgId, conditionSpec = null) {
         try {
             // Validate condition number
-            if (conditionNumber < 0 || conditionNumber > 24) {
-                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 24.`);
+            if (conditionNumber < 0 || conditionNumber > 26) {
+                throw new Error(`Invalid condition number: ${conditionNumber}. Must be between 0 and 26.`);
             }
 
             // Check if we have processed data
@@ -110,7 +110,9 @@ export class ConditionFactory {
             { number: 21, svgId: 'chart-16' },  // Hover show one (technique-aware)
             { number: 22, svgId: 'chart-17' },  // Hover show all (technique-aware)
             { number: 23, svgId: 'chart-18' },  // Click show one (technique-aware)
-            { number: 24, svgId: 'chart-19' }   // Click show all (technique-aware)
+            { number: 24, svgId: 'chart-19' },  // Click show all (technique-aware)
+            { number: 25, svgId: 'chart-20' },  // Animation show one (technique-aware)
+            { number: 26, svgId: 'chart-21' }   // Animation show all (technique-aware)
         ];
 
 
@@ -219,7 +221,9 @@ export class ConditionFactory {
             21: { name: 'Hover Show One', description: 'Hover on one city line to reveal uncertainty details for that city only' },
             22: { name: 'Hover Show All', description: 'Hover on either city line to reveal uncertainty details for both cities' },
             23: { name: 'Click Show One', description: 'Two city checkboxes toggle uncertainty details city-by-city' },
-            24: { name: 'Click Show All', description: 'Single Show All checkbox toggles uncertainty details for both cities' }
+            24: { name: 'Click Show All', description: 'Single Show All checkbox toggles uncertainty details for both cities' },
+            25: { name: 'Animation Show One', description: 'Automatic loop reveals uncertainty details for one city at a time' },
+            26: { name: 'Animation Show All', description: 'Automatic loop reveals uncertainty details for both cities together' }
         };
     }
 }

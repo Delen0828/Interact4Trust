@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study
-// Five-Phase Within-Participants Study Design
+// Seven-Phase Within-Participants Study Design
 
 let jsPsych;
 let timeline = [];
@@ -10,7 +10,9 @@ const defaultOrganizationLabelsBySlot = Object.freeze([
 	'Organization B',
 	'Organization C',
 	'Organization D',
-	'Organization E'
+	'Organization E',
+	'Organization F',
+	'Organization G'
 ]);
 const defaultPhaseDatasetConfig = Object.freeze({
 	file: 'synthetic_stock_data_norm.json',
@@ -338,9 +340,9 @@ function buildTimeline() {
 		        </div>`,
 		        `<div class="instructions">
 		            <h2>Humidity Context</h2>
-		            <p>You will complete <strong>5 forecast rounds</strong>. Round 1 is a baseline view, followed by 4 interaction-style rounds. Each round includes one prediction page, one interaction feedback page, trust questions, and interaction questions.</p>
-		            <p>Each round is provided by a different source: <span class="organization-badge">Organization A</span>, <span class="organization-badge">Organization B</span>, <span class="organization-badge">Organization C</span>, <span class="organization-badge">Organization D</span>, and <span class="organization-badge">Organization E</span>.</p>
-		            <p>Your study version fixes one visualization technique (Ensemble, CI, or Combined). After the baseline round, the 4 interaction styles are shown in randomized order within your session.</p>
+		            <p>You will complete <strong>7 forecast rounds</strong>. Round 1 is a baseline view, followed by 6 interaction-style rounds. Each round includes one prediction page, one interaction feedback page, trust questions, and interaction questions.</p>
+		            <p>Each round is provided by a different source: <span class="organization-badge">Organization A</span>, <span class="organization-badge">Organization B</span>, <span class="organization-badge">Organization C</span>, <span class="organization-badge">Organization D</span>, <span class="organization-badge">Organization E</span>, <span class="organization-badge">Organization F</span>, and <span class="organization-badge">Organization G</span>.</p>
+		            <p>Your study version fixes one visualization technique (Ensemble, CI, or Combined). After the baseline round, the 6 interaction styles are shown in randomized order within your session.</p>
 		        </div>`
 		    ],
 	    show_clickable_nav: true,
@@ -380,11 +382,11 @@ function buildTimeline() {
 		data: { trial_type: 'phases_intro' }
 	});
 
-	const fallbackPhaseOrder = ['phase1', 'phase2', 'phase3', 'phase4', 'phase5'];
+	const fallbackPhaseOrder = ['phase1', 'phase2', 'phase3', 'phase4', 'phase5', 'phase6', 'phase7'];
 
 	function getPhaseExecutionOrder() {
 		const configuredOrder = window.ParticipantConfig.phaseExecutionOrder;
-		if (Array.isArray(configuredOrder) && configuredOrder.length === 5) {
+		if (Array.isArray(configuredOrder) && configuredOrder.length === fallbackPhaseOrder.length) {
 			return configuredOrder;
 		}
 		return fallbackPhaseOrder;
@@ -516,6 +518,8 @@ function buildTimeline() {
 		if (phaseKey === 'phase3') window.ParticipantConfig.phase3Complete = true;
 		if (phaseKey === 'phase4') window.ParticipantConfig.phase4Complete = true;
 		if (phaseKey === 'phase5') window.ParticipantConfig.phase5Complete = true;
+		if (phaseKey === 'phase6') window.ParticipantConfig.phase6Complete = true;
+		if (phaseKey === 'phase7') window.ParticipantConfig.phase7Complete = true;
 	}
 
 	function appendWithinParticipantPhase(phaseSlot) {
@@ -630,7 +634,7 @@ function buildTimeline() {
 		});
 		}
 
-	for (let phaseSlot = 1; phaseSlot <= 5; phaseSlot += 1) {
+	for (let phaseSlot = 1; phaseSlot <= fallbackPhaseOrder.length; phaseSlot += 1) {
 		appendWithinParticipantPhase(phaseSlot);
 	}
 
@@ -746,7 +750,7 @@ function buildTimeline() {
 	                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
 	                
 		                <h3>Study Background:</h3>
-				                <p>You completed one baseline forecast round and four additional visualization forecast rounds in a version-specific randomized order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
+				                <p>You completed one baseline forecast round and six additional visualization forecast rounds in a version-specific randomized order. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
 	                
 	                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
 	                <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
@@ -768,6 +772,8 @@ function buildTimeline() {
 						phase3_complete: window.ParticipantConfig.phase3Complete,
 						phase4_complete: window.ParticipantConfig.phase4Complete,
 						phase5_complete: window.ParticipantConfig.phase5Complete,
+						phase6_complete: window.ParticipantConfig.phase6Complete,
+						phase7_complete: window.ParticipantConfig.phase7Complete,
 						phase_completion: window.ParticipantConfig.phaseCompletion || null,
 						phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
 						phase_dataset_assignment_log: window.ParticipantConfig.phaseDatasetAssignmentLog || null,
@@ -983,7 +989,9 @@ function saveData(data) {
 		phase2_complete: window.ParticipantConfig.phase2Complete,
 		phase3_complete: window.ParticipantConfig.phase3Complete,
 		phase4_complete: window.ParticipantConfig.phase4Complete,
-		phase5_complete: window.ParticipantConfig.phase5Complete
+		phase5_complete: window.ParticipantConfig.phase5Complete,
+		phase6_complete: window.ParticipantConfig.phase6Complete,
+		phase7_complete: window.ParticipantConfig.phase7Complete
 	};
 
 	if (window.ExperimentConfig.dataCollection.saveToServer) {

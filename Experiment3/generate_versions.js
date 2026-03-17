@@ -110,7 +110,9 @@ const manifest = VERSION_DEFINITIONS.map((definition) => {
       'hover_show_one',
       'hover_show_all',
       'click_show_one',
-      'click_show_all'
+      'click_show_all',
+      'animation_show_one',
+      'animation_show_all'
     ]
   };
 });
