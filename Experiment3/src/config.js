@@ -417,20 +417,20 @@ const ExperimentConfig = {
             }
         },
         phase6: {
-            file: 'virexa_talmori_incHist_incPred.json',
+            file: 'lumora_vexlin_constHist_incPred.json',
             organization: 'Organization F',
-            cityA: 'Virexa',
-            cityB: 'Talmori',
+            cityA: 'Lumora',
+            cityB: 'Vexlin',
             colors: {
                 cityA: '#0369A1',
                 cityB: '#B45309'
             }
         },
         phase7: {
-            file: 'qelvane_rostiva_incHist_decPred.json',
+            file: 'dravik_solmere_constHist_decPred.json',
             organization: 'Organization G',
-            cityA: 'Qelvane',
-            cityB: 'Rostiva',
+            cityA: 'Dravik',
+            cityB: 'Solmere',
             colors: {
                 cityA: '#7E22CE',
                 cityB: '#0E7490'
