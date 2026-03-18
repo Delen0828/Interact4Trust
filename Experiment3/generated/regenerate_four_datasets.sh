@@ -39,25 +39,17 @@ python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
 
 python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
   --seed trend-fixed-v1-ranax-baseline \
-  --histStart 48 --histEnd 54 --predEnd 50 \
+  --histStart 54 --histEnd 54 --predStart 54 --predEnd 54 \
   --fileName ranax_leer_city_baseline.json
 
-python3 "$GENERATOR" \
-  --numPred 5 \
-  --noiseLevel 0 \
-  --predVariance 225 \
-  --skew bimodel \
+python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
   --seed trend-fixed-v1-lumora-vexlin \
-  --histStart 52 --histEnd 52 --predStart 52 --predEnd 64 \
+  --histStart 52 --histEnd 52 --predEnd 64 \
   --fileName lumora_vexlin_constHist_incPred.json
 
-python3 "$GENERATOR" \
-  --numPred 5 \
-  --noiseLevel 0 \
-  --predVariance 225 \
-  --skew bimodel \
+python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
   --seed trend-fixed-v1-dravik-solmere \
-  --histStart 58 --histEnd 58 --predStart 58 --predEnd 44 \
+  --histStart 58 --histEnd 58 --predEnd 44 \
   --fileName dravik_solmere_constHist_decPred.json
 
 # Rename stock labels A/B to custom pair names in each dataset.
