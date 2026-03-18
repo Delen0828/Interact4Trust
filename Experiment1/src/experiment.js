@@ -21,6 +21,10 @@ const defaultPhaseDatasetConfig = Object.freeze({
 		cityB: '#7C3AED'
 	}
 });
+const SAVE_MAX_ATTEMPTS = 3;
+const SAVE_MAX_DURATION_MS = 8000;
+const SAVE_RETRY_DELAY_MS = 350;
+let studyFinalizationInProgress = false;
 
 // Wait for config to be loaded
 function waitForConfig() {
@@ -66,17 +70,14 @@ async function initializeExperiment() {
 			throw new Error('jsPsych library not loaded. Check if jspsych scripts are properly included.');
 		}
 		
-		// Initialize jsPsych
-		jsPsych = initJsPsych({
-			display_element: 'jspsych-target',
-			// show_progress_bar: true,
-			// auto_update_progress_bar: false,
-			// message_progress_bar: 'Study Progress',
-			on_finish: function () {
-				const data = jsPsych.data.get();
-				saveData(data);
-			}
-		});
+			// Initialize jsPsych
+			jsPsych = initJsPsych({
+				display_element: 'jspsych-target',
+				// show_progress_bar: true,
+				// auto_update_progress_bar: false,
+				// message_progress_bar: 'Study Progress',
+				on_finish: function () {}
+			});
 
 		// Build timeline
 		buildTimeline();
@@ -713,10 +714,10 @@ function buildTimeline() {
 	});
 
 	// Debrief
-	timeline.push({
-		type: jsPsychHtmlButtonResponse,
-		stimulus: `
-            <div class="debrief">
+		timeline.push({
+			type: jsPsychHtmlButtonResponse,
+			stimulus: `
+	            <div class="debrief">
                 <h2>Thank You!</h2>
                 <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
                 
@@ -729,51 +730,31 @@ function buildTimeline() {
                 <h3>Questions?</h3>
                 <p>If you have questions about this research, please contact the research team.</p>
                 
-                <p>Your participation contributes to understanding how to design better prediction visualizations for real-world applications like weather forecasting, financial predictions, and public health data.</p>
-            </div>
-        `,
-		choices: ['Close Study'],
-		data: { trial_type: 'debrief' },
+	                <p>Your participation contributes to understanding how to design better prediction visualizations for real-world applications like weather forecasting, financial predictions, and public health data.</p>
+	            </div>
+	        `,
+			choices: ['Upload Data and Redirect to Prolific'],
+			data: { trial_type: 'debrief' },
+			on_load: function() {
+				setDebriefButtonUploadingState();
+			},
 			on_finish: function() {
-				// Securely validate completion and get redirect URL from server
-				const completionData = {
-					study_complete: true,
-					phase1_complete: window.ParticipantConfig.phase1Complete,
-					phase2_complete: window.ParticipantConfig.phase2Complete,
+					// Securely validate completion and get redirect URL from server
+					const completionData = {
+						study_complete: true,
+						phase1_complete: window.ParticipantConfig.phase1Complete,
+						phase2_complete: window.ParticipantConfig.phase2Complete,
 					phase3_complete: window.ParticipantConfig.phase3Complete,
 					phase4_complete: window.ParticipantConfig.phase4Complete,
 					phase_completion: window.ParticipantConfig.phaseCompletion || null,
-					phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
-					end_time: new Date().toISOString()
-				};
+						phase_execution_order: window.ParticipantConfig.phaseExecutionOrder || null,
+						end_time: new Date().toISOString()
+					};
 
-			
-			fetch('/complete_study.php', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(completionData)
-			})
-			.then(response => {
-				return response.json();
-			})
-			.then(data => {
-				if (data.success) {
-					// Redirect to Prolific completion page
-					window.location.href = data.redirect_url;
-				} else {
-					console.error('Study completion validation failed:', data.error);
-					alert('There was an error completing your study. Please contact the research team.');
-				}
-			})
-			.catch(error => {
-				console.error('Error validating study completion:', error);
-				alert('There was an error completing your study. Please contact the research team.');
-			});
-		}
-	});
-}
+				finalizeStudyAndRedirect(completionData);
+			}
+		});
+	}
 
 // Helper Functions
 
@@ -934,12 +915,49 @@ async function getAirQualityData(phaseSlot = 1) {
 	}
 }
 
-// Save data function
-function saveData(data) {
-	const allData = data.values();
+function escapeHtmlForFinalization(value) {
+	return String(value ?? '')
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
 
-	// Add participant summary
-	const summary = {
+function setDebriefButtonUploadingState() {
+	const wrapper = document.querySelector('#jspsych-html-button-response-button-0');
+	if (!wrapper) return;
+	const button = wrapper.querySelector('button') || wrapper;
+	button.addEventListener('click', () => {
+		button.disabled = true;
+		button.textContent = 'Uploading data...';
+	}, { once: true });
+}
+
+function showFinalizationStatus(title, message) {
+	const target = document.getElementById('jspsych-target');
+	if (!target) return;
+	target.innerHTML = `
+		<div style="text-align: center; padding: 40px;">
+			<h3>${escapeHtmlForFinalization(title)}</h3>
+			<p>${escapeHtmlForFinalization(message)}</p>
+		</div>
+	`;
+}
+
+function getOrCreateSaveToken() {
+	if (window.ParticipantConfig.saveToken) return window.ParticipantConfig.saveToken;
+	const participantId = String(window.ParticipantConfig.id || 'unknown')
+		.replace(/[^a-zA-Z0-9_-]/g, '')
+		.slice(0, 32) || 'unknown';
+	const timePart = Date.now().toString(36);
+	const randomPart = Math.random().toString(36).slice(2, 10);
+	window.ParticipantConfig.saveToken = `save_${participantId}_${timePart}_${randomPart}`;
+	return window.ParticipantConfig.saveToken;
+}
+
+function buildParticipantSummary() {
+	return {
 		participant_id: window.ParticipantConfig.id,
 		condition: window.ParticipantConfig.assignedCondition, // Backward-compatible alias (phase2 canonical condition)
 		phase_assignment_log: window.ParticipantConfig.phaseAssignmentLog || null,
@@ -955,40 +973,162 @@ function saveData(data) {
 		phase3_complete: window.ParticipantConfig.phase3Complete,
 		phase4_complete: window.ParticipantConfig.phase4Complete
 	};
+}
 
-	if (window.ExperimentConfig.dataCollection.saveToServer) {
-		// Convert data to CSV format for PHP script
-		const csvData = convertToCSV(allData, summary);
-		
-		// Generate filename in format required by PHP: user_[ID]_[TIMESTAMP].csv
-		const timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('Z', '').split('.')[0]; // Remove Z and milliseconds
-		const participantIdClean = window.ParticipantConfig.id || 'unknown'; // Handle null case
-		const participantIdNumber = participantIdClean.toString().replace(/^P/, ''); // Remove 'P' prefix if present
-		const numericId = participantIdNumber.replace(/[^0-9]/g, '') || Date.now(); // Extract only digits, fallback to timestamp
-		const filename = `user_${numericId}_${timestamp}.csv`;
+function buildSavePayload(dataCollection) {
+	const allData = dataCollection.values();
+	const summary = buildParticipantSummary();
+	const csvData = convertToCSV(allData, summary);
+	const timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('Z', '').split('.')[0];
+	const participantIdClean = window.ParticipantConfig.id || 'unknown';
+	const participantIdNumber = participantIdClean.toString().replace(/^P/, '');
+	const numericId = participantIdNumber.replace(/[^0-9]/g, '') || Date.now();
+	const filename = `user_${numericId}_${timestamp}.csv`;
+	const saveToken = getOrCreateSaveToken();
+	return {
+		allData,
+		summary,
+		csvData,
+		filename,
+		saveToken
+	};
+}
 
-		// Send to PHP server in expected format
-		fetch(window.ExperimentConfig.dataCollection.serverEndpoint, {
+function persistLocalFallback(savePayload, errorMessage) {
+	try {
+		const storageKey = `air_quality_study_${window.ParticipantConfig.id || 'unknown'}`;
+		localStorage.setItem(storageKey, JSON.stringify({
+			data: savePayload.allData,
+			summary: savePayload.summary,
+			save_token: savePayload.saveToken,
+			filename: savePayload.filename,
+			failed_upload: Boolean(errorMessage),
+			save_error_last: errorMessage || null,
+			saved_at: new Date().toISOString()
+		}));
+	} catch (storageError) {
+		console.error('Error saving fallback payload to localStorage:', storageError);
+	}
+}
+
+function sleep(ms) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function uploadSavePayloadOnce(savePayload, timeoutMs) {
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+	try {
+		const response = await fetch(window.ExperimentConfig.dataCollection.serverEndpoint, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ 
-				filedata: csvData, 
-				filename: filename 
-			})
-		}).then(response => {
-			if (!response.ok) {
-				throw new Error(`Server error: ${response.status}`);
-			}
-			return response.json();
-		}).then(() => {
-		}).catch(error => {
-			console.error('Error saving to server, using localStorage fallback:', error);
-			// Fallback to local storage
-			localStorage.setItem(`air_quality_study_${window.ParticipantConfig.id}`, JSON.stringify({ data: allData, summary }));
+			body: JSON.stringify({
+				filedata: savePayload.csvData,
+				filename: savePayload.filename,
+				save_token: savePayload.saveToken,
+				participant_id: window.ParticipantConfig.id || null
+			}),
+			signal: controller.signal
 		});
-	} else {
-		// Save to local storage
-		localStorage.setItem(`air_quality_study_${window.ParticipantConfig.id}`, JSON.stringify({ data: allData, summary }));
+		if (!response.ok) {
+			throw new Error(`Server error: ${response.status}`);
+		}
+		const result = await response.json();
+		if (!result || result.success !== true) {
+			throw new Error(result?.error || 'Unknown server save error');
+		}
+		return result;
+	} finally {
+		clearTimeout(timeoutId);
+	}
+}
+
+async function saveWithRetry(savePayload) {
+	if (!window.ExperimentConfig.dataCollection.saveToServer) {
+		persistLocalFallback(savePayload, null);
+		return {
+			success: true,
+			status: 'saved',
+			attempts: 0,
+			saveToken: savePayload.saveToken,
+			error: null
+		};
+	}
+
+	const start = Date.now();
+	let attempts = 0;
+	let lastErrorMessage = null;
+
+	while (attempts < SAVE_MAX_ATTEMPTS && (Date.now() - start) < SAVE_MAX_DURATION_MS) {
+		attempts += 1;
+		const elapsed = Date.now() - start;
+		const remaining = SAVE_MAX_DURATION_MS - elapsed;
+		const timeoutMs = Math.max(1000, remaining);
+
+		try {
+			await uploadSavePayloadOnce(savePayload, timeoutMs);
+			return {
+				success: true,
+				status: 'saved',
+				attempts,
+				saveToken: savePayload.saveToken,
+				error: null
+			};
+		} catch (error) {
+			lastErrorMessage = error.message;
+			if (attempts >= SAVE_MAX_ATTEMPTS) break;
+			if ((Date.now() - start) >= SAVE_MAX_DURATION_MS) break;
+			await sleep(SAVE_RETRY_DELAY_MS);
+		}
+	}
+
+	persistLocalFallback(savePayload, lastErrorMessage);
+	return {
+		success: false,
+		status: 'failed_after_retries',
+		attempts,
+		saveToken: savePayload.saveToken,
+		error: lastErrorMessage
+	};
+}
+
+async function finalizeStudyAndRedirect(completionData) {
+	if (studyFinalizationInProgress) return;
+	studyFinalizationInProgress = true;
+	showFinalizationStatus('Uploading data...', 'Please wait while we save your responses before redirecting.');
+
+	const savePayload = buildSavePayload(jsPsych.data.get());
+	const saveResult = await saveWithRetry(savePayload);
+	const completionPayload = {
+		...completionData,
+		save_status: saveResult.status,
+		save_token: saveResult.saveToken,
+		save_attempts: saveResult.attempts,
+		save_error_last: saveResult.error || null
+	};
+
+	try {
+		const response = await fetch('/complete_study.php', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(completionPayload)
+		});
+		if (!response.ok) {
+			throw new Error(`Completion endpoint error: ${response.status}`);
+		}
+		const data = await response.json();
+		if (data.success && data.redirect_url) {
+			window.location.href = data.redirect_url;
+			return;
+		}
+		throw new Error(data?.error || 'Missing redirect URL');
+	} catch (error) {
+		console.error('Error finalizing study completion:', error);
+		showFinalizationStatus('Upload completed, redirect failed', 'Please contact the research team so we can manually confirm your submission.');
+		alert('There was an error redirecting to Prolific. Please contact the research team.');
+		studyFinalizationInProgress = false;
 	}
 }
 
