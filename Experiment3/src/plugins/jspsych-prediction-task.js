@@ -1073,6 +1073,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     renderVisualization() {
       const cityColors = this.getCityColors();
+      const interactionRequirementMessage = this.getVisualizationInteractionRequirementMessage();
       
       // Create initial template with placeholder that will be updated
       const initialTemplate = `
@@ -1093,7 +1094,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             </div>
           </div>
           <div class="slider-requirement viz-interaction-warning" id="viz-interaction-requirement" style="display: ${this.visualizationInteractionRequired ? 'block' : 'none'};">
-            ⚠️ Interaction required: hover over or click an interactive chart element to continue
+            ${interactionRequirementMessage}
           </div>
           <div class="visualization-zoom-notice">
             If you cannot see the question block, zoom in/out with ctrl +/- or cmd +/-
@@ -1109,6 +1110,13 @@ var jsPsychPredictionTask = (function (jspsych) {
       `;
       
       return initialTemplate;
+    }
+
+    getVisualizationInteractionRequirementMessage() {
+      if (this.requiresCheckboxClickInteraction()) {
+        return '⚠️ Interaction required: click a checkbox below the chart to continue';
+      }
+      return '⚠️ Interaction required: hover over or click an interactive chart element to continue';
     }
 
 
@@ -1408,6 +1416,11 @@ var jsPsychPredictionTask = (function (jspsych) {
       return { required: true, reason: null };
     }
 
+    requiresCheckboxClickInteraction() {
+      const displayFormat = this.condition?.displayFormat || null;
+      return displayFormat === 'click_show_one' || displayFormat === 'click_show_all';
+    }
+
     isMeaningfulHoverTarget(target, rootContainer) {
       if (!target || !rootContainer) return false;
 
@@ -1458,6 +1471,44 @@ var jsPsychPredictionTask = (function (jspsych) {
 
         const inlineCursor = element.style?.cursor;
         if (inlineCursor === 'pointer' || inlineCursor === 'crosshair') {
+          return true;
+        }
+
+        element = element.parentElement;
+      }
+
+      return false;
+    }
+
+    isCheckboxClickTarget(target, rootContainer) {
+      if (!target || !rootContainer) return false;
+
+      let element = target instanceof Element ? target : target.parentElement;
+      while (element && element !== rootContainer) {
+        if (!(element instanceof Element)) {
+          element = element.parentElement;
+          continue;
+        }
+
+        if (element.matches('input[type="checkbox"]')) {
+          return true;
+        }
+
+        const dataInteraction = (element.getAttribute('data-interaction') || '').toLowerCase();
+        if (
+          dataInteraction === 'checkbox-input' ||
+          dataInteraction === 'checkbox-city' ||
+          dataInteraction === 'checkbox-show-all' ||
+          dataInteraction === 'checkbox-wrapper'
+        ) {
+          return true;
+        }
+
+        const classString = this.getElementClassString(element).toLowerCase();
+        if (
+          classString.includes('exp3-detail-checkbox') ||
+          classString.includes('exp3-checkbox-wrapper')
+        ) {
           return true;
         }
 
@@ -1574,6 +1625,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       // but NOT the question form below
       const vizContent = this.getVisualizationContent();
       if (!vizContent) return;
+      const requireCheckboxClick = this.requiresCheckboxClickInteraction();
 
       const chartContainer = this.getChartContainer();
       const getZone = (target) => {
@@ -1608,6 +1660,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       });
 
       vizContent.addEventListener('mouseover', (e) => {
+        if (requireCheckboxClick) return;
         if (this.isMeaningfulHoverTarget(e.target, vizContent)) {
           this.markVisualizationInteractionSatisfied('hover');
         }
@@ -1627,7 +1680,12 @@ var jsPsychPredictionTask = (function (jspsych) {
       });
 
       vizContent.addEventListener('click', (e) => {
-        this.markVisualizationInteractionSatisfied('click');
+        const satisfiesRequirement = requireCheckboxClick
+          ? this.isCheckboxClickTarget(e.target, vizContent)
+          : true;
+        if (satisfiesRequirement) {
+          this.markVisualizationInteractionSatisfied('click');
+        }
         const rect = vizContent.getBoundingClientRect();
         this.logInteraction('chart_click', {
           x: e.clientX,
@@ -1636,6 +1694,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           chart_y: e.clientY - rect.top,
           zone: getZone(e.target),
           element: this.getElementMetadata(e.target, vizContent),
+          satisfies_requirement: satisfiesRequirement,
           timestamp: performance.now() - this.startTime
         });
       });
