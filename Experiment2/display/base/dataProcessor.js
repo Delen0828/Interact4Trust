@@ -95,6 +95,56 @@ export class DataProcessor {
                 'scenario_6', 'scenario_7', 'scenario_8', 'scenario_9', 'scenario_10'];
     }
 
+    static hashSeed(seedText) {
+        const source = String(seedText || '');
+        let hash = 2166136261;
+        for (let i = 0; i < source.length; i += 1) {
+            hash ^= source.charCodeAt(i);
+            hash = Math.imul(hash, 16777619);
+        }
+        return hash >>> 0;
+    }
+
+    static createSeededRng(seedText) {
+        let state = DataProcessor.hashSeed(seedText) || 1;
+        return () => {
+            state = Math.imul(state, 1664525) + 1013904223;
+            return (state >>> 0) / 4294967296;
+        };
+    }
+
+    /**
+     * Evenly sample N scenario IDs from a ranked list by bucketing in sequence.
+     * Example: ranked high->low split into 6 buckets, then draw one ID per bucket.
+     */
+    static sampleRankedScenariosEvenly(rankedScenarioIds, lineCount, seedText = '') {
+        const uniqueScenarioIds = [...new Set(rankedScenarioIds)];
+        const scenarioCount = uniqueScenarioIds.length;
+        if (scenarioCount === 0) return [];
+
+        const targetCount = Math.max(1, Math.min(Math.floor(lineCount), scenarioCount));
+        if (targetCount >= scenarioCount) {
+            return uniqueScenarioIds;
+        }
+
+        const rng = DataProcessor.createSeededRng(
+            `${seedText}|count:${targetCount}|pool:${uniqueScenarioIds.join('|')}`
+        );
+
+        const sampled = [];
+        for (let bucketIndex = 0; bucketIndex < targetCount; bucketIndex += 1) {
+            const bucketStart = Math.floor((bucketIndex * scenarioCount) / targetCount);
+            const bucketEndExclusive = Math.floor(((bucketIndex + 1) * scenarioCount) / targetCount);
+            const bucket = uniqueScenarioIds.slice(bucketStart, bucketEndExclusive);
+
+            if (bucket.length === 0) continue;
+            const sampledIndex = Math.floor(rng() * bucket.length);
+            sampled.push(bucket[sampledIndex]);
+        }
+
+        return sampled;
+    }
+
     /**
      * Get a subset of 5 scenarios for conditions that show 5 lines
      */

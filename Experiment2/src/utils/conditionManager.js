@@ -1,7 +1,7 @@
 /**
  * Condition Manager
  * 
- * Manages 8 different visualization conditions and their specific behaviors
+ * Manages visualization conditions and their metadata
  */
 
 class ConditionManager {
@@ -36,7 +36,8 @@ class ConditionManager {
     if (!condition) return false;
     
     return condition.displayFormat.includes('hover') || 
-           condition.displayFormat.includes('transform');
+           condition.displayFormat.includes('transform') ||
+           condition.displayFormat.includes('click');
   }
 
   isBrokenCondition(conditionId) {

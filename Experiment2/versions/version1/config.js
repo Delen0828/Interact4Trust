@@ -1,143 +1,105 @@
 // Humidity Prediction Visualization Trust Study - Experiment 2
-// Version 1: PI-2_cities_region_vs_region (Hardcoded)
+// Version 1: Single within-subject sequence (7 ordered variants)
 
 const ExperimentConfig = {
-    studyType: 'two_phase_between_subjects',
+    studyType: 'single_version_within_subjects',
 
-    // 12 Experimental Conditions for Experiment 2
+    // Ordered within-subject variants for Experiment 2
     conditions: [
         {
-            id: 'condition_1_pi_region_region',
-            name: 'PI-2_cities_region_vs_region',
+            id: 'condition_1_baseline_aggregation',
+            name: 'baseline_aggregation_only',
+            displayFormat: 'exp2_parameterized',
+            cityAType: 'line',
+            cityBType: 'line',
+            cityALineCount: 1,
+            cityBLineCount: 1,
+            datasetFile: 'ranax_leer_city_baseline.json',
+            description: 'Both cities show only aggregated prediction lines.',
+            instructions: 'Dashed lines show aggregated humidity forecasts for each city.'
+        },
+        {
+            id: 'condition_2_ci_95',
+            name: 'ci_95_both_cities',
             displayFormat: 'exp2_parameterized',
             cityAType: 'region',
             cityBType: 'region',
             cityALineCount: 0,
             cityBLineCount: 0,
-            description: 'Both cities show PI shaded region',
-            instructions: 'Shaded regions represent the range of possible humidity values.'
+            datasetFile: 'virexa_talmori_incHist_incPred.json',
+            description: 'Both cities show 95% confidence intervals around the aggregated line.',
+            instructions: 'Shaded regions show 95% confidence intervals around each city\'s dashed aggregated forecast.'
         },
         {
-            id: 'condition_2_pi_region_1line_A',
-            name: 'PI-1_city_region_vs_1_line_A_region',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'region',
-            cityBType: 'line',
-            cityALineCount: 0,
-            cityBLineCount: 1,
-            description: 'City A shows PI region, City B shows 1 aggregated line',
-            instructions: 'City A shaded region shows possible humidity range. City B dashed line shows the aggregated forecast.'
-        },
-        {
-            id: 'condition_3_pi_region_1line_B',
-            name: 'PI-1_city_region_vs_1_line_B_region',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'region',
-            cityALineCount: 1,
-            cityBLineCount: 0,
-            description: 'City A shows 1 aggregated line, City B shows PI region',
-            instructions: 'City A dashed line shows the aggregated forecast. City B shaded region shows possible humidity range.'
-        },
-        {
-            id: 'condition_4_baseline_1_1',
-            name: 'baseline_1_line_vs_1_line',
+            id: 'condition_3_ensemble_2_lines',
+            name: 'ensemble_2_lines_per_city',
             displayFormat: 'exp2_parameterized',
             cityAType: 'line',
             cityBType: 'line',
-            cityALineCount: 1,
-            cityBLineCount: 1,
-            description: 'Both cities show 1 aggregated prediction line',
-            instructions: 'Dashed lines show the aggregated humidity forecast for each city.'
+            cityALineCount: 2,
+            cityBLineCount: 2,
+            datasetFile: 'qelvane_rostiva_incHist_decPred.json',
+            description: 'Both cities show 2 sampled ensemble prediction lines plus aggregated line.',
+            instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
         },
         {
-            id: 'condition_5_ensemble_5_1_A',
-            name: 'ensemble_1_city_5_vs_1_A_5',
+            id: 'condition_4_ensemble_3_lines',
+            name: 'ensemble_3_lines_per_city',
             displayFormat: 'exp2_parameterized',
             cityAType: 'line',
             cityBType: 'line',
-            cityALineCount: 5,
-            cityBLineCount: 1,
-            description: 'City A shows 5 ensemble lines, City B shows 1 line',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
+            cityALineCount: 3,
+            cityBLineCount: 3,
+            datasetFile: 'nexari_pulveth_decHist_incPred.json',
+            description: 'Both cities show 3 sampled ensemble prediction lines plus aggregated line.',
+            instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
         },
         {
-            id: 'condition_6_ensemble_1_5_B',
-            name: 'ensemble_1_city_5_vs_1_B_5',
+            id: 'condition_5_ensemble_4_lines',
+            name: 'ensemble_4_lines_per_city',
             displayFormat: 'exp2_parameterized',
             cityAType: 'line',
             cityBType: 'line',
-            cityALineCount: 1,
-            cityBLineCount: 5,
-            description: 'City A shows 1 line, City B shows 5 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
+            cityALineCount: 4,
+            cityBLineCount: 4,
+            datasetFile: 'zorvani_kelthar_decHist_decPred.json',
+            description: 'Both cities show 4 sampled ensemble prediction lines plus aggregated line.',
+            instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
         },
         {
-            id: 'condition_7_ensemble_10_1_A',
-            name: 'ensemble_1_city_10_vs_1_A_10',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 10,
-            cityBLineCount: 1,
-            description: 'City A shows 10 ensemble lines, City B shows 1 line',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_8_ensemble_1_10_B',
-            name: 'ensemble_1_city_10_vs_1_B_10',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 1,
-            cityBLineCount: 10,
-            description: 'City A shows 1 line, City B shows 10 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_9_ensemble_5_5',
-            name: 'ensemble_2_cities_5_vs_5',
+            id: 'condition_6_ensemble_5_lines',
+            name: 'ensemble_5_lines_per_city',
             displayFormat: 'exp2_parameterized',
             cityAType: 'line',
             cityBType: 'line',
             cityALineCount: 5,
             cityBLineCount: 5,
-            description: 'Both cities show 5 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
+            datasetFile: 'lumora_vexlin_constHist_incPred.json',
+            description: 'Both cities show 5 sampled ensemble prediction lines plus aggregated line.',
+            instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
         },
         {
-            id: 'condition_10_ensemble_10_10',
-            name: 'ensemble_2_cities_10_vs_10',
+            id: 'condition_7_ensemble_6_lines',
+            name: 'ensemble_6_lines_per_city',
             displayFormat: 'exp2_parameterized',
             cityAType: 'line',
             cityBType: 'line',
-            cityALineCount: 10,
-            cityBLineCount: 10,
-            description: 'Both cities show 10 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_11_ensemble_5_10_A',
-            name: 'ensemble_2_cities_5_vs_10_A_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 5,
-            cityBLineCount: 10,
-            description: 'City A shows 5 ensemble lines, City B shows 10 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_12_ensemble_10_5_B',
-            name: 'ensemble_2_cities_5_vs_10_B_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 10,
-            cityBLineCount: 5,
-            description: 'City A shows 10 ensemble lines, City B shows 5 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
+            cityALineCount: 6,
+            cityBLineCount: 6,
+            datasetFile: 'dravik_solmere_constHist_decPred.json',
+            description: 'Both cities show 6 sampled ensemble prediction lines plus aggregated line.',
+            instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
         }
+    ],
+
+    variantSequence: [
+        'condition_1_baseline_aggregation',
+        'condition_2_ci_95',
+        'condition_3_ensemble_2_lines',
+        'condition_4_ensemble_3_lines',
+        'condition_5_ensemble_4_lines',
+        'condition_6_ensemble_5_lines',
+        'condition_7_ensemble_6_lines'
     ],
 
     // Two-Phase Study Structure
@@ -162,7 +124,7 @@ const ExperimentConfig = {
             max: 7,
             labels: ['Very Uncertain', 'Uncertain', 'Somewhat Uncertain', 'Neutral', 'Somewhat Certain', 'Certain', 'Very Certain']
         },
-        travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower humidity, which city would you travel to?',
+        travelQuestion: 'If you are planning to travel after 6/01 and want the lower-humidity option, which city would you travel to: City A or City B?',
         travelChoices: ['City A', 'City B', 'No Preference']
     },
     // Interaction - Page 1

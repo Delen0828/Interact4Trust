@@ -4,8 +4,7 @@
  * Renders per-city display independently based on condition configuration:
  * - type "region": shaded 95% CI band around the mean + aggregated dashed line
  * - type "line" + lineCount=1: aggregated prediction line only
- * - type "line" + lineCount=5: 5 sampled scenario lines + aggregated line
- * - type "line" + lineCount=10: all 10 scenario lines + aggregated line
+ * - type "line" + lineCount>1: sampled scenario lines + aggregated line
  */
 import { ChartRenderer } from '../base/chartRenderer.js';
 import { DataProcessor } from '../base/dataProcessor.js';
@@ -114,14 +113,6 @@ export default class Exp2Condition {
             this.data.stockData[city].historical.length - 1
         ];
 
-        // Determine which scenarios to show
-        let scenariosToShow;
-        if (lineCount >= 10) {
-            scenariosToShow = DataProcessor.getAllScenarios();
-        } else {
-            scenariosToShow = DataProcessor.getFiveScenarios();
-        }
-
         // Group alternatives by scenario
         const scenarios = {};
         this.data.stockData[city].alternatives.forEach(alt => {
@@ -131,14 +122,40 @@ export default class Exp2Condition {
             scenarios[alt.scenario].push(alt);
         });
 
+        const rankedScenarioIds = Object.entries(scenarios)
+            .map(([scenarioId, scenarioRows]) => {
+                const sortedRows = scenarioRows.slice().sort((a, b) => a.date - b.date);
+                const finalRow = sortedRows[sortedRows.length - 1];
+                return {
+                    scenarioId,
+                    finalPrice: finalRow ? finalRow.price : Number.NEGATIVE_INFINITY
+                };
+            })
+            .sort((a, b) => {
+                if (b.finalPrice !== a.finalPrice) {
+                    return b.finalPrice - a.finalPrice;
+                }
+                return a.scenarioId.localeCompare(b.scenarioId);
+            })
+            .map((entry) => entry.scenarioId);
+
+        const seedBase = this.conditionConfig?.samplingSeed || `${this.conditionConfig?.id || 'exp2'}|${city}`;
+        const scenariosToShow = DataProcessor.sampleRankedScenariosEvenly(
+            rankedScenarioIds,
+            lineCount,
+            `${seedBase}|${city}|${lineCount}`
+        );
+        const scenariosToShowSet = new Set(scenariosToShow);
+
         // Create ensemble lines group
         const ensembleGroup = predictionGroup.append("g")
             .attr("class", `alternatives-group-${city.toLowerCase()}`)
             .style("opacity", 1);
 
         // Draw each scenario line
-        Object.entries(scenarios).forEach(([scenarioName, scenarioData], index) => {
-            if (scenariosToShow.includes(scenarioName) && scenarioData.length > 0) {
+        rankedScenarioIds.forEach((scenarioId, index) => {
+            const scenarioData = scenarios[scenarioId];
+            if (scenariosToShowSet.has(scenarioId) && scenarioData && scenarioData.length > 0) {
                 const fullScenarioData = [lastHistorical, ...scenarioData];
 
                 ensembleGroup.append("path")

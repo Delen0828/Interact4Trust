@@ -1,9 +1,7 @@
 /**
  * jsPsych Prediction Task Plugin
  * 
- * Two-phase Humidity prediction task with optional visualization
- * Phase 1: Text-based prediction
- * Phase 2: Visualization-based prediction (8 conditions)
+ * Humidity prediction task with visualization-based decision inputs
  */
 
 var jsPsychPredictionTask = (function (jspsych) {
@@ -22,7 +20,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       phase: {
         type: jspsych.ParameterType.INT,
         pretty_name: 'Phase',
-        description: 'Study phase (1 = historical only, 2 = historical + predictions)',
+        description: 'Study phase slot number',
         default: 1
       },
       round: {
@@ -40,8 +38,14 @@ var jsPsychPredictionTask = (function (jspsych) {
       show_predictions: {
         type: jspsych.ParameterType.BOOL,
         pretty_name: 'Show Predictions',
-        description: 'Whether to show prediction data (Phase 2)',
+        description: 'Whether to show forecast prediction data',
         default: false
+      },
+      forecast_organization: {
+        type: jspsych.ParameterType.STRING,
+        pretty_name: 'Forecast Organization',
+        description: 'Source organization label for this forecast round',
+        default: ''
       },
       visualization_condition: {
         type: jspsych.ParameterType.OBJECT,
@@ -52,7 +56,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       description: {
         type: jspsych.ParameterType.FUNCTION,
         pretty_name: 'Description',
-        description: 'Text description for Phase 1',
+        description: 'Optional fallback description text',
         default: null
       },
       air_quality_data: {
@@ -88,6 +92,24 @@ var jsPsychPredictionTask = (function (jspsych) {
         pretty_name: 'Travel Choices',
         description: 'Travel choice options',
         default: ['City A', 'City B', 'No Preference']
+      },
+      city_labels: {
+        type: jspsych.ParameterType.OBJECT,
+        pretty_name: 'City Labels',
+        description: 'Display labels for city A/B',
+        default: {
+          cityA: 'City A',
+          cityB: 'City B'
+        }
+      },
+      city_colors: {
+        type: jspsych.ParameterType.OBJECT,
+        pretty_name: 'City Colors',
+        description: 'Display colors for city A/B',
+        default: {
+          cityA: '#0891B2',
+          cityB: '#7C3AED'
+        }
       }
     }
   };
@@ -103,6 +125,17 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.loadingTimeoutId = null;
       this.visualizationRenderTimeoutId = null;
       this.viewportZoomCleanup = null;
+      this.formValidityChecker = null;
+      this.visualizationInteractionRequired = false;
+      this.visualizationInteractionSatisfied = false;
+      this.visualizationInteractionSource = null;
+      this.visualizationInteractionRequirementBypassReason = null;
+      this.cityLabels = { cityA: 'City A', cityB: 'City B' };
+      this.cityColors = { cityA: '#0891B2', cityB: '#7C3AED' };
+      this.forecastOrganization = '';
+      this.questionText = 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%';
+      this.travelQuestionText = 'If you were planning to visit one of these cities, which would you choose?';
+      this.travelChoices = ['City A', 'City B', 'No Preference'];
     }
 
     trial(display_element, trial) {
@@ -115,6 +148,11 @@ var jsPsychPredictionTask = (function (jspsych) {
       this.trial = trial;
       this.sliderMoved = false; // Reset slider tracking for new trial
       this.interactionLog = [];
+      this.formValidityChecker = null;
+      this.visualizationInteractionRequired = false;
+      this.visualizationInteractionSatisfied = true;
+      this.visualizationInteractionSource = null;
+      this.visualizationInteractionRequirementBypassReason = null;
 
       // Get condition information
       if (trial.visualization_condition) {
@@ -127,8 +165,130 @@ var jsPsychPredictionTask = (function (jspsych) {
         this.condition = null;
       }
 
+      const interactionRequirement = this.resolveVisualizationInteractionRequirement();
+      this.visualizationInteractionRequired = interactionRequirement.required;
+      this.visualizationInteractionSatisfied = !interactionRequirement.required;
+      this.visualizationInteractionSource = null;
+      this.visualizationInteractionRequirementBypassReason = interactionRequirement.reason;
+      this.cityLabels = this.resolveCityLabels();
+      this.cityColors = this.resolveCityColors();
+      this.forecastOrganization = this.resolveForecastOrganization();
+      this.questionText = this.resolveQuestionText();
+      this.travelQuestionText = this.resolveTravelQuestionText();
+      this.travelChoices = this.resolveTravelChoices();
+
       // Render task synchronously first, then handle async visualization
       this.renderTask();
+    }
+
+    resolveTrialObject(value) {
+      if (typeof value === 'function') {
+        try {
+          value = value();
+        } catch (error) {
+          return null;
+        }
+      }
+
+      if (!value || typeof value !== 'object' || Array.isArray(value)) {
+        return null;
+      }
+      return value;
+    }
+
+    resolveCityLabels() {
+      const labels = this.resolveTrialObject(this.trial?.city_labels) || {};
+      const cityA = String(labels.cityA || labels.stockA || 'City A').trim() || 'City A';
+      const cityB = String(labels.cityB || labels.stockB || 'City B').trim() || 'City B';
+      return { cityA, cityB };
+    }
+
+    resolveCityColors() {
+      const colors = this.resolveTrialObject(this.trial?.city_colors) || {};
+      const cityA = String(colors.cityA || colors.stockA || '#0891B2').trim() || '#0891B2';
+      const cityB = String(colors.cityB || colors.stockB || '#7C3AED').trim() || '#7C3AED';
+      return { cityA, cityB };
+    }
+
+    getCityLabels() {
+      return this.cityLabels || { cityA: 'City A', cityB: 'City B' };
+    }
+
+    getCityColors() {
+      return this.cityColors || { cityA: '#0891B2', cityB: '#7C3AED' };
+    }
+
+    resolveForecastOrganization() {
+      let organization = this.trial?.forecast_organization;
+      if (typeof organization === 'function') {
+        try {
+          organization = organization();
+        } catch (error) {
+          organization = '';
+        }
+      }
+      return String(organization || '').trim();
+    }
+
+    getForecastOrganization() {
+      return this.forecastOrganization || '';
+    }
+
+    replaceCityPlaceholders(value) {
+      const cityLabels = this.getCityLabels();
+      return String(value || '')
+        .replace(/\bCity A\b/g, cityLabels.cityA)
+        .replace(/\bCity B\b/g, cityLabels.cityB);
+    }
+
+    resolveTrialValue(value, fallbackValue) {
+      if (typeof value === 'function') {
+        try {
+          value = value();
+        } catch (error) {
+          value = fallbackValue;
+        }
+      }
+      return value ?? fallbackValue;
+    }
+
+    resolveQuestionText() {
+      const fallbackQuestion = 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%';
+      const questionValue = this.resolveTrialValue(this.trial?.question, fallbackQuestion);
+      return this.replaceCityPlaceholders(questionValue);
+    }
+
+    resolveTravelQuestionText() {
+      const fallbackQuestion = 'If you were planning to visit one of these cities, which would you choose?';
+      const questionValue = this.resolveTrialValue(this.trial?.travel_question, fallbackQuestion);
+      return this.replaceCityPlaceholders(questionValue);
+    }
+
+    resolveTravelChoices() {
+      const fallbackChoices = ['City A', 'City B', 'No Preference'];
+      const choicesValue = this.resolveTrialValue(this.trial?.travel_choices, fallbackChoices);
+      if (!Array.isArray(choicesValue) || choicesValue.length === 0) {
+        return fallbackChoices.map((choice) => this.replaceCityPlaceholders(choice));
+      }
+      return choicesValue
+        .map((choice) => this.replaceCityPlaceholders(choice))
+        .filter((choice) => String(choice).trim().length > 0);
+    }
+
+    insertOrganizationBadgeIntoChartContainer(chartContainer) {
+      if (!chartContainer) return;
+      const organization = this.getForecastOrganization();
+      if (!organization) return;
+
+      const existingBadge = chartContainer.querySelector('.chart-organization-badge');
+      if (existingBadge) {
+        existingBadge.remove();
+      }
+
+      const badge = document.createElement('span');
+      badge.className = 'organization-badge chart-organization-badge';
+      badge.textContent = organization;
+      chartContainer.appendChild(badge);
     }
 
     clearPendingVisualizationTimers() {
@@ -154,6 +314,14 @@ var jsPsychPredictionTask = (function (jspsych) {
     getVisualizationContent() {
       if (!this.display_element) return null;
       return this.display_element.querySelector('.visualization-content');
+    }
+
+    getEffectiveScreenWidthPx() {
+      const screenWidthCssPx = (window.screen && typeof window.screen.width === 'number')
+        ? window.screen.width
+        : (window.innerWidth || 0);
+      const dpr = window.devicePixelRatio || 1;
+      return Math.round(screenWidthCssPx * dpr);
     }
 
     getViewportMetrics() {
@@ -182,7 +350,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       const { viewportWidth, viewportHeight } = this.getViewportMetrics();
       const horizontalPadding = 32;
       const verticalPadding = 24;
-      const naturalWidth = 1200;
+      const naturalWidth = viewportWidth <= 1100 ? 980 : 1180;
       const availableWidth = Math.max(viewportWidth - horizontalPadding, 320);
       const availableHeight = Math.max(viewportHeight - verticalPadding, 420);
 
@@ -218,6 +386,10 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     renderTask() {
       // Note: roundText and phaseDescription available for future use if needed
+      const cityLabels = this.getCityLabels();
+      const cityColors = this.getCityColors();
+      const questionPrompt = String(this.questionText || '').replace(' ____%', '');
+      const estimateQuestion = `What is the estimated Humidity of ${cityLabels.cityA} and ${cityLabels.cityB} on 06/30?`;
       
       let html = `
         <style>
@@ -242,20 +414,32 @@ var jsPsychPredictionTask = (function (jspsych) {
             width: 100% !important;
           }
           .prediction-task-container {
+            --task-ui-scale: 1;
             padding: 6px 20px !important;
             box-sizing: border-box;
             margin: 0 auto !important;
             max-width: 1200px !important;
             width: 100% !important;
             text-align: center !important;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(360px, 470px);
+            grid-template-areas:
+              "header header"
+              "viz form";
+            column-gap: 20px;
+            row-gap: 8px;
+            align-items: start;
+            transform-origin: top center;
+            transform: scale(var(--task-ui-scale));
           }
           .content-area {
+            grid-area: viz;
             width: 100%;
             min-width: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 14px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: 0;
           }
           .visualization-panel {
             width: min(100%, 620px);
@@ -269,7 +453,12 @@ var jsPsychPredictionTask = (function (jspsych) {
             width: 100%;
             min-width: 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
+          }
+          .viz-interaction-warning {
+            width: 100%;
+            text-align: center;
+            margin-top: 2px;
           }
           .visualization-zoom-notice {
             width: 100%;
@@ -280,6 +469,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             line-height: 1.35;
           }
           .task-header {
+            grid-area: header;
             margin-bottom: 4px !important;
             padding-bottom: 4px !important;
           }
@@ -297,6 +487,26 @@ var jsPsychPredictionTask = (function (jspsych) {
             margin-left: auto !important;
             margin-right: auto !important;
             position: relative;
+          }
+          .organization-badge {
+            display: inline-block;
+            padding: 0.08em 0.55em;
+            border: 1px solid #e5e7eb;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 0.9em;
+            font-weight: 500;
+            line-height: 1.2;
+            white-space: nowrap;
+            vertical-align: baseline;
+          }
+          .chart-organization-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 5;
+            pointer-events: none;
           }
           .chart-container svg {
             display: block;
@@ -334,13 +544,19 @@ var jsPsychPredictionTask = (function (jspsych) {
             font-style: italic;
           }
           .prediction-form {
+            grid-area: form;
             display: flex;
             flex-direction: column;
             gap: clamp(3px, 0.7vh, 7px);
             width: 100%;
-            max-width: 980px;
-            margin: 0 auto;
+            max-width: none;
+            margin: 0;
             text-align: left;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 10px 12px;
+            box-sizing: border-box;
             color: #374151;
           }
           .question-section,
@@ -358,23 +574,27 @@ var jsPsychPredictionTask = (function (jspsych) {
             color: #374151;
             text-align: left;
           }
+          .question-section .question-title {
+            margin-bottom: 4px;
+          }
           .q2-inline {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
           }
           .air-quality-estimates-section .question-title,
           .air-quality-estimates-section .estimates-container {
             margin: 0;
           }
           .probability-slider-container {
-            margin: 1px 0;
+            margin: 2px 0 4px 0;
             position: relative;
             width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
+            gap: 4px;
           }
           .probability-slider {
             width: calc(100% - 20px);
@@ -408,30 +628,37 @@ var jsPsychPredictionTask = (function (jspsych) {
           .slider-city-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 1px;
+            margin-top: 0;
             font-size: 11px;
             font-weight: 500;
             width: calc(100% - 20px);
             max-width: 600px;
             line-height: 1.1;
-            min-height: 20px;
+            min-height: 16px;
             align-items: center;
-            position: relative;
             padding: 0 2px;
+            align-self: center;
           }
           .city-b-label {
-            color: #7C3AED;
+            color: var(--city-b-color);
+            text-align: left;
           }
           .city-a-label {
-            color: #0891B2;
+            color: var(--city-a-color);
+            text-align: right;
           }
           .slider-feedback {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: static;
             pointer-events: none;
             z-index: 1;
+            width: calc(100% - 20px);
+            max-width: 600px;
+            align-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            min-height: 26px;
           }
           .current-probability {
             text-align: center;
@@ -441,10 +668,8 @@ var jsPsychPredictionTask = (function (jspsych) {
             color: #374151;
             min-height: 0;
             line-height: 1.1;
-            max-width: 320px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            max-width: 100%;
+            white-space: normal;
           }
           .slider-requirement {
             font-size: 11px;
@@ -456,10 +681,26 @@ var jsPsychPredictionTask = (function (jspsych) {
           .confidence-scale {
             display: flex;
             flex-wrap: nowrap;
-            gap: 4px;
+            gap: 3px;
             align-items: center;
             margin-top: 2px;
             justify-content: center;
+          }
+          .confidence-scale-labels {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.1;
+          }
+          .confidence-scale-label-left {
+            text-align: left;
+          }
+          .confidence-scale-label-right {
+            text-align: right;
           }
           .confidence-option {
             position: relative;
@@ -477,8 +718,9 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .confidence-button {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
+            justify-content: center;
             padding: 0;
             background: white;
             color: #374151;
@@ -486,7 +728,7 @@ var jsPsychPredictionTask = (function (jspsych) {
             cursor: pointer;
             transition: all 0.2s ease;
             border: 2px solid #ddd;
-            height: 42px;
+            height: 38px;
             box-sizing: border-box;
             position: relative;
           }
@@ -504,29 +746,22 @@ var jsPsychPredictionTask = (function (jspsych) {
             font-size: 14px;
             text-align: center;
             line-height: 1;
-            margin-top: 6px;
-            margin-bottom: 0;
+            margin: 0;
           }
           .confidence-label {
-            font-size: 9px;
-            font-weight: 500;
-            line-height: 1;
-            text-align: center;
-            word-wrap: break-word;
-            hyphens: auto;
-            margin-top: 2px;
-            padding: 0 1px;
+            display: none;
           }
           .travel-choices {
-            display: flex;
-            flex-direction: row;
-            gap: 8px;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: repeat(var(--travel-choice-count, 3), minmax(0, 1fr));
+            gap: 4px;
+            align-items: stretch;
             margin-top: 2px;
           }
           .travel-option {
             position: relative;
             cursor: pointer;
+            min-width: 0;
           }
           .travel-option input[type="radio"] {
             opacity: 0;
@@ -539,15 +774,18 @@ var jsPsychPredictionTask = (function (jspsych) {
           .travel-button {
             display: flex;
             align-items: center;
-            padding: 4px 14px;
+            padding: 3px 6px;
             background: white;
             color: #374151;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s ease;
             border: 2px solid #ddd;
-            min-width: 90px;
+            min-width: 0;
+            width: 100%;
+            min-height: 34px;
             justify-content: center;
+            box-sizing: border-box;
           }
           .travel-option:hover .travel-button {
             border-color: #111827;
@@ -560,34 +798,42 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .travel-text {
             font-weight: 500;
-            font-size: 13px;
+            font-size: 12px;
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .estimates-container {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            justify-content: flex-start;
+            gap: 6px 12px;
+            align-items: stretch;
             margin-top: 0;
-            flex-wrap: wrap;
           }
           .estimate-input-group {
-            display: flex;
+            display: grid;
+            grid-template-columns: auto auto;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            min-width: 0;
           }
           .estimate-label {
             font-weight: 600;
             font-size: 14px;
             color: #374151;
-            min-width: 50px;
+            min-width: 0;
           }
           .estimate-label.city-a {
-            color: #0891B2;
+            color: var(--city-a-color);
           }
           .estimate-label.city-b {
-            color: #7C3AED;
+            color: var(--city-b-color);
           }
           .estimate-input {
-            width: 100px;
+            width: 112px;
+            min-width: 0;
             padding: 3px 8px;
             border: 2px solid #ddd;
             border-radius: 4px;
@@ -597,7 +843,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           }
           .estimate-input:focus {
             outline: none;
-            border-color: #0891B2;
+            border-color: var(--city-a-color);
             background: #f0f7ff;
           }
           .estimate-input::placeholder {
@@ -618,18 +864,46 @@ var jsPsychPredictionTask = (function (jspsych) {
             border-color: #374151 !important;
             padding: 6px !important;
             margin-top: 2px !important;
+            width: 100%;
           }
           .submit-btn:hover:not(:disabled) {
             background: #374151 !important;
             border-color: #374151 !important;
           }
+          @media (max-width: 1100px) {
+            html, body, #jspsych-target, .jspsych-content, .jspsych-content-wrapper {
+              overflow: auto !important;
+              max-height: none !important;
+            }
+            .prediction-task-container {
+              display: block;
+            }
+            .content-area {
+              justify-content: center;
+              align-items: center;
+              margin-bottom: 10px;
+            }
+            .visualization-content {
+              justify-content: center;
+            }
+            .prediction-form {
+              max-width: 980px;
+              margin: 0 auto;
+            }
+          }
+          @media (max-width: 820px) {
+            .estimates-container {
+              grid-template-columns: 1fr;
+            }
+            .travel-choices {
+              grid-template-columns: 1fr;
+            }
+          }
         </style>
-        <div class="prediction-task-container">
+        <div class="prediction-task-container" style="--city-a-color: ${cityColors.cityA}; --city-b-color: ${cityColors.cityB};">
           <div class="task-header">
             <h2 style="color: #374151;">Humidity Prediction</h2>
-            <div class="scene-label">
-              ${this.trial.phase === 1 ? 'Historical Data' : 'Forecast Data'}
-            </div>
+            ${this.trial.show_predictions ? '' : '<div class="scene-label">Historical Data</div>'}
           </div>
 
           <div class="content-area">
@@ -638,18 +912,18 @@ var jsPsychPredictionTask = (function (jspsych) {
 
           <div class="prediction-form">
             <div class="question-section">
-              <h3 class="question-title">Q1. ${this.trial.question.replace(' ____%', '')}</h3>
+              <h3 class="question-title">Q1. ${questionPrompt}</h3>
               <div class="probability-slider-container">
                 <input type="range" id="probability-estimate" class="probability-slider" 
                        min="0" max="100" step="1" value="">
                 <div class="slider-city-labels">
-                  <span class="city-b-label">City B will be higher</span>
-                  <span class="city-a-label">City A will be higher</span>
-                  <div class="slider-feedback">
-                    <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
-                    <div class="slider-requirement" id="slider-requirement" style="display: block;">
-                      ⚠️ You must move the slider to continue
-                    </div>
+                  <span class="city-b-label">${cityLabels.cityB} will be higher</span>
+                  <span class="city-a-label">${cityLabels.cityA} will be higher</span>
+                </div>
+                <div class="slider-feedback">
+                  <div class="current-probability" id="current-probability">Please move the slider to indicate your prediction</div>
+                  <div class="slider-requirement" id="slider-requirement" style="display: block;">
+                    ⚠️ You must move the slider to continue
                   </div>
                 </div>
               </div>
@@ -657,15 +931,15 @@ var jsPsychPredictionTask = (function (jspsych) {
 
             <div class="air-quality-estimates-section">
               <div class="q2-inline">
-                <h3 class="question-title">Q2. What is the estimated Humidity of City A and City B on 06/30?</h3>
+                <h3 class="question-title">Q2. ${estimateQuestion}</h3>
                 <div class="estimates-container">
                   <div class="estimate-input-group">
-                    <label for="city-a-estimate" class="estimate-label city-a">City A:</label>
+                    <label for="city-a-estimate" class="estimate-label city-a">${cityLabels.cityA}:</label>
                     <input type="number" id="city-a-estimate" class="estimate-input" 
                            placeholder=" Enter Humidity" min="0" max="100" step="1">
                   </div>
                   <div class="estimate-input-group">
-                    <label for="city-b-estimate" class="estimate-label city-b">City B:</label>
+                    <label for="city-b-estimate" class="estimate-label city-b">${cityLabels.cityB}:</label>
                     <input type="number" id="city-b-estimate" class="estimate-input" 
                            placeholder=" Enter Humidity" min="0" max="100" step="1">
                   </div>
@@ -679,19 +953,22 @@ var jsPsychPredictionTask = (function (jspsych) {
                 ${this.trial.confidence_scale.labels.map((label, index) => `
                   <label class="confidence-option">
                     <input type="radio" name="confidence" value="${index + 1}">
-                    <span class="confidence-button">
+                    <span class="confidence-button" title="${label}">
                       <span class="confidence-number">${index + 1}</span>
-                      <span class="confidence-label">${label}</span>
                     </span>
                   </label>
                 `).join('')}
               </div>
+              <div class="confidence-scale-labels">
+                <span class="confidence-scale-label-left">${this.trial.confidence_scale.labels[0] || 'Very Uncertain'}</span>
+                <span class="confidence-scale-label-right">${this.trial.confidence_scale.labels[this.trial.confidence_scale.labels.length - 1] || 'Very Certain'}</span>
+              </div>
             </div>
 
             <div class="travel-section">
-              <h3 class="question-title">Q4. ${this.trial.travel_question}</h3>
-              <div class="travel-choices">
-                ${this.trial.travel_choices.map((choice) => `
+              <h3 class="question-title">Q4. ${this.travelQuestionText}</h3>
+              <div class="travel-choices" style="--travel-choice-count: ${this.travelChoices.length};">
+                ${this.travelChoices.map((choice) => `
                   <label class="travel-option">
                     <input type="radio" name="travel-choice" value="${choice}">
                     <span class="travel-button">
@@ -704,7 +981,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
             <div class="submit-section">
               <button id="submit-prediction" class="submit-btn" disabled>
-                ${this.trial.phase === 1 ? 'Continue to Forecast' : 'Continue to Surveys'}
+                ${this.trial.show_predictions ? 'Continue to Surveys' : 'Continue to Forecast'}
               </button>
             </div>
           </div>
@@ -712,6 +989,9 @@ var jsPsychPredictionTask = (function (jspsych) {
       `;
 
       this.display_element.innerHTML = html;
+      if (this.trial.show_visualization) {
+        this.insertOrganizationBadgeIntoChartContainer(this.getChartContainer());
+      }
       this.setupViewportZoomControls();
 
       this.setupEventListeners();
@@ -726,9 +1006,10 @@ var jsPsychPredictionTask = (function (jspsych) {
           const conditionElement = this.display_element.querySelector('#condition-display');
           if (conditionElement) {
             const conditionId = this.condition?.id || '';
-            const versionMatch = conditionId.match(/condition_(\d+)/i);
-            const versionLabel = versionMatch ? `Version ${versionMatch[1]}` : 'Assigned Version';
-            conditionElement.textContent = `Condition: ${versionLabel}`;
+            const conditionMatch = conditionId.match(/condition_(\d+)/i);
+            conditionElement.textContent = conditionMatch
+              ? `Condition ${conditionMatch[1]}`
+              : 'Assigned Condition';
           }
         }, 0);
         
@@ -737,12 +1018,14 @@ var jsPsychPredictionTask = (function (jspsych) {
           if (!this.isActiveTrial(trialRunId)) return;
           const chartElement = this.getChartContainer();
           if (chartElement && chartElement.innerHTML.includes('Loading visualization')) {
+            this.disableVisualizationInteractionRequirement('loading_timeout');
             chartElement.innerHTML = `
               <div class="error-message">
                 <strong>Loading timeout</strong><br>
                 Visualization is taking longer than expected to load.<br>
                 Please continue with your best estimate or refresh the page.
               </div>`;
+            this.insertOrganizationBadgeIntoChartContainer(chartElement);
             this.applyResponsiveUiScale();
           }
         }, 10000); // 10 second timeout
@@ -765,8 +1048,10 @@ var jsPsychPredictionTask = (function (jspsych) {
               if (!this.isActiveTrial(trialRunId)) return;
               const chartElement = this.getChartContainer();
               if (chartElement) {
+                this.disableVisualizationInteractionRequirement('render_task_catch');
                 chartElement.innerHTML = 
                   `<p class="error-message">Visualization failed to load: ${error.message}<br>Please continue with your best estimate.</p>`;
+                this.insertOrganizationBadgeIntoChartContainer(chartElement);
                 this.applyResponsiveUiScale();
               }
             });
@@ -787,24 +1072,29 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
     renderVisualization() {
+      const cityColors = this.getCityColors();
+      const interactionRequirementMessage = this.getVisualizationInteractionRequirementMessage();
       
       // Create initial template with placeholder that will be updated
       const initialTemplate = `
         <div class="visualization-panel">
           <div class="visualization-content">
             <div id="air-quality-chart" class="chart-container">
-              <div class="chart-placeholder" id="loading-placeholder">
-                <div style="text-align: center; padding: 20px;">
-                  <div style="font-size: 14px;">Loading visualization...</div>
-                  <div style="margin-top: 8px; font-size: 11px; color: #999;">
-                    Phase ${this.trial.phase || 'Unknown'} • ${this.trial.show_predictions ? 'With Predictions' : 'Historical Only'}
-                  </div>
-                  <div style="margin-top: 15px; width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #0891B2 25%, #ffffff 25%, #ffffff 50%, #0891B2 50%, #0891B2 75%, #ffffff 75%); background-size: 40px 100%; animation: loading-stripe 1s linear infinite;"></div>
-                  </div>
+	              <div class="chart-placeholder" id="loading-placeholder">
+	                <div style="text-align: center; padding: 20px;">
+	                  <div style="font-size: 14px;">Loading visualization...</div>
+	                  <div style="margin-top: 8px; font-size: 11px; color: #999;">
+	                    Forecast Round ${this.trial.phase || 'Unknown'} • ${this.trial.show_predictions ? 'With Predictions' : 'Historical Only'}
+	                  </div>
+	                  <div style="margin-top: 15px; width: 100%; height: 4px; background: #f0f0f0; border-radius: 2px; overflow: hidden;">
+	                    <div style="width: 100%; height: 100%; background: linear-gradient(90deg, ${cityColors.cityA} 25%, #ffffff 25%, #ffffff 50%, ${cityColors.cityB} 50%, ${cityColors.cityB} 75%, #ffffff 75%); background-size: 40px 100%; animation: loading-stripe 1s linear infinite;"></div>
+	                  </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="slider-requirement viz-interaction-warning" id="viz-interaction-requirement" style="display: ${this.visualizationInteractionRequired ? 'block' : 'none'};">
+            ${interactionRequirementMessage}
           </div>
           <div class="visualization-zoom-notice">
             If you cannot see the question block, zoom in/out with ctrl +/- or cmd +/-
@@ -820,6 +1110,13 @@ var jsPsychPredictionTask = (function (jspsych) {
       `;
       
       return initialTemplate;
+    }
+
+    getVisualizationInteractionRequirementMessage() {
+      if (this.requiresCheckboxClickInteraction()) {
+        return '⚠️ Interaction required: click a checkbox below the chart to continue';
+      }
+      return '⚠️ Interaction required: hover over or click an interactive chart element to continue';
     }
 
 
@@ -844,7 +1141,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         if (!data) {
           const chartContainer = this.getChartContainer();
           if (chartContainer) {
+            this.disableVisualizationInteractionRequirement('no_data');
             chartContainer.innerHTML = '<p class="error-message">No data available. Please continue with your best estimate.</p>';
+            this.insertOrganizationBadgeIntoChartContainer(chartContainer);
           }
           return;
         }
@@ -857,14 +1156,20 @@ var jsPsychPredictionTask = (function (jspsych) {
         const conditionFactory = new ConditionFactory();
         
         // Configure for jsPsych context
+        const cityLabels = this.getCityLabels();
+        const cityColors = this.getCityColors();
         const config = {
           width: 600,
           height: 400,
           margin: { top: 20, right: 20, bottom: 60, left: 70 },
           colors: {
             historical: '#6c757d',
-            stockA: '#0891B2',
-            stockB: '#7C3AED'
+            stockA: cityColors.cityA,
+            stockB: cityColors.cityB
+          },
+          labels: {
+            stockA: cityLabels.cityA,
+            stockB: cityLabels.cityB
           },
           showAxisTitles: true,
           xAxisTitle: 'Date',
@@ -873,26 +1178,21 @@ var jsPsychPredictionTask = (function (jspsych) {
         
         
         // Initialize with data (pass data array directly, not wrapped)
-        await conditionFactory.initialize(config, data, '01/01', this.trial.phase);
+        const renderingPhase = this.trial.show_predictions ? 2 : 1;
+        await conditionFactory.initialize(config, data, '05/01', renderingPhase);
         if (!this.isActiveTrial(trialRunId)) return;
         
         // Set up interaction logging before rendering
         this.setupVisualizationInteractionLogging();
 
-        // Determine condition: 0 for Phase 1 (historical only), -1 for Exp2 parameterized
-        const conditionNumber = this.trial.phase === 1 ? 0 : -1;
-        const conditionConfig = this.condition ? {
-          cityAType: this.condition.cityAType || 'line',
-          cityBType: this.condition.cityBType || 'line',
-          cityALineCount: this.condition.cityALineCount != null ? this.condition.cityALineCount : 1,
-          cityBLineCount: this.condition.cityBLineCount != null ? this.condition.cityBLineCount : 1
-        } : null;
-
+        // Determine condition number from display format
+        const conditionNumber = this.getConditionNumber();
+        
         // Clear the container and create SVG element for the condition
         const chartContainer = this.getChartContainer();
         if (!chartContainer) return;
         chartContainer.innerHTML = '';
-
+        
         // Create SVG element with proper ID for the condition
         const svgId = `jspsych-chart-svg-${trialRunId}`;
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -901,9 +1201,10 @@ var jsPsychPredictionTask = (function (jspsych) {
         svg.setAttribute("height", "400");
         svg.setAttribute("class", "chart-svg");
         chartContainer.appendChild(svg);
+        this.insertOrganizationBadgeIntoChartContainer(chartContainer);
 
         // Render the condition
-        const conditionInstance = await conditionFactory.renderCondition(conditionNumber, svgId, conditionConfig);
+        const conditionInstance = await conditionFactory.renderCondition(conditionNumber, svgId, this.condition);
         if (!this.isActiveTrial(trialRunId)) {
           if (conditionInstance && typeof conditionInstance.cleanup === 'function') {
             conditionInstance.cleanup();
@@ -913,9 +1214,6 @@ var jsPsychPredictionTask = (function (jspsych) {
         
         // Store condition instance for cleanup
         this.conditionInstance = conditionInstance;
-
-        // Add city labels to the start of the lines
-        this.addCityLabels(svg, data);
 
         // Add legend and instructions after visualization is loaded
         this.addLegendAndInstructions();
@@ -964,102 +1262,21 @@ var jsPsychPredictionTask = (function (jspsych) {
         
         const chartContainer = this.getChartContainer();
         if (chartContainer) {
+          this.disableVisualizationInteractionRequirement('render_visualization_content_error');
           chartContainer.innerHTML = 
             `<p class="error-message">Error loading visualization: ${error.message}</p>
              <p>Please continue with your best estimate.</p>
              ${errorDetails}`;
+          this.insertOrganizationBadgeIntoChartContainer(chartContainer);
           this.applyResponsiveUiScale();
         }
-      }
-    }
-
-    addCityLabels(svg, data) {
-      try {
-        // Get the chart group (where the actual chart is rendered)
-        const chartGroup = d3.select(svg).select('g');
-        if (chartGroup.empty()) {
-          console.warn('Chart group not found, skipping city labels');
-          return;
-        }
-
-        // Find line elements with more flexible selectors
-        const stockALine = d3.select(svg).select('path.stock-a-line, path.line-a, path[stroke="#0891B2"], path[stroke="#0066cc"]');
-        const stockBLine = d3.select(svg).select('path.stock-b-line, path.line-b, path[stroke="#7C3AED"], path[stroke="#ff6600"]');
-
-        // Get chart dimensions and margins for better positioning
-        const svgWidth = parseInt(svg.getAttribute('width')) || 600;
-        const svgHeight = parseInt(svg.getAttribute('height')) || 400;
-        
-        // Approximate chart margins (should match the config)
-        const margin = { top: 20, right: 20, bottom: 60, left: 70 };
-        const chartWidth = svgWidth - margin.left - margin.right;
-        const chartHeight = svgHeight - margin.top - margin.bottom;
-
-        // Position labels more reliably at the end of the chart area
-        const labelX = margin.left + chartWidth - 10; // 10px from right edge
-        
-        if (!stockALine.empty()) {
-          const pathData = stockALine.attr('d');
-          if (pathData) {
-            // Extract the last point from the path for more accurate positioning
-            const pathPoints = pathData.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/g);
-            if (pathPoints && pathPoints.length > 0) {
-              // Get the last point in the path
-              const lastPointStr = pathPoints[pathPoints.length - 1];
-              const coords = lastPointStr.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
-              
-              if (coords) {
-                const y = parseFloat(coords[2]);
-                
-                chartGroup.append('text')
-                  .attr('x', labelX)
-                  .attr('y', y - 5) // Slightly above the line
-                  .attr('text-anchor', 'end')
-                  .attr('font-size', '11px')
-                  .attr('font-weight', '600')
-                  .attr('fill', '#0891B2')
-                  .style('background', 'rgba(255,255,255,0.8)')
-                  .text('City A');
-              }
-            }
-          }
-        }
-
-        if (!stockBLine.empty()) {
-          const pathData = stockBLine.attr('d');
-          if (pathData) {
-            // Extract the last point from the path for more accurate positioning
-            const pathPoints = pathData.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/g);
-            if (pathPoints && pathPoints.length > 0) {
-              // Get the last point in the path
-              const lastPointStr = pathPoints[pathPoints.length - 1];
-              const coords = lastPointStr.match(/[ML]\s*([+-]?[0-9]*\.?[0-9]+),([+-]?[0-9]*\.?[0-9]+)/);
-              
-              if (coords) {
-                const y = parseFloat(coords[2]);
-                
-                chartGroup.append('text')
-                  .attr('x', labelX)
-                  .attr('y', y + 15) // Slightly below the line (opposite of City A)
-                  .attr('text-anchor', 'end')
-                  .attr('font-size', '11px')
-                  .attr('font-weight', '600')
-                  .attr('fill', '#7C3AED')
-                  .style('background', 'rgba(255,255,255,0.8)')
-                  .text('City B');
-              }
-            }
-          }
-        }
-
-      } catch (error) {
-        // Silently fail if labeling doesn't work
       }
     }
 
     addLegendAndInstructions() {
       const chartContainer = this.getChartContainer();
       if (!chartContainer) return;
+      const cityLabels = this.getCityLabels();
 
       // Remove any existing legend/instructions
       const existingLegend = chartContainer.querySelector('.simple-chart-legend');
@@ -1074,18 +1291,18 @@ var jsPsychPredictionTask = (function (jspsych) {
         <div class="simple-chart-legend">
           <div class="legend-line">
             <div class="legend-color-line city-a"></div>
-            <span>City A</span>
+            <span>${cityLabels.cityA}</span>
           </div>
           <div class="legend-line">
             <div class="legend-color-line city-b"></div>
-            <span>City B</span>
+            <span>${cityLabels.cityB}</span>
           </div>
         </div>
       `;
       chartContainer.insertAdjacentHTML('beforeend', legendHTML);
 
-      // Add instructions for Phase 2 only
-      if (this.trial.phase === 2 && this.condition && this.condition.instructions) {
+      // Add instructions for forecast phases only
+      if (this.trial.show_predictions && this.condition && this.condition.instructions) {
         const rawInstructions = String(this.condition.instructions || '');
         const instructionLines = rawInstructions
           .replace(/<br\s*\/?>/gi, '\n')
@@ -1113,9 +1330,195 @@ var jsPsychPredictionTask = (function (jspsych) {
     }
 
     getConditionNumber() {
-      // Exp2: Phase 1 = historical only (0), Phase 2 = parameterized (-1)
-      if (this.trial.phase === 1) return 0;
-      return -1;
+      // Handle null condition
+      if (!this.condition || !this.condition.displayFormat) {
+        return 1; // Fallback to Baseline
+      }
+      
+      // Map jsPsych condition display formats to display system condition numbers
+      switch (this.condition.displayFormat) {
+        case 'exp2_parameterized':
+          return 1;  // Experiment 2 parameterized condition (rendered by Exp2 condition factory)
+        case 'historical_only':
+          return 0;  // Condition 0: Historical Only
+        case 'aggregation_only':
+          return 1;  // Condition 1: Baseline
+        case 'confidence_bounds':
+          return 2;  // Condition 2: PI Plot
+        case 'alternative_lines':
+          return 3;  // Condition 3: Ensemble Plot
+        case 'hover_alternatives':
+          return 4;  // Condition 4: Ensemble + Hover
+        case 'hover_bounds':
+          return 5;  // Condition 5: PI Plot + Hover
+        case 'transform_hover':
+          return 6;  // Condition 6: PI → Ensemble
+        case 'broken_interactions':
+          return 7;  // Condition 7: Buggy Control
+        case 'poor_interactions':
+          return 8;  // Condition 8: Bad Control
+        case 'combined_pi_ensemble':
+          return 9;  // Condition 9: Combined PI + Ensemble
+        case 'hover_show_one':
+          return 21; // Condition 21: Hover show one city
+        case 'hover_show_all':
+          return 22; // Condition 22: Hover show all cities
+        case 'click_show_one':
+          return 23; // Condition 23: Click show one city
+        case 'click_show_all':
+          return 24; // Condition 24: Click show all cities
+        case 'animation_show_one':
+          return 25; // Condition 25: Animation show one city
+        case 'animation_show_all':
+          return 26; // Condition 26: Animation show all cities
+        case 'checkbox_selection':
+          return 11;  // Condition 11: Checkbox Selection
+        case 'tiny_slider_checkbox':
+          return 16;  // Condition 16: Tiny Slider Checkbox
+        case 'buggy_checkbox_selection':
+          return 17;  // Condition 17: Buggy Checkbox Selection
+        case 'glitch_hover_alternatives':
+          return 18;  // Condition 18: Glitch Ensemble + Hover
+        case 'glitch_hover_bounds':
+          return 19;  // Condition 19: Glitch PI Plot + Hover
+        case 'glitch_transform_hover':
+          return 20;  // Condition 20: Glitch PI → Ensemble
+        default:
+          return 1;  // Fallback to Baseline
+      }
+    }
+
+    resolveVisualizationInteractionRequirement() {
+      if (!this.trial?.show_visualization) {
+        return { required: false, reason: null };
+      }
+
+      // Interaction gating is only intended for forecast phases.
+      if (!this.trial.show_predictions) {
+        return { required: false, reason: null };
+      }
+
+      const nonInteractiveDisplayFormats = new Set([
+        'exp2_parameterized',    // Experiment 2 fixed static variants
+        'aggregation_only',       // Condition 1
+        'confidence_bounds',      // Condition 2
+        'alternative_lines',      // Condition 3
+        'combined_pi_ensemble',   // Condition 9
+        'animation_show_one',     // Condition 25
+        'animation_show_all'      // Condition 26
+      ]);
+
+      const displayFormat = this.condition?.displayFormat || null;
+      if (displayFormat && nonInteractiveDisplayFormats.has(displayFormat)) {
+        return {
+          required: false,
+          reason: `no_interaction_required_${displayFormat}`
+        };
+      }
+
+      return { required: true, reason: null };
+    }
+
+    requiresCheckboxClickInteraction() {
+      const displayFormat = this.condition?.displayFormat || null;
+      return displayFormat === 'click_show_one' || displayFormat === 'click_show_all';
+    }
+
+    isMeaningfulHoverTarget(target, rootContainer) {
+      if (!target || !rootContainer) return false;
+
+      let element = target instanceof Element ? target : target.parentElement;
+      const containerRoot = this.getChartContainer();
+
+      while (element && element !== rootContainer) {
+        if (!(element instanceof Element)) {
+          element = element.parentElement;
+          continue;
+        }
+
+        // Ignore chart/background containers; hovering the whole chart should not satisfy the requirement.
+        if (
+          element === containerRoot ||
+          element.id === 'air-quality-chart' ||
+          element.classList?.contains('chart-container') ||
+          element.classList?.contains('visualization-content') ||
+          element.classList?.contains('visualization-panel') ||
+          element.classList?.contains('chart-svg') ||
+          element.classList?.contains('simple-chart-legend') ||
+          element.classList?.contains('chart-instructions')
+        ) {
+          element = element.parentElement;
+          continue;
+        }
+
+        if (element.matches('input, button, select, option, [role="button"]')) {
+          return true;
+        }
+
+        const classString = this.getElementClassString(element);
+        if (
+          classString.includes('hover-zone') ||
+          classString.includes('bad-hover-zone') ||
+          classString.includes('checkbox')
+        ) {
+          return true;
+        }
+
+        if (
+          element.hasAttribute('data-interaction') ||
+          element.hasAttribute('data-role') ||
+          element.hasAttribute('data-element')
+        ) {
+          return true;
+        }
+
+        const inlineCursor = element.style?.cursor;
+        if (inlineCursor === 'pointer' || inlineCursor === 'crosshair') {
+          return true;
+        }
+
+        element = element.parentElement;
+      }
+
+      return false;
+    }
+
+    isCheckboxClickTarget(target, rootContainer) {
+      if (!target || !rootContainer) return false;
+
+      let element = target instanceof Element ? target : target.parentElement;
+      while (element && element !== rootContainer) {
+        if (!(element instanceof Element)) {
+          element = element.parentElement;
+          continue;
+        }
+
+        if (element.matches('input[type="checkbox"]')) {
+          return true;
+        }
+
+        const dataInteraction = (element.getAttribute('data-interaction') || '').toLowerCase();
+        if (
+          dataInteraction === 'checkbox-input' ||
+          dataInteraction === 'checkbox-city' ||
+          dataInteraction === 'checkbox-show-all' ||
+          dataInteraction === 'checkbox-wrapper'
+        ) {
+          return true;
+        }
+
+        const classString = this.getElementClassString(element).toLowerCase();
+        if (
+          classString.includes('exp3-detail-checkbox') ||
+          classString.includes('exp3-checkbox-wrapper')
+        ) {
+          return true;
+        }
+
+        element = element.parentElement;
+      }
+
+      return false;
     }
 
     getElementClassString(element) {
@@ -1185,11 +1588,47 @@ var jsPsychPredictionTask = (function (jspsych) {
       return metadata;
     }
 
+    updateVisualizationInteractionRequirementUi() {
+      if (!this.display_element) return;
+      const requirementMessage = this.display_element.querySelector('#viz-interaction-requirement');
+      if (!requirementMessage) return;
+
+      const shouldShow = this.visualizationInteractionRequired && !this.visualizationInteractionSatisfied;
+      requirementMessage.style.display = shouldShow ? 'block' : 'none';
+    }
+
+    markVisualizationInteractionSatisfied(source) {
+      if (!this.visualizationInteractionRequired || this.visualizationInteractionSatisfied) return;
+
+      this.visualizationInteractionSatisfied = true;
+      this.visualizationInteractionSource = source || null;
+      this.updateVisualizationInteractionRequirementUi();
+
+      if (typeof this.formValidityChecker === 'function') {
+        this.formValidityChecker();
+      }
+    }
+
+    disableVisualizationInteractionRequirement(reason) {
+      if (!this.visualizationInteractionRequired) return;
+
+      this.visualizationInteractionRequired = false;
+      if (reason && !this.visualizationInteractionRequirementBypassReason) {
+        this.visualizationInteractionRequirementBypassReason = reason;
+      }
+      this.updateVisualizationInteractionRequirementUi();
+
+      if (typeof this.formValidityChecker === 'function') {
+        this.formValidityChecker();
+      }
+    }
+
     setupVisualizationInteractionLogging() {
       // Log mouse interactions on the entire visualization area (chart + controls like checkboxes)
       // but NOT the question form below
       const vizContent = this.getVisualizationContent();
       if (!vizContent) return;
+      const requireCheckboxClick = this.requiresCheckboxClickInteraction();
 
       const chartContainer = this.getChartContainer();
       const getZone = (target) => {
@@ -1223,6 +1662,13 @@ var jsPsychPredictionTask = (function (jspsych) {
         });
       });
 
+      vizContent.addEventListener('mouseover', (e) => {
+        if (requireCheckboxClick) return;
+        if (this.isMeaningfulHoverTarget(e.target, vizContent)) {
+          this.markVisualizationInteractionSatisfied('hover');
+        }
+      });
+
       vizContent.addEventListener('mousemove', (e) => {
         const rect = vizContent.getBoundingClientRect();
         this.logInteraction('chart_hover', {
@@ -1237,6 +1683,12 @@ var jsPsychPredictionTask = (function (jspsych) {
       });
 
       vizContent.addEventListener('click', (e) => {
+        const satisfiesRequirement = requireCheckboxClick
+          ? this.isCheckboxClickTarget(e.target, vizContent)
+          : true;
+        if (satisfiesRequirement) {
+          this.markVisualizationInteractionSatisfied('click');
+        }
         const rect = vizContent.getBoundingClientRect();
         this.logInteraction('chart_click', {
           x: e.clientX,
@@ -1245,6 +1697,7 @@ var jsPsychPredictionTask = (function (jspsych) {
           chart_y: e.clientY - rect.top,
           zone: getZone(e.target),
           element: this.getElementMetadata(e.target, vizContent),
+          satisfies_requirement: satisfiesRequirement,
           timestamp: performance.now() - this.startTime
         });
       });
@@ -1260,6 +1713,7 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     setupEventListeners() {
       const root = this.display_element;
+      const cityLabels = this.getCityLabels();
       const probabilityInput = root.querySelector('#probability-estimate');
       const currentProbabilityDisplay = root.querySelector('#current-probability');
       const submitButton = root.querySelector('#submit-prediction');
@@ -1269,7 +1723,7 @@ var jsPsychPredictionTask = (function (jspsych) {
       const updateProbabilityDisplay = () => {
         if (probabilityInput.value !== '') {
           const value = parseInt(probabilityInput.value);
-          currentProbabilityDisplay.textContent = `${value}% that City A will be higher than City B`;
+          currentProbabilityDisplay.textContent = `${value}% that ${cityLabels.cityA} will be higher than ${cityLabels.cityB}`;
         } else {
           currentProbabilityDisplay.textContent = '';
         }
@@ -1288,13 +1742,15 @@ var jsPsychPredictionTask = (function (jspsych) {
         const cityBEstimate = cityBEstimateInput.value;
         const confidence = root.querySelector('input[name="confidence"]:checked');
         const travelChoice = root.querySelector('input[name="travel-choice"]:checked');
+        const hasVisualizationInteraction = !this.visualizationInteractionRequired || this.visualizationInteractionSatisfied;
         
         const isValid = probability !== '' && 
                        cityAEstimate !== '' && 
                        cityBEstimate !== '' &&
                        confidence && 
                        travelChoice &&
-                       this.sliderMoved; // Require that slider has been moved
+                       this.sliderMoved && // Require that slider has been moved
+                       hasVisualizationInteraction; // Require at least one hover/click on the visualization
         
         submitButton.disabled = !isValid;
         
@@ -1304,7 +1760,11 @@ var jsPsychPredictionTask = (function (jspsych) {
         } else {
           submitButton.classList.remove('enabled');
         }
+
+        this.updateVisualizationInteractionRequirementUi();
       };
+
+      this.formValidityChecker = checkFormValidity;
 
       // Add event listeners
       probabilityInput.addEventListener('input', () => {
@@ -1341,9 +1801,12 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     finishTrial() {
       this.clearPendingVisualizationTimers();
+      this.teardownViewportZoomControls();
       this.activeTrialRunId = -1;
       const endTime = performance.now();
       const rt = endTime - this.startTime;
+      const cityLabels = this.getCityLabels();
+      const cityColors = this.getCityColors();
 
       // Cleanup condition instance if it exists
       if (this.conditionInstance) {
@@ -1370,6 +1833,10 @@ var jsPsychPredictionTask = (function (jspsych) {
         condition_id: this.condition?.id || null,
         condition_name: this.condition?.name || null,
         display_format: this.condition?.displayFormat || null,
+        city_a_label: cityLabels.cityA,
+        city_b_label: cityLabels.cityB,
+        city_a_color: cityColors.cityA,
+        city_b_color: cityColors.cityB,
         
         // Responses
         probability_estimate: probabilityInput && probabilityInput.value !== '' ? parseFloat(probabilityInput.value) : null,
@@ -1377,6 +1844,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         city_b_estimate: cityBEstimate && cityBEstimate.value ? parseFloat(cityBEstimate.value) : null,
         confidence_rating: confidence ? parseInt(confidence.value) : null,
         slider_moved: this.sliderMoved, // Track whether participant actively moved the slider
+        visualization_interaction_satisfied: this.visualizationInteractionSatisfied,
+        visualization_interaction_source: this.visualizationInteractionSource,
+        visualization_interaction_requirement_bypass_reason: this.visualizationInteractionRequirementBypassReason,
         confidence_label: confidence ? this.trial.confidence_scale.labels[parseInt(confidence.value) - 1] : null,
         travel_choice: travelChoice ? travelChoice.value : null,
         
@@ -1387,9 +1857,11 @@ var jsPsychPredictionTask = (function (jspsych) {
         screen_width: window.innerWidth,
         screen_height: window.innerHeight,
         device_pixel_ratio: window.devicePixelRatio || 1,
+        effective_screen_width_px: this.getEffectiveScreenWidthPx(),
+        ui_scale_preset: this.display_element?.querySelector('.prediction-task-container')?.dataset.uiScalePreset || null,
         
-        // Additional data for Phase 2
-        ...(this.trial.phase === 2 && {
+        // Additional data for forecast phases
+        ...(this.trial.show_predictions && {
           hover_events: this.interactionLog.filter(i => i.type === 'chart_hover').length,
           click_events: this.interactionLog.filter(i => i.type === 'chart_click').length,
           time_on_viz: this.interactionLog.length > 0 ? 

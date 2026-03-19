@@ -13,7 +13,7 @@
     "clean": "rm -rf dist && echo 'Cleaned dist directory'",
     "generate-data": "node generate_data.js",
     "generate-versions": "node generate_versions.js",
-    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp -r display dist/ && cp save_data.php complete_study.php simple_index.html dist/ && mv dist/simple_index.html dist/index.html && mkdir -p dist/data && for d in versions/version*/; do cp -r \"$d\" dist/$(basename \"$d\"); done && echo 'Multi-version build complete'"
+    "build": "rm -rf dist && mkdir -p dist && cp -r src dist/ && cp -r display dist/ && cp save_data.php complete_study.php simple_index.html dist/ && mv dist/simple_index.html dist/index.html && mkdir -p dist/generated && cp generated/*.json dist/generated/ && mkdir -p dist/data && cp -r versions/version1 dist/version1 && echo 'Single-version build complete'"
   },
   "keywords": [
     "psychology",

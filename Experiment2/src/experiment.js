@@ -1,8 +1,18 @@
 // Humidity Prediction Visualization Trust Study
-// Two-Phase Study Design: No Visualization → With Visualization
+// Seven-Round Within-Participants Study Design (Fixed Exp2 Sequence)
 
 let jsPsych;
 let timeline = [];
+const instructionStimulusPath = new URL('./stimuli/Instruction.png', import.meta.url).href;
+const defaultOrganizationLabelsBySlot = Object.freeze([
+	'Organization A',
+	'Organization B',
+	'Organization C',
+	'Organization D',
+	'Organization E',
+	'Organization F',
+	'Organization G'
+]);
 const SAVE_MAX_ATTEMPTS = 3;
 const SAVE_MAX_DURATION_MS = 8000;
 const SAVE_RETRY_DELAY_MS = 350;
@@ -92,6 +102,58 @@ async function initializeExperiment() {
 
 // Build experiment timeline
 function buildTimeline() {
+	const allConditions = Array.isArray(window.ExperimentConfig.conditions)
+		? window.ExperimentConfig.conditions
+		: [];
+	const configuredSequence = Array.isArray(window.ExperimentConfig.variantSequence)
+		? window.ExperimentConfig.variantSequence
+		: [];
+	const orderedConditions = configuredSequence.length > 0
+		? configuredSequence
+			.map((conditionId) => allConditions.find((condition) => condition.id === conditionId))
+			.filter(Boolean)
+		: allConditions;
+	const effectiveVariantSequence = configuredSequence.length > 0
+		? configuredSequence.slice()
+		: orderedConditions.map((condition) => condition.id);
+
+	if (orderedConditions.length === 0) {
+		throw new Error('No visualization variants found in ExperimentConfig.conditions.');
+	}
+
+	function escapeHtml(value) {
+		return String(value ?? '')
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;');
+	}
+
+	function getOrganizationLabel(roundNumber) {
+		return defaultOrganizationLabelsBySlot[roundNumber - 1] || `Organization ${roundNumber}`;
+	}
+
+	function getOrganizationBadgeHtml(roundNumber) {
+		return `<span class="organization-badge">${escapeHtml(getOrganizationLabel(roundNumber))}</span>`;
+	}
+
+	function getRoundTrialData(trialType, roundNumber, condition, datasetFile, extraData = {}) {
+		return {
+			trial_type: trialType,
+			phase: 2,
+			round: roundNumber,
+			condition_id: condition ? condition.id : null,
+			condition_name: condition ? condition.name : null,
+			display_format: condition ? condition.displayFormat : null,
+			dataset_file: datasetFile || null,
+			forecast_organization: getOrganizationLabel(roundNumber),
+			completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+			variant_sequence: effectiveVariantSequence,
+			...extraData
+		};
+	}
+
 	// Preload mini-VLAT images
 	timeline.push({
 		type: jsPsychPreload,
@@ -107,7 +169,8 @@ function buildTimeline() {
 			'../src/stimuli/minivlat-images/StackedArea.png',
 			'../src/stimuli/minivlat-images/BubbleChart.png',
 			'../src/stimuli/minivlat-images/Choropleth.png',
-			'../src/stimuli/minivlat-images/TreeMap.png'
+			'../src/stimuli/minivlat-images/TreeMap.png',
+			instructionStimulusPath
 		],
 		message: 'Loading assessment images...',
 		show_progress_bar: true,
@@ -115,380 +178,355 @@ function buildTimeline() {
 		data: { trial_type: 'preload' }
 	});
 
-	// // Welcome screen
-	// timeline.push({
-	//     type: jsPsychHtmlButtonResponse,
-	//     stimulus: `
-	//         <div class="welcome-screen">
-	//             <h1>Humidity Prediction Study</h1>
-	//             <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 30 minutes.</p>
-	//             <div class="study-info">
-	//                 <h3>What you'll do:</h3>
-	//                 <ul>
-	//                     <li>Complete a brief assessment of visualization understanding</li>
-	//                     <li>Make predictions about humidity in two cities</li>
-	//                     <li>Answer questions about your confidence and trust</li>
-	// 					<li>Report basic demographic data</li>
-	//                 </ul>
-	//             </div>
-	//         </div>
-	//     `,
-	//     choices: ['Begin Study'],
-	//     data: { trial_type: 'welcome' }
-	// });
-
-	// // Fullscreen entry
-	// timeline.push({
-	//     type: jsPsychFullscreen,
-	//     fullscreen_mode: true,
-	//     message: `
-	//         <div style="text-align: center; padding: 40px;">
-	//             <h3>Enter Fullscreen Mode</h3>
-	//             <p>For the best experience, this study will run in fullscreen mode.</p>
-	//             <p>Please click the button below to enter fullscreen and continue.</p>
-	//         </div>
-	//     `,
-	//     button_label: 'Enter Fullscreen',
-	//     data: { trial_type: 'fullscreen_enter' }
-	// });
-
-	// // Participant ID collection
-	// timeline.push({
-	//     type: jsPsychSurveyText,
-	//     questions: [
-	//         {
-	//             prompt: 'Please enter your participant ID from Prolific:',
-	//             name: 'participant_id',
-	//             required: true,
-	//             placeholder: 'Enter your ID'
-	//         }
-	//     ],
-	//     button_label: 'Continue',
-	//     on_finish: function(data) {
-	//         // Store participant ID for use throughout experiment
-	//         const participantId = data.response.participant_id;
-	//         jsPsych.data.addProperties({participant_id: participantId});
-	        
-	//         // Initialize participant configuration
-	//         window.initializeParticipant(participantId);
-	//     },
-	//     data: { trial_type: 'participant_id_collection' }
-	// });
-
-	// // Consent form
-	// timeline.push({
-	//     type: jsPsychHtmlButtonResponse,
-	//     stimulus: `
-	//         <div class="consent-form">
-	//             <h2>Consent Form</h2>
-	//             <div class="consent-header">
-	//                 <p><strong>Principal Investigator:</strong> Dr. Cindy Xiong Bearfield, Assistant Professor</p>
-	//                 <p><strong>Study Title:</strong> Trusting What We See: Effect of Interactivity in Visual Data Analysis</p>
-	//                 <p><strong>Supported By:</strong> Georgia Institute of Technology</p>
-	//             </div>
-	            
-	//             <div class="consent-details">
-	//                 <h3>WHAT IS THIS FORM?</h3>
-	//                 <p>This form is called a Consent Form. It will give you information about the study so you can make an informed decision about participation in this research. We encourage you to take some time to think this over and ask questions now and at any other time. If you decide to participate, you will be asked to sign this form and you will be given a copy for your records.</p>
-
-	//                 <h3>WHAT ARE SOME OF THE IMPORTANT ASPECTS OF THIS RESEARCH STUDY THAT I SHOULD BE AWARE OF?</h3>
-	//                 <ul>
-	//                     <li>Whether or not you take part is up to you.</li>
-	//                     <li>You can choose not to take part.</li>
-	//                     <li>You can agree to take part and later change your mind.</li>
-	//                     <li>Your decision will not be held against you.</li>
-	//                 </ul>
-
-	//                 <h3>WHY ARE WE DOING THIS RESEARCH STUDY?</h3>
-	//                 <p>The purpose of our study is to explore the visualization design space so we can understand how people perceive, interpret, and make decisions from visualizations. The results from this study can help us design visualizations and visualization guidelines to help people better communicate and understand data.</p>
-
-	//                 <h3>WHO CAN PARTICIPATE IN THIS RESEARCH STUDY?</h3>
-	//                 <p>Participants in this study must be at least 18 years of age or older and have general familiarity with using web-based systems. Participants currently outside of the U.S. cannot participate in this study (e.g. in the European Union or China).</p>
-
-	//                 <h3>WHAT COMPENSATION I WILL RECEIVE?</h3>
-	//                 <p>You will receive payment through Prolific worth $12/hour for participating in this study. We expect this study to take less than 20 minutes. Your participation is entirely voluntary. You are free to withdraw at any time, and if you do, you will receive partial payment for your time.</p>
-
-	//                 <h3>HOW MANY PEOPLE WILL PARTICIPATE?</h3>
-	//                 <p>We expect about 200 people will be in this research study.</p>
-
-	//                 <h3>WHAT WILL I BE ASKED TO DO AND HOW MUCH TIME WILL IT TAKE?</h3>
-	//                 <p>We will show you several data visualizations or components of a visualization and ask you to perform a visual task with the visualization on a computer screen, such as counting, searching, recognizing, memorizing, or describing the information presented to you. We may also ask you to fill out questionnaires concerning your thoughts regarding the visualization you saw. We expect that you will be in this research study to take between 15 and 60 minutes. We expect this study to be a one-off session and will not contact you regarding the study itself in the future.</p>
-
-	//                 <h3>WILL BEING IN THIS RESEARCH STUDY HELP ME IN ANY WAY?</h3>
-	//                 <p>You are not likely to have any direct benefit from being in this research study. The potential benefits to you from participation may include learning about how data visualization research is conducted, and you may learn about issues of current interest in data visualization and psychology.</p>
-
-	//                 <h3>WHAT ARE MY RISKS OF BEING IN THIS RESEARCH STUDY?</h3>
-	//                 <p>Your participation in this study does not involve any risks other than what you would encounter in daily life. In particular, you may experience fatigue or boredom, however, you may take breaks between tasks. The effects of participating should be comparable to those you would experience from viewing a computer monitor and using a keyboard. You may withdraw at any time.</p>
-
-	//                 <h3>HOW WILL MY PERSONAL INFORMATION BE PROTECTED?</h3>
-	//                 <p>We will comply with any applicable laws and regulations regarding confidentiality. To make sure that this research is being carried out in the proper way, the Georgia Institute of Technology IRB may review study records. The Office of Human Research Protections may also look at study records.</p>
-	//                 <p>Efforts will be made to limit the use and disclosure of your personal information, including research study records, to people who need to review this information. We cannot promise complete secrecy. Organizations that may inspect and copy your information include the IRB and other representatives of this institution. Please be notified that our data privacy policy is based on U.S. regulations. Participants who are out of the U.S. might be excluded due to different data privacy requirements.</p>
-	//                 <p><strong>Data Sharing:</strong> De-identified data from this study will be shared among the GATech research team, as well as the research community at large to advance science and health. We will remove or code any personal information that could identify you before files are shared with other researchers to ensure that, by current scientific standards and known methods, no one will be able to identify you from the information we share. Despite these measures, we cannot guarantee the anonymity of your personal data.</p>
-
-	//                 <h3>WILL I BE GIVEN ANY MONEY OR OTHER COMPENSATION FOR BEING IN THIS RESEARCH STUDY?</h3>
-	//                 <p>If you agree to take part in this research study, we will provide compensation. You will be paid in accordance with the stated policies of Amazon Mechanical Turk and/or Prolific.com. Payment will be made upon completion and acceptance of tasks that you have agreed to complete and you will be paid via Mechanical Turk or Prolific.com. If you choose to withdraw from the study, you will not be compensated for your participation.</p>
-
-	//                 <h3>WHAT ELSE DO I NEED TO KNOW?</h3>
-	//                 <p>We might be using attention check questions in our surveys. If you miss 2 or more attention check questions, your HIT will not be accepted and you will not be compensated.</p>
-
-	//                 <h3>WHO CAN I TALK TO IF I HAVE QUESTIONS?</h3>
-	//                 <p>If you have any questions about the content of this research project, you may contact Dr. Cindy Xiong Bearfield at cxiong@gatech.edu, or contact Songwen Hu at shu343@gatech.edu. If you have any questions about your rights as a research subject, you may also contact Georgia Institute of Technology Office of Research Integrity Assurance at IRB@gatech.edu.</p>
-
-	//                 <h3>WHAT HAPPENS IF I SAY YES, BUT I CHANGE MY MIND LATER?</h3>
-	//                 <p>You can decide not to participate in this research or you can start and then decide to leave the research at any time and it will not be held against you. To do so, simply exit the experiment. Any data already collected will not be saved.</p>
-
-	//                 <p><strong>By clicking "I agree" below you are indicating that you are at least 18 years old, currently in the U.S., have read this consent form, and agree to participate in this research study. Please print a copy of this page for your records.</strong></p>
-	//             </div>
-	//         </div>
-	//     `,
-	//     choices: ['I agree', 'I do not agree'],
-	//     data: { trial_type: 'consent' },
-	//     on_finish: function(data) {
-	//         if (data.response === 1) {
-	//             jsPsych.endExperiment('<div style="text-align: center; padding: 50px;"><h2>Thank you for your interest.</h2><p>You have chosen not to participate in this study. The experiment has ended.</p><p>You may now close this window.</p></div>');
-	//         }
-	//     }
-	// });
-
-	// // Mini-VLAT Introduction
-	// timeline.push({
-	//     type: jsPsychHtmlButtonResponse,
-	//     stimulus: `
-	//         <div class="vis-literacy-intro">
-	//             <h2>Visualization Assessment</h2>
-	//             <p>Before we begin the main study, we'd like to assess your ability to read and interpret data visualizations.</p>
-	            
-	//             <div class="assessment-info">
-	//                 <h3>What you'll do:</h3>
-	//                 <ul>
-	//                     <li>View 12 different data visualizations (charts and graphs)</li>
-	//                     <li>Answer questions about what each visualization shows</li>
-	//                     <li>Take your time to examine each chart carefully</li>
-	//                 </ul>
-	                
-	//                 <p><strong>This assessment will take approximately 5-10 minutes.</strong></p>
-	//                 <p>There are no right or wrong interpretations - we're interested in how you read visualizations.</p>
-	//             </div>
-	//         </div>
-	//     `,
-	//     choices: ['Begin Assessment'],
-	//     data: { trial_type: 'mini_vlat_intro' }
-	// });
-
-	// // Mini-VLAT (Visualization Literacy Assessment Test)
-	// timeline.push({
-	//     type: jsPsychVisLiteracy,
-	//     randomize_order: false, // Keep original question order
-	//     data: function() {
-	//         return {
-	//             trial_type: 'mini_vlat',
-	//             condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-	//             condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
-	//         };
-	//     },
-	//     on_finish: function(data) {
-	//         window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
-	//     }
-	// });
-
-	// // Instructions
-	// timeline.push({
-	//     type: jsPsychInstructions,
-	//     pages: [
-	//         `<div class="instructions">
-	//             <h2>Humidity Context</h2>
-	//             <p>You will be making predictions about humidity in two hypothetical cities: <br> <strong>City A</strong> and <strong>City B</strong>.</p>
-	//             <p>Humidity is measured in a scale from 0 to 100.
-	//             <p>Your task will be to predict which city is likely to have higher or lower humidity in the future.</p>
-	//         </div>`
-	//     ],
-	//     show_clickable_nav: true,
-	//     data: { trial_type: 'instructions' }
-	// });
-
-
-	// // Phase 1: Historical Visualization Only (Condition 0)
-	// timeline.push({
-	// 	type: window.jsPsychPredictionTask,
-	// 	phase: 1,
-	// 	round: 1, // Single round for now
-	// 	show_visualization: true,
-	// 	show_predictions: false, // Historical only, no predictions
-	// 	visualization_condition: function () {
-	// 		return {
-	// 			id: 'condition_0_historical',
-	// 			name: 'Historical Only',
-	// 			displayFormat: 'historical_only',
-	// 			description: 'Shows only historical data, no predictions',
-	// 			instructions: 'You will see historical humidity data for both cities. No prediction forecasts are shown.'
-	// 		};
-	// 	},
-	// 	air_quality_data: async function () {
-	// 		return await getAirQualityData();
-	// 	},
-	// 	question: window.ExperimentConfig.predictionTask.question,
-	// 	confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-	// 	travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
-	// 	travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
-	// 	data: {
-	// 		trial_type: 'phase1_prediction',
-	// 		phase: 1,
-	// 		round: 1,
-	// 		visualization_shown: true,
-	// 		predictions_shown: false,
-	// 		condition_id: 'condition_0_historical',
-	// 		condition_name: 'Historical Only'
-	// 	},
-	// 	on_finish: function (_data) {
-	// 		window.ParticipantConfig.phase1Complete = true;
-	// 	}
-	// });
-
-
-	// Initialize participant if not already done (e.g. when earlier trials are commented out for testing)
-	if (!window.ParticipantConfig.assignedCondition) {
-		window.initializeParticipant('test_participant');
-	}
-
-		timeline.push({
-			type: jsPsychHtmlButtonResponse,
-			stimulus: `
-			<div class="phase-intro">
-				<h2>Prediction with Forecast Data</h2>
-				<p>In the next page you will predict humidity based on historical data, and <strong>predictions from five different agencies</strong>.</p>
-			</div>
-		`,
-		choices: ['Continue'],
-		data: { trial_type: 'phase2_intro', phase: 2 }
-	});
-
-	// Phase 2: Historical + Prediction Visualization
-	timeline.push({
-		type: window.jsPsychPredictionTask,
-		phase: 2,
-		round: 1, // Single round for now
-		show_visualization: true,
-		show_predictions: true,
-		visualization_condition: function () {
-			
-			return window.ParticipantConfig.assignedCondition;
-		},
-		air_quality_data: async function () {
-			return await getAirQualityData();
-		},
-		question: window.ExperimentConfig.predictionTask.question,
-		confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-		travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
-		travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
-		data: function() {
-			return {
-				trial_type: 'phase2_prediction',
-				phase: 2,
-				round: 1,
-				visualization_shown: true,
-				predictions_shown: true,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		},
-		on_finish: function (_data) {
-			window.ParticipantConfig.phase2Complete = true;
-		}
-	});
-
-	// Interaction Feedback (single page)
-	timeline.push({
-		type: window.jsPsychInteractionFeedback,
-		preamble: `
-			<div class="interaction-feedback-preamble">
-				<h3>Interaction Feedback</h3>
-				<p>Please share your feedback about the interaction you just experienced.</p>
-			</div>
-		`,
-		data: function() {
-			return {
-				trial_type: 'interaction_feedback',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		}
-	});
-
-	// Trust Survey Introduction
+	// Welcome screen
 	timeline.push({
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
-			<div class="section-intro">
-				<h2>Trust Questions</h2>
-				<p>Thank you for completing the prediction tasks!</p>
-				<p>Now we'd like to understand how much you trusted the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
-			</div>
-		`,
-		choices: ['Continue to Trust Questions'],
-		data: { trial_type: 'trust_intro' }
+	        <div class="welcome-screen">
+	            <h1>Humidity Prediction Study</h1>
+	            <p>Welcome! You are about to participate in a research study about how people make decisions using Humidity predictions. This study examines how different ways of presenting prediction information affect trust and decision-making. The study will take approximately 30 minutes.</p>
+	            <div class="study-info">
+	                <h3>What you'll do:</h3>
+	                <ul>
+	                    <li>Complete a brief assessment of visualization understanding</li>
+	                    <li>Make predictions about humidity in two cities</li>
+	                    <li>Answer questions about your confidence and trust</li>
+	                    <li>Report basic demographic data</li>
+	                </ul>
+	            </div>
+	        </div>
+	    `,
+		choices: ['Begin Study'],
+		data: { trial_type: 'welcome' }
 	});
 
-	// Trust Questions
+	// Fullscreen entry
 	timeline.push({
-		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.visualizationTrustQuestions,
-		preamble: `
-                <div class="trust-survey-preamble">
-                    <h3>Trust Questions</h3>
-                    <p>Please rate your agreement with the following statements about the <span class="forecast-data-pill">forecast data</span> visualization you just used.</p>
-                </div>
-            `,
+		type: jsPsychFullscreen,
+		fullscreen_mode: true,
+		message: `
+	        <div style="text-align: center; padding: 40px;">
+	            <h3>Enter Fullscreen Mode</h3>
+	            <p>For the best experience, this study will run in fullscreen mode.</p>
+	            <p>Please click the button below to enter fullscreen and continue.</p>
+	        </div>
+	    `,
+		button_label: 'Enter Fullscreen',
+		data: { trial_type: 'fullscreen_enter' }
+	});
+
+	// Participant ID collection
+	timeline.push({
+		type: jsPsychSurveyText,
+		questions: [
+			{
+				prompt: 'Please enter your participant ID from Prolific:',
+				name: 'participant_id',
+				required: true,
+				placeholder: 'Enter your ID'
+			}
+		],
+		button_label: 'Continue',
+		on_finish: function(data) {
+			const participantId = data.response.participant_id;
+			window.initializeParticipant(participantId);
+
+			jsPsych.data.addProperties({
+				participant_id: participantId,
+				study_type: window.ExperimentConfig.studyType || null,
+				version: window.ParticipantConfig.version || null,
+				variant_sequence: effectiveVariantSequence
+			});
+		},
+		data: { trial_type: 'participant_id_collection' }
+	});
+
+	// Consent form
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
+	        <div class="consent-form">
+	            <h2>Consent Form</h2>
+	            <div class="consent-header">
+	                <p><strong>Principal Investigator:</strong> Dr. Cindy Xiong Bearfield, Assistant Professor</p>
+	                <p><strong>Study Title:</strong> Trusting What We See: Effect of Interactivity in Visual Data Analysis</p>
+	                <p><strong>Supported By:</strong> Georgia Institute of Technology</p>
+	            </div>
+	            
+	            <div class="consent-details">
+	                <h3>WHAT IS THIS FORM?</h3>
+	                <p>This form is called a Consent Form. It will give you information about the study so you can make an informed decision about participation in this research. We encourage you to take some time to think this over and ask questions now and at any other time. If you decide to participate, you will be asked to sign this form and you will be given a copy for your records.</p>
+
+	                <h3>WHAT ARE SOME OF THE IMPORTANT ASPECTS OF THIS RESEARCH STUDY THAT I SHOULD BE AWARE OF?</h3>
+	                <ul>
+	                    <li>Whether or not you take part is up to you.</li>
+	                    <li>You can choose not to take part.</li>
+	                    <li>You can agree to take part and later change your mind.</li>
+	                    <li>Your decision will not be held against you.</li>
+	                </ul>
+
+	                <h3>WHY ARE WE DOING THIS RESEARCH STUDY?</h3>
+	                <p>The purpose of our study is to explore the visualization design space so we can understand how people perceive, interpret, and make decisions from visualizations. The results from this study can help us design visualizations and visualization guidelines to help people better communicate and understand data.</p>
+
+	                <h3>WHO CAN PARTICIPATE IN THIS RESEARCH STUDY?</h3>
+	                <p>Participants in this study must be at least 18 years of age or older and have general familiarity with using web-based systems. Participants currently outside of the U.S. cannot participate in this study (e.g. in the European Union or China).</p>
+
+	                <h3>WHAT COMPENSATION I WILL RECEIVE?</h3>
+	                <p>You will receive payment through Prolific worth $12/hour for participating in this study. We expect this study to take less than 20 minutes. Your participation is entirely voluntary. You are free to withdraw at any time, and if you do, you will receive partial payment for your time.</p>
+
+	                <h3>HOW MANY PEOPLE WILL PARTICIPATE?</h3>
+	                <p>We expect about 200 people will be in this research study.</p>
+
+	                <h3>WHAT WILL I BE ASKED TO DO AND HOW MUCH TIME WILL IT TAKE?</h3>
+	                <p>We will show you several data visualizations or components of a visualization and ask you to perform a visual task with the visualization on a computer screen, such as counting, searching, recognizing, memorizing, or describing the information presented to you. We may also ask you to fill out questionnaires concerning your thoughts regarding the visualization you saw. We expect that you will be in this research study to take between 15 and 60 minutes. We expect this study to be a one-off session and will not contact you regarding the study itself in the future.</p>
+
+	                <h3>WILL BEING IN THIS RESEARCH STUDY HELP ME IN ANY WAY?</h3>
+	                <p>You are not likely to have any direct benefit from being in this research study. The potential benefits to you from participation may include learning about how data visualization research is conducted, and you may learn about issues of current interest in data visualization and psychology.</p>
+
+	                <h3>WHAT ARE MY RISKS OF BEING IN THIS RESEARCH STUDY?</h3>
+	                <p>Your participation in this study does not involve any risks other than what you would encounter in daily life. In particular, you may experience fatigue or boredom, however, you may take breaks between tasks. The effects of participating should be comparable to those you would experience from viewing a computer monitor and using a keyboard. You may withdraw at any time.</p>
+
+	                <h3>HOW WILL MY PERSONAL INFORMATION BE PROTECTED?</h3>
+	                <p>We will comply with any applicable laws and regulations regarding confidentiality. To make sure that this research is being carried out in the proper way, the Georgia Institute of Technology IRB may review study records. The Office of Human Research Protections may also look at study records.</p>
+	                <p>Efforts will be made to limit the use and disclosure of your personal information, including research study records, to people who need to review this information. We cannot promise complete secrecy. Organizations that may inspect and copy your information include the IRB and other representatives of this institution. Please be notified that our data privacy policy is based on U.S. regulations. Participants who are out of the U.S. might be excluded due to different data privacy requirements.</p>
+	                <p><strong>Data Sharing:</strong> De-identified data from this study will be shared among the GATech research team, as well as the research community at large to advance science and health. We will remove or code any personal information that could identify you before files are shared with other researchers to ensure that, by current scientific standards and known methods, no one will be able to identify you from the information we share. Despite these measures, we cannot guarantee the anonymity of your personal data.</p>
+
+	                <h3>WILL I BE GIVEN ANY MONEY OR OTHER COMPENSATION FOR BEING IN THIS RESEARCH STUDY?</h3>
+	                <p>If you agree to take part in this research study, we will provide compensation. You will be paid in accordance with the stated policies of Amazon Mechanical Turk and/or Prolific.com. Payment will be made upon completion and acceptance of tasks that you have agreed to complete and you will be paid via Mechanical Turk or Prolific.com. If you choose to withdraw from the study, you will not be compensated for your participation.</p>
+
+	                <h3>WHAT ELSE DO I NEED TO KNOW?</h3>
+	                <p>We might be using attention check questions in our surveys. If you miss 2 or more attention check questions, your HIT will not be accepted and you will not be compensated.</p>
+
+	                <h3>WHO CAN I TALK TO IF I HAVE QUESTIONS?</h3>
+	                <p>If you have any questions about the content of this research project, you may contact Dr. Cindy Xiong Bearfield at cxiong@gatech.edu, or contact Songwen Hu at shu343@gatech.edu. If you have any questions about your rights as a research subject, you may also contact Georgia Institute of Technology Office of Research Integrity Assurance at IRB@gatech.edu.</p>
+
+	                <h3>WHAT HAPPENS IF I SAY YES, BUT I CHANGE MY MIND LATER?</h3>
+	                <p>You can decide not to participate in this research or you can start and then decide to leave the research at any time and it will not be held against you. To do so, simply exit the experiment. Any data already collected will not be saved.</p>
+
+	                <p><strong>By clicking "I agree" below you are indicating that you are at least 18 years old, currently in the U.S., have read this consent form, and agree to participate in this research study. Please print a copy of this page for your records.</strong></p>
+	            </div>
+	        </div>
+	    `,
+		choices: ['I agree', 'I do not agree'],
+		data: { trial_type: 'consent' },
+		on_finish: function(data) {
+			if (data.response === 1) {
+				jsPsych.endExperiment('<div style="text-align: center; padding: 50px;"><h2>Thank you for your interest.</h2><p>You have chosen not to participate in this study. The experiment has ended.</p><p>You may now close this window.</p></div>');
+			}
+		}
+	});
+
+	// Mini-VLAT introduction
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
+	        <div class="vis-literacy-intro">
+	            <h2>Visualization Assessment</h2>
+	            <p>Before we begin the main study, we'd like to assess your ability to read and interpret data visualizations.</p>
+	            
+	            <div class="assessment-info">
+	                <h3>What you'll do:</h3>
+	                <ul>
+	                    <li>View 12 different data visualizations (charts and graphs)</li>
+	                    <li>Answer questions about what each visualization shows</li>
+	                    <li>Take your time to examine each chart carefully</li>
+	                </ul>
+	                
+	                <p><strong>This assessment will take approximately 5-10 minutes.</strong></p>
+	                <p>There are no right or wrong interpretations - we're interested in how you read visualizations.</p>
+	            </div>
+	            <div class="assessment-info">
+	                <h3>Main task (after the assessment):</h3>
+	                <p>You will complete seven forecast rounds in a fixed sequence (baseline, 95% CI, and 2/3/4/5/6-line variants).</p>
+	            </div>
+	        </div>
+	    `,
+		choices: ['Begin Assessment'],
+		data: { trial_type: 'mini_vlat_intro' }
+	});
+
+	// Mini-VLAT
+	timeline.push({
+		type: jsPsychVisLiteracy,
+		randomize_order: false,
 		data: function() {
 			return {
-				trial_type: 'trust_survey_visualization',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
+				trial_type: 'mini_vlat',
+				variant_sequence: effectiveVariantSequence
 			};
 		},
-		on_finish: function (data) {
-			// Convert 0-based to 1-7 scale indexing and rename response fields for consistency
-			data.skeptical_rating = data.response.skeptical_rating !== null ? data.response.skeptical_rating + 1 : null;
-			data.data_trust = data.response.data_trust !== null ? data.response.data_trust + 1 : null;
-			data.usability_difficulty = data.response.usability_difficulty !== null ? data.response.usability_difficulty + 1 : null;
-			data.comprehension_ease = data.response.comprehension_ease !== null ? data.response.comprehension_ease + 1 : null;
-
-			// Calculate composite metrics
-			data.trust_composite = data.data_trust !== null ? data.data_trust : null;
-			data.usability_composite = data.usability_difficulty && data.comprehension_ease ?
-				Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2) : null;
+		on_finish: function(data) {
+			window.ParticipantConfig.visualizationLiteracyScore = data.total_score;
 		}
 	});
 
-	// Interaction Questions
+	// Instructions
 	timeline.push({
-		type: jsPsychTrustSurvey,
-		questions: window.ExperimentConfig.interactionQuestions,
-		preamble: `
-                <div class="trust-survey-preamble">
-                    <h3>Interaction Questions</h3>
-                    <p>Please rate your agreement with the following statements based on your experience with the <span class="forecast-data-pill">forecast data</span> interface.</p>
-                </div>
-            `,
-		data: function() {
-			return {
-				trial_type: 'trust_survey_interface',
-				phase: 2,
-				round: 1,
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null,
-				display_format: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.displayFormat : null
-			};
-		}
+		type: jsPsychInstructions,
+		pages: [
+			`<div class="instructions">
+	            <h2>Humidity Context</h2>
+	            <p>You will be making predictions about humidity in two hypothetical cities: <strong>City A</strong> and <strong>City B</strong>.</p>
+	            <p>Humidity is measured in a scale from 0 to 100.</p>
+	            <p>Your task is to predict which city is likely to have higher or lower humidity in the future.</p>
+	        </div>`,
+			`<div class="instructions">
+	            <h2>Forecast Rounds</h2>
+	            <p>You will complete <strong>7 forecast rounds</strong> in a fixed order.</p>
+	            <p>The order is: baseline, 95% CI, and ensemble views with 2, 3, 4, 5, and 6 lines.</p>
+	            <p>Each round includes one prediction page, one interaction feedback page, and one trust/interaction survey page.</p>
+	        </div>`
+		],
+		show_clickable_nav: true,
+		data: { trial_type: 'instructions' }
 	});
 
-	// Demographics Introduction
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: `
+			<style>
+				.phase-intro-wrapper {
+					max-width: min(94vw, 1200px);
+					margin: 0 auto;
+				}
+				.phase-intro {
+					margin-bottom: 20px;
+				}
+				#phase-intro-instruction-stimulus {
+					display: block;
+					max-width: min(94vw, 1200px);
+					max-height: 68vh;
+					width: auto;
+					height: auto;
+					object-fit: contain;
+					margin: 0 auto;
+				}
+			</style>
+			<div class="phase-intro-wrapper">
+				<div class="phase-intro">
+					<h2>Humidity Forecast Rounds</h2>
+					<p>Read the instruction below carefully before you proceed.</p>
+				</div>
+				<img id="phase-intro-instruction-stimulus" src="${instructionStimulusPath}" alt="Forecast round instructions" />
+			</div>
+		`,
+		choices: ['Start Forecast Round 1'],
+		data: { trial_type: 'phases_intro' }
+	});
+
+	if (!window.ParticipantConfig.assignedCondition) {
+		window.initializeParticipant('test_participant');
+	}
+	window.ParticipantConfig.assignedCondition = orderedConditions[0];
+	window.ParticipantConfig.completedConditionIds = [];
+	window.ParticipantConfig.phase2Complete = false;
+
+	orderedConditions.forEach((condition, roundIndex) => {
+		const roundNumber = roundIndex + 1;
+		const datasetFile = condition.datasetFile || null;
+
+		timeline.push({
+			type: jsPsychHtmlButtonResponse,
+			stimulus: function() {
+				const organizationBadge = getOrganizationBadgeHtml(roundNumber);
+				return `
+					<div class="phase-intro">
+						<h2>Forecast Round ${roundNumber} of ${orderedConditions.length}</h2>
+						<p><strong>Variant:</strong> ${escapeHtml(condition.name)}</p>
+						<p>The forecast is provided by ${organizationBadge}.</p>
+						<p>Review the chart and complete the questions.</p>
+					</div>
+				`;
+			},
+			choices: [`Start Forecast Round ${roundNumber}`],
+			data: function() {
+				return getRoundTrialData('forecast_round_intro', roundNumber, condition, datasetFile);
+			}
+		});
+
+		timeline.push({
+			type: window.jsPsychPredictionTask,
+			phase: 2,
+			round: roundNumber,
+			show_visualization: true,
+			show_predictions: true,
+			forecast_organization: function() {
+				return getOrganizationLabel(roundNumber);
+			},
+			visualization_condition: function() {
+				return condition;
+			},
+			air_quality_data: async function() {
+				return await getAirQualityData(datasetFile);
+			},
+			question: window.ExperimentConfig.predictionTask.question,
+			confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
+			travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
+			travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
+			data: function() {
+				return getRoundTrialData('phase2_prediction', roundNumber, condition, datasetFile, {
+					visualization_shown: true,
+					predictions_shown: true
+				});
+			},
+			on_finish: function() {
+				window.ParticipantConfig.assignedCondition = condition;
+				window.ParticipantConfig.completedConditionIds.push(condition.id);
+				if (roundNumber === orderedConditions.length) {
+					window.ParticipantConfig.phase2Complete = true;
+				}
+			}
+		});
+
+		timeline.push({
+			type: window.jsPsychInteractionFeedback,
+			preamble: function() {
+				const organizationBadge = getOrganizationBadgeHtml(roundNumber);
+				return `
+					<div class="interaction-feedback-preamble">
+						<h3>Interaction Feedback</h3>
+						<p>Please share your feedback about the interaction you just experienced for ${organizationBadge}.</p>
+					</div>
+				`;
+			},
+			data: function() {
+				return getRoundTrialData('interaction_feedback', roundNumber, condition, datasetFile);
+			}
+		});
+
+		timeline.push({
+			type: jsPsychTrustSurvey,
+			questions: [
+				...window.ExperimentConfig.visualizationTrustQuestions,
+				...window.ExperimentConfig.interactionQuestions
+			],
+			preamble: function() {
+				const organizationBadge = getOrganizationBadgeHtml(roundNumber);
+				return `
+					<div class="trust-survey-preamble">
+						<h3>Trust and Interaction Questions</h3>
+						<p>Please answer these questions for the forecast from ${organizationBadge}.</p>
+					</div>
+				`;
+			},
+			data: function() {
+				return getRoundTrialData('trust_survey_combined', roundNumber, condition, datasetFile);
+			},
+			on_finish: function(data) {
+				data.skeptical_rating = data.response.skeptical_rating !== null ? data.response.skeptical_rating + 1 : null;
+				data.data_trust = data.response.data_trust !== null ? data.response.data_trust + 1 : null;
+				data.usability_difficulty = data.response.usability_difficulty !== null ? data.response.usability_difficulty + 1 : null;
+				data.comprehension_ease = data.response.comprehension_ease !== null ? data.response.comprehension_ease + 1 : null;
+
+				data.trust_composite = data.data_trust !== null ? data.data_trust : null;
+				data.usability_composite = data.usability_difficulty && data.comprehension_ease
+					? Math.round((data.comprehension_ease + (8 - data.usability_difficulty)) / 2)
+					: null;
+			}
+		});
+	});
+
+	// Demographics introduction
 	timeline.push({
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
@@ -514,25 +552,25 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'personality',
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
+				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+				variant_sequence: effectiveVariantSequence
 			};
 		}
 	});
 
-	// Age and Major Questions (Text Input)
+	// Age and major questions
 	timeline.push({
 		type: jsPsychSurveyText,
 		questions: [
 			{
-				prompt: "What is your age?",
+				prompt: 'What is your age?',
 				name: 'age',
 				required: true,
 				columns: 5,
 				input_type: 'number'
 			},
 			{
-				prompt: "What is your major/field of work?",
+				prompt: 'What is your major/field of work?',
 				name: 'major_field',
 				required: true,
 				columns: 40
@@ -541,24 +579,24 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'demographics_text_1',
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
+				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+				variant_sequence: effectiveVariantSequence
 			};
 		}
 	});
 
-	// Education and Visualization Experience (Multiple Choice)
+	// Education and visualization experience
 	timeline.push({
 		type: jsPsychSurveyMultiChoice,
 		questions: [
 			{
-				prompt: "What is your highest level of education?",
+				prompt: 'What is your highest level of education?',
 				name: 'education',
 				required: true,
 				options: ['High school or equivalent', 'Some college', 'Associate degree', 'Bachelor\'s degree', 'Master\'s degree', 'Doctoral degree', 'Other']
 			},
 			{
-				prompt: "How often do you work with data visualizations or charts?",
+				prompt: 'How often do you work with data visualizations or charts?',
 				name: 'viz_experience',
 				required: true,
 				options: ['Daily', 'Weekly', 'Monthly', 'A few times per year', 'Rarely', 'Never']
@@ -567,133 +605,126 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'demographics_mc',
-				condition_id: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.id : null,
-				condition_name: window.ParticipantConfig.assignedCondition ? window.ParticipantConfig.assignedCondition.name : null
+				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+				variant_sequence: effectiveVariantSequence
 			};
 		}
 	});
 
 	// Exit fullscreen
 	timeline.push({
-	    type: jsPsychFullscreen,
-	    fullscreen_mode: false,
-	    message: `
+		type: jsPsychFullscreen,
+		fullscreen_mode: false,
+		message: `
 	        <div style="text-align: center; padding: 40px;">
 	            <h3>Study Complete</h3>
 	            <p>Thank you for completing the study!</p>
 	            <p>Click below to exit fullscreen mode and see the final summary.</p>
 	        </div>
 	    `,
-	    button_label: 'Exit Fullscreen',
-	    data: { trial_type: 'fullscreen_exit' }
+		button_label: 'Exit Fullscreen',
+		data: { trial_type: 'fullscreen_exit' }
 	});
 
 	// Debrief
 	timeline.push({
 		type: jsPsychHtmlButtonResponse,
 		stimulus: `
-            <div class="debrief">
-                <h2>Thank You!</h2>
-                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
-                
-                <h3>Study Background:</h3>
-                <p>You were randomly assigned to one of twelve different visualization conditions. The goal is to understand which formats help people make better decisions and maintain appropriate trust in prediction systems.</p>
-                
-                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
-                <p>Some conditions may have display glitches. They are intentionally designed to evaluate how people interpret those display bugs.</p>
-                
-                <h3>Questions?</h3>
-                <p>If you have questions about this research, please contact the research team.</p>
-                
+	            <div class="debrief">
+	                <h2>Thank You!</h2>
+	                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
+	                
+	                <h3>Study Background:</h3>
+	                <p>You completed one baseline forecast round and six additional forecast rounds in the fixed Experiment 2 sequence (95% CI, then 2/3/4/5/6-line variants).</p>
+	                
+	                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
+	                
+	                <h3>Questions?</h3>
+	                <p>If you have questions about this research, please contact the research team.</p>
+	                
 	                <p>Your participation contributes to understanding how to design better prediction visualizations for real-world applications like weather forecasting, financial predictions, and public health data.</p>
 	            </div>
 	        `,
-			choices: ['Upload Data and Redirect to Prolific'],
-			data: { trial_type: 'debrief' },
-			on_load: function() {
-				setDebriefButtonUploadingState();
-			},
-			on_finish: function() {
-				// Securely validate completion and get redirect URL from server
-				const completionData = {
-					study_complete: true,
-					phase1_complete: window.ParticipantConfig.phase1Complete,
-					phase2_complete: window.ParticipantConfig.phase2Complete,
-					end_time: new Date().toISOString()
-				};
-
-				finalizeStudyAndRedirect(completionData);
-			}
-		});
-	}
+		choices: ['Upload Data and Redirect to Prolific'],
+		data: { trial_type: 'debrief' },
+		on_load: function() {
+			setDebriefButtonUploadingState();
+		},
+		on_finish: function() {
+			const completionData = {
+				study_complete: true,
+				phase1_complete: window.ParticipantConfig.phase1Complete,
+				phase2_complete: window.ParticipantConfig.phase2Complete,
+				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+				variant_sequence: effectiveVariantSequence,
+				end_time: new Date().toISOString()
+			};
+			finalizeStudyAndRedirect(completionData);
+		}
+	});
+}
 
 // Helper Functions
 
 
-// Get Humidity data for specific round  
-async function getAirQualityData() {
+// Get Humidity data for a specific round/variant.
+async function getAirQualityData(datasetFile = null) {
 	try {
-		// Load synthetic Humidity data (used by display system)
-		// Try multiple possible paths depending on where experiment is running from
+		const normalizedFile = typeof datasetFile === 'string' ? datasetFile.trim() : '';
+		const candidatePaths = normalizedFile
+			? [
+				`generated/${normalizedFile}`,
+				`../generated/${normalizedFile}`,
+				`../../generated/${normalizedFile}`,
+				normalizedFile,
+				`../${normalizedFile}`,
+				`../../${normalizedFile}`
+			]
+			: [
+				'synthetic_stock_data_norm.json',
+				'../synthetic_stock_data_norm.json',
+				'../../synthetic_stock_data_norm.json'
+			];
+
 		let response;
-		const possiblePaths = [
-			'synthetic_stock_data_norm.json',        // From main directory
-			'../synthetic_stock_data_norm.json',     // From src/ subdirectory  
-			'../../synthetic_stock_data_norm.json'   // From versions/versionN/ subdirectory
-		];
-		
-		for (const path of possiblePaths) {
+		for (const path of candidatePaths) {
 			try {
 				response = await fetch(path);
 				if (response.ok) {
-					break; // Found working path
+					break;
 				}
-			} catch (e) {
-				// Continue to next path
+			} catch (_error) {
 				continue;
 			}
 		}
-		
+
 		if (!response || !response.ok) {
-			throw new Error(`Failed to load data from any of the expected paths. Tried: ${possiblePaths.join(', ')}`);
+			throw new Error(`Failed to load data from expected paths: ${candidatePaths.join(', ')}`);
 		}
 		const cityData = await response.json();
-		
-		// Robustly extract data array from JSON structure
+
 		let data;
 		if (cityData && typeof cityData === 'object') {
-			// Handle wrapped format: { "data": [...] }
 			if (cityData.data && Array.isArray(cityData.data)) {
 				data = cityData.data;
-			} 
-			// Handle direct array format: [...]
-			else if (Array.isArray(cityData)) {
+			} else if (Array.isArray(cityData)) {
 				data = cityData;
-			}
-			// Handle unexpected object format
-			else {
+			} else {
 				console.error('Unexpected data structure:', cityData);
 				throw new Error(`Data is not in expected format. Expected array or {data: array}, got object with keys: ${Object.keys(cityData).join(', ')}`);
 			}
 		} else {
 			throw new Error(`Invalid JSON structure: expected object, got ${typeof cityData}`);
 		}
-		
-		// Validate data format and content
+
 		if (!Array.isArray(data)) {
 			throw new Error(`Expected data to be an array, got ${typeof data}`);
 		}
-		
+
 		if (data.length === 0) {
 			throw new Error('Data array is empty');
 		}
-		
-		// Validate data structure by checking first few items
-		const sampleSize = Math.min(3, data.length);
-		for (let i = 0; i < sampleSize; i++) {
-			const item = data[i];
-		}
-		
+
 		return data;
 
 	} catch (error) {
@@ -747,6 +778,10 @@ function buildParticipantSummary() {
 	return {
 		participant_id: window.ParticipantConfig.id,
 		condition: window.ParticipantConfig.assignedCondition,
+		completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+		variant_sequence: Array.isArray(window.ExperimentConfig.variantSequence)
+			? window.ExperimentConfig.variantSequence
+			: [],
 		start_time: window.ParticipantConfig.startTime,
 		end_time: new Date().toISOString(),
 		visualization_literacy_score: window.ParticipantConfig.visualizationLiteracyScore,

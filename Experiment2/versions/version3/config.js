@@ -162,7 +162,7 @@ const ExperimentConfig = {
             max: 7,
             labels: ['Very Uncertain', 'Uncertain', 'Somewhat Uncertain', 'Neutral', 'Somewhat Certain', 'Certain', 'Very Certain']
         },
-        travelQuestion: 'If you are planning to travel to one of these cities after 6/01, and you would like to choose the one with lower humidity, which city would you travel to?',
+        travelQuestion: 'If you are planning to travel after 6/01 and want the lower-humidity option, which city would you travel to: City A or City B?',
         travelChoices: ['City A', 'City B', 'No Preference']
     },
     // Interaction - Page 1
