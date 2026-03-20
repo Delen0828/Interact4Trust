@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study
-// Seven-Round Within-Participants Study Design (Fixed Exp2 Sequence)
+// Eight-Round Within-Participants Study Design (Participant-Randomized Sequence)
 
 let jsPsych;
 let timeline = [];
@@ -11,12 +11,120 @@ const defaultOrganizationLabelsBySlot = Object.freeze([
 	'Organization D',
 	'Organization E',
 	'Organization F',
-	'Organization G'
+	'Organization G',
+	'Organization H'
 ]);
+const defaultRoundDatasetConfig = Object.freeze({
+	file: null,
+	organization: defaultOrganizationLabelsBySlot[0],
+	cityA: 'City A',
+	cityB: 'City B',
+	colors: {
+		cityA: '#0891B2',
+		cityB: '#7C3AED'
+	}
+});
+const datasetConfigByFile = Object.freeze({
+	'ranax_leer_city_baseline.json': {
+		cityA: 'Ranax',
+		cityB: 'Leer City',
+		colors: { cityA: '#1D4ED8', cityB: '#C2410C' }
+	},
+	'virexa_talmori_incHist_incPred.json': {
+		cityA: 'Virexa',
+		cityB: 'Talmori',
+		colors: { cityA: '#2563EB', cityB: '#D97706' }
+	},
+	'qelvane_rostiva_incHist_decPred.json': {
+		cityA: 'Qelvane',
+		cityB: 'Rostiva',
+		colors: { cityA: '#059669', cityB: '#DC2626' }
+	},
+	'nexari_pulveth_decHist_incPred.json': {
+		cityA: 'Nexari',
+		cityB: 'Pulveth',
+		colors: { cityA: '#7C3AED', cityB: '#0EA5E9' }
+	},
+	'zorvani_kelthar_decHist_decPred.json': {
+		cityA: 'Zorvani',
+		cityB: 'Kelthar',
+		colors: { cityA: '#BE123C', cityB: '#0F766E' }
+	},
+	'lumora_vexlin_constHist_incPred.json': {
+		cityA: 'Lumora',
+		cityB: 'Vexlin',
+		colors: { cityA: '#0369A1', cityB: '#B45309' }
+	},
+	'dravik_solmere_constHist_decPred.json': {
+		cityA: 'Dravik',
+		cityB: 'Solmere',
+		colors: { cityA: '#7E22CE', cityB: '#0E7490' }
+	},
+	'altriva_morneth_incHist_constPred.json': {
+		cityA: 'Altriva',
+		cityB: 'Morneth',
+		colors: { cityA: '#1E3A8A', cityB: '#B45309' }
+	},
+	'solnara_kyveth_decHist_constPred.json': {
+		cityA: 'Solnara',
+		cityB: 'Kyveth',
+		colors: { cityA: '#BE123C', cityB: '#155E75' }
+	}
+});
 const SAVE_MAX_ATTEMPTS = 3;
 const SAVE_MAX_DURATION_MS = 8000;
 const SAVE_RETRY_DELAY_MS = 350;
+const EXCLUDED_DATASET_FILES = Object.freeze(['ranax_leer_city_baseline.json']);
 let studyFinalizationInProgress = false;
+
+function normalizeDatasetFile(datasetFile) {
+	if (typeof datasetFile !== 'string') return '';
+	const trimmed = datasetFile.trim();
+	if (!trimmed) return '';
+	return trimmed.split('/').pop() || trimmed;
+}
+
+function shuffleArray(items) {
+	const shuffled = Array.isArray(items) ? items.slice() : [];
+	for (let i = shuffled.length - 1; i > 0; i -= 1) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	return shuffled;
+}
+
+function buildRandomizedRoundPlan(sourceConditions) {
+	if (!Array.isArray(sourceConditions) || sourceConditions.length === 0) {
+		return [];
+	}
+
+	const excludedDatasetFiles = new Set(EXCLUDED_DATASET_FILES);
+	const copiedConditions = sourceConditions.map((condition) => ({ ...condition }));
+	const configuredDatasetFiles = [
+		...new Set(
+			copiedConditions
+				.map((condition) => normalizeDatasetFile(condition?.datasetFile))
+				.filter((datasetFile) => datasetFile.length > 0 && !excludedDatasetFiles.has(datasetFile))
+		)
+	];
+	const fallbackDatasetFiles = Object.keys(datasetConfigByFile).filter((datasetFile) => {
+		return !excludedDatasetFiles.has(datasetFile) && !configuredDatasetFiles.includes(datasetFile);
+	});
+	const availableDatasetFiles = [...configuredDatasetFiles, ...fallbackDatasetFiles];
+
+	if (availableDatasetFiles.length === 0) {
+		throw new Error('No eligible dataset files available for Experiment 2 randomization.');
+	}
+
+	const randomizedConditions = shuffleArray(copiedConditions);
+	const randomizedDatasets = shuffleArray(availableDatasetFiles);
+	return randomizedConditions.map((condition, index) => {
+		return {
+			...condition,
+			datasetFile: randomizedDatasets[index % randomizedDatasets.length]
+		};
+	});
+}
 
 // Wait for config to be loaded
 function waitForConfig() {
@@ -108,17 +216,20 @@ function buildTimeline() {
 	const configuredSequence = Array.isArray(window.ExperimentConfig.variantSequence)
 		? window.ExperimentConfig.variantSequence
 		: [];
-	const orderedConditions = configuredSequence.length > 0
+	const sourceConditions = configuredSequence.length > 0
 		? configuredSequence
 			.map((conditionId) => allConditions.find((condition) => condition.id === conditionId))
 			.filter(Boolean)
 		: allConditions;
-	const effectiveVariantSequence = configuredSequence.length > 0
-		? configuredSequence.slice()
-		: orderedConditions.map((condition) => condition.id);
+	const orderedConditions = buildRandomizedRoundPlan(sourceConditions);
+	const effectiveVariantSequence = orderedConditions.map((condition) => condition.id);
+	const effectiveDatasetSequence = orderedConditions.map((condition) => normalizeDatasetFile(condition.datasetFile));
 
 	if (orderedConditions.length === 0) {
 		throw new Error('No visualization variants found in ExperimentConfig.conditions.');
+	}
+	if (effectiveDatasetSequence.some((datasetFile) => EXCLUDED_DATASET_FILES.includes(datasetFile))) {
+		throw new Error('Disallowed baseline dataset was assigned to a condition.');
 	}
 
 	function escapeHtml(value) {
@@ -134,11 +245,61 @@ function buildTimeline() {
 		return defaultOrganizationLabelsBySlot[roundNumber - 1] || `Organization ${roundNumber}`;
 	}
 
-	function getOrganizationBadgeHtml(roundNumber) {
-		return `<span class="organization-badge">${escapeHtml(getOrganizationLabel(roundNumber))}</span>`;
+	function getOrganizationBadgeHtml(organizationLabel) {
+		return `<span class="organization-badge">${escapeHtml(organizationLabel)}</span>`;
 	}
 
-	function getRoundTrialData(trialType, roundNumber, condition, datasetFile, extraData = {}) {
+	function resolveRoundDatasetConfig(roundNumber, condition) {
+		const datasetFile = normalizeDatasetFile(condition?.datasetFile);
+		const datasetKey = datasetFile;
+		const mappedConfig = datasetConfigByFile[datasetKey] || {};
+		const configuredColors = condition?.cityColors || condition?.colors || {};
+		const fallbackOrganization = getOrganizationLabel(roundNumber);
+		return {
+			file: datasetFile || null,
+			organization: condition?.organization || mappedConfig.organization || fallbackOrganization,
+			cityA: condition?.cityA || mappedConfig.cityA || defaultRoundDatasetConfig.cityA,
+			cityB: condition?.cityB || mappedConfig.cityB || defaultRoundDatasetConfig.cityB,
+			colors: {
+				cityA: configuredColors.cityA || configuredColors.stockA || mappedConfig.colors?.cityA || defaultRoundDatasetConfig.colors.cityA,
+				cityB: configuredColors.cityB || configuredColors.stockB || mappedConfig.colors?.cityB || defaultRoundDatasetConfig.colors.cityB
+			}
+		};
+	}
+
+	function getRoundOrganizationLabel(roundNumber, condition) {
+		return resolveRoundDatasetConfig(roundNumber, condition).organization;
+	}
+
+	function getRoundOrganizationBadgeHtml(roundNumber, condition) {
+		return getOrganizationBadgeHtml(getRoundOrganizationLabel(roundNumber, condition));
+	}
+
+	function replaceCityNames(text, cityA, cityB) {
+		return String(text || '')
+			.replace(/\bCity A\b/g, cityA)
+			.replace(/\bCity B\b/g, cityB);
+	}
+
+	function getRoundQuestionText(roundNumber, condition) {
+		const roundDataset = resolveRoundDatasetConfig(roundNumber, condition);
+		return replaceCityNames(window.ExperimentConfig.predictionTask.question, roundDataset.cityA, roundDataset.cityB);
+	}
+
+	function getRoundTravelQuestionText(roundNumber, condition) {
+		const roundDataset = resolveRoundDatasetConfig(roundNumber, condition);
+		return replaceCityNames(window.ExperimentConfig.predictionTask.travelQuestion, roundDataset.cityA, roundDataset.cityB);
+	}
+
+	function getRoundTravelChoices(roundNumber, condition) {
+		const roundDataset = resolveRoundDatasetConfig(roundNumber, condition);
+		return window.ExperimentConfig.predictionTask.travelChoices.map((choice) => {
+			return replaceCityNames(choice, roundDataset.cityA, roundDataset.cityB);
+		});
+	}
+
+	function getRoundTrialData(trialType, roundNumber, condition, extraData = {}) {
+		const roundDataset = resolveRoundDatasetConfig(roundNumber, condition);
 		return {
 			trial_type: trialType,
 			phase: 2,
@@ -146,12 +307,31 @@ function buildTimeline() {
 			condition_id: condition ? condition.id : null,
 			condition_name: condition ? condition.name : null,
 			display_format: condition ? condition.displayFormat : null,
-			dataset_file: datasetFile || null,
-			forecast_organization: getOrganizationLabel(roundNumber),
+			dataset_file: roundDataset.file,
+			forecast_organization: roundDataset.organization,
+			city_a_label: roundDataset.cityA,
+			city_b_label: roundDataset.cityB,
+			city_a_color: roundDataset.colors.cityA,
+			city_b_color: roundDataset.colors.cityB,
 			completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
 			variant_sequence: effectiveVariantSequence,
+			dataset_sequence: effectiveDatasetSequence,
 			...extraData
 		};
+	}
+
+	function applyParticipantRoundMetadata() {
+		window.ParticipantConfig.variantSequence = effectiveVariantSequence.slice();
+		window.ParticipantConfig.datasetSequence = effectiveDatasetSequence.slice();
+		window.ParticipantConfig.conditionDatasetAssignments = orderedConditions.map((condition, roundIndex) => {
+			return {
+				round: roundIndex + 1,
+				condition_id: condition.id,
+				condition_name: condition.name,
+				dataset_file: normalizeDatasetFile(condition.datasetFile)
+			};
+		});
+		window.ParticipantConfig.assignedCondition = orderedConditions[0] || null;
 	}
 
 	// Preload mini-VLAT images
@@ -230,12 +410,15 @@ function buildTimeline() {
 		on_finish: function(data) {
 			const participantId = data.response.participant_id;
 			window.initializeParticipant(participantId);
+			applyParticipantRoundMetadata();
 
 			jsPsych.data.addProperties({
 				participant_id: participantId,
 				study_type: window.ExperimentConfig.studyType || null,
 				version: window.ParticipantConfig.version || null,
-				variant_sequence: effectiveVariantSequence
+				variant_sequence: effectiveVariantSequence,
+				dataset_sequence: effectiveDatasetSequence,
+				condition_dataset_assignments: window.ParticipantConfig.conditionDatasetAssignments || []
 			});
 		},
 		data: { trial_type: 'participant_id_collection' }
@@ -337,7 +520,8 @@ function buildTimeline() {
 	            </div>
 	            <div class="assessment-info">
 	                <h3>Main task (after the assessment):</h3>
-	                <p>You will complete seven forecast rounds in a fixed sequence (baseline, 95% CI, and 2/3/4/5/6-line variants).</p>
+	                <p>You will make predictions about humidity in two hypothetical cities (the names vary by forecast round).</p>
+	                <p>Humidity is measured on a scale from 0 to 100, and your task is to predict which city is likely to have higher or lower humidity in the future.</p>
 	            </div>
 	        </div>
 	    `,
@@ -352,7 +536,8 @@ function buildTimeline() {
 		data: function() {
 			return {
 				trial_type: 'mini_vlat',
-				variant_sequence: effectiveVariantSequence
+				variant_sequence: effectiveVariantSequence,
+				dataset_sequence: effectiveDatasetSequence
 			};
 		},
 		on_finish: function(data) {
@@ -366,15 +551,14 @@ function buildTimeline() {
 		pages: [
 			`<div class="instructions">
 	            <h2>Humidity Context</h2>
-	            <p>You will be making predictions about humidity in two hypothetical cities: <strong>City A</strong> and <strong>City B</strong>.</p>
+	            <p>You will be making predictions about humidity in two hypothetical cities (names shown in each forecast round).</p>
 	            <p>Humidity is measured in a scale from 0 to 100.</p>
 	            <p>Your task is to predict which city is likely to have higher or lower humidity in the future.</p>
 	        </div>`,
 			`<div class="instructions">
-	            <h2>Forecast Rounds</h2>
-	            <p>You will complete <strong>7 forecast rounds</strong> in a fixed order.</p>
-	            <p>The order is: baseline, 95% CI, and ensemble views with 2, 3, 4, 5, and 6 lines.</p>
-	            <p>Each round includes one prediction page, one interaction feedback page, and one trust/interaction survey page.</p>
+	            <h2>Humidity Context</h2>
+	            <p>You will complete <strong>8 forecast conditions</strong>. Each condition includes one prediction page, one interaction feedback page, trust questions, and interaction questions.</p>
+	            <p>These conditions are from different organizations: <span class="organization-badge">Organization A</span>, <span class="organization-badge">Organization B</span>, <span class="organization-badge">Organization C</span>, <span class="organization-badge">Organization D</span>, <span class="organization-badge">Organization E</span>, <span class="organization-badge">Organization F</span>, <span class="organization-badge">Organization G</span>, and <span class="organization-badge">Organization H</span>.</p>
 	        </div>`
 		],
 		show_clickable_nav: true,
@@ -405,7 +589,7 @@ function buildTimeline() {
 			<div class="phase-intro-wrapper">
 				<div class="phase-intro">
 					<h2>Humidity Forecast Rounds</h2>
-					<p>Read the instruction below carefully before you proceed.</p>
+					<p>Read the instruction below carefully before you proceed</p>
 				</div>
 				<img id="phase-intro-instruction-stimulus" src="${instructionStimulusPath}" alt="Forecast round instructions" />
 			</div>
@@ -417,30 +601,30 @@ function buildTimeline() {
 	if (!window.ParticipantConfig.assignedCondition) {
 		window.initializeParticipant('test_participant');
 	}
-	window.ParticipantConfig.assignedCondition = orderedConditions[0];
+	applyParticipantRoundMetadata();
 	window.ParticipantConfig.completedConditionIds = [];
 	window.ParticipantConfig.phase2Complete = false;
 
 	orderedConditions.forEach((condition, roundIndex) => {
 		const roundNumber = roundIndex + 1;
-		const datasetFile = condition.datasetFile || null;
+		const roundDataset = resolveRoundDatasetConfig(roundNumber, condition);
+		const datasetFile = roundDataset.file;
 
 		timeline.push({
 			type: jsPsychHtmlButtonResponse,
 			stimulus: function() {
-				const organizationBadge = getOrganizationBadgeHtml(roundNumber);
+				const organizationBadge = getRoundOrganizationBadgeHtml(roundNumber, condition);
 				return `
 					<div class="phase-intro">
-						<h2>Forecast Round ${roundNumber} of ${orderedConditions.length}</h2>
-						<p><strong>Variant:</strong> ${escapeHtml(condition.name)}</p>
+						<h2>Forecast Round ${roundNumber}</h2>
+						<p>You will be comparing <strong>${escapeHtml(roundDataset.cityA)}</strong> and <strong>${escapeHtml(roundDataset.cityB)}</strong>.</p>
 						<p>The forecast is provided by ${organizationBadge}.</p>
-						<p>Review the chart and complete the questions.</p>
 					</div>
 				`;
 			},
 			choices: [`Start Forecast Round ${roundNumber}`],
 			data: function() {
-				return getRoundTrialData('forecast_round_intro', roundNumber, condition, datasetFile);
+				return getRoundTrialData('forecast_round_intro', roundNumber, condition);
 			}
 		});
 
@@ -451,20 +635,38 @@ function buildTimeline() {
 			show_visualization: true,
 			show_predictions: true,
 			forecast_organization: function() {
-				return getOrganizationLabel(roundNumber);
+				return getRoundOrganizationLabel(roundNumber, condition);
 			},
 			visualization_condition: function() {
 				return condition;
 			},
 			air_quality_data: async function() {
-				return await getAirQualityData(datasetFile);
+				return await getAirQualityData(datasetFile, roundDataset);
 			},
-			question: window.ExperimentConfig.predictionTask.question,
+			question: function() {
+				return getRoundQuestionText(roundNumber, condition);
+			},
 			confidence_scale: window.ExperimentConfig.predictionTask.confidenceScale,
-			travel_question: window.ExperimentConfig.predictionTask.travelQuestion,
-			travel_choices: window.ExperimentConfig.predictionTask.travelChoices,
+			travel_question: function() {
+				return getRoundTravelQuestionText(roundNumber, condition);
+			},
+			travel_choices: function() {
+				return getRoundTravelChoices(roundNumber, condition);
+			},
+			city_labels: function() {
+				return {
+					cityA: roundDataset.cityA,
+					cityB: roundDataset.cityB
+				};
+			},
+			city_colors: function() {
+				return {
+					cityA: roundDataset.colors.cityA,
+					cityB: roundDataset.colors.cityB
+				};
+			},
 			data: function() {
-				return getRoundTrialData('phase2_prediction', roundNumber, condition, datasetFile, {
+				return getRoundTrialData('phase2_prediction', roundNumber, condition, {
 					visualization_shown: true,
 					predictions_shown: true
 				});
@@ -481,7 +683,7 @@ function buildTimeline() {
 		timeline.push({
 			type: window.jsPsychInteractionFeedback,
 			preamble: function() {
-				const organizationBadge = getOrganizationBadgeHtml(roundNumber);
+				const organizationBadge = getRoundOrganizationBadgeHtml(roundNumber, condition);
 				return `
 					<div class="interaction-feedback-preamble">
 						<h3>Interaction Feedback</h3>
@@ -490,7 +692,7 @@ function buildTimeline() {
 				`;
 			},
 			data: function() {
-				return getRoundTrialData('interaction_feedback', roundNumber, condition, datasetFile);
+				return getRoundTrialData('interaction_feedback', roundNumber, condition);
 			}
 		});
 
@@ -501,7 +703,7 @@ function buildTimeline() {
 				...window.ExperimentConfig.interactionQuestions
 			],
 			preamble: function() {
-				const organizationBadge = getOrganizationBadgeHtml(roundNumber);
+				const organizationBadge = getRoundOrganizationBadgeHtml(roundNumber, condition);
 				return `
 					<div class="trust-survey-preamble">
 						<h3>Trust and Interaction Questions</h3>
@@ -510,7 +712,7 @@ function buildTimeline() {
 				`;
 			},
 			data: function() {
-				return getRoundTrialData('trust_survey_combined', roundNumber, condition, datasetFile);
+				return getRoundTrialData('trust_survey_combined', roundNumber, condition);
 			},
 			on_finish: function(data) {
 				data.skeptical_rating = data.response.skeptical_rating !== null ? data.response.skeptical_rating + 1 : null;
@@ -549,14 +751,15 @@ function buildTimeline() {
 				<p>Please rate your agreement with the following statements about yourself.</p>
 			</div>
 		`,
-		data: function() {
-			return {
-				trial_type: 'personality',
-				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
-				variant_sequence: effectiveVariantSequence
-			};
-		}
-	});
+			data: function() {
+				return {
+					trial_type: 'personality',
+					completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+					variant_sequence: effectiveVariantSequence,
+					dataset_sequence: effectiveDatasetSequence
+				};
+			}
+		});
 
 	// Age and major questions
 	timeline.push({
@@ -576,14 +779,15 @@ function buildTimeline() {
 				columns: 40
 			}
 		],
-		data: function() {
-			return {
-				trial_type: 'demographics_text_1',
-				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
-				variant_sequence: effectiveVariantSequence
-			};
-		}
-	});
+			data: function() {
+				return {
+					trial_type: 'demographics_text_1',
+					completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+					variant_sequence: effectiveVariantSequence,
+					dataset_sequence: effectiveDatasetSequence
+				};
+			}
+		});
 
 	// Education and visualization experience
 	timeline.push({
@@ -602,14 +806,15 @@ function buildTimeline() {
 				options: ['Daily', 'Weekly', 'Monthly', 'A few times per year', 'Rarely', 'Never']
 			}
 		],
-		data: function() {
-			return {
-				trial_type: 'demographics_mc',
-				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
-				variant_sequence: effectiveVariantSequence
-			};
-		}
-	});
+			data: function() {
+				return {
+					trial_type: 'demographics_mc',
+					completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
+					variant_sequence: effectiveVariantSequence,
+					dataset_sequence: effectiveDatasetSequence
+				};
+			}
+		});
 
 	// Exit fullscreen
 	timeline.push({
@@ -635,7 +840,7 @@ function buildTimeline() {
 	                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
 	                
 	                <h3>Study Background:</h3>
-	                <p>You completed one baseline forecast round and six additional forecast rounds in the fixed Experiment 2 sequence (95% CI, then 2/3/4/5/6-line variants).</p>
+	                <p>You completed eight forecast conditions from different organizations using different visualization styles.</p>
 	                
 	                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
 	                
@@ -657,6 +862,8 @@ function buildTimeline() {
 				phase2_complete: window.ParticipantConfig.phase2Complete,
 				completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
 				variant_sequence: effectiveVariantSequence,
+				dataset_sequence: effectiveDatasetSequence,
+				condition_dataset_assignments: window.ParticipantConfig.conditionDatasetAssignments || [],
 				end_time: new Date().toISOString()
 			};
 			finalizeStudyAndRedirect(completionData);
@@ -667,8 +874,57 @@ function buildTimeline() {
 // Helper Functions
 
 
+function normalizeRoundDatasetRows(rawRows, datasetConfig = defaultRoundDatasetConfig) {
+	if (!Array.isArray(rawRows)) {
+		throw new Error(`Expected dataset rows to be an array, got ${typeof rawRows}`);
+	}
+	if (rawRows.length === 0) {
+		throw new Error('Dataset rows array is empty');
+	}
+
+	const observedNames = [...new Set(
+		rawRows
+			.map((row) => row?.stock ?? row?.city)
+			.filter((value) => typeof value === 'string' && value.trim().length > 0)
+	)];
+
+	const fallbackCityA = observedNames[0] || datasetConfig.cityA || defaultRoundDatasetConfig.cityA;
+	const fallbackCityB = observedNames[1] || datasetConfig.cityB || defaultRoundDatasetConfig.cityB;
+	const cityAName = observedNames.includes(datasetConfig.cityA) ? datasetConfig.cityA : fallbackCityA;
+	const cityBName = observedNames.includes(datasetConfig.cityB) ? datasetConfig.cityB : fallbackCityB;
+
+	const nameToKey = new Map([
+		['A', 'A'],
+		['B', 'B'],
+		[cityAName, 'A'],
+		[cityBName, 'B']
+	]);
+
+	const normalizedRows = rawRows
+		.map((row) => {
+			if (!row || typeof row !== 'object') return null;
+			const sourceName = row.stock ?? row.city;
+			const mappedStock = nameToKey.get(sourceName);
+			if (!mappedStock) return null;
+			return {
+				...row,
+				stock: mappedStock
+			};
+		})
+		.filter(Boolean);
+
+	const mappedStocks = new Set(normalizedRows.map((row) => row.stock));
+	if (!mappedStocks.has('A') || !mappedStocks.has('B')) {
+		throw new Error(
+			`Normalized dataset must include both city series (A and B). Found: ${Array.from(mappedStocks).join(', ')}`
+		);
+	}
+
+	return normalizedRows;
+}
+
 // Get Humidity data for a specific round/variant.
-async function getAirQualityData(datasetFile = null) {
+async function getAirQualityData(datasetFile = null, datasetConfig = null) {
 	try {
 		const normalizedFile = typeof datasetFile === 'string' ? datasetFile.trim() : '';
 		const candidatePaths = normalizedFile
@@ -725,7 +981,7 @@ async function getAirQualityData(datasetFile = null) {
 			throw new Error('Data array is empty');
 		}
 
-		return data;
+		return normalizeRoundDatasetRows(data, datasetConfig || defaultRoundDatasetConfig);
 
 	} catch (error) {
 		console.error('Error loading Humidity data:', error);
@@ -779,8 +1035,14 @@ function buildParticipantSummary() {
 		participant_id: window.ParticipantConfig.id,
 		condition: window.ParticipantConfig.assignedCondition,
 		completed_condition_ids: window.ParticipantConfig.completedConditionIds || [],
-		variant_sequence: Array.isArray(window.ExperimentConfig.variantSequence)
-			? window.ExperimentConfig.variantSequence
+		variant_sequence: Array.isArray(window.ParticipantConfig.variantSequence)
+			? window.ParticipantConfig.variantSequence
+			: (Array.isArray(window.ExperimentConfig.variantSequence) ? window.ExperimentConfig.variantSequence : []),
+		dataset_sequence: Array.isArray(window.ParticipantConfig.datasetSequence)
+			? window.ParticipantConfig.datasetSequence
+			: [],
+		condition_dataset_assignments: Array.isArray(window.ParticipantConfig.conditionDatasetAssignments)
+			? window.ParticipantConfig.conditionDatasetAssignments
 			: [],
 		start_time: window.ParticipantConfig.startTime,
 		end_time: new Date().toISOString(),

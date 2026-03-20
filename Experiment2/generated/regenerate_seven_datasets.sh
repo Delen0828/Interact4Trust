@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Regenerate the 7 Experiment 2 datasets used by the single-version
-# within-subject sequence:
-# baseline, CI, and 2/3/4/5/6-line ensemble variants.
+# Regenerate the 9 Experiment 2 datasets (full Hist x Pred trend permutation):
+# Hist trend in {inc, dec, const} x Pred trend in {inc, dec, const}.
+#
+# Current single-version within-subject sequence still uses 7 of these 9.
 #
 # Usage:
 #   cd Experiment2/generated
@@ -58,4 +59,14 @@ python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
   --histStart 58 --histEnd 58 --predEnd 44 \
   --fileName dravik_solmere_constHist_decPred.json
 
-echo "Done: regenerated 7 Experiment 2 datasets with numPred=10."
+python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
+  --seed trend-fixed-v1-altriva-morneth \
+  --histStart 35 --histEnd 55 --predEnd 55 \
+  --fileName altriva_morneth_incHist_constPred.json
+
+python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
+  --seed trend-fixed-v1-solnara-kyveth \
+  --histStart 65 --histEnd 45 --predEnd 45 \
+  --fileName solnara_kyveth_decHist_constPred.json
+
+echo "Done: regenerated 9 Experiment 2 datasets with numPred=10."

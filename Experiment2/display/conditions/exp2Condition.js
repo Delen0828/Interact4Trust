@@ -22,8 +22,38 @@ export default class Exp2Condition {
             cityALineCount: 1,
             cityBLineCount: 1
         };
+        this.isStaticBaseline = this.isStaticBaselineCondition();
         this.chartRenderer = new ChartRenderer(svgId, config, phase);
         this.interactionManager = new InteractionManager(svgId);
+        this.cityInteractionState = {
+            A: this.createCityInteractionState(),
+            B: this.createCityInteractionState()
+        };
+    }
+
+    isStaticBaselineCondition() {
+        const cityAType = this.conditionConfig?.cityAType || 'line';
+        const cityBType = this.conditionConfig?.cityBType || 'line';
+        const cityALineCount = Number(this.conditionConfig?.cityALineCount || 1);
+        const cityBLineCount = Number(this.conditionConfig?.cityBLineCount || 1);
+        const conditionId = String(this.conditionConfig?.id || '').toLowerCase();
+
+        const looksLikeBaselineById = conditionId.includes('baseline');
+        const looksLikeStaticByStructure = cityAType === 'line'
+            && cityBType === 'line'
+            && cityALineCount <= 1
+            && cityBLineCount <= 1;
+
+        return looksLikeBaselineById || looksLikeStaticByStructure;
+    }
+
+    createCityInteractionState() {
+        return {
+            hoverZone: null,
+            aggregatedLine: null,
+            confidenceBounds: null,
+            ensembleGroup: null
+        };
     }
 
     render() {
@@ -47,15 +77,15 @@ export default class Exp2Condition {
 
     renderCityPrediction(predictionGroup, city, type, lineCount) {
         if (type === 'region') {
-            // Render confidence bounds (PI band) first (underneath)
-            this.renderConfidenceBounds(predictionGroup, city);
+            // Render confidence bounds hidden initially; reveal on hover.
+            this.cityInteractionState[city].confidenceBounds = this.renderConfidenceBounds(predictionGroup, city);
             // Then aggregated line on top
             this.renderAggregatedLine(predictionGroup, city);
         } else {
             // type === 'line'
             if (lineCount > 1) {
-                // Render ensemble lines underneath
-                this.renderEnsembleLines(predictionGroup, city, lineCount);
+                // Render ensemble lines hidden initially; reveal on hover.
+                this.cityInteractionState[city].ensembleGroup = this.renderEnsembleLines(predictionGroup, city, lineCount);
             }
             // Aggregated line on top
             this.renderAggregatedLine(predictionGroup, city);
@@ -80,9 +110,13 @@ export default class Exp2Condition {
                 .datum(areaData)
                 .attr("class", `confidence-bounds confidence-bounds-${city.toLowerCase()}`)
                 .attr("fill", color)
-                .attr("opacity", this.interactionManager.getOpacityValues().shadeOpacity)
+                .attr("opacity", 0)
                 .attr("d", area);
+
+            return predictionGroup.select(`.confidence-bounds-${city.toLowerCase()}`);
         }
+
+        return null;
     }
 
     renderAggregatedLine(predictionGroup, city) {
@@ -97,12 +131,24 @@ export default class Exp2Condition {
 
             predictionGroup.append("path")
                 .datum(fullAggregatedData)
-                .attr("class", `aggregated-line real-time-aggregated stock-${city.toLowerCase()}-line`)
+                .attr("class", `aggregated-line real-time-aggregated aggregated-stock-${city.toLowerCase()}-line stock-${city.toLowerCase()}-line`)
                 .attr("stroke", color)
                 .attr("fill", "none")
                 .attr("stroke-width", 2)
                 .attr("stroke-dasharray", "5,5")
                 .attr("d", line);
+
+            this.cityInteractionState[city].aggregatedLine = predictionGroup.select(`.aggregated-stock-${city.toLowerCase()}-line`);
+            if (!this.isStaticBaseline) {
+                const hoverZone = this.interactionManager.createHoverZone(
+                    predictionGroup,
+                    fullAggregatedData,
+                    `hover-zone exp2-hover-zone-${city.toLowerCase()}`,
+                    line,
+                    20
+                );
+                this.cityInteractionState[city].hoverZone = hoverZone;
+            }
         }
     }
 
@@ -150,7 +196,7 @@ export default class Exp2Condition {
         // Create ensemble lines group
         const ensembleGroup = predictionGroup.append("g")
             .attr("class", `alternatives-group-${city.toLowerCase()}`)
-            .style("opacity", 1);
+            .style("opacity", 0);
 
         // Draw each scenario line
         rankedScenarioIds.forEach((scenarioId, index) => {
@@ -168,10 +214,44 @@ export default class Exp2Condition {
                     .attr("d", line);
             }
         });
+
+        return ensembleGroup;
     }
 
     setupInteractions() {
-        // No interactions for Experiment 2 - all static
+        if (this.isStaticBaseline) return;
+
+        const { shadeOpacity } = this.interactionManager.getOpacityValues();
+        ['A', 'B'].forEach((city) => {
+            const state = this.cityInteractionState[city];
+            if (!state || !state.hoverZone) return;
+
+            state.hoverZone
+                .on("mouseenter", () => {
+                    if (state.confidenceBounds) {
+                        state.confidenceBounds.transition()
+                            .duration(180)
+                            .attr("opacity", shadeOpacity);
+                    }
+                    if (state.ensembleGroup) {
+                        state.ensembleGroup.transition()
+                            .duration(180)
+                            .style("opacity", 1);
+                    }
+                })
+                .on("mouseleave", () => {
+                    if (state.confidenceBounds) {
+                        state.confidenceBounds.transition()
+                            .duration(180)
+                            .attr("opacity", 0);
+                    }
+                    if (state.ensembleGroup) {
+                        state.ensembleGroup.transition()
+                            .duration(180)
+                            .style("opacity", 0);
+                    }
+                });
+        });
     }
 
     cleanup() {

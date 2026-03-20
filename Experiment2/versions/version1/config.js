@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study - Experiment 2
-// Version 1: Single within-subject sequence (7 ordered variants)
+// Version 1: Single within-subject sequence (8 ordered variants)
 
 const ExperimentConfig = {
     studyType: 'single_version_within_subjects',
@@ -14,7 +14,7 @@ const ExperimentConfig = {
             cityBType: 'line',
             cityALineCount: 1,
             cityBLineCount: 1,
-            datasetFile: 'ranax_leer_city_baseline.json',
+            datasetFile: 'altriva_morneth_incHist_constPred.json',
             description: 'Both cities show only aggregated prediction lines.',
             instructions: 'Dashed lines show aggregated humidity forecasts for each city.'
         },
@@ -89,6 +89,18 @@ const ExperimentConfig = {
             datasetFile: 'dravik_solmere_constHist_decPred.json',
             description: 'Both cities show 6 sampled ensemble prediction lines plus aggregated line.',
             instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
+        },
+        {
+            id: 'condition_8_ensemble_7_lines',
+            name: 'ensemble_7_lines_per_city',
+            displayFormat: 'exp2_parameterized',
+            cityAType: 'line',
+            cityBType: 'line',
+            cityALineCount: 7,
+            cityBLineCount: 7,
+            datasetFile: 'solnara_kyveth_decHist_constPred.json',
+            description: 'Both cities show 7 sampled ensemble prediction lines plus aggregated line.',
+            instructions: 'Thin lines are sampled individual forecasts from 10 total predictions.'
         }
     ],
 
@@ -99,7 +111,8 @@ const ExperimentConfig = {
         'condition_4_ensemble_3_lines',
         'condition_5_ensemble_4_lines',
         'condition_6_ensemble_5_lines',
-        'condition_7_ensemble_6_lines'
+        'condition_7_ensemble_6_lines',
+        'condition_8_ensemble_7_lines'
     ],
 
     // Two-Phase Study Structure

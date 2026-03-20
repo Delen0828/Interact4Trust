@@ -1312,7 +1312,11 @@ var jsPsychPredictionTask = (function (jspsych) {
           .filter(Boolean);
 
         let descriptionText = instructionLines.find((line) => !/^hint\s*:/i.test(line)) || '';
-        const hintText = instructionLines.find((line) => /^hint\s*:/i.test(line)) || '';
+        let hintText = instructionLines.find((line) => /^hint\s*:/i.test(line)) || '';
+
+        if (!hintText && this.condition?.displayFormat === 'exp2_parameterized' && !this.isExp2StaticBaselineCondition()) {
+          hintText = 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+        }
 
         // Fallback if legacy text has no explicit Hint line.
         if (!descriptionText && instructionLines.length > 0) {
@@ -1398,8 +1402,14 @@ var jsPsychPredictionTask = (function (jspsych) {
         return { required: false, reason: null };
       }
 
+      if (this.isExp2StaticBaselineCondition()) {
+        return {
+          required: false,
+          reason: 'no_interaction_required_exp2_baseline'
+        };
+      }
+
       const nonInteractiveDisplayFormats = new Set([
-        'exp2_parameterized',    // Experiment 2 fixed static variants
         'aggregation_only',       // Condition 1
         'confidence_bounds',      // Condition 2
         'alternative_lines',      // Condition 3
@@ -1417,6 +1427,26 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
 
       return { required: true, reason: null };
+    }
+
+    isExp2StaticBaselineCondition() {
+      if (this.condition?.displayFormat !== 'exp2_parameterized') {
+        return false;
+      }
+
+      const cityAType = this.condition?.cityAType || 'line';
+      const cityBType = this.condition?.cityBType || 'line';
+      const cityALineCount = Number(this.condition?.cityALineCount || 1);
+      const cityBLineCount = Number(this.condition?.cityBLineCount || 1);
+      const conditionId = String(this.condition?.id || '').toLowerCase();
+
+      const looksLikeBaselineById = conditionId.includes('baseline');
+      const looksLikeStaticByStructure = cityAType === 'line' &&
+        cityBType === 'line' &&
+        cityALineCount <= 1 &&
+        cityBLineCount <= 1;
+
+      return looksLikeBaselineById || looksLikeStaticByStructure;
     }
 
     requiresCheckboxClickInteraction() {
