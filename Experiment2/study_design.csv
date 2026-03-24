@@ -1,2 +1,5 @@
-condition_name,city_A_type,city_B_type,city_A_line_number,city_B_line_number,participant_number
-single_version_sequence_baseline_ci_2_3_4_5_6,line,line,1,1,200
+version_id,parity,interaction_mode,ensemble_line_counts,notes
+even_hover,even,hover_show_one,"2|4|6|8","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
+odd_hover,odd,hover_show_one,"3|5|7|9","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
+even_click,even,click_show_one,"2|4|6|8","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
+odd_click,odd,click_show_one,"3|5|7|9","baseline first; CI + ensemble order shuffled; datasets randomized per condition"

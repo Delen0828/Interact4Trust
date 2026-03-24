@@ -1,72 +1,78 @@
 #!/usr/bin/env node
 
-// Generate all 12 version-specific config.js and index.html files from study_design.csv
+// Generate Experiment 2 version-specific config.js and index.html files from study_design.csv
 const fs = require('fs');
 const path = require('path');
 
-// Read base templates
-const baseConfigPath = path.join(__dirname, 'versions/version1/config.js');
+const rootDir = __dirname;
+const baseConfigPath = path.join(rootDir, 'versions/even_hover/config.js');
+const baseHtmlPath = path.join(rootDir, 'versions/even_hover/index.html');
+const csvPath = path.join(rootDir, 'study_design.csv');
+
 const baseConfig = fs.readFileSync(baseConfigPath, 'utf8');
-
-const baseHtmlPath = path.join(__dirname, 'versions/version1/index.html');
 const baseHtml = fs.readFileSync(baseHtmlPath, 'utf8');
+const csvContent = fs.readFileSync(csvPath, 'utf8').trim();
 
-// Read study design CSV
-const csvPath = path.join(__dirname, 'study_design.csv');
-const csvContent = fs.readFileSync(csvPath, 'utf8');
-const lines = csvContent.trim().split('\n');
-const header = lines[0].split(',');
+const rows = csvContent
+    .split('\n')
+    .slice(1)
+    .map((line) => {
+        const values = line.split(',').map((value) => value.replace(/^"|"$/g, '').trim());
+        return {
+            versionId: values[0],
+            parity: values[1],
+            interactionMode: values[2]
+        };
+    })
+    .filter((row) => row.versionId && row.parity && row.interactionMode);
 
-const conditions = lines.slice(1).map((line, index) => {
-    const values = line.split(',');
-    return {
-        version: index + 1,
-        conditionIndex: index,
-        name: values[0],
-        cityAType: values[1],
-        cityBType: values[2],
-        cityALineCount: parseInt(values[3]),
-        cityBLineCount: parseInt(values[4])
-    };
-});
+if (rows.length === 0) {
+    console.error('No version rows found in study_design.csv');
+    process.exit(1);
+}
 
-console.log(`Found ${conditions.length} conditions in study_design.csv\n`);
-
-conditions.forEach(({ version, conditionIndex, name }) => {
-    if (version === 1) {
-        console.log(`✓ Version ${version} already exists (${name})`);
+rows.forEach(({ versionId, parity, interactionMode }, index) => {
+    const versionKey = String(versionId || '').trim();
+    if (!versionKey) {
+        console.warn('Skipping row with empty version_id');
         return;
     }
 
-    // Create version directory
-    const versionDir = path.join(__dirname, `versions/version${version}`);
+    const versionNumber = index + 1;
+    const versionDir = path.join(rootDir, `versions/${versionKey}`);
     if (!fs.existsSync(versionDir)) {
         fs.mkdirSync(versionDir, { recursive: true });
     }
 
-    // Generate config content by replacing version-specific values
     let configContent = baseConfig;
-    configContent = configContent.replace(/version1/g, `version${version}`);
-    configContent = configContent.replace(/VERSION 1/g, `VERSION ${version}`);
-    configContent = configContent.replace(/Version 1:/g, `Version ${version}:`);
     configContent = configContent.replace(
-        /ExperimentConfig\.conditions\[0\]/g,
-        `ExperimentConfig.conditions[${conditionIndex}]`
+        /\/\/ Version [^:]+: .*/,
+        `// Version ${versionKey}: ${parity} x ${interactionMode}`
     );
 
-    fs.writeFileSync(path.join(versionDir, 'config.js'), configContent);
+    configContent = configContent.replace(
+        /const VERSION_SETTINGS = Object\.freeze\(\{[\s\S]*?\}\);/,
+        [
+            'const VERSION_SETTINGS = Object.freeze({',
+            `    versionId: '${versionKey}',`,
+            `    versionNumber: ${versionNumber},`,
+            `    parity: '${parity}',`,
+            `    interactionMode: '${interactionMode}'`,
+            '});'
+        ].join('\n')
+    );
 
-    // Generate HTML content
+    fs.writeFileSync(path.join(versionDir, 'config.js'), configContent, 'utf8');
+
     let htmlContent = baseHtml;
-    // Keep browser title generic to avoid leaking condition content
     htmlContent = htmlContent.replace(
-        /<title>Humidity Study - Version 1[^<]*<\/title>/g,
-        `<title>Humidity Study - Version ${version}</title>`
+        /<title>Humidity Study - [^<]+<\/title>/,
+        `<title>Humidity Study - ${versionKey}</title>`
     );
 
-    fs.writeFileSync(path.join(versionDir, 'index.html'), htmlContent);
+    fs.writeFileSync(path.join(versionDir, 'index.html'), htmlContent, 'utf8');
 
-    console.log(`✓ Generated Version ${version}: ${name}`);
+    console.log(`Generated ${versionKey} (${parity} x ${interactionMode})`);
 });
 
-console.log(`\n🎉 All ${conditions.length} version-specific files generated!`);
+console.log(`\nGenerated ${rows.length} Experiment 2 versions from study_design.csv`);

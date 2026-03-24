@@ -1,144 +1,91 @@
 // Humidity Prediction Visualization Trust Study - Experiment 2
-// Version 8: PI-2_cities_region_vs_region (Hardcoded)
+// Version odd_click: odd x click_show_one
+
+const VERSION_SETTINGS = Object.freeze({
+    versionId: 'odd_click',
+    versionNumber: 4,
+    parity: 'odd',
+    interactionMode: 'click_show_one'
+});
+
+function getInteractionHint(interactionMode) {
+    if (interactionMode === 'click_show_one') {
+        return 'Hint: Use the two city checkboxes below the chart to show or hide details.';
+    }
+    return 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+}
+
+function buildCiDescription(interactionMode) {
+    const interactionText = interactionMode === 'click_show_one'
+        ? 'Details are revealed with city checkboxes.'
+        : 'Details are revealed by hovering over each city line.';
+    return `Both cities show 95% confidence intervals around the aggregated line. ${interactionText}`;
+}
+
+function buildEnsembleDescription(lineCount, interactionMode) {
+    const interactionText = interactionMode === 'click_show_one'
+        ? 'Details are revealed with city checkboxes.'
+        : 'Details are revealed by hovering over each city line.';
+    return `Both cities show ${lineCount} sampled ensemble prediction lines plus aggregated line. ${interactionText}`;
+}
+
+function buildExp2Conditions(parity, interactionMode) {
+    const ensembleLineCounts = parity === 'odd' ? [3, 5, 7, 9] : [2, 4, 6, 8];
+    const interactionHint = getInteractionHint(interactionMode);
+
+    const baselineCondition = {
+        id: 'condition_1_baseline_aggregation',
+        name: `baseline_aggregation_only_${parity}_${interactionMode}`,
+        displayFormat: 'exp2_parameterized',
+        interactionMode,
+        cityAType: 'line',
+        cityBType: 'line',
+        cityALineCount: 1,
+        cityBLineCount: 1,
+        description: 'Both cities show only aggregated prediction lines.',
+        instructions: 'Dashed lines show aggregated humidity forecasts for each city.'
+    };
+
+    const ciCondition = {
+        id: 'condition_2_ci_95',
+        name: `ci_95_both_cities_${parity}_${interactionMode}`,
+        displayFormat: 'exp2_parameterized',
+        interactionMode,
+        cityAType: 'region',
+        cityBType: 'region',
+        cityALineCount: 0,
+        cityBLineCount: 0,
+        description: buildCiDescription(interactionMode),
+        instructions: `Shaded regions show 95% confidence intervals around each city's dashed aggregated forecast.<br><br>${interactionHint}`
+    };
+
+    const ensembleConditions = ensembleLineCounts.map((lineCount, index) => {
+        return {
+            id: `condition_${index + 3}_ensemble_${lineCount}_lines`,
+            name: `ensemble_${lineCount}_lines_per_city_${parity}_${interactionMode}`,
+            displayFormat: 'exp2_parameterized',
+            interactionMode,
+            cityAType: 'line',
+            cityBType: 'line',
+            cityALineCount: lineCount,
+            cityBLineCount: lineCount,
+            description: buildEnsembleDescription(lineCount, interactionMode),
+            instructions: `Thin lines are sampled individual forecasts from 10 total predictions.<br><br>${interactionHint}`
+        };
+    });
+
+    return [baselineCondition, ciCondition, ...ensembleConditions];
+}
+
+const versionConditions = buildExp2Conditions(VERSION_SETTINGS.parity, VERSION_SETTINGS.interactionMode);
 
 const ExperimentConfig = {
-    studyType: 'two_phase_between_subjects',
+    studyType: 'exp2_odd_even_click_hover_within_subjects',
 
-    // 12 Experimental Conditions for Experiment 2
-    conditions: [
-        {
-            id: 'condition_1_pi_region_region',
-            name: 'PI-2_cities_region_vs_region',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'region',
-            cityBType: 'region',
-            cityALineCount: 0,
-            cityBLineCount: 0,
-            description: 'Both cities show PI shaded region',
-            instructions: 'Shaded regions represent the range of possible humidity values.'
-        },
-        {
-            id: 'condition_2_pi_region_1line_A',
-            name: 'PI-1_city_region_vs_1_line_A_region',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'region',
-            cityBType: 'line',
-            cityALineCount: 0,
-            cityBLineCount: 1,
-            description: 'City A shows PI region, City B shows 1 aggregated line',
-            instructions: 'City A shaded region shows possible humidity range. City B dashed line shows the aggregated forecast.'
-        },
-        {
-            id: 'condition_3_pi_region_1line_B',
-            name: 'PI-1_city_region_vs_1_line_B_region',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'region',
-            cityALineCount: 1,
-            cityBLineCount: 0,
-            description: 'City A shows 1 aggregated line, City B shows PI region',
-            instructions: 'City A dashed line shows the aggregated forecast. City B shaded region shows possible humidity range.'
-        },
-        {
-            id: 'condition_4_baseline_1_1',
-            name: 'baseline_1_line_vs_1_line',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 1,
-            cityBLineCount: 1,
-            description: 'Both cities show 1 aggregated prediction line',
-            instructions: 'Dashed lines show the aggregated humidity forecast for each city.'
-        },
-        {
-            id: 'condition_5_ensemble_5_1_A',
-            name: 'ensemble_1_city_5_vs_1_A_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 5,
-            cityBLineCount: 1,
-            description: 'City A shows 5 ensemble lines, City B shows 1 line',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_6_ensemble_1_5_B',
-            name: 'ensemble_1_city_5_vs_1_B_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 1,
-            cityBLineCount: 5,
-            description: 'City A shows 1 line, City B shows 5 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_7_ensemble_10_1_A',
-            name: 'ensemble_1_city_10_vs_1_A_10',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 10,
-            cityBLineCount: 1,
-            description: 'City A shows 10 ensemble lines, City B shows 1 line',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_8_ensemble_1_10_B',
-            name: 'ensemble_1_city_10_vs_1_B_10',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 1,
-            cityBLineCount: 10,
-            description: 'City A shows 1 line, City B shows 10 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_9_ensemble_5_5',
-            name: 'ensemble_2_cities_5_vs_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 5,
-            cityBLineCount: 5,
-            description: 'Both cities show 5 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_10_ensemble_10_10',
-            name: 'ensemble_2_cities_10_vs_10',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 10,
-            cityBLineCount: 10,
-            description: 'Both cities show 10 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_11_ensemble_5_10_A',
-            name: 'ensemble_2_cities_5_vs_10_A_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 5,
-            cityBLineCount: 10,
-            description: 'City A shows 5 ensemble lines, City B shows 10 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        },
-        {
-            id: 'condition_12_ensemble_10_5_B',
-            name: 'ensemble_2_cities_5_vs_10_B_5',
-            displayFormat: 'exp2_parameterized',
-            cityAType: 'line',
-            cityBType: 'line',
-            cityALineCount: 10,
-            cityBLineCount: 5,
-            description: 'City A shows 10 ensemble lines, City B shows 5 ensemble lines',
-            instructions: 'Each line represents a prediction from one Forecast Agency.'
-        }
-    ],
+    // Within-subject conditions for this version
+    conditions: versionConditions,
+
+    variantSequence: versionConditions.map((condition) => condition.id),
 
     // Two-Phase Study Structure
     phases: {
@@ -292,10 +239,10 @@ const ExperimentConfig = {
         }
     },
 
-    // Condition Assignment - HARDCODED FOR VERSION 8
+    // Condition Assignment
     conditionAssignment: {
         getAssignedCondition: function() {
-            return ExperimentConfig.conditions[7];
+            return ExperimentConfig.conditions[0];
         }
     },
 
@@ -335,7 +282,7 @@ let ParticipantConfig = {
     phase1Complete: false,
     phase2Complete: false,
     visualizationLiteracyScore: null,
-    version: 'version8'
+    version: VERSION_SETTINGS.versionId
 };
 
 // Initialize participant configuration
@@ -343,9 +290,9 @@ function initializeParticipant(participantId) {
     ParticipantConfig.id = participantId || null;
     ParticipantConfig.assignedCondition = ExperimentConfig.conditionAssignment.getAssignedCondition();
     ParticipantConfig.startTime = new Date().toISOString();
-    ParticipantConfig.version = 'version8';
+    ParticipantConfig.version = VERSION_SETTINGS.versionId;
 
-    console.log('Participant initialized (VERSION 8):');
+    console.log(`Participant initialized (VERSION ${VERSION_SETTINGS.versionNumber}):`);
     console.log('  Condition:', ParticipantConfig.assignedCondition.name);
     console.log('  Version:', ParticipantConfig.version);
 

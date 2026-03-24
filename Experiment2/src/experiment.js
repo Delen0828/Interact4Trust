@@ -1,5 +1,5 @@
 // Humidity Prediction Visualization Trust Study
-// Eight-Round Within-Participants Study Design (Participant-Randomized Sequence)
+// Multi-Round Within-Participants Study Design (Participant-Randomized Sequence)
 
 let jsPsych;
 let timeline = [];
@@ -12,7 +12,9 @@ const defaultOrganizationLabelsBySlot = Object.freeze([
 	'Organization E',
 	'Organization F',
 	'Organization G',
-	'Organization H'
+	'Organization H',
+	'Organization I',
+	'Organization J'
 ]);
 const defaultRoundDatasetConfig = Object.freeze({
 	file: null,
@@ -74,7 +76,6 @@ const datasetConfigByFile = Object.freeze({
 const SAVE_MAX_ATTEMPTS = 3;
 const SAVE_MAX_DURATION_MS = 8000;
 const SAVE_RETRY_DELAY_MS = 350;
-const EXCLUDED_DATASET_FILES = Object.freeze(['ranax_leer_city_baseline.json']);
 let studyFinalizationInProgress = false;
 
 function normalizeDatasetFile(datasetFile) {
@@ -93,22 +94,48 @@ function shuffleArray(items) {
 	return shuffled;
 }
 
+function isBaselineCondition(condition) {
+	if (!condition || typeof condition !== 'object') return false;
+	const conditionId = String(condition.id || '').toLowerCase();
+	if (conditionId.includes('baseline')) {
+		return true;
+	}
+
+	const cityAType = condition.cityAType || 'line';
+	const cityBType = condition.cityBType || 'line';
+	const cityALineCount = Number(condition.cityALineCount || 1);
+	const cityBLineCount = Number(condition.cityBLineCount || 1);
+
+	return cityAType === 'line'
+		&& cityBType === 'line'
+		&& cityALineCount <= 1
+		&& cityBLineCount <= 1;
+}
+
 function buildRandomizedRoundPlan(sourceConditions) {
 	if (!Array.isArray(sourceConditions) || sourceConditions.length === 0) {
 		return [];
 	}
 
-	const excludedDatasetFiles = new Set(EXCLUDED_DATASET_FILES);
 	const copiedConditions = sourceConditions.map((condition) => ({ ...condition }));
+	const baselineCondition = copiedConditions.find((condition) => isBaselineCondition(condition)) || null;
+	const nonBaselineConditions = baselineCondition
+		? copiedConditions.filter((condition) => condition !== baselineCondition)
+		: copiedConditions;
+	const randomizedNonBaselineConditions = shuffleArray(nonBaselineConditions);
+	const randomizedConditions = baselineCondition
+		? [baselineCondition, ...randomizedNonBaselineConditions]
+		: randomizedNonBaselineConditions;
+
 	const configuredDatasetFiles = [
 		...new Set(
 			copiedConditions
 				.map((condition) => normalizeDatasetFile(condition?.datasetFile))
-				.filter((datasetFile) => datasetFile.length > 0 && !excludedDatasetFiles.has(datasetFile))
+				.filter((datasetFile) => datasetFile.length > 0)
 		)
 	];
 	const fallbackDatasetFiles = Object.keys(datasetConfigByFile).filter((datasetFile) => {
-		return !excludedDatasetFiles.has(datasetFile) && !configuredDatasetFiles.includes(datasetFile);
+		return !configuredDatasetFiles.includes(datasetFile);
 	});
 	const availableDatasetFiles = [...configuredDatasetFiles, ...fallbackDatasetFiles];
 
@@ -116,7 +143,6 @@ function buildRandomizedRoundPlan(sourceConditions) {
 		throw new Error('No eligible dataset files available for Experiment 2 randomization.');
 	}
 
-	const randomizedConditions = shuffleArray(copiedConditions);
 	const randomizedDatasets = shuffleArray(availableDatasetFiles);
 	return randomizedConditions.map((condition, index) => {
 		return {
@@ -228,9 +254,6 @@ function buildTimeline() {
 	if (orderedConditions.length === 0) {
 		throw new Error('No visualization variants found in ExperimentConfig.conditions.');
 	}
-	if (effectiveDatasetSequence.some((datasetFile) => EXCLUDED_DATASET_FILES.includes(datasetFile))) {
-		throw new Error('Disallowed baseline dataset was assigned to a condition.');
-	}
 
 	function escapeHtml(value) {
 		return String(value ?? '')
@@ -248,6 +271,21 @@ function buildTimeline() {
 	function getOrganizationBadgeHtml(organizationLabel) {
 		return `<span class="organization-badge">${escapeHtml(organizationLabel)}</span>`;
 	}
+
+	function getOrganizationListHtml(totalRounds) {
+		const badges = [];
+		for (let roundNumber = 1; roundNumber <= totalRounds; roundNumber += 1) {
+			badges.push(getOrganizationBadgeHtml(getOrganizationLabel(roundNumber)));
+		}
+
+		if (badges.length === 0) return '';
+		if (badges.length === 1) return badges[0];
+		if (badges.length === 2) return `${badges[0]} and ${badges[1]}`;
+		return `${badges.slice(0, -1).join(', ')}, and ${badges[badges.length - 1]}`;
+	}
+
+	const forecastConditionCount = orderedConditions.length;
+	const organizationListHtml = getOrganizationListHtml(forecastConditionCount);
 
 	function resolveRoundDatasetConfig(roundNumber, condition) {
 		const datasetFile = normalizeDatasetFile(condition?.datasetFile);
@@ -557,8 +595,8 @@ function buildTimeline() {
 	        </div>`,
 			`<div class="instructions">
 	            <h2>Humidity Context</h2>
-	            <p>You will complete <strong>8 forecast conditions</strong>. Each condition includes one prediction page, one interaction feedback page, trust questions, and interaction questions.</p>
-	            <p>These conditions are from different organizations: <span class="organization-badge">Organization A</span>, <span class="organization-badge">Organization B</span>, <span class="organization-badge">Organization C</span>, <span class="organization-badge">Organization D</span>, <span class="organization-badge">Organization E</span>, <span class="organization-badge">Organization F</span>, <span class="organization-badge">Organization G</span>, and <span class="organization-badge">Organization H</span>.</p>
+	            <p>You will complete <strong>${forecastConditionCount} forecast conditions</strong>. Each condition includes one prediction page, one interaction feedback page, trust questions, and interaction questions.</p>
+	            <p>These conditions are from different organizations: ${organizationListHtml}.</p>
 	        </div>`
 		],
 		show_clickable_nav: true,
@@ -840,7 +878,7 @@ function buildTimeline() {
 	                <p>This study investigated how different ways of presenting uncertainty in predictions affect trust and decision-making.</p>
 	                
 	                <h3>Study Background:</h3>
-	                <p>You completed eight forecast conditions from different organizations using different visualization styles.</p>
+	                <p>You completed ${forecastConditionCount} forecast conditions from different organizations using different visualization styles.</p>
 	                
 	                <p>The Humidity data you saw was synthetic (computer-generated) for research purposes.</p>
 	                

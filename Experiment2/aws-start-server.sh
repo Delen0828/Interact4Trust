@@ -25,14 +25,14 @@ npm run build
 # Ensure data directory exists and copy dataset files.
 mkdir -p dist/data
 cp synthetic_*.json dist/
-for dir in dist/version*; do
+for dir in dist/even_hover dist/odd_hover dist/even_click dist/odd_click; do
     [ -d "$dir" ] && cp dist/synthetic_*.json "$dir"/
 done
 
 # Ensure generated phase datasets are available in dist and each version folder.
 mkdir -p dist/generated
 cp generated/*.json dist/generated/
-for dir in dist/version*; do
+for dir in dist/even_hover dist/odd_hover dist/even_click dist/odd_click; do
     if [ -d "$dir" ]; then
         mkdir -p "$dir/generated"
         cp dist/generated/*.json "$dir/generated"/

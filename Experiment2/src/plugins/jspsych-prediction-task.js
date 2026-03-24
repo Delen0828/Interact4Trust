@@ -1315,7 +1315,9 @@ var jsPsychPredictionTask = (function (jspsych) {
         let hintText = instructionLines.find((line) => /^hint\s*:/i.test(line)) || '';
 
         if (!hintText && this.condition?.displayFormat === 'exp2_parameterized' && !this.isExp2StaticBaselineCondition()) {
-          hintText = 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+          hintText = this.isExp2ClickShowOneMode()
+            ? 'Hint: Use the two city checkboxes below the chart to show or hide details.'
+            : 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
         }
 
         // Fallback if legacy text has no explicit Hint line.
@@ -1451,7 +1453,18 @@ var jsPsychPredictionTask = (function (jspsych) {
 
     requiresCheckboxClickInteraction() {
       const displayFormat = this.condition?.displayFormat || null;
-      return displayFormat === 'click_show_one' || displayFormat === 'click_show_all';
+      if (displayFormat === 'click_show_one' || displayFormat === 'click_show_all') {
+        return true;
+      }
+      return this.isExp2ClickShowOneMode();
+    }
+
+    isExp2ClickShowOneMode() {
+      if (this.condition?.displayFormat !== 'exp2_parameterized') {
+        return false;
+      }
+      const interactionMode = String(this.condition?.interactionMode || '').toLowerCase();
+      return interactionMode === 'click_show_one';
     }
 
     isMeaningfulHoverTarget(target, rootContainer) {

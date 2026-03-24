@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Humidity Prediction Visualization Trust Study - Experiment 2
-# Single-Version Server Startup Script
+# Four-Version Server Startup Script
 
 # Build the project (creates multi-version structure in dist/)
 npm run build
@@ -11,12 +11,14 @@ mkdir -p dist/generated
 cp generated/*.json dist/generated/
 cp synthetic_*.json dist/
 
-# Copy datasets into version1 so relative paths also resolve there.
-if [ -d "dist/version1" ]; then
-  mkdir -p dist/version1/generated
-  cp dist/generated/*.json dist/version1/generated/
-  cp dist/synthetic_*.json dist/version1/
-fi
+# Copy datasets into version folders so relative paths also resolve there.
+for v in even_hover odd_hover even_click odd_click; do
+  if [ -d "dist/${v}" ]; then
+    mkdir -p "dist/${v}/generated"
+    cp dist/generated/*.json "dist/${v}/generated/"
+    cp dist/synthetic_*.json "dist/${v}/"
+  fi
+done
 
 # Start PHP server in dist directory
 cd dist && php -S localhost:8010
