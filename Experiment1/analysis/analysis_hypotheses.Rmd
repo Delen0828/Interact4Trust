@@ -224,9 +224,9 @@ map_interaction_group <- function(condition_number) {
 
 map_vis_type <- function(condition_number) {
   dplyr::case_when(
-    condition_number %in% c(2, 5, 19) ~ "CI",
+    condition_number %in% c(2, 5, 19) ~ "PI",
     condition_number %in% c(3, 4, 18) ~ "Ensemble",
-    condition_number %in% c(6, 9, 20) ~ "CI+Ensemble",
+    condition_number %in% c(6, 9, 20) ~ "PI + Ensemble",
     TRUE ~ NA_character_
   )
 }
@@ -347,7 +347,7 @@ h2_data <- trust_treatment %>%
   filter(is.finite(trust_composite)) %>%
   mutate(
     participant_id = factor(participant_id),
-    vis_type = factor(vis_type, levels = c("CI", "Ensemble", "CI+Ensemble")),
+    vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble")),
     interaction_group = factor(interaction_group, levels = c("Static", "Interactive", "Buggy"))
   ) %>%
   droplevels()
@@ -357,31 +357,72 @@ h3_data <- trust_treatment %>%
   filter(is.finite(interaction_composite)) %>%
   mutate(
     participant_id = factor(participant_id),
-    vis_type = factor(vis_type, levels = c("CI", "Ensemble", "CI+Ensemble")),
+    vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble")),
     interaction_group = factor(interaction_group, levels = c("Static", "Interactive", "Buggy"))
   ) %>%
   droplevels()
 
-prediction_treatment <- prediction_rows_raw %>%
+prediction_rows_prepared <- prediction_rows_raw %>%
   mutate(
+    phase = suppressWarnings(as.numeric(phase)),
     condition_number = suppressWarnings(as.numeric(condition_number)),
     vis_type = map_vis_type(condition_number),
     interaction_group = map_interaction_group(condition_number),
     confidence_rating = suppressWarnings(as.numeric(confidence_rating)),
     participant_id = as.character(participant_id)
   ) %>%
+  filter(is.finite(confidence_rating))
+
+h1_baseline <- prediction_rows_prepared %>%
+  filter(phase == 1) %>%
+  group_by(participant_id) %>%
+  summarise(
+    baseline_confidence = mean(confidence_rating, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(is.finite(baseline_confidence))
+
+h1_phase2_condition <- prediction_rows_prepared %>%
+  filter(phase %in% c(2, 3, 4)) %>%
   filter(condition_number %in% TREATMENT_CONDITIONS) %>%
-  filter(!is.na(vis_type), !is.na(interaction_group)) %>%
-  filter(participant_id %in% complete_participants) %>%
-  filter(is.finite(confidence_rating)) %>%
+  filter(!is.na(vis_type), !is.na(interaction_group), is.finite(condition_number)) %>%
+  group_by(participant_id, condition_number, condition_name, vis_type, interaction_group) %>%
+  summarise(
+    confidence_rating = mean(confidence_rating, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(is.finite(confidence_rating))
+
+h1_data <- h1_phase2_condition %>%
+  inner_join(h1_baseline, by = "participant_id") %>%
   mutate(
+    confidence_shift = confidence_rating - baseline_confidence,
     participant_id = factor(participant_id),
-    vis_type = factor(vis_type, levels = c("CI", "Ensemble", "CI+Ensemble")),
+    vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble")),
     interaction_group = factor(interaction_group, levels = c("Static", "Interactive", "Buggy"))
   ) %>%
+  filter(is.finite(confidence_shift)) %>%
   droplevels()
 
-h1_data <- prediction_treatment
+h1_summary <- h1_data %>%
+  group_by(vis_type) %>%
+  summarise(
+    n = n_distinct(participant_id),
+    mean_shift = mean(confidence_shift, na.rm = TRUE),
+    sd_shift = sd(confidence_shift, na.rm = TRUE),
+    se_shift = sd_shift / sqrt(pmax(n, 1)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    group_category = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble"), ordered = TRUE)
+  ) %>%
+  arrange(group_category)
+
+h1_data <- h1_data %>%
+  mutate(
+    vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble"))
+  ) %>%
+  droplevels()
 ```
 
 ## Sample Flow and Cell Counts
@@ -420,7 +461,7 @@ h1_cell_counts <- h1_data %>%
 h2_cell_counts <- h2_data %>%
   count(interaction_group, vis_type, name = "n")
 
-knitr::kable(h1_cell_counts, caption = "H1 Cell Counts: Confidence by Visualization Family")
+knitr::kable(h1_cell_counts, caption = "H1 Cell Counts: Confidence Shift Rows by Visualization Family")
 knitr::kable(h2_cell_counts, caption = "H2/H3 Cell Counts: Trust-Survey Rows by Interaction Group and Visualization Family")
 ```
 
@@ -450,82 +491,108 @@ knitr::kable(range_check, digits = 2, caption = "Likert Range Checks After 0-6 -
 knitr::kable(condition_mapping_check, caption = "Condition Mapping Check")
 ```
 
-## H1: Confidence by Visualization Family
+## H1: Confidence Shift from Baseline by Visualization Family
 
 ```{r h1-model}
-h1_model_data <- set_sum_contrasts(h1_data, factors = c("vis_type"))
-
-h1_model <- lmer(
-  confidence_rating ~ vis_type + (1 | participant_id),
-  data = h1_model_data,
-  REML = TRUE
-)
-
-h1_singular <- lme4::isSingular(h1_model, tol = 1e-5)
-h1_anova <- anova(h1_model, type = 3)
-
-h1_emm <- emmeans(h1_model, ~ vis_type)
-h1_planned <- contrast(
-  h1_emm,
-  method = list("((CI + CI+Ensemble)/2) - Ensemble" = c(0.5, -1, 0.5)),
-  adjust = "none"
-)
-
-h1_planned_table <- augment_contrast_table(
-  summary(h1_planned, infer = c(TRUE, TRUE), level = 1 - params$alpha),
-  family_label = "H1",
-  alpha = params$alpha,
-  adjust_method = params$p_adjust_method
-)
-
-h1_planned_table <- h1_planned_table %>%
-  mutate(
-    expected_direction = "Negative estimate supports hypothesis",
-    observed_direction = ifelse(estimate < 0, "Negative", "Positive/Zero")
+h1_participant_means <- h1_data %>%
+  group_by(participant_id, vis_type) %>%
+  summarise(
+    baseline_confidence = mean(baseline_confidence, na.rm = TRUE),
+    treatment_confidence = mean(confidence_rating, na.rm = TRUE),
+    confidence_shift = mean(confidence_shift, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  filter(
+    is.finite(baseline_confidence),
+    is.finite(treatment_confidence),
+    is.finite(confidence_shift)
   )
 
-h1_sensitivity <- NULL
-h1_sensitivity_table <- NULL
-if (h1_singular) {
-  h1_sensitivity <- lm(confidence_rating ~ vis_type + participant_id, data = h1_data)
-  h1_sensitivity_table <- as.data.frame(
-    summary(
-      contrast(
-        emmeans(h1_sensitivity, ~ vis_type),
-        method = list("((CI + CI+Ensemble)/2) - Ensemble" = c(0.5, -1, 0.5)),
-        adjust = "none"
-      ),
-      infer = c(TRUE, TRUE),
-      level = 1 - params$alpha
-    )
-  ) %>%
-    mutate(
-      family = "H1 sensitivity (participant fixed effects)",
-      p_adjusted = p.adjust(p.value, method = params$p_adjust_method)
-    )
+run_h1_paired_t <- function(df, vis_label, alpha) {
+  dat <- df %>%
+    filter(vis_type == vis_label)
+
+  if (nrow(dat) < 2) {
+    return(data.frame(
+      vis_type = vis_label,
+      n = nrow(dat),
+      mean_baseline = NA_real_,
+      mean_treatment = NA_real_,
+      mean_diff = NA_real_,
+      statistic = NA_real_,
+      df = NA_real_,
+      p.value = NA_real_,
+      lower.CL = NA_real_,
+      upper.CL = NA_real_,
+      stringsAsFactors = FALSE
+    ))
+  }
+
+  tt <- t.test(
+    dat$treatment_confidence,
+    dat$baseline_confidence,
+    paired = TRUE,
+    alternative = "two.sided",
+    conf.level = 1 - alpha
+  )
+
+  data.frame(
+    vis_type = vis_label,
+    n = nrow(dat),
+    mean_baseline = mean(dat$baseline_confidence, na.rm = TRUE),
+    mean_treatment = mean(dat$treatment_confidence, na.rm = TRUE),
+    mean_diff = unname(tt$estimate),
+    statistic = unname(tt$statistic),
+    df = unname(tt$parameter),
+    p.value = tt$p.value,
+    lower.CL = tt$conf.int[1],
+    upper.CL = tt$conf.int[2],
+    stringsAsFactors = FALSE
+  )
 }
 
-h1_anova
-knitr::kable(h1_planned_table, digits = 4, caption = "H1 Planned Contrast (Holm-adjusted within H1)")
-if (!is.null(h1_sensitivity_table)) {
-  knitr::kable(h1_sensitivity_table, digits = 4, caption = "H1 Sensitivity Contrast (participant fixed effects)")
-}
+h1_vis_levels <- c("PI", "Ensemble", "PI + Ensemble")
+h1_paired_table <- bind_rows(
+  lapply(h1_vis_levels, function(v) run_h1_paired_t(h1_participant_means, v, params$alpha))
+) %>%
+  mutate(
+    p_adjusted = p.adjust(p.value, method = params$p_adjust_method),
+    alpha = params$alpha,
+    expected_direction = "Two-sided difference from baseline",
+    observed_direction = case_when(
+      mean_diff > 0 ~ "Positive",
+      mean_diff < 0 ~ "Negative",
+      TRUE ~ "Zero"
+    )
+  )
+
+h1_singular <- NA
+
+knitr::kable(h1_summary, digits = 4, caption = "H1 Summary: Confidence Shift from Baseline by Visualization Family")
+knitr::kable(h1_paired_table, digits = 4, caption = "H1 Paired t-tests: Confidence vs Baseline by Visualization Family (Holm-adjusted within H1)")
 ```
 
 ```{r h1-plot, fig.width=7, fig.height=4.5}
-h1_plot_data <- as.data.frame(
-  summary(h1_emm, infer = c(TRUE, TRUE), level = 1 - params$alpha)
-)
+h1_plot_data <- h1_summary %>%
+  mutate(vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble"), ordered = TRUE))
 
-ggplot(h1_plot_data, aes(x = vis_type, y = emmean)) +
-  geom_point(size = 3, color = "#2C3E50") +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = 0.15, color = "#2C3E50") +
-  labs(
-    title = "H1: Confidence by Visualization Family",
-    x = "Visualization family",
-    y = "Estimated mean confidence (95% CI)"
+ggplot(h1_plot_data, aes(y = vis_type, x = mean_shift)) +
+  geom_col(fill = "#9CA3AF", width = 0.72) +
+  geom_errorbarh(
+    aes(xmin = mean_shift - se_shift, xmax = mean_shift + se_shift),
+    height = 0.18,
+    color = "#4B5563",
+    linewidth = 0.8
   ) +
-  theme_minimal(base_size = 12)
+  geom_vline(xintercept = 0, color = "#6c757d", linetype = "dashed", linewidth = 0.7) +
+  scale_x_continuous(limits = c(-1, 1)) +
+  labs(
+    title = "H1: Confidence Shift from Baseline by Visualization Family (mean +/- SE)",
+    x = "Confidence shift from baseline",
+    y = "Visualization family"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(panel.grid = element_blank())
 ```
 
 ## H2: Trust Composite and Interaction Availability by Visualization Family
@@ -561,6 +628,21 @@ h2_planned_table <- augment_contrast_table(
     observed_direction = ifelse(estimate > 0, "Positive", "Negative/Zero")
   )
 
+h2_condition_means <- as.data.frame(
+  summary(emmeans(h2_model, ~ interaction_group * vis_type), infer = FALSE)
+) %>%
+  mutate(
+    condition = paste(interaction_group, vis_type)
+  )
+
+h2_interaction_means <- as.data.frame(
+  summary(emmeans(h2_model, ~ interaction_group), infer = FALSE)
+)
+
+h2_vis_means <- as.data.frame(
+  summary(emmeans(h2_model, ~ vis_type), infer = FALSE)
+)
+
 h2_sensitivity <- NULL
 h2_sensitivity_table <- NULL
 if (h2_singular) {
@@ -588,25 +670,60 @@ if (h2_singular) {
 
 h2_anova
 knitr::kable(h2_planned_table, digits = 4, caption = "H2 Planned Contrasts (Holm-adjusted within H2)")
+knitr::kable(
+  h2_condition_means %>%
+    transmute(
+      condition,
+      interaction_group,
+      vis_type,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H2 Estimated Means by Individual Condition (Interaction x Visualization)"
+)
+knitr::kable(
+  h2_interaction_means %>%
+    transmute(
+      interaction_group,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H2 Estimated Means by Interaction Group"
+)
+knitr::kable(
+  h2_vis_means %>%
+    transmute(
+      vis_type,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H2 Estimated Means by Visualization Family"
+)
 if (!is.null(h2_sensitivity_table)) {
   knitr::kable(h2_sensitivity_table, digits = 4, caption = "H2 Sensitivity Contrasts (participant fixed effects)")
 }
 ```
 
 ```{r h2-plot, fig.width=8, fig.height=4.8}
-h2_plot_data <- as.data.frame(
-  summary(emmeans(h2_model, ~ interaction_group | vis_type), infer = c(TRUE, TRUE), level = 1 - params$alpha)
-)
+h2_plot_data <- h2_condition_means %>%
+  mutate(
+    ymin = pmax(1, emmean - SE),
+    ymax = pmin(7, emmean + SE)
+  )
 
 ggplot(h2_plot_data, aes(x = interaction_group, y = emmean, group = 1)) +
   geom_point(size = 2.8, color = "#1B5E20") +
   geom_line(color = "#1B5E20") +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = 0.15, color = "#1B5E20") +
+  geom_errorbar(aes(ymin = ymin, ymax = ymax), width = 0.15, color = "#1B5E20") +
   facet_wrap(~ vis_type, nrow = 1) +
+  scale_y_continuous(limits = c(1, 7), breaks = 1:7) +
   labs(
     title = "H2: Trust Composite by Interaction Group Within Visualization Family",
     x = "Interaction group",
-    y = "Estimated mean trust composite (95% CI)"
+    y = "Estimated mean trust composite (+/- SE)"
   ) +
   theme_minimal(base_size = 12)
 ```
@@ -617,7 +734,7 @@ ggplot(h2_plot_data, aes(x = interaction_group, y = emmean, group = 1)) +
 h3_model_data <- set_sum_contrasts(h3_data, factors = c("interaction_group", "vis_type"))
 
 h3_model <- lmer(
-  interaction_composite ~ interaction_group + vis_type + (1 | participant_id),
+  interaction_composite ~ interaction_group * vis_type + (1 | participant_id),
   data = h3_model_data,
   REML = TRUE
 )
@@ -643,6 +760,21 @@ h3_planned_table <- augment_contrast_table(
   adjust_method = params$p_adjust_method
 )
 
+h3_condition_means <- as.data.frame(
+  summary(emmeans(h3_model, ~ interaction_group * vis_type), infer = FALSE)
+) %>%
+  mutate(
+    condition = paste(interaction_group, vis_type)
+  )
+
+h3_interaction_means <- as.data.frame(
+  summary(emmeans(h3_model, ~ interaction_group), infer = FALSE)
+)
+
+h3_vis_means <- as.data.frame(
+  summary(emmeans(h3_model, ~ vis_type), infer = FALSE)
+)
+
 h3_resid_sd <- sigma(h3_model)
 h3_planned_table <- h3_planned_table %>%
   mutate(
@@ -666,7 +798,7 @@ h3_sensitivity <- NULL
 h3_sensitivity_table <- NULL
 if (h3_singular) {
   h3_sensitivity <- lm(
-    interaction_composite ~ interaction_group + vis_type + participant_id,
+    interaction_composite ~ interaction_group * vis_type + participant_id,
     data = h3_data
   )
   h3_sensitivity_table <- as.data.frame(
@@ -696,23 +828,58 @@ knitr::kable(
   digits = 4,
   caption = "H3 Planned Contrasts with Approximate Standardized Effects (Holm-adjusted within H3)"
 )
+knitr::kable(
+  h3_condition_means %>%
+    transmute(
+      condition,
+      interaction_group,
+      vis_type,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H3 Estimated Means by Individual Condition (Interaction x Visualization)"
+)
+knitr::kable(
+  h3_interaction_means %>%
+    transmute(
+      interaction_group,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H3 Estimated Means by Interaction Group"
+)
+knitr::kable(
+  h3_vis_means %>%
+    transmute(
+      vis_type,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H3 Estimated Means by Visualization Family"
+)
 if (!is.null(h3_sensitivity_table)) {
   knitr::kable(h3_sensitivity_table, digits = 4, caption = "H3 Sensitivity Contrasts (participant fixed effects)")
 }
 ```
 
 ```{r h3-plot, fig.width=7, fig.height=4.5}
-h3_plot_data <- as.data.frame(
-  summary(h3_emm, infer = c(TRUE, TRUE), level = 1 - params$alpha)
-)
+h3_plot_data <- h3_interaction_means %>%
+  mutate(
+    ymin = pmax(1, emmean - SE),
+    ymax = pmin(7, emmean + SE)
+  )
 
 ggplot(h3_plot_data, aes(x = interaction_group, y = emmean)) +
   geom_point(size = 3, color = "#4A148C") +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL), width = 0.15, color = "#4A148C") +
+  geom_errorbar(aes(ymin = ymin, ymax = ymax), width = 0.15, color = "#4A148C") +
+  scale_y_continuous(limits = c(1, 7), breaks = 1:7) +
   labs(
     title = "H3: Interaction Experience Composite by Interaction Group",
     x = "Interaction group",
-    y = "Estimated mean interaction composite (95% CI)"
+    y = "Estimated mean interaction composite (+/- SE)"
   ) +
   theme_minimal(base_size = 12)
 ```
@@ -729,9 +896,9 @@ model_checks <- data.frame(
     dplyr::n_distinct(h3_data$participant_id)
   ),
   vis_levels_present = c(
-    all(c("CI", "Ensemble", "CI+Ensemble") %in% levels(h1_data$vis_type)),
-    all(c("CI", "Ensemble", "CI+Ensemble") %in% levels(h2_data$vis_type)),
-    all(c("CI", "Ensemble", "CI+Ensemble") %in% levels(h3_data$vis_type))
+    all(c("PI", "Ensemble", "PI + Ensemble") %in% levels(h1_data$vis_type)),
+    all(c("PI", "Ensemble", "PI + Ensemble") %in% levels(h2_data$vis_type)),
+    all(c("PI", "Ensemble", "PI + Ensemble") %in% levels(h3_data$vis_type))
   ),
   interaction_levels_present = c(
     all(c("Static", "Interactive", "Buggy") %in% levels(h1_data$interaction_group)),
@@ -744,3 +911,37 @@ model_checks <- data.frame(
 knitr::kable(model_checks, caption = "Model Execution Validation")
 ```
 
+## Additional ANOVA: Visualization Family Within Interactive Availability Only
+
+```{r interactive-only-vis-anova}
+interactive_vis_data <- h2_data %>%
+  filter(interaction_group == "Interactive") %>%
+  mutate(
+    vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble"))
+  ) %>%
+  droplevels()
+
+if (nrow(interactive_vis_data) == 0) {
+  stop("No rows found for interaction_group == 'Interactive'.")
+}
+
+interactive_vis_model <- lm(trust_composite ~ vis_type, data = interactive_vis_data)
+interactive_vis_anova <- anova(interactive_vis_model)
+
+interactive_vis_summary <- interactive_vis_data %>%
+  group_by(vis_type) %>%
+  summarise(
+    n = n(),
+    mean = mean(trust_composite, na.rm = TRUE),
+    sd = sd(trust_composite, na.rm = TRUE),
+    se = sd / sqrt(pmax(n, 1)),
+    .groups = "drop"
+  )
+
+interactive_vis_anova
+knitr::kable(
+  interactive_vis_summary,
+  digits = 4,
+  caption = "Interactive-only Trust Composite by Visualization Family"
+)
+```
