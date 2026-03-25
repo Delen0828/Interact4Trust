@@ -6,9 +6,12 @@ const path = require('path');
 const versionsDir = path.join(__dirname, 'versions');
 
 const VERSION_DEFINITIONS = Object.freeze([
-  { versionId: 'version_EP', techniqueToken: 'EP', techniqueKey: 'ensemble_plot' },
-  { versionId: 'version_CI', techniqueToken: 'CI', techniqueKey: 'confidence_interval' },
-  { versionId: 'version_CIEP', techniqueToken: 'CIEP', techniqueKey: 'combined_plot' }
+  { versionId: 'version_EP', techniqueToken: 'EP', techniqueKey: 'ensemble_plot', datasetPoolKey: 'non_md5', datasetVariant: 'non_md5' },
+  { versionId: 'version_CI', techniqueToken: 'CI', techniqueKey: 'confidence_interval', datasetPoolKey: 'non_md5', datasetVariant: 'non_md5' },
+  { versionId: 'version_CIEP', techniqueToken: 'CIEP', techniqueKey: 'combined_plot', datasetPoolKey: 'non_md5', datasetVariant: 'non_md5' },
+  { versionId: 'version_EP_md5', techniqueToken: 'EP', techniqueKey: 'ensemble_plot', datasetPoolKey: 'md5', datasetVariant: 'md5' },
+  { versionId: 'version_CI_md5', techniqueToken: 'CI', techniqueKey: 'confidence_interval', datasetPoolKey: 'md5', datasetVariant: 'md5' },
+  { versionId: 'version_CIEP_md5', techniqueToken: 'CIEP', techniqueKey: 'combined_plot', datasetPoolKey: 'md5', datasetVariant: 'md5' }
 ]);
 
 function buildIndexHtml(versionId) {
@@ -86,7 +89,7 @@ existingEntries.forEach((entry) => {
   removeDirectoryRecursive(path.join(versionsDir, entry.name));
 });
 
-// Generate the 3 technique-specific version folders.
+// Generate the version folders.
 targetVersionIds.forEach((versionId) => {
   const versionDir = path.join(versionsDir, versionId);
   ensureDirectory(versionDir);
@@ -100,6 +103,8 @@ const manifest = VERSION_DEFINITIONS.map((definition) => {
     version_id: definition.versionId,
     technique_token: definition.techniqueToken,
     technique_key: definition.techniqueKey,
+    dataset_pool_key: definition.datasetPoolKey,
+    dataset_variant: definition.datasetVariant,
     fixed_baseline_phase: {
       phase_key: 'phase1',
       condition_id: 'condition_1_baseline',

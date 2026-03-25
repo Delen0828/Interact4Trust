@@ -20,13 +20,16 @@ const INTERACTION_SEQUENCE_KEYS = Object.freeze([
 function parseVersionDescriptor(versionId) {
     if (!versionId) return null;
     const normalized = String(versionId).trim().toUpperCase();
-    const match = normalized.match(/^VERSION_(EP|CI|CIEP)$/);
+    const match = normalized.match(/^VERSION_(EP|CI|CIEP)(?:_(MD5))?$/);
     if (!match) return null;
 
     const techniqueToken = match[1];
+    const isMd5Variant = Boolean(match[2]);
     return {
-        versionId: `version_${techniqueToken}`,
-        techniqueToken
+        versionId: `version_${techniqueToken}${isMd5Variant ? '_md5' : ''}`,
+        techniqueToken,
+        datasetPoolKey: isMd5Variant ? 'md5' : 'non_md5',
+        datasetVariant: isMd5Variant ? 'md5' : 'non_md5'
     };
 }
 
@@ -438,6 +441,157 @@ const ExperimentConfig = {
         }
     },
 
+    datasetPools: {
+        non_md5: [
+            {
+                key: 'dataset1',
+                file: 'ranax_leer_city_baseline.json',
+                organization: 'Organization A',
+                cityA: 'Ranax',
+                cityB: 'Leer City',
+                colors: { cityA: '#1D4ED8', cityB: '#C2410C' }
+            },
+            {
+                key: 'dataset2',
+                file: 'virexa_talmori_incHist_incPred.json',
+                organization: 'Organization B',
+                cityA: 'Virexa',
+                cityB: 'Talmori',
+                colors: { cityA: '#2563EB', cityB: '#D97706' }
+            },
+            {
+                key: 'dataset3',
+                file: 'qelvane_rostiva_incHist_decPred.json',
+                organization: 'Organization C',
+                cityA: 'Qelvane',
+                cityB: 'Rostiva',
+                colors: { cityA: '#059669', cityB: '#DC2626' }
+            },
+            {
+                key: 'dataset4',
+                file: 'nexari_pulveth_decHist_incPred.json',
+                organization: 'Organization D',
+                cityA: 'Nexari',
+                cityB: 'Pulveth',
+                colors: { cityA: '#7C3AED', cityB: '#0EA5E9' }
+            },
+            {
+                key: 'dataset5',
+                file: 'zorvani_kelthar_decHist_decPred.json',
+                organization: 'Organization E',
+                cityA: 'Zorvani',
+                cityB: 'Kelthar',
+                colors: { cityA: '#BE123C', cityB: '#0F766E' }
+            },
+            {
+                key: 'dataset6',
+                file: 'lumora_vexlin_constHist_incPred.json',
+                organization: 'Organization F',
+                cityA: 'Lumora',
+                cityB: 'Vexlin',
+                colors: { cityA: '#0369A1', cityB: '#B45309' }
+            },
+            {
+                key: 'dataset7',
+                file: 'dravik_solmere_constHist_decPred.json',
+                organization: 'Organization G',
+                cityA: 'Dravik',
+                cityB: 'Solmere',
+                colors: { cityA: '#7E22CE', cityB: '#0E7490' }
+            },
+            {
+                key: 'dataset8',
+                file: 'altriva_morneth_incHist_constPred.json',
+                organization: 'Organization H',
+                cityA: 'Altriva',
+                cityB: 'Morneth',
+                colors: { cityA: '#1E3A8A', cityB: '#B45309' }
+            },
+            {
+                key: 'dataset9',
+                file: 'solnara_kyveth_decHist_constPred.json',
+                organization: 'Organization I',
+                cityA: 'Solnara',
+                cityB: 'Kyveth',
+                colors: { cityA: '#BE123C', cityB: '#155E75' }
+            }
+        ],
+        md5: [
+            {
+                key: 'dataset1',
+                file: 'ranax_leer_city_baseline_md5.json',
+                organization: 'Organization A',
+                cityA: 'Ranax',
+                cityB: 'Leer City',
+                colors: { cityA: '#1D4ED8', cityB: '#C2410C' }
+            },
+            {
+                key: 'dataset2',
+                file: 'virexa_talmori_incHist_incPred_md5.json',
+                organization: 'Organization B',
+                cityA: 'Virexa',
+                cityB: 'Talmori',
+                colors: { cityA: '#2563EB', cityB: '#D97706' }
+            },
+            {
+                key: 'dataset3',
+                file: 'qelvane_rostiva_incHist_decPred_md5.json',
+                organization: 'Organization C',
+                cityA: 'Qelvane',
+                cityB: 'Rostiva',
+                colors: { cityA: '#059669', cityB: '#DC2626' }
+            },
+            {
+                key: 'dataset4',
+                file: 'nexari_pulveth_decHist_incPred_md5.json',
+                organization: 'Organization D',
+                cityA: 'Nexari',
+                cityB: 'Pulveth',
+                colors: { cityA: '#7C3AED', cityB: '#0EA5E9' }
+            },
+            {
+                key: 'dataset5',
+                file: 'zorvani_kelthar_decHist_decPred_md5.json',
+                organization: 'Organization E',
+                cityA: 'Zorvani',
+                cityB: 'Kelthar',
+                colors: { cityA: '#BE123C', cityB: '#0F766E' }
+            },
+            {
+                key: 'dataset6',
+                file: 'lumora_vexlin_constHist_incPred_md5.json',
+                organization: 'Organization F',
+                cityA: 'Lumora',
+                cityB: 'Vexlin',
+                colors: { cityA: '#0369A1', cityB: '#B45309' }
+            },
+            {
+                key: 'dataset7',
+                file: 'dravik_solmere_constHist_decPred_md5.json',
+                organization: 'Organization G',
+                cityA: 'Dravik',
+                cityB: 'Solmere',
+                colors: { cityA: '#7E22CE', cityB: '#0E7490' }
+            },
+            {
+                key: 'dataset8',
+                file: 'altriva_morneth_incHist_constPred_md5.json',
+                organization: 'Organization H',
+                cityA: 'Altriva',
+                cityB: 'Morneth',
+                colors: { cityA: '#1E3A8A', cityB: '#B45309' }
+            },
+            {
+                key: 'dataset9',
+                file: 'solnara_kyveth_decHist_constPred_md5.json',
+                organization: 'Organization I',
+                cityA: 'Solnara',
+                cityB: 'Kyveth',
+                colors: { cityA: '#BE123C', cityB: '#155E75' }
+            }
+        ]
+    },
+
     predictionTask: {
         question: 'The probability that the humidity of City A will be higher than City B on 06/30 is ____%',
         confidenceScale: {
@@ -587,6 +741,7 @@ const ExperimentConfig = {
             }
 
             const techniqueKey = TECHNIQUE_TOKEN_TO_KEY[parsedDescriptor.techniqueToken];
+            const datasetPoolKey = parsedDescriptor.datasetPoolKey || 'non_md5';
             const phaseAssignments = {};
             const phaseAssignmentLog = {};
             const phaseDatasetAssignments = {};
@@ -617,32 +772,38 @@ const ExperimentConfig = {
                 }))
             ];
 
-            const datasetPool = ExperimentConfig.phaseDesign.phaseOrder.map((phaseKey, index) => {
-                const dataset = cloneDatasetConfig(ExperimentConfig.phaseDatasets[phaseKey]);
+            const configuredDatasetPool = ExperimentConfig.datasetPools?.[datasetPoolKey];
+            if (!Array.isArray(configuredDatasetPool) || configuredDatasetPool.length === 0) {
+                throw new Error(`Missing configured dataset pool: ${datasetPoolKey}.`);
+            }
+
+            const datasetPool = configuredDatasetPool.map((poolEntry, index) => {
+                const dataset = cloneDatasetConfig(poolEntry);
                 if (!dataset || !dataset.file) {
-                    throw new Error(`Missing dataset configuration for ${phaseKey}.`);
+                    throw new Error(`Missing dataset configuration in pool ${datasetPoolKey} at index ${index + 1}.`);
                 }
                 return {
-                    sourcePhaseKey: phaseKey,
+                    sourcePhaseKey: poolEntry.key || `dataset${index + 1}`,
                     sourcePhaseIndex: index + 1,
                     dataset
                 };
             });
 
-            if (datasetPool.length !== datasetAssignmentOrder.length) {
+            if (datasetPool.length < datasetAssignmentOrder.length) {
                 throw new Error(
-                    `Dataset pool size (${datasetPool.length}) must match assigned conditions (${datasetAssignmentOrder.length}).`
+                    `Dataset pool size (${datasetPool.length}) must be at least assigned conditions (${datasetAssignmentOrder.length}).`
                 );
             }
 
             const shuffledDatasetPool = deterministicShuffle(
                 datasetPool,
-                `${participantId || 'anon'}|${parsedDescriptor.versionId}|experiment3|dataset-assignment`
+                `${participantId || 'anon'}|${parsedDescriptor.versionId}|experiment3|${datasetPoolKey}|dataset-assignment`
             );
+            const selectedDatasetPool = shuffledDatasetPool.slice(0, datasetAssignmentOrder.length);
 
             const datasetByConditionId = {};
             datasetAssignmentOrder.forEach((entry, index) => {
-                datasetByConditionId[entry.condition.id] = shuffledDatasetPool[index];
+                datasetByConditionId[entry.condition.id] = selectedDatasetPool[index];
             });
 
             // Step 2: keep baseline first and shuffle all interaction conditions.
@@ -663,6 +824,7 @@ const ExperimentConfig = {
                 interaction_type: 'baseline',
                 interaction_order_index: 0,
                 technique_token: parsedDescriptor.techniqueToken,
+                dataset_pool_key: datasetPoolKey,
                 dataset_source_phase_key: baselineDatasetAssignment.sourcePhaseKey,
                 dataset_file: baselineDatasetAssignment.dataset.file
             };
@@ -684,6 +846,7 @@ const ExperimentConfig = {
                     interaction_type: interactionKey,
                     interaction_order_index: slotIndex + 1,
                     technique_token: parsedDescriptor.techniqueToken,
+                    dataset_pool_key: datasetPoolKey,
                     dataset_source_phase_key: datasetAssignment.sourcePhaseKey,
                     dataset_file: datasetAssignment.dataset.file
                 };
@@ -694,12 +857,15 @@ const ExperimentConfig = {
                 versionDescriptor: {
                     technique_token: parsedDescriptor.techniqueToken,
                     technique_key: techniqueKey,
+                    dataset_pool_key: datasetPoolKey,
+                    dataset_variant: parsedDescriptor.datasetVariant,
                     interaction_order: interactionOrder,
                     dataset_assignment: datasetAssignmentOrder.map((entry) => {
                         const assignment = datasetByConditionId[entry.condition.id];
                         return {
                             condition_id: entry.condition.id,
                             interaction_type: entry.interactionKey,
+                            dataset_pool_key: datasetPoolKey,
                             dataset_source_phase_key: assignment.sourcePhaseKey,
                             dataset_file: assignment.dataset.file
                         };

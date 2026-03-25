@@ -3,6 +3,8 @@
     "version_id": "version_EP",
     "technique_token": "EP",
     "technique_key": "ensemble_plot",
+    "dataset_pool_key": "non_md5",
+    "dataset_variant": "non_md5",
     "fixed_baseline_phase": {
       "phase_key": "phase1",
       "condition_id": "condition_1_baseline",
@@ -22,6 +24,8 @@
     "version_id": "version_CI",
     "technique_token": "CI",
     "technique_key": "confidence_interval",
+    "dataset_pool_key": "non_md5",
+    "dataset_variant": "non_md5",
     "fixed_baseline_phase": {
       "phase_key": "phase1",
       "condition_id": "condition_1_baseline",
@@ -41,6 +45,71 @@
     "version_id": "version_CIEP",
     "technique_token": "CIEP",
     "technique_key": "combined_plot",
+    "dataset_pool_key": "non_md5",
+    "dataset_variant": "non_md5",
+    "fixed_baseline_phase": {
+      "phase_key": "phase1",
+      "condition_id": "condition_1_baseline",
+      "display_format": "aggregation_only"
+    },
+    "randomized_interaction_phases_start_at": "phase2",
+    "randomized_within_participant_interactions": [
+      "hover_show_one",
+      "hover_show_all",
+      "click_show_one",
+      "click_show_all",
+      "animation_show_one",
+      "animation_show_all"
+    ]
+  },
+  {
+    "version_id": "version_EP_md5",
+    "technique_token": "EP",
+    "technique_key": "ensemble_plot",
+    "dataset_pool_key": "md5",
+    "dataset_variant": "md5",
+    "fixed_baseline_phase": {
+      "phase_key": "phase1",
+      "condition_id": "condition_1_baseline",
+      "display_format": "aggregation_only"
+    },
+    "randomized_interaction_phases_start_at": "phase2",
+    "randomized_within_participant_interactions": [
+      "hover_show_one",
+      "hover_show_all",
+      "click_show_one",
+      "click_show_all",
+      "animation_show_one",
+      "animation_show_all"
+    ]
+  },
+  {
+    "version_id": "version_CI_md5",
+    "technique_token": "CI",
+    "technique_key": "confidence_interval",
+    "dataset_pool_key": "md5",
+    "dataset_variant": "md5",
+    "fixed_baseline_phase": {
+      "phase_key": "phase1",
+      "condition_id": "condition_1_baseline",
+      "display_format": "aggregation_only"
+    },
+    "randomized_interaction_phases_start_at": "phase2",
+    "randomized_within_participant_interactions": [
+      "hover_show_one",
+      "hover_show_all",
+      "click_show_one",
+      "click_show_all",
+      "animation_show_one",
+      "animation_show_all"
+    ]
+  },
+  {
+    "version_id": "version_CIEP_md5",
+    "technique_token": "CIEP",
+    "technique_key": "combined_plot",
+    "dataset_pool_key": "md5",
+    "dataset_variant": "md5",
     "fixed_baseline_phase": {
       "phase_key": "phase1",
       "condition_id": "condition_1_baseline",

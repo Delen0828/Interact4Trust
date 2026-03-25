@@ -26,7 +26,7 @@ const defaultRoundDatasetConfig = Object.freeze({
 		cityB: '#7C3AED'
 	}
 });
-const datasetConfigByFile = Object.freeze({
+const baseDatasetConfigByFile = Object.freeze({
 	'ranax_leer_city_baseline.json': {
 		cityA: 'Ranax',
 		cityB: 'Leer City',
@@ -73,6 +73,21 @@ const datasetConfigByFile = Object.freeze({
 		colors: { cityA: '#BE123C', cityB: '#155E75' }
 	}
 });
+
+function toMd5DatasetFileName(datasetFile) {
+	return String(datasetFile || '').replace(/\.json$/i, '_md5.json');
+}
+
+const datasetConfigByFile = Object.freeze(
+	Object.entries(baseDatasetConfigByFile).reduce((accumulator, [datasetFile, datasetConfig]) => {
+		accumulator[datasetFile] = datasetConfig;
+		const md5DatasetFile = toMd5DatasetFileName(datasetFile);
+		if (md5DatasetFile && md5DatasetFile !== datasetFile) {
+			accumulator[md5DatasetFile] = { ...datasetConfig };
+		}
+		return accumulator;
+	}, {})
+);
 const SAVE_MAX_ATTEMPTS = 3;
 const SAVE_MAX_DURATION_MS = 8000;
 const SAVE_RETRY_DELAY_MS = 350;
@@ -143,11 +158,17 @@ function buildRandomizedRoundPlan(sourceConditions) {
 		throw new Error('No eligible dataset files available for Experiment 2 randomization.');
 	}
 
-	const randomizedDatasets = shuffleArray(availableDatasetFiles);
+	if (availableDatasetFiles.length < randomizedConditions.length) {
+		throw new Error(
+			`Not enough unique dataset files (${availableDatasetFiles.length}) for ${randomizedConditions.length} conditions.`
+		);
+	}
+
+	const randomizedDatasets = shuffleArray(availableDatasetFiles).slice(0, randomizedConditions.length);
 	return randomizedConditions.map((condition, index) => {
 		return {
 			...condition,
-			datasetFile: randomizedDatasets[index % randomizedDatasets.length]
+			datasetFile: randomizedDatasets[index]
 		};
 	});
 }
