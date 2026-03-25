@@ -22,6 +22,7 @@ DEFAULTS = {
     "predEnd": 40.0,
     "noiseLevel": 1.0,
     "predVariance": 100.0,
+    "meanDiff": 0.0,
     "skew": "bimodel",
     "fileName": "synthetic_stock_data_generated.json",
     "seed": "default-seed",
@@ -146,6 +147,8 @@ def validate_options(options: Dict) -> Dict:
         raise ValueError("--noiseLevel must be >= 0")
     if options["predVariance"] < 0:
         raise ValueError("--predVariance must be >= 0")
+    if not math.isfinite(options["meanDiff"]):
+        raise ValueError("--meanDiff must be a finite number")
     if options["skew"] not in {"up", "down", "bimodel"}:
         raise ValueError('--skew must be one of: "up", "down", "bimodel"')
     file_name = options["fileName"]
@@ -170,10 +173,11 @@ def generate_synthetic_stock_data(options: Dict) -> Dict:
     records = []
 
     for stock_index, stock in enumerate(STOCKS):
+        stock_mean_shift = (opts["meanDiff"] / 2.0) * (1 if stock_index == 0 else -1)
         historical_values = build_trajectory(
             dates=hist_dates,
-            start_value=opts["histStart"],
-            end_value=opts["histEnd"],
+            start_value=opts["histStart"] + stock_mean_shift,
+            end_value=opts["histEnd"] + stock_mean_shift,
             noise_std_dev=noise_std_dev,
             stock_index=stock_index,
             rng=rng,
@@ -191,12 +195,12 @@ def generate_synthetic_stock_data(options: Dict) -> Dict:
 
         raw_start_offsets = [rng.gauss(0, noise_std_dev) for _ in range(opts["numPred"])]
         centered_start_offsets = [v - mean(raw_start_offsets) for v in raw_start_offsets]
-        scenario_starts = [opts["predStart"] + d for d in centered_start_offsets]
+        scenario_starts = [opts["predStart"] + stock_mean_shift + d for d in centered_start_offsets]
 
         endpoint_deviations = generate_endpoint_deviations(
             opts["numPred"], opts["predVariance"], opts["skew"], rng
         )
-        scenario_ends = [opts["predEnd"] + d for d in endpoint_deviations]
+        scenario_ends = [opts["predEnd"] + stock_mean_shift + d for d in endpoint_deviations]
 
         for model_index in range(opts["numPred"]):
             scenario_id = f"scenario_{model_index + 1}"
@@ -260,6 +264,12 @@ def parse_args() -> Dict:
         type=float,
         default=DEFAULTS["predVariance"],
         help="Across-model endpoint variance",
+    )
+    parser.add_argument(
+        "--meanDiff",
+        type=float,
+        default=DEFAULTS["meanDiff"],
+        help="Target mean separation between stock A and B (A shifted up, B shifted down)",
     )
     parser.add_argument("--skew", type=str, default=DEFAULTS["skew"], choices=["up", "down", "bimodel"])
     parser.add_argument("--fileName", type=str, default=DEFAULTS["fileName"], help="Output JSON file name")

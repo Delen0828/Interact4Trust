@@ -4,10 +4,10 @@ set -euo pipefail
 # Regenerate the 9 Experiment 2 datasets (full Hist x Pred trend permutation):
 # Hist trend in {inc, dec, const} x Pred trend in {inc, dec, const}.
 #
-# Current single-version within-subject sequence still uses 7 of these 9.
-#
 # Usage:
 #   cd Experiment2/generated
+#   bash regenerate_seven_datasets.sh
+# Example:
 #   bash regenerate_seven_datasets.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -18,55 +18,63 @@ if [[ ! -f "$GENERATOR" ]]; then
   exit 1
 fi
 
-COMMON_OPTS=(
-  --numPred 10
-  --noiseLevel 16
-  --predVariance 225
-  --skew bimodel
-  --seed trend-fixed-v1
-)
-
 cd "$SCRIPT_DIR"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --seed trend-fixed-v1-ranax-baseline \
-  --histStart 54 --histEnd 54 --predStart 54 --predEnd 54 \
-  --fileName ranax_leer_city_baseline.json
+generate_set() {
+  local mean_diff="$1"
+  local suffix="$2"
+  local common_opts=(
+    --numPred 10
+    --noiseLevel 16
+    --predVariance 225
+    --skew bimodel
+    --meanDiff "$mean_diff"
+    --seed trend-fixed-v1
+  )
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --histStart 30 --histEnd 50 --predEnd 59 \
-  --fileName virexa_talmori_incHist_incPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --seed trend-fixed-v1-ranax-baseline \
+    --histStart 54 --histEnd 54 --predStart 54 --predEnd 54 \
+    --fileName "ranax_leer_city_baseline${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --histStart 40 --histEnd 60 --predEnd 51 \
-  --fileName qelvane_rostiva_incHist_decPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --histStart 30 --histEnd 50 --predEnd 59 \
+    --fileName "virexa_talmori_incHist_incPred${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --histStart 60 --histEnd 40 --predEnd 49 \
-  --fileName nexari_pulveth_decHist_incPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --histStart 40 --histEnd 60 --predEnd 51 \
+    --fileName "qelvane_rostiva_incHist_decPred${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --histStart 70 --histEnd 50 --predEnd 41 \
-  --fileName zorvani_kelthar_decHist_decPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --histStart 60 --histEnd 40 --predEnd 49 \
+    --fileName "nexari_pulveth_decHist_incPred${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --seed trend-fixed-v1-lumora-vexlin \
-  --histStart 52 --histEnd 52 --predEnd 64 \
-  --fileName lumora_vexlin_constHist_incPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --histStart 70 --histEnd 50 --predEnd 41 \
+    --fileName "zorvani_kelthar_decHist_decPred${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --seed trend-fixed-v1-dravik-solmere \
-  --histStart 58 --histEnd 58 --predEnd 44 \
-  --fileName dravik_solmere_constHist_decPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --seed trend-fixed-v1-lumora-vexlin \
+    --histStart 52 --histEnd 52 --predEnd 64 \
+    --fileName "lumora_vexlin_constHist_incPred${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --seed trend-fixed-v1-altriva-morneth \
-  --histStart 35 --histEnd 55 --predEnd 55 \
-  --fileName altriva_morneth_incHist_constPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --seed trend-fixed-v1-dravik-solmere \
+    --histStart 58 --histEnd 58 --predEnd 44 \
+    --fileName "dravik_solmere_constHist_decPred${suffix}.json"
 
-python3 "$GENERATOR" "${COMMON_OPTS[@]}" \
-  --seed trend-fixed-v1-solnara-kyveth \
-  --histStart 65 --histEnd 45 --predEnd 45 \
-  --fileName solnara_kyveth_decHist_constPred.json
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --seed trend-fixed-v1-altriva-morneth \
+    --histStart 35 --histEnd 55 --predEnd 55 \
+    --fileName "altriva_morneth_incHist_constPred${suffix}.json"
 
-echo "Done: regenerated 9 Experiment 2 datasets with numPred=10."
+  python3 "$GENERATOR" "${common_opts[@]}" \
+    --seed trend-fixed-v1-solnara-kyveth \
+    --histStart 65 --histEnd 45 --predEnd 45 \
+    --fileName "solnara_kyveth_decHist_constPred${suffix}.json"
+}
+
+generate_set 0 ""
+generate_set 5 "_md5"
+
+echo "Done: regenerated 18 Experiment 2 datasets (9 pairs x meanDiff {0, 5})."
