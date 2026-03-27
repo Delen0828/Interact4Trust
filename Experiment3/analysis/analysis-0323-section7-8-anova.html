@@ -11,7 +11,7 @@
 
 
 
-<title>Experiment 3 Section 7/8 Replication: Trust and Interaction Experience ANOVA</title>
+<title>Experiment 3 Section 7/8 Replication: Trust and Interaction Experience Regression</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -349,7 +349,7 @@ display: none;
 
 
 <h1 class="title toc-ignore">Experiment 3 Section 7/8 Replication: Trust
-and Interaction Experience ANOVA</h1>
+and Interaction Experience Regression</h1>
 
 </div>
 
@@ -357,10 +357,10 @@ and Interaction Experience ANOVA</h1>
 <div id="goal" class="section level2">
 <h2>Goal</h2>
 <p>Replicate Experiment 3 notebook Section 7 and Section 8 analysis
-structure with two ANOVAs:</p>
+structure with two regression outcomes:</p>
 <ul>
-<li><code>composite_trust_score ~ interaction + detail_presentation + vis_type</code></li>
-<li><code>interaction_experience ~ interaction + detail_presentation + vis_type</code></li>
+<li><code>composite_trust_score ~ vis_type * interaction * detail_presentation</code></li>
+<li><code>interaction_experience ~ vis_type * interaction * detail_presentation</code></li>
 </ul>
 <p>This report follows the same trust-survey preprocessing used in
 <code>analysis-0318.ipynb</code>, including:</p>
@@ -377,9 +377,9 @@ when needed</li>
 <h2>Packages</h2>
 <pre class="r"><code>required_packages &lt;- c(
   &quot;dplyr&quot;,
-  &quot;tidyr&quot;,
   &quot;jsonlite&quot;,
-  &quot;knitr&quot;
+  &quot;knitr&quot;,
+  &quot;emmeans&quot;
 )
 
 missing_packages &lt;- required_packages[
@@ -400,15 +400,15 @@ lapply(required_packages, library, character.only = TRUE)</code></pre>
 ## [7] &quot;methods&quot;   &quot;base&quot;     
 ## 
 ## [[2]]
-## [1] &quot;tidyr&quot;     &quot;dplyr&quot;     &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;    
+## [1] &quot;jsonlite&quot;  &quot;dplyr&quot;     &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot; &quot;utils&quot;    
 ## [7] &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
 ## 
 ## [[3]]
-##  [1] &quot;jsonlite&quot;  &quot;tidyr&quot;     &quot;dplyr&quot;     &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot;
+##  [1] &quot;knitr&quot;     &quot;jsonlite&quot;  &quot;dplyr&quot;     &quot;stats&quot;     &quot;graphics&quot;  &quot;grDevices&quot;
 ##  [7] &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;     
 ## 
 ## [[4]]
-##  [1] &quot;knitr&quot;     &quot;jsonlite&quot;  &quot;tidyr&quot;     &quot;dplyr&quot;     &quot;stats&quot;     &quot;graphics&quot; 
+##  [1] &quot;emmeans&quot;   &quot;knitr&quot;     &quot;jsonlite&quot;  &quot;dplyr&quot;     &quot;stats&quot;     &quot;graphics&quot; 
 ##  [7] &quot;grDevices&quot; &quot;utils&quot;     &quot;datasets&quot;  &quot;methods&quot;   &quot;base&quot;</code></pre>
 </div>
 <div id="paths" class="section level2">
@@ -632,6 +632,15 @@ normalize_likert_0_6_to_1_7 &lt;- function(values) {
   numeric_values
 }
 
+set_sum_contrasts &lt;- function(data, factors) {
+  out &lt;- data
+  for (factor_name in factors) {
+    out[[factor_name]] &lt;- factor(out[[factor_name]])
+    contrasts(out[[factor_name]]) &lt;- contr.sum(length(levels(out[[factor_name]])))
+  }
+  out
+}
+
 identify_attention_check_failures &lt;- function(data) {
   if (!all(c(&quot;trial_type&quot;, &quot;participant_id&quot;) %in% names(data))) {
     return(character(0))
@@ -815,7 +824,7 @@ trust_survey &lt;- trust_survey %&gt;%
 trust_survey$composite_trust_score[is.nan(trust_survey$composite_trust_score)] &lt;- NA_real_
 trust_survey$interaction_experience[is.nan(trust_survey$interaction_experience)] &lt;- NA_real_
 
-anova_input_raw &lt;- trust_survey %&gt;%
+model_input_raw &lt;- trust_survey %&gt;%
   dplyr::filter(condition_number %in% TREATMENT_CONDITIONS) %&gt;%
   dplyr::filter(
     !is.na(interaction),
@@ -826,7 +835,7 @@ anova_input_raw &lt;- trust_survey %&gt;%
   )
 
 # Aggregate if duplicate rows exist for a participant x condition cell.
-anova_input &lt;- anova_input_raw %&gt;%
+model_input &lt;- model_input_raw %&gt;%
   dplyr::group_by(participant_id, vis_type, interaction, detail_presentation) %&gt;%
   dplyr::summarise(
     composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
@@ -835,14 +844,14 @@ anova_input &lt;- anova_input_raw %&gt;%
   )
 
 # Complete within-subject grid for interaction (3) x detail_presentation (2) = 6 cells.
-participant_cell_counts &lt;- anova_input %&gt;%
+participant_cell_counts &lt;- model_input %&gt;%
   dplyr::count(participant_id, name = &quot;n_cells&quot;)
 
 complete_participants &lt;- participant_cell_counts %&gt;%
   dplyr::filter(n_cells == 6) %&gt;%
   dplyr::pull(participant_id)
 
-anova_data &lt;- anova_input %&gt;%
+model_data &lt;- model_input %&gt;%
   dplyr::filter(participant_id %in% complete_participants) %&gt;%
   dplyr::mutate(
     participant_id = factor(participant_id),
@@ -853,14 +862,14 @@ anova_data &lt;- anova_input %&gt;%
 
 cat(&quot;Trust-survey rows (raw): &quot;, nrow(trust_survey), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
 <pre><code>## Trust-survey rows (raw): 980</code></pre>
-<pre class="r"><code>cat(&quot;ANOVA rows after filtering: &quot;, nrow(anova_data), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
-<pre><code>## ANOVA rows after filtering: 840</code></pre>
-<pre class="r"><code>cat(&quot;ANOVA participants (complete 6-cell within-subject grid): &quot;, dplyr::n_distinct(anova_data$participant_id), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
-<pre><code>## ANOVA participants (complete 6-cell within-subject grid): 140</code></pre>
+<pre class="r"><code>cat(&quot;Model rows after filtering: &quot;, nrow(model_data), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Model rows after filtering: 840</code></pre>
+<pre class="r"><code>cat(&quot;Model participants (complete 6-cell within-subject grid): &quot;, dplyr::n_distinct(model_data$participant_id), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Model participants (complete 6-cell within-subject grid): 140</code></pre>
 </div>
 <div id="section-7-cross-interaction-technique-summary" class="section level2">
 <h2>Section 7: Cross-Interaction Technique Summary</h2>
-<pre class="r"><code>section7_summary &lt;- anova_data %&gt;%
+<pre class="r"><code>section7_summary &lt;- model_data %&gt;%
   dplyr::group_by(interaction, detail_presentation) %&gt;%
   dplyr::summarise(
     n = dplyr::n(),
@@ -974,7 +983,7 @@ presentation</caption>
 </div>
 <div id="section-8-interaction-x-visualization-grid-summary" class="section level2">
 <h2>Section 8: Interaction x Visualization Grid Summary</h2>
-<pre class="r"><code>section8_summary &lt;- anova_data %&gt;%
+<pre class="r"><code>section8_summary &lt;- model_data %&gt;%
   dplyr::group_by(vis_type, interaction, detail_presentation) %&gt;%
   dplyr::summarise(
     n = dplyr::n(),
@@ -1237,218 +1246,143 @@ knitr::kable(section8_summary, digits = 3, caption = &quot;Section 8 summary by 
 </tbody>
 </table>
 </div>
-<div id="anova-1-trust" class="section level2">
-<h2>ANOVA 1: Trust</h2>
-<pre class="r"><code>trust_aov &lt;- aov(
-  composite_trust_score ~
-    vis_type + interaction + detail_presentation +
-    Error(participant_id / (interaction + detail_presentation)),
-  data = anova_data
+<div id="regression-1-trust" class="section level2">
+<h2>Regression 1: Trust</h2>
+<pre class="r"><code>regression_model_data &lt;- set_sum_contrasts(
+  model_data,
+  factors = c(&quot;vis_type&quot;, &quot;interaction&quot;, &quot;detail_presentation&quot;)
 )
 
-summary(trust_aov)</code></pre>
-<pre><code>## 
-## Error: participant_id
-##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## vis_type    2   10.3   5.141   0.913  0.404
-## Residuals 137  771.1   5.629               
-## 
-## Error: participant_id:interaction
-##              Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## interaction   2  53.72  26.862   33.09 1.28e-13 ***
-## Residuals   278 225.67   0.812                     
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: participant_id:detail_presentation
-##                      Df Sum Sq Mean Sq F value Pr(&gt;F)   
-## detail_presentation   1    3.5   3.504   7.172 0.0083 **
-## Residuals           139   67.9   0.489                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: Within
-##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Residuals 280  123.8  0.4422</code></pre>
-</div>
-<div id="anova-1-trust-joint-effects" class="section level2">
-<h2>ANOVA 1: Trust (Joint Effects)</h2>
-<pre class="r"><code>trust_joint_aov &lt;- aov(
-  composite_trust_score ~
-    vis_type * interaction * detail_presentation +
-    Error(participant_id / (interaction * detail_presentation)),
-  data = anova_data
+trust_lm &lt;- lm(
+  composite_trust_score ~ vis_type + interaction + detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
 )
 
-summary(trust_joint_aov)</code></pre>
-<pre><code>## 
-## Error: participant_id
-##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## vis_type    2   10.3   5.141   0.913  0.404
-## Residuals 137  771.1   5.629               
+trust_anova &lt;- anova(trust_lm)
+trust_anova</code></pre>
+<pre><code>## Analysis of Variance Table
 ## 
-## Error: participant_id:interaction
-##                       Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## interaction            2  53.72  26.862  33.349 1.09e-13 ***
-## vis_type:interaction   4   4.97   1.242   1.542     0.19    
-## Residuals            274 220.70   0.805                     
+## Response: composite_trust_score
+##                      Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## vis_type              2   10.28  5.1410  3.6075   0.02754 *  
+## interaction           2   53.72 26.8619 18.8492 9.852e-09 ***
+## detail_presentation   1    3.50  3.5036  2.4585   0.11727    
+## Residuals           834 1188.53  1.4251                      
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: participant_id:detail_presentation
-##                               Df Sum Sq Mean Sq F value  Pr(&gt;F)   
-## detail_presentation            1   3.50   3.504   7.187 0.00825 **
-## vis_type:detail_presentation   2   1.12   0.558   1.144 0.32151   
-## Residuals                    137  66.79   0.487                   
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: participant_id:interaction:detail_presentation
-##                                           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## interaction:detail_presentation            2   0.80  0.4021   0.918  0.401
-## vis_type:interaction:detail_presentation   4   2.98  0.7461   1.703  0.149
-## Residuals                                274 120.02  0.4380</code></pre>
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-<div id="anova-2-interaction-experience" class="section level2">
-<h2>ANOVA 2: Interaction Experience</h2>
-<pre class="r"><code>interaction_aov &lt;- aov(
-  interaction_experience ~
-    vis_type + interaction + detail_presentation +
-    Error(participant_id / (interaction + detail_presentation)),
-  data = anova_data
+<div id="regression-1-trust-joint-effects" class="section level2">
+<h2>Regression 1: Trust (Joint Effects)</h2>
+<pre class="r"><code>trust_joint_lm &lt;- lm(
+  composite_trust_score ~ vis_type * interaction * detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
 )
 
-summary(interaction_aov)</code></pre>
-<pre><code>## 
-## Error: participant_id
-##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## vis_type    2    1.2   0.611   0.105    0.9
-## Residuals 137  795.4   5.806               
+trust_joint_anova &lt;- anova(trust_joint_lm)
+trust_joint_anova</code></pre>
+<pre><code>## Analysis of Variance Table
 ## 
-## Error: participant_id:interaction
-##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
-## interaction   2  126.9   63.43    94.5 &lt;2e-16 ***
-## Residuals   278  186.6    0.67                   
+## Response: composite_trust_score
+##                                           Df  Sum Sq Mean Sq F value    Pr(&gt;F)
+## vis_type                                   2   10.28  5.1410  3.5854   0.02816
+## interaction                                2   53.72 26.8619 18.7336 1.107e-08
+## detail_presentation                        1    3.50  3.5036  2.4435   0.11840
+## vis_type:interaction                       4    4.97  1.2421  0.8662   0.48371
+## vis_type:detail_presentation               2    1.12  0.5578  0.3890   0.67786
+## interaction:detail_presentation            2    0.80  0.4021  0.2804   0.75554
+## vis_type:interaction:detail_presentation   4    2.98  0.7461  0.5203   0.72085
+## Residuals                                822 1178.66  1.4339                  
+##                                             
+## vis_type                                 *  
+## interaction                              ***
+## detail_presentation                         
+## vis_type:interaction                        
+## vis_type:detail_presentation                
+## interaction:detail_presentation             
+## vis_type:interaction:detail_presentation    
+## Residuals                                   
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: participant_id:detail_presentation
-##                      Df Sum Sq Mean Sq F value  Pr(&gt;F)    
-## detail_presentation   1   7.02   7.018   22.43 5.3e-06 ***
-## Residuals           139  43.48   0.313                    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: Within
-##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Residuals 280  62.42  0.2229</code></pre>
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-<div id="anova-2-interaction-experience-joint-effects" class="section level2">
-<h2>ANOVA 2: Interaction Experience (Joint Effects)</h2>
-<pre class="r"><code>interaction_joint_aov &lt;- aov(
-  interaction_experience ~
-    vis_type * interaction * detail_presentation +
-    Error(participant_id / (interaction * detail_presentation)),
-  data = anova_data
+<div id="regression-2-interaction-experience" class="section level2">
+<h2>Regression 2: Interaction Experience</h2>
+<pre class="r"><code>interaction_lm &lt;- lm(
+  interaction_experience ~ vis_type + interaction + detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
 )
 
-summary(interaction_joint_aov)</code></pre>
-<pre><code>## 
-## Error: participant_id
-##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## vis_type    2    1.2   0.611   0.105    0.9
-## Residuals 137  795.4   5.806               
+interaction_anova &lt;- anova(interaction_lm)
+interaction_anova</code></pre>
+<pre><code>## Analysis of Variance Table
 ## 
-## Error: participant_id:interaction
-##                       Df Sum Sq Mean Sq F value Pr(&gt;F)    
-## interaction            2 126.86   63.43  94.016 &lt;2e-16 ***
-## vis_type:interaction   4   1.73    0.43   0.641  0.633    
-## Residuals            274 184.86    0.67                   
+## Response: interaction_experience
+##                      Df  Sum Sq Mean Sq F value  Pr(&gt;F)    
+## vis_type              2    1.22   0.611  0.4682 0.62631    
+## interaction           2  126.86  63.429 48.6262 &lt; 2e-16 ***
+## detail_presentation   1    7.02   7.018  5.3799 0.02061 *  
+## Residuals           834 1087.88   1.304                    
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: participant_id:detail_presentation
-##                               Df Sum Sq Mean Sq F value   Pr(&gt;F)    
-## detail_presentation            1   7.02   7.018  22.137 6.13e-06 ***
-## vis_type:detail_presentation   2   0.05   0.024   0.075    0.928    
-## Residuals                    137  43.43   0.317                     
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Error: participant_id:interaction:detail_presentation
-##                                           Df Sum Sq Mean Sq F value Pr(&gt;F)
-## interaction:detail_presentation            2   0.43  0.2175   0.983  0.376
-## vis_type:interaction:detail_presentation   4   1.37  0.3420   1.546  0.189
-## Residuals                                274  60.62  0.2212</code></pre>
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-<div id="paired-t-tests-interaction" class="section level2">
-<h2>Paired t-tests: Interaction</h2>
-<pre class="r"><code>run_paired_test &lt;- function(data, participant_col, condition_col, value_col, level_a, level_b) {
-  working &lt;- data %&gt;%
-    dplyr::filter(.data[[condition_col]] %in% c(level_a, level_b)) %&gt;%
-    dplyr::select(dplyr::all_of(c(participant_col, condition_col, value_col))) %&gt;%
-    tidyr::pivot_wider(
-      names_from = dplyr::all_of(condition_col),
-      values_from = dplyr::all_of(value_col)
+<div id="regression-2-interaction-experience-joint-effects" class="section level2">
+<h2>Regression 2: Interaction Experience (Joint Effects)</h2>
+<pre class="r"><code>interaction_joint_lm &lt;- lm(
+  interaction_experience ~ vis_type * interaction * detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
+)
+
+interaction_joint_anova &lt;- anova(interaction_joint_lm)
+interaction_joint_anova</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: interaction_experience
+##                                           Df  Sum Sq Mean Sq F value  Pr(&gt;F)
+## vis_type                                   2    1.22   0.611  0.4630 0.62958
+## interaction                                2  126.86  63.429 48.0849 &lt; 2e-16
+## detail_presentation                        1    7.02   7.018  5.3200 0.02133
+## vis_type:interaction                       4    1.73   0.433  0.3281 0.85919
+## vis_type:detail_presentation               2    0.05   0.024  0.0181 0.98211
+## interaction:detail_presentation            2    0.43   0.217  0.1649 0.84803
+## vis_type:interaction:detail_presentation   4    1.37   0.342  0.2592 0.90405
+## Residuals                                822 1084.30   1.319                
+##                                             
+## vis_type                                    
+## interaction                              ***
+## detail_presentation                      *  
+## vis_type:interaction                        
+## vis_type:detail_presentation                
+## interaction:detail_presentation             
+## vis_type:interaction:detail_presentation    
+## Residuals                                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="emms-interaction" class="section level2">
+<h2>EMMs: Interaction</h2>
+<pre class="r"><code>extract_emmean_with_sd &lt;- function(model, factor_name, sd_data, value_col) {
+  emmean_tbl &lt;- emmeans::emmeans(
+    model,
+    specs = stats::as.formula(paste0(&quot;~ &quot;, factor_name))
+  ) %&gt;%
+    as.data.frame() %&gt;%
+    dplyr::select(dplyr::all_of(factor_name), emmean, SE)
+
+  sd_tbl &lt;- sd_data %&gt;%
+    dplyr::group_by(.data[[factor_name]]) %&gt;%
+    dplyr::summarise(
+      sd = stats::sd(.data[[value_col]], na.rm = TRUE),
+      .groups = &quot;drop&quot;
     )
 
-  if (!(level_a %in% names(working)) || !(level_b %in% names(working))) {
-    return(
-      tibble::tibble(
-        comparison = paste(level_a, &quot;vs&quot;, level_b),
-        n_pairs = 0,
-        mean_a = NA_real_,
-        mean_b = NA_real_,
-        mean_diff = NA_real_,
-        t_stat = NA_real_,
-        df = NA_real_,
-        p_value = NA_real_,
-        conf_low = NA_real_,
-        conf_high = NA_real_
-      )
-    )
-  }
-
-  working &lt;- working %&gt;%
-    dplyr::filter(!is.na(.data[[level_a]]), !is.na(.data[[level_b]]))
-
-  if (nrow(working) &lt; 2) {
-    return(
-      tibble::tibble(
-        comparison = paste(level_a, &quot;vs&quot;, level_b),
-        n_pairs = nrow(working),
-        mean_a = mean(working[[level_a]], na.rm = TRUE),
-        mean_b = mean(working[[level_b]], na.rm = TRUE),
-        mean_diff = mean(working[[level_a]] - working[[level_b]], na.rm = TRUE),
-        t_stat = NA_real_,
-        df = NA_real_,
-        p_value = NA_real_,
-        conf_low = NA_real_,
-        conf_high = NA_real_
-      )
-    )
-  }
-
-  test &lt;- stats::t.test(working[[level_a]], working[[level_b]], paired = TRUE)
-
-  tibble::tibble(
-    comparison = paste(level_a, &quot;vs&quot;, level_b),
-    n_pairs = nrow(working),
-    mean_a = mean(working[[level_a]], na.rm = TRUE),
-    mean_b = mean(working[[level_b]], na.rm = TRUE),
-    mean_diff = mean(working[[level_a]] - working[[level_b]], na.rm = TRUE),
-    t_stat = unname(test$statistic),
-    df = unname(test$parameter),
-    p_value = test$p.value,
-    conf_low = test$conf.int[[1]],
-    conf_high = test$conf.int[[2]]
-  )
+  emmean_tbl %&gt;%
+    dplyr::left_join(sd_tbl, by = factor_name)
 }
 
-interaction_levels &lt;- c(&quot;hover&quot;, &quot;click&quot;, &quot;animation&quot;)
-interaction_pairs &lt;- combn(interaction_levels, 2, simplify = FALSE)
-
-interaction_level_scores &lt;- anova_data %&gt;%
+interaction_level_scores &lt;- model_data %&gt;%
   dplyr::group_by(participant_id, interaction) %&gt;%
   dplyr::summarise(
     composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
@@ -1456,191 +1390,89 @@ interaction_level_scores &lt;- anova_data %&gt;%
     .groups = &quot;drop&quot;
   )
 
-trust_interaction_ttests &lt;- dplyr::bind_rows(
-  lapply(
-    interaction_pairs,
-    function(pair_levels) {
-      run_paired_test(
-        interaction_level_scores,
-        participant_col = &quot;participant_id&quot;,
-        condition_col = &quot;interaction&quot;,
-        value_col = &quot;composite_trust_score&quot;,
-        level_a = pair_levels[[1]],
-        level_b = pair_levels[[2]]
-      )
-    }
-  )
-) %&gt;%
-  dplyr::mutate(p_adjust_holm = stats::p.adjust(p_value, method = &quot;holm&quot;))
+trust_interaction_emmeans &lt;- extract_emmean_with_sd(
+  model = trust_joint_lm,
+  factor_name = &quot;interaction&quot;,
+  sd_data = interaction_level_scores,
+  value_col = &quot;composite_trust_score&quot;
+)
 
-interactionexp_interaction_ttests &lt;- dplyr::bind_rows(
-  lapply(
-    interaction_pairs,
-    function(pair_levels) {
-      run_paired_test(
-        interaction_level_scores,
-        participant_col = &quot;participant_id&quot;,
-        condition_col = &quot;interaction&quot;,
-        value_col = &quot;interaction_experience&quot;,
-        level_a = pair_levels[[1]],
-        level_b = pair_levels[[2]]
-      )
-    }
-  )
-) %&gt;%
-  dplyr::mutate(p_adjust_holm = stats::p.adjust(p_value, method = &quot;holm&quot;))
+interactionexp_interaction_emmeans &lt;- extract_emmean_with_sd(
+  model = interaction_joint_lm,
+  factor_name = &quot;interaction&quot;,
+  sd_data = interaction_level_scores,
+  value_col = &quot;interaction_experience&quot;
+)
 
-knitr::kable(trust_interaction_ttests, digits = 4, caption = &quot;Paired t-tests for interaction (trust)&quot;)</code></pre>
+knitr::kable(trust_interaction_emmeans, digits = 4, caption = &quot;EMMs (emmean, SE, SD) for interaction (trust)&quot;)</code></pre>
 <table>
-<caption>Paired t-tests for interaction (trust)</caption>
-<colgroup>
-<col width="18%" />
-<col width="7%" />
-<col width="6%" />
-<col width="6%" />
-<col width="9%" />
-<col width="7%" />
-<col width="3%" />
-<col width="7%" />
-<col width="8%" />
-<col width="9%" />
-<col width="13%" />
-</colgroup>
+<caption>EMMs (emmean, SE, SD) for interaction (trust)</caption>
 <thead>
 <tr>
-<th align="left">comparison</th>
-<th align="right">n_pairs</th>
-<th align="right">mean_a</th>
-<th align="right">mean_b</th>
-<th align="right">mean_diff</th>
-<th align="right">t_stat</th>
-<th align="right">df</th>
-<th align="right">p_value</th>
-<th align="right">conf_low</th>
-<th align="right">conf_high</th>
-<th align="right">p_adjust_holm</th>
+<th align="left">interaction</th>
+<th align="right">emmean</th>
+<th align="right">SE</th>
+<th align="right">sd</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">hover vs click</td>
-<td align="right">140</td>
-<td align="right">4.8473</td>
-<td align="right">4.9259</td>
-<td align="right">-0.0786</td>
-<td align="right">-1.3053</td>
-<td align="right">139</td>
-<td align="right">0.1939</td>
-<td align="right">-0.1976</td>
-<td align="right">0.0404</td>
-<td align="right">0.1939</td>
+<td align="left">hover</td>
+<td align="right">4.8482</td>
+<td align="right">0.0716</td>
+<td align="right">0.9962</td>
 </tr>
 <tr>
-<td align="left">hover vs animation</td>
-<td align="right">140</td>
-<td align="right">4.8473</td>
-<td align="right">4.3545</td>
-<td align="right">0.4929</td>
-<td align="right">6.3641</td>
-<td align="right">139</td>
-<td align="right">0.0000</td>
-<td align="right">0.3397</td>
-<td align="right">0.6460</td>
-<td align="right">0.0000</td>
+<td align="left">click</td>
+<td align="right">4.9217</td>
+<td align="right">0.0716</td>
+<td align="right">1.0883</td>
 </tr>
 <tr>
-<td align="left">click vs animation</td>
-<td align="right">140</td>
-<td align="right">4.9259</td>
-<td align="right">4.3545</td>
-<td align="right">0.5714</td>
-<td align="right">6.4809</td>
-<td align="right">139</td>
-<td align="right">0.0000</td>
-<td align="right">0.3971</td>
-<td align="right">0.7458</td>
-<td align="right">0.0000</td>
+<td align="left">animation</td>
+<td align="right">4.3522</td>
+<td align="right">0.0716</td>
+<td align="right">1.2025</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>knitr::kable(interactionexp_interaction_ttests, digits = 4, caption = &quot;Paired t-tests for interaction (interaction experience)&quot;)</code></pre>
+<pre class="r"><code>knitr::kable(interactionexp_interaction_emmeans, digits = 4, caption = &quot;EMMs (emmean, SE, SD) for interaction (interaction experience)&quot;)</code></pre>
 <table>
-<caption>Paired t-tests for interaction (interaction
+<caption>EMMs (emmean, SE, SD) for interaction (interaction
 experience)</caption>
-<colgroup>
-<col width="18%" />
-<col width="7%" />
-<col width="6%" />
-<col width="6%" />
-<col width="9%" />
-<col width="7%" />
-<col width="3%" />
-<col width="7%" />
-<col width="8%" />
-<col width="9%" />
-<col width="13%" />
-</colgroup>
 <thead>
 <tr>
-<th align="left">comparison</th>
-<th align="right">n_pairs</th>
-<th align="right">mean_a</th>
-<th align="right">mean_b</th>
-<th align="right">mean_diff</th>
-<th align="right">t_stat</th>
-<th align="right">df</th>
-<th align="right">p_value</th>
-<th align="right">conf_low</th>
-<th align="right">conf_high</th>
-<th align="right">p_adjust_holm</th>
+<th align="left">interaction</th>
+<th align="right">emmean</th>
+<th align="right">SE</th>
+<th align="right">sd</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">hover vs click</td>
-<td align="right">140</td>
-<td align="right">3.8663</td>
-<td align="right">3.9802</td>
-<td align="right">-0.1139</td>
-<td align="right">-2.9489</td>
-<td align="right">139</td>
-<td align="right">0.0037</td>
-<td align="right">-0.1903</td>
-<td align="right">-0.0375</td>
-<td align="right">0.0037</td>
+<td align="left">hover</td>
+<td align="right">3.8657</td>
+<td align="right">0.0687</td>
+<td align="right">1.0179</td>
 </tr>
 <tr>
-<td align="left">hover vs animation</td>
-<td align="right">140</td>
-<td align="right">3.8663</td>
-<td align="right">3.1048</td>
-<td align="right">0.7615</td>
-<td align="right">9.6734</td>
-<td align="right">139</td>
-<td align="right">0.0000</td>
-<td align="right">0.6059</td>
-<td align="right">0.9172</td>
-<td align="right">0.0000</td>
+<td align="left">click</td>
+<td align="right">3.9779</td>
+<td align="right">0.0687</td>
+<td align="right">1.0235</td>
 </tr>
 <tr>
-<td align="left">click vs animation</td>
-<td align="right">140</td>
-<td align="right">3.9802</td>
-<td align="right">3.1048</td>
-<td align="right">0.8754</td>
-<td align="right">10.6997</td>
-<td align="right">139</td>
-<td align="right">0.0000</td>
-<td align="right">0.7136</td>
-<td align="right">1.0372</td>
-<td align="right">0.0000</td>
+<td align="left">animation</td>
+<td align="right">3.1036</td>
+<td align="right">0.0687</td>
+<td align="right">1.2054</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="paired-t-tests-detail-presentation" class="section level2">
-<h2>Paired t-tests: Detail Presentation</h2>
-<pre class="r"><code>detail_level_scores &lt;- anova_data %&gt;%
+<div id="emms-detail-presentation" class="section level2">
+<h2>EMMs: Detail Presentation</h2>
+<pre class="r"><code>detail_level_scores &lt;- model_data %&gt;%
   dplyr::group_by(participant_id, detail_presentation) %&gt;%
   dplyr::summarise(
     composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
@@ -1648,118 +1480,70 @@ experience)</caption>
     .groups = &quot;drop&quot;
   )
 
-trust_detail_ttest &lt;- run_paired_test(
-  detail_level_scores,
-  participant_col = &quot;participant_id&quot;,
-  condition_col = &quot;detail_presentation&quot;,
-  value_col = &quot;composite_trust_score&quot;,
-  level_a = &quot;show_one&quot;,
-  level_b = &quot;show_all&quot;
-) %&gt;%
-  dplyr::mutate(p_adjust_holm = p_value)
+trust_detail_emmeans &lt;- extract_emmean_with_sd(
+  model = trust_joint_lm,
+  factor_name = &quot;detail_presentation&quot;,
+  sd_data = detail_level_scores,
+  value_col = &quot;composite_trust_score&quot;
+)
 
-interactionexp_detail_ttest &lt;- run_paired_test(
-  detail_level_scores,
-  participant_col = &quot;participant_id&quot;,
-  condition_col = &quot;detail_presentation&quot;,
-  value_col = &quot;interaction_experience&quot;,
-  level_a = &quot;show_one&quot;,
-  level_b = &quot;show_all&quot;
-) %&gt;%
-  dplyr::mutate(p_adjust_holm = p_value)
+interactionexp_detail_emmeans &lt;- extract_emmean_with_sd(
+  model = interaction_joint_lm,
+  factor_name = &quot;detail_presentation&quot;,
+  sd_data = detail_level_scores,
+  value_col = &quot;interaction_experience&quot;
+)
 
-knitr::kable(trust_detail_ttest, digits = 4, caption = &quot;Paired t-test for detail_presentation (trust)&quot;)</code></pre>
+knitr::kable(trust_detail_emmeans, digits = 4, caption = &quot;EMMs (emmean, SE, SD) for detail_presentation (trust)&quot;)</code></pre>
 <table>
-<caption>Paired t-test for detail_presentation (trust)</caption>
-<colgroup>
-<col width="20%" />
-<col width="7%" />
-<col width="6%" />
-<col width="6%" />
-<col width="9%" />
-<col width="6%" />
-<col width="3%" />
-<col width="7%" />
-<col width="8%" />
-<col width="9%" />
-<col width="13%" />
-</colgroup>
+<caption>EMMs (emmean, SE, SD) for detail_presentation (trust)</caption>
 <thead>
 <tr>
-<th align="left">comparison</th>
-<th align="right">n_pairs</th>
-<th align="right">mean_a</th>
-<th align="right">mean_b</th>
-<th align="right">mean_diff</th>
-<th align="right">t_stat</th>
-<th align="right">df</th>
-<th align="right">p_value</th>
-<th align="right">conf_low</th>
-<th align="right">conf_high</th>
-<th align="right">p_adjust_holm</th>
+<th align="left">detail_presentation</th>
+<th align="right">emmean</th>
+<th align="right">SE</th>
+<th align="right">sd</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">show_one vs show_all</td>
-<td align="right">140</td>
-<td align="right">4.7738</td>
-<td align="right">4.6446</td>
-<td align="right">0.1292</td>
-<td align="right">2.6781</td>
-<td align="right">139</td>
-<td align="right">0.0083</td>
-<td align="right">0.0338</td>
-<td align="right">0.2245</td>
-<td align="right">0.0083</td>
+<td align="left">show_one</td>
+<td align="right">4.7725</td>
+<td align="right">0.0585</td>
+<td align="right">0.9944</td>
+</tr>
+<tr>
+<td align="left">show_all</td>
+<td align="right">4.6422</td>
+<td align="right">0.0585</td>
+<td align="right">1.0237</td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>knitr::kable(interactionexp_detail_ttest, digits = 4, caption = &quot;Paired t-test for detail_presentation (interaction experience)&quot;)</code></pre>
+<pre class="r"><code>knitr::kable(interactionexp_detail_emmeans, digits = 4, caption = &quot;EMMs (emmean, SE, SD) for detail_presentation (interaction experience)&quot;)</code></pre>
 <table>
-<caption>Paired t-test for detail_presentation (interaction
+<caption>EMMs (emmean, SE, SD) for detail_presentation (interaction
 experience)</caption>
-<colgroup>
-<col width="20%" />
-<col width="7%" />
-<col width="6%" />
-<col width="6%" />
-<col width="9%" />
-<col width="6%" />
-<col width="3%" />
-<col width="7%" />
-<col width="8%" />
-<col width="9%" />
-<col width="13%" />
-</colgroup>
 <thead>
 <tr>
-<th align="left">comparison</th>
-<th align="right">n_pairs</th>
-<th align="right">mean_a</th>
-<th align="right">mean_b</th>
-<th align="right">mean_diff</th>
-<th align="right">t_stat</th>
-<th align="right">df</th>
-<th align="right">p_value</th>
-<th align="right">conf_low</th>
-<th align="right">conf_high</th>
-<th align="right">p_adjust_holm</th>
+<th align="left">detail_presentation</th>
+<th align="right">emmean</th>
+<th align="right">SE</th>
+<th align="right">sd</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">show_one vs show_all</td>
-<td align="right">140</td>
-<td align="right">3.7418</td>
-<td align="right">3.559</td>
-<td align="right">0.1828</td>
-<td align="right">4.7366</td>
-<td align="right">139</td>
-<td align="right">0</td>
-<td align="right">0.1065</td>
-<td align="right">0.2591</td>
-<td align="right">0</td>
+<td align="left">show_one</td>
+<td align="right">3.7402</td>
+<td align="right">0.0561</td>
+<td align="right">1.0216</td>
+</tr>
+<tr>
+<td align="left">show_all</td>
+<td align="right">3.5579</td>
+<td align="right">0.0561</td>
+<td align="right">0.9853</td>
 </tr>
 </tbody>
 </table>

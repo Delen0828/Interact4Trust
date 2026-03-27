@@ -1,6 +1,8 @@
 ---
 title: "Experiment 1 Hypothesis Tests"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 params:
   data_dir: "../data/0306/data"
   csv_pattern: "^user_.*\\.csv$"
@@ -16,6 +18,28 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 set.seed(params$seed)
+```
+
+```{r table-spacing-style, results='asis', echo=FALSE}
+table_column_padding_html <- "2rem"
+table_column_padding_latex <- "10pt"
+
+if (knitr::is_html_output()) {
+  cat(
+    "<style>\n",
+    "table th,\n",
+    "table td {\n",
+    "  padding-left: ", table_column_padding_html, " !important;\n",
+    "  padding-right: ", table_column_padding_html, " !important;\n",
+    "}\n",
+    "</style>\n",
+    sep = ""
+  )
+}
+
+if (knitr::is_latex_output()) {
+  cat("\\setlength{\\tabcolsep}{", table_column_padding_latex, "}\n", sep = "")
+}
 ```
 
 
@@ -508,68 +532,54 @@ h1_participant_means <- h1_data %>%
     is.finite(confidence_shift)
   )
 
-run_h1_paired_t <- function(df, vis_label, alpha) {
-  dat <- df %>%
-    filter(vis_type == vis_label)
-
-  if (nrow(dat) < 2) {
-    return(data.frame(
-      vis_type = vis_label,
-      n = nrow(dat),
-      mean_baseline = NA_real_,
-      mean_treatment = NA_real_,
-      mean_diff = NA_real_,
-      statistic = NA_real_,
-      df = NA_real_,
-      p.value = NA_real_,
-      lower.CL = NA_real_,
-      upper.CL = NA_real_,
-      stringsAsFactors = FALSE
-    ))
-  }
-
-  tt <- t.test(
-    dat$treatment_confidence,
-    dat$baseline_confidence,
-    paired = TRUE,
-    alternative = "two.sided",
-    conf.level = 1 - alpha
-  )
-
-  data.frame(
-    vis_type = vis_label,
-    n = nrow(dat),
-    mean_baseline = mean(dat$baseline_confidence, na.rm = TRUE),
-    mean_treatment = mean(dat$treatment_confidence, na.rm = TRUE),
-    mean_diff = unname(tt$estimate),
-    statistic = unname(tt$statistic),
-    df = unname(tt$parameter),
-    p.value = tt$p.value,
-    lower.CL = tt$conf.int[1],
-    upper.CL = tt$conf.int[2],
-    stringsAsFactors = FALSE
-  )
-}
-
-h1_vis_levels <- c("PI", "Ensemble", "PI + Ensemble")
-h1_paired_table <- bind_rows(
-  lapply(h1_vis_levels, function(v) run_h1_paired_t(h1_participant_means, v, params$alpha))
+h1_anova_data <- bind_rows(
+  h1_participant_means %>%
+    distinct(participant_id, baseline_confidence) %>%
+    transmute(
+      participant_id,
+      vis_type = "Baseline",
+      confidence = baseline_confidence
+    ),
+  h1_participant_means %>%
+    transmute(
+      participant_id,
+      vis_type = as.character(vis_type),
+      confidence = treatment_confidence
+    )
 ) %>%
   mutate(
-    p_adjusted = p.adjust(p.value, method = params$p_adjust_method),
-    alpha = params$alpha,
-    expected_direction = "Two-sided difference from baseline",
-    observed_direction = case_when(
-      mean_diff > 0 ~ "Positive",
-      mean_diff < 0 ~ "Negative",
-      TRUE ~ "Zero"
-    )
-  )
+    participant_id = factor(participant_id),
+    vis_type = factor(vis_type, levels = c("Baseline", "PI", "Ensemble", "PI + Ensemble"))
+  ) %>%
+  filter(is.finite(confidence))
+
+h1_model_data <- set_sum_contrasts(h1_anova_data, factors = c("vis_type"))
+
+h1_anova_model <- lm(
+  confidence ~ vis_type + participant_id,
+  data = h1_model_data
+)
+
+h1_anova <- anova(h1_anova_model)
+
+h1_emmeans <- as.data.frame(
+  summary(emmeans(h1_anova_model, ~ vis_type), infer = FALSE)
+)
 
 h1_singular <- NA
 
 knitr::kable(h1_summary, digits = 4, caption = "H1 Summary: Confidence Shift from Baseline by Visualization Family")
-knitr::kable(h1_paired_table, digits = 4, caption = "H1 Paired t-tests: Confidence vs Baseline by Visualization Family (Holm-adjusted within H1)")
+h1_anova
+knitr::kable(
+  h1_emmeans %>%
+    transmute(
+      vis_type,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H1 Estimated Marginal Means by Visualization Family (including Baseline)"
+)
 ```
 
 ```{r h1-plot, fig.width=7, fig.height=4.5}
@@ -600,33 +610,13 @@ ggplot(h1_plot_data, aes(y = vis_type, x = mean_shift)) +
 ```{r h2-model}
 h2_model_data <- set_sum_contrasts(h2_data, factors = c("interaction_group", "vis_type"))
 
-h2_model <- lmer(
-  trust_composite ~ interaction_group * vis_type + (1 | participant_id),
+h2_model <- lm(
+  trust_composite ~ interaction_group * vis_type + participant_id,
   data = h2_model_data,
-  REML = TRUE
+  na.action = na.exclude
 )
 
-h2_singular <- lme4::isSingular(h2_model, tol = 1e-5)
-h2_anova <- anova(h2_model, type = 3)
-
-h2_emm <- emmeans(h2_model, ~ interaction_group | vis_type)
-h2_planned <- contrast(
-  h2_emm,
-  method = list("Interactive - Static" = c(-1, 1, 0)),
-  adjust = "none"
-)
-
-h2_planned_table <- augment_contrast_table(
-  summary(h2_planned, infer = c(TRUE, TRUE), level = 1 - params$alpha),
-  family_label = "H2",
-  alpha = params$alpha,
-  adjust_method = params$p_adjust_method
-) %>%
-  mutate(
-    planned_test = paste0("Interactive - Static (", vis_type, ")"),
-    expected_direction = "Positive estimate supports hypothesis",
-    observed_direction = ifelse(estimate > 0, "Positive", "Negative/Zero")
-  )
+h2_singular <- NA
 
 h2_condition_means <- as.data.frame(
   summary(emmeans(h2_model, ~ interaction_group * vis_type), infer = FALSE)
@@ -643,33 +633,6 @@ h2_vis_means <- as.data.frame(
   summary(emmeans(h2_model, ~ vis_type), infer = FALSE)
 )
 
-h2_sensitivity <- NULL
-h2_sensitivity_table <- NULL
-if (h2_singular) {
-  h2_sensitivity <- lm(
-    trust_composite ~ interaction_group * vis_type + participant_id,
-    data = h2_data
-  )
-  h2_sensitivity_table <- as.data.frame(
-    summary(
-      contrast(
-        emmeans(h2_sensitivity, ~ interaction_group | vis_type),
-        method = list("Interactive - Static" = c(-1, 1, 0)),
-        adjust = "none"
-      ),
-      infer = c(TRUE, TRUE),
-      level = 1 - params$alpha
-    )
-  ) %>%
-    mutate(
-      family = "H2 sensitivity (participant fixed effects)",
-      p_adjusted = p.adjust(p.value, method = params$p_adjust_method),
-      planned_test = paste0("Interactive - Static (", vis_type, ")")
-    )
-}
-
-h2_anova
-knitr::kable(h2_planned_table, digits = 4, caption = "H2 Planned Contrasts (Holm-adjusted within H2)")
 knitr::kable(
   h2_condition_means %>%
     transmute(
@@ -702,9 +665,6 @@ knitr::kable(
   digits = 4,
   caption = "H2 Estimated Means by Visualization Family"
 )
-if (!is.null(h2_sensitivity_table)) {
-  knitr::kable(h2_sensitivity_table, digits = 4, caption = "H2 Sensitivity Contrasts (participant fixed effects)")
-}
 ```
 
 ```{r h2-plot, fig.width=8, fig.height=4.8}
@@ -733,32 +693,13 @@ ggplot(h2_plot_data, aes(x = interaction_group, y = emmean, group = 1)) +
 ```{r h3-model}
 h3_model_data <- set_sum_contrasts(h3_data, factors = c("interaction_group", "vis_type"))
 
-h3_model <- lmer(
-  interaction_composite ~ interaction_group * vis_type + (1 | participant_id),
+h3_model <- lm(
+  interaction_composite ~ interaction_group * vis_type + participant_id,
   data = h3_model_data,
-  REML = TRUE
+  na.action = na.exclude
 )
 
-h3_singular <- lme4::isSingular(h3_model, tol = 1e-5)
-h3_anova <- anova(h3_model, type = 3)
-
-h3_emm <- emmeans(h3_model, ~ interaction_group)
-h3_planned <- contrast(
-  h3_emm,
-  method = list(
-    "Interactive - Buggy" = c(0, 1, -1),
-    "Buggy - Static" = c(-1, 0, 1),
-    "Interactive - Static" = c(-1, 1, 0)
-  ),
-  adjust = "none"
-)
-
-h3_planned_table <- augment_contrast_table(
-  summary(h3_planned, infer = c(TRUE, TRUE), level = 1 - params$alpha),
-  family_label = "H3",
-  alpha = params$alpha,
-  adjust_method = params$p_adjust_method
-)
+h3_singular <- NA
 
 h3_condition_means <- as.data.frame(
   summary(emmeans(h3_model, ~ interaction_group * vis_type), infer = FALSE)
@@ -775,59 +716,6 @@ h3_vis_means <- as.data.frame(
   summary(emmeans(h3_model, ~ vis_type), infer = FALSE)
 )
 
-h3_resid_sd <- sigma(h3_model)
-h3_planned_table <- h3_planned_table %>%
-  mutate(
-    std_estimate = estimate / h3_resid_sd,
-    std_lower.CL = lower.CL / h3_resid_sd,
-    std_upper.CL = upper.CL / h3_resid_sd,
-    expected_direction = case_when(
-      contrast == "Interactive - Buggy" ~ "Non-negative estimate supports hypothesis",
-      contrast == "Buggy - Static" ~ "Positive estimate supports hypothesis",
-      contrast == "Interactive - Static" ~ "Positive estimate supports hypothesis",
-      TRUE ~ "Directional hypothesis"
-    ),
-    observed_direction = case_when(
-      estimate > 0 ~ "Positive",
-      estimate < 0 ~ "Negative",
-      TRUE ~ "Zero"
-    )
-  )
-
-h3_sensitivity <- NULL
-h3_sensitivity_table <- NULL
-if (h3_singular) {
-  h3_sensitivity <- lm(
-    interaction_composite ~ interaction_group * vis_type + participant_id,
-    data = h3_data
-  )
-  h3_sensitivity_table <- as.data.frame(
-    summary(
-      contrast(
-        emmeans(h3_sensitivity, ~ interaction_group),
-        method = list(
-          "Interactive - Buggy" = c(0, 1, -1),
-          "Buggy - Static" = c(-1, 0, 1),
-          "Interactive - Static" = c(-1, 1, 0)
-        ),
-        adjust = "none"
-      ),
-      infer = c(TRUE, TRUE),
-      level = 1 - params$alpha
-    )
-  ) %>%
-    mutate(
-      family = "H3 sensitivity (participant fixed effects)",
-      p_adjusted = p.adjust(p.value, method = params$p_adjust_method)
-    )
-}
-
-h3_anova
-knitr::kable(
-  h3_planned_table,
-  digits = 4,
-  caption = "H3 Planned Contrasts with Approximate Standardized Effects (Holm-adjusted within H3)"
-)
 knitr::kable(
   h3_condition_means %>%
     transmute(
@@ -860,9 +748,6 @@ knitr::kable(
   digits = 4,
   caption = "H3 Estimated Means by Visualization Family"
 )
-if (!is.null(h3_sensitivity_table)) {
-  knitr::kable(h3_sensitivity_table, digits = 4, caption = "H3 Sensitivity Contrasts (participant fixed effects)")
-}
 ```
 
 ```{r h3-plot, fig.width=7, fig.height=4.5}

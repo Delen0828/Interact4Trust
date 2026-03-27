@@ -1,0 +1,1512 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Experiment 1 Hypothesis Tests},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Experiment 1 Hypothesis Tests}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\setlength{\tabcolsep}{10pt}
+
+\subsection{Packages}\label{packages}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{required\_packages }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"dplyr"}\NormalTok{,}
+  \StringTok{"tidyr"}\NormalTok{,}
+  \StringTok{"ggplot2"}\NormalTok{,}
+  \StringTok{"jsonlite"}\NormalTok{,}
+  \StringTok{"knitr"}\NormalTok{,}
+  \StringTok{"lme4"}\NormalTok{,}
+  \StringTok{"lmerTest"}\NormalTok{,}
+  \StringTok{"emmeans"}
+\NormalTok{)}
+
+\NormalTok{missing\_packages }\OtherTok{\textless{}{-}}\NormalTok{ required\_packages[}\SpecialCharTok{!}\FunctionTok{vapply}\NormalTok{(required\_packages, requireNamespace, }\FunctionTok{logical}\NormalTok{(}\DecValTok{1}\NormalTok{), }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)]}
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(missing\_packages) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{stop}\NormalTok{(}
+    \StringTok{"Missing required packages: "}\NormalTok{,}
+    \FunctionTok{paste}\NormalTok{(missing\_packages, }\AttributeTok{collapse =} \StringTok{", "}\NormalTok{),}
+    \StringTok{". Install them before rendering."}
+\NormalTok{  )}
+\NormalTok{\}}
+
+\FunctionTok{lapply}\NormalTok{(required\_packages, library, }\AttributeTok{character.only =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[2]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[3]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[4]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[5]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[6]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[7]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"     
+## 
+## [[8]]
+##  [1] "emmeans"   "lmerTest"  "lme4"      "Matrix"    "knitr"     "jsonlite" 
+##  [7] "ggplot2"   "tidyr"     "dplyr"     "stats"     "graphics"  "grDevices"
+## [13] "utils"     "datasets"  "methods"   "base"
+\end{verbatim}
+
+\subsection{Paths}\label{paths}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{report\_dir }\OtherTok{\textless{}{-}} \FunctionTok{local}\NormalTok{(\{}
+\NormalTok{  current\_input }\OtherTok{\textless{}{-}} \FunctionTok{tryCatch}\NormalTok{(}
+\NormalTok{    knitr}\SpecialCharTok{::}\FunctionTok{current\_input}\NormalTok{(),}
+    \AttributeTok{error =} \ControlFlowTok{function}\NormalTok{(e) }\FunctionTok{character}\NormalTok{(}\DecValTok{0}\NormalTok{)}
+\NormalTok{  )}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(current\_input) }\SpecialCharTok{==} \DecValTok{1} \SpecialCharTok{\&\&} \FunctionTok{nzchar}\NormalTok{(current\_input)) \{}
+\NormalTok{    input\_path }\OtherTok{\textless{}{-}}\NormalTok{ current\_input}
+    \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{grepl}\NormalTok{(}\StringTok{"\^{}(/|[A{-}Za{-}z]:[/}\SpecialCharTok{\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}}\StringTok{])"}\NormalTok{, input\_path)) \{}
+\NormalTok{      input\_path }\OtherTok{\textless{}{-}} \FunctionTok{file.path}\NormalTok{(}\FunctionTok{getwd}\NormalTok{(), input\_path)}
+\NormalTok{    \}}
+
+    \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{grepl}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{.[Rr]md$"}\NormalTok{, input\_path) }\SpecialCharTok{||} \FunctionTok{file.exists}\NormalTok{(input\_path)) \{}
+      \FunctionTok{return}\NormalTok{(}\FunctionTok{normalizePath}\NormalTok{(}\FunctionTok{dirname}\NormalTok{(input\_path), }\AttributeTok{winslash =} \StringTok{"/"}\NormalTok{, }\AttributeTok{mustWork =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{    \}}
+\NormalTok{  \}}
+
+\NormalTok{  fallback\_dir }\OtherTok{\textless{}{-}} \FunctionTok{file.path}\NormalTok{(}\FunctionTok{getwd}\NormalTok{(), }\StringTok{"Experiment1"}\NormalTok{, }\StringTok{"analysis"}\NormalTok{)}
+  \FunctionTok{normalizePath}\NormalTok{(fallback\_dir, }\AttributeTok{winslash =} \StringTok{"/"}\NormalTok{, }\AttributeTok{mustWork =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{\})}
+
+\NormalTok{resolve\_report\_path }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(path\_value) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{grepl}\NormalTok{(}\StringTok{"\^{}(/|[A{-}Za{-}z]:[/}\SpecialCharTok{\textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}}\StringTok{])"}\NormalTok{, path\_value)) \{}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{normalizePath}\NormalTok{(path\_value, }\AttributeTok{winslash =} \StringTok{"/"}\NormalTok{, }\AttributeTok{mustWork =} \ConstantTok{TRUE}\NormalTok{))}
+\NormalTok{  \}}
+
+  \FunctionTok{normalizePath}\NormalTok{(}
+    \FunctionTok{file.path}\NormalTok{(report\_dir, path\_value),}
+    \AttributeTok{winslash =} \StringTok{"/"}\NormalTok{,}
+    \AttributeTok{mustWork =} \ConstantTok{TRUE}
+\NormalTok{  )}
+\NormalTok{\}}
+
+\NormalTok{data\_dir }\OtherTok{\textless{}{-}} \FunctionTok{resolve\_report\_path}\NormalTok{(params}\SpecialCharTok{$}\NormalTok{data\_dir)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Helpers}\label{helpers}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TREATMENT\_CONDITIONS }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{18}\NormalTok{, }\DecValTok{19}\NormalTok{, }\DecValTok{20}\NormalTok{)}
+
+\NormalTok{TRUST\_ITEM\_KEYS }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"skeptical\_rating"}\NormalTok{,}
+  \StringTok{"data\_trust"}\NormalTok{,}
+  \StringTok{"usability\_difficulty"}\NormalTok{,}
+  \StringTok{"comprehension\_ease"}
+\NormalTok{)}
+
+\NormalTok{INTERACTION\_ITEM\_KEYS }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"navigation\_control"}\NormalTok{,}
+  \StringTok{"content\_control"}\NormalTok{,}
+  \StringTok{"pace\_control"}\NormalTok{,}
+  \StringTok{"interface\_exploration"}\NormalTok{,}
+  \StringTok{"interface\_responsiveness"}\NormalTok{,}
+  \StringTok{"user\_communication"}\NormalTok{,}
+  \StringTok{"personal\_conversation"}\NormalTok{,}
+  \StringTok{"interface\_interaction"}\NormalTok{,}
+  \StringTok{"interface\_sensitivity"}
+\NormalTok{)}
+
+\NormalTok{extract\_condition\_number }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(condition\_id) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.na}\NormalTok{(condition\_id) }\SpecialCharTok{||} \SpecialCharTok{!}\FunctionTok{nzchar}\NormalTok{(condition\_id)) \{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA\_real\_}\NormalTok{)}
+\NormalTok{  \}}
+
+\NormalTok{  parts }\OtherTok{\textless{}{-}} \FunctionTok{strsplit}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(condition\_id), }\StringTok{"\_"}\NormalTok{)[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{  hits }\OtherTok{\textless{}{-}}\NormalTok{ parts[}\FunctionTok{grepl}\NormalTok{(}\StringTok{"\^{}[0{-}9]+$"}\NormalTok{, parts)]}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(hits) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA\_real\_}\NormalTok{)}
+\NormalTok{  \}}
+
+  \FunctionTok{as.numeric}\NormalTok{(hits[[}\DecValTok{1}\NormalTok{]])}
+\NormalTok{\}}
+
+\NormalTok{load\_participant\_data }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path) \{}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(file\_path, }\AttributeTok{stringsAsFactors =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{source\_file }\OtherTok{\textless{}{-}} \FunctionTok{basename}\NormalTok{(file\_path)}
+
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\StringTok{"participant\_id"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df) }\SpecialCharTok{||} \FunctionTok{all}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{participant\_id))) \{}
+\NormalTok{    participant\_id }\OtherTok{\textless{}{-}} \FunctionTok{strsplit}\NormalTok{(}
+\NormalTok{      tools}\SpecialCharTok{::}\FunctionTok{file\_path\_sans\_ext}\NormalTok{(}\FunctionTok{basename}\NormalTok{(file\_path)),}
+      \StringTok{"\_"}
+\NormalTok{    )[[}\DecValTok{1}\NormalTok{]][}\DecValTok{2}\NormalTok{]}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{participant\_id }\OtherTok{\textless{}{-}}\NormalTok{ participant\_id}
+\NormalTok{  \}}
+
+  \ControlFlowTok{if}\NormalTok{ (}\StringTok{"condition\_id"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(df)) \{}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{condition\_id[}\FunctionTok{is.na}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{condition\_id)] }\OtherTok{\textless{}{-}} \StringTok{"unknown"}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{condition\_number }\OtherTok{\textless{}{-}} \FunctionTok{vapply}\NormalTok{(}
+\NormalTok{      df}\SpecialCharTok{$}\NormalTok{condition\_id,}
+\NormalTok{      extract\_condition\_number,}
+      \FunctionTok{numeric}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{    )}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{condition\_id }\OtherTok{\textless{}{-}} \StringTok{"unknown"}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{condition\_number }\OtherTok{\textless{}{-}} \ConstantTok{NA\_real\_}
+\NormalTok{  \}}
+
+\NormalTok{  df}
+\NormalTok{\}}
+
+\NormalTok{parse\_response\_json }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(value) \{}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.na}\NormalTok{(value) }\SpecialCharTok{||} \SpecialCharTok{!}\FunctionTok{nzchar}\NormalTok{(value)) \{}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{())}
+\NormalTok{  \}}
+
+\NormalTok{  parsed }\OtherTok{\textless{}{-}} \FunctionTok{tryCatch}\NormalTok{(}
+\NormalTok{    jsonlite}\SpecialCharTok{::}\FunctionTok{fromJSON}\NormalTok{(value, }\AttributeTok{simplifyVector =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{error =} \ControlFlowTok{function}\NormalTok{(e) }\FunctionTok{list}\NormalTok{()}
+\NormalTok{  )}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.null}\NormalTok{(parsed) }\SpecialCharTok{||} \FunctionTok{length}\NormalTok{(parsed) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{())}
+\NormalTok{  \}}
+
+\NormalTok{  parsed}
+\NormalTok{\}}
+
+\NormalTok{expand\_response\_columns }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data) \{}
+\NormalTok{  parsed }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{response, parse\_response\_json)}
+\NormalTok{  expanded }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(}
+    \FunctionTok{lapply}\NormalTok{(parsed, }\ControlFlowTok{function}\NormalTok{(x) \{}
+      \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(x) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+        \FunctionTok{return}\NormalTok{(}\FunctionTok{data.frame}\NormalTok{())}
+\NormalTok{      \}}
+      \FunctionTok{as.data.frame}\NormalTok{(x, }\AttributeTok{stringsAsFactors =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{    \})}
+\NormalTok{  )}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{nrow}\NormalTok{(expanded) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{    expanded }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{row.names =} \FunctionTok{seq\_len}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(data)))}
+\NormalTok{  \}}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{nrow}\NormalTok{(expanded) }\SpecialCharTok{\textless{}} \FunctionTok{nrow}\NormalTok{(data)) \{}
+\NormalTok{    expanded[(}\FunctionTok{nrow}\NormalTok{(expanded) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(data), ] }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+\NormalTok{  \}}
+
+\NormalTok{  overlap }\OtherTok{\textless{}{-}} \FunctionTok{intersect}\NormalTok{(}\FunctionTok{names}\NormalTok{(expanded), }\FunctionTok{names}\NormalTok{(data))}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(overlap) }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{    data }\OtherTok{\textless{}{-}}\NormalTok{ data[, }\FunctionTok{setdiff}\NormalTok{(}\FunctionTok{names}\NormalTok{(data), overlap), drop }\OtherTok{=} \ConstantTok{FALSE}\NormalTok{]}
+\NormalTok{  \}}
+
+  \FunctionTok{bind\_cols}\NormalTok{(data, expanded)}
+\NormalTok{\}}
+
+\NormalTok{normalize\_likert\_0\_6\_to\_1\_7 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(values) \{}
+\NormalTok{  numeric\_values }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(values))}
+\NormalTok{  valid }\OtherTok{\textless{}{-}}\NormalTok{ numeric\_values[}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(numeric\_values)]}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(valid) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{return}\NormalTok{(numeric\_values)}
+\NormalTok{  \}}
+
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{all}\NormalTok{(valid }\SpecialCharTok{\textgreater{}=} \DecValTok{0} \SpecialCharTok{\&}\NormalTok{ valid }\SpecialCharTok{\textless{}=} \DecValTok{6}\NormalTok{)) \{}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{pmin}\NormalTok{(}\FunctionTok{pmax}\NormalTok{(numeric\_values }\SpecialCharTok{+} \DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{), }\DecValTok{7}\NormalTok{))}
+\NormalTok{  \}}
+
+\NormalTok{  numeric\_values}
+\NormalTok{\}}
+
+\NormalTok{reverse\_likert\_1\_7 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(values) \{}
+  \DecValTok{8} \SpecialCharTok{{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(values))}
+\NormalTok{\}}
+
+\NormalTok{map\_interaction\_group }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(condition\_number) \{}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    condition\_number }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{9}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Static"}\NormalTok{,}
+\NormalTok{    condition\_number }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Interactive"}\NormalTok{,}
+\NormalTok{    condition\_number }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{18}\NormalTok{, }\DecValTok{19}\NormalTok{, }\DecValTok{20}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Buggy"}\NormalTok{,}
+    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \ConstantTok{NA\_character\_}
+\NormalTok{  )}
+\NormalTok{\}}
+
+\NormalTok{map\_vis\_type }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(condition\_number) \{}
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    condition\_number }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{19}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"PI"}\NormalTok{,}
+\NormalTok{    condition\_number }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{18}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"Ensemble"}\NormalTok{,}
+\NormalTok{    condition\_number }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{20}\NormalTok{) }\SpecialCharTok{\textasciitilde{}} \StringTok{"PI + Ensemble"}\NormalTok{,}
+    \ConstantTok{TRUE} \SpecialCharTok{\textasciitilde{}} \ConstantTok{NA\_character\_}
+\NormalTok{  )}
+\NormalTok{\}}
+
+\NormalTok{safe\_min }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(x))}
+\NormalTok{  x }\OtherTok{\textless{}{-}}\NormalTok{ x[}\FunctionTok{is.finite}\NormalTok{(x)]}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(x) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA\_real\_}\NormalTok{)}
+\NormalTok{  \}}
+  \FunctionTok{min}\NormalTok{(x)}
+\NormalTok{\}}
+
+\NormalTok{safe\_max }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+\NormalTok{  x }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(x))}
+\NormalTok{  x }\OtherTok{\textless{}{-}}\NormalTok{ x[}\FunctionTok{is.finite}\NormalTok{(x)]}
+  \ControlFlowTok{if}\NormalTok{ (}\FunctionTok{length}\NormalTok{(x) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA\_real\_}\NormalTok{)}
+\NormalTok{  \}}
+  \FunctionTok{max}\NormalTok{(x)}
+\NormalTok{\}}
+
+\NormalTok{set\_sum\_contrasts }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, factors) \{}
+\NormalTok{  out }\OtherTok{\textless{}{-}}\NormalTok{ data}
+  \ControlFlowTok{for}\NormalTok{ (factor\_name }\ControlFlowTok{in}\NormalTok{ factors) \{}
+\NormalTok{    out[[factor\_name]] }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(out[[factor\_name]])}
+    \FunctionTok{contrasts}\NormalTok{(out[[factor\_name]]) }\OtherTok{\textless{}{-}} \FunctionTok{contr.sum}\NormalTok{(}\FunctionTok{length}\NormalTok{(}\FunctionTok{levels}\NormalTok{(out[[factor\_name]])))}
+\NormalTok{  \}}
+\NormalTok{  out}
+\NormalTok{\}}
+
+\NormalTok{augment\_contrast\_table }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(table\_df, family\_label, alpha, adjust\_method) \{}
+\NormalTok{  out }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(table\_df)}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{family }\OtherTok{\textless{}{-}}\NormalTok{ family\_label}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{p\_adjusted }\OtherTok{\textless{}{-}} \FunctionTok{p.adjust}\NormalTok{(out}\SpecialCharTok{$}\NormalTok{p.value, }\AttributeTok{method =}\NormalTok{ adjust\_method)}
+\NormalTok{  out}\SpecialCharTok{$}\NormalTok{alpha }\OtherTok{\textless{}{-}}\NormalTok{ alpha}
+\NormalTok{  out}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Load and Prepare Data}\label{load-and-prepare-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{csv\_files }\OtherTok{\textless{}{-}} \FunctionTok{sort}\NormalTok{(}\FunctionTok{list.files}\NormalTok{(}
+\NormalTok{  data\_dir,}
+  \AttributeTok{pattern =}\NormalTok{ params}\SpecialCharTok{$}\NormalTok{csv\_pattern,}
+  \AttributeTok{full.names =} \ConstantTok{TRUE}
+\NormalTok{))}
+
+\NormalTok{raw\_data }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(}\FunctionTok{lapply}\NormalTok{(csv\_files, load\_participant\_data)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(participant\_id)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{tolower}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(participant\_id)) }\SpecialCharTok{!=} \StringTok{"test"}\NormalTok{)}
+
+\NormalTok{prediction\_rows\_raw }\OtherTok{\textless{}{-}}\NormalTok{ raw\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(trial\_type }\SpecialCharTok{==} \StringTok{"prediction{-}task"}\NormalTok{)}
+
+\NormalTok{trust\_rows\_raw }\OtherTok{\textless{}{-}}\NormalTok{ raw\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(trial\_type }\SpecialCharTok{==} \StringTok{"trust{-}survey"}\NormalTok{)}
+
+\NormalTok{trust\_rows\_expanded }\OtherTok{\textless{}{-}} \FunctionTok{expand\_response\_columns}\NormalTok{(trust\_rows\_raw)}
+
+\ControlFlowTok{for}\NormalTok{ (col }\ControlFlowTok{in} \FunctionTok{c}\NormalTok{(TRUST\_ITEM\_KEYS, INTERACTION\_ITEM\_KEYS)) \{}
+  \ControlFlowTok{if}\NormalTok{ (col }\SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(trust\_rows\_expanded)) \{}
+\NormalTok{    trust\_rows\_expanded[[col]] }\OtherTok{\textless{}{-}} \FunctionTok{normalize\_likert\_0\_6\_to\_1\_7}\NormalTok{(trust\_rows\_expanded[[col]])}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{trust\_treatment }\OtherTok{\textless{}{-}}\NormalTok{ trust\_rows\_expanded }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{condition\_number =} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(condition\_number)),}
+    \AttributeTok{vis\_type =} \FunctionTok{map\_vis\_type}\NormalTok{(condition\_number),}
+    \AttributeTok{interaction\_group =} \FunctionTok{map\_interaction\_group}\NormalTok{(condition\_number),}
+    \AttributeTok{participant\_id =} \FunctionTok{as.character}\NormalTok{(participant\_id)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(condition\_number }\SpecialCharTok{\%in\%}\NormalTok{ TREATMENT\_CONDITIONS) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(vis\_type), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(interaction\_group))}
+
+\ControlFlowTok{for}\NormalTok{ (col }\ControlFlowTok{in} \FunctionTok{c}\NormalTok{(TRUST\_ITEM\_KEYS, INTERACTION\_ITEM\_KEYS)) \{}
+  \ControlFlowTok{if}\NormalTok{ (col }\SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(trust\_treatment)) \{}
+\NormalTok{    trust\_treatment[[col]] }\OtherTok{\textless{}{-}} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(trust\_treatment[[col]]))}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{trust\_treatment }\OtherTok{\textless{}{-}}\NormalTok{ trust\_treatment }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{skeptical\_rating\_scored =} \FunctionTok{reverse\_likert\_1\_7}\NormalTok{(skeptical\_rating),}
+    \AttributeTok{usability\_difficulty\_scored =} \FunctionTok{reverse\_likert\_1\_7}\NormalTok{(usability\_difficulty),}
+    \AttributeTok{trust\_composite =} \FunctionTok{rowMeans}\NormalTok{(}
+      \FunctionTok{cbind}\NormalTok{(}
+\NormalTok{        skeptical\_rating\_scored,}
+\NormalTok{        data\_trust,}
+\NormalTok{        usability\_difficulty\_scored,}
+\NormalTok{        comprehension\_ease}
+\NormalTok{      ),}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
+\NormalTok{    ),}
+    \AttributeTok{interaction\_composite =} \FunctionTok{rowMeans}\NormalTok{(}
+\NormalTok{      dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(., dplyr}\SpecialCharTok{::}\FunctionTok{all\_of}\NormalTok{(INTERACTION\_ITEM\_KEYS)),}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\NormalTok{trust\_treatment}\SpecialCharTok{$}\NormalTok{trust\_composite[}\SpecialCharTok{!}\FunctionTok{is.finite}\NormalTok{(trust\_treatment}\SpecialCharTok{$}\NormalTok{trust\_composite)] }\OtherTok{\textless{}{-}} \ConstantTok{NA\_real\_}
+\NormalTok{trust\_treatment}\SpecialCharTok{$}\NormalTok{interaction\_composite[}\SpecialCharTok{!}\FunctionTok{is.finite}\NormalTok{(trust\_treatment}\SpecialCharTok{$}\NormalTok{interaction\_composite)] }\OtherTok{\textless{}{-}} \ConstantTok{NA\_real\_}
+
+\NormalTok{complete\_participants }\OtherTok{\textless{}{-}}\NormalTok{ trust\_treatment }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(participant\_id) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{n\_interaction\_groups =} \FunctionTok{n\_distinct}\NormalTok{(interaction\_group),}
+    \AttributeTok{n\_treatment\_rows =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(n\_interaction\_groups }\SpecialCharTok{==} \DecValTok{3}\NormalTok{, n\_treatment\_rows }\SpecialCharTok{\textgreater{}=} \DecValTok{3}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pull}\NormalTok{(participant\_id)}
+
+\NormalTok{h2\_data }\OtherTok{\textless{}{-}}\NormalTok{ trust\_treatment }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(participant\_id }\SpecialCharTok{\%in\%}\NormalTok{ complete\_participants) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(trust\_composite)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{participant\_id =} \FunctionTok{factor}\NormalTok{(participant\_id),}
+    \AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{)),}
+    \AttributeTok{interaction\_group =} \FunctionTok{factor}\NormalTok{(interaction\_group, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Static"}\NormalTok{, }\StringTok{"Interactive"}\NormalTok{, }\StringTok{"Buggy"}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{droplevels}\NormalTok{()}
+
+\NormalTok{h3\_data }\OtherTok{\textless{}{-}}\NormalTok{ trust\_treatment }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(participant\_id }\SpecialCharTok{\%in\%}\NormalTok{ complete\_participants) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(interaction\_composite)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{participant\_id =} \FunctionTok{factor}\NormalTok{(participant\_id),}
+    \AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{)),}
+    \AttributeTok{interaction\_group =} \FunctionTok{factor}\NormalTok{(interaction\_group, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Static"}\NormalTok{, }\StringTok{"Interactive"}\NormalTok{, }\StringTok{"Buggy"}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{droplevels}\NormalTok{()}
+
+\NormalTok{prediction\_rows\_prepared }\OtherTok{\textless{}{-}}\NormalTok{ prediction\_rows\_raw }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{phase =} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(phase)),}
+    \AttributeTok{condition\_number =} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(condition\_number)),}
+    \AttributeTok{vis\_type =} \FunctionTok{map\_vis\_type}\NormalTok{(condition\_number),}
+    \AttributeTok{interaction\_group =} \FunctionTok{map\_interaction\_group}\NormalTok{(condition\_number),}
+    \AttributeTok{confidence\_rating =} \FunctionTok{suppressWarnings}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(confidence\_rating)),}
+    \AttributeTok{participant\_id =} \FunctionTok{as.character}\NormalTok{(participant\_id)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(confidence\_rating))}
+
+\NormalTok{h1\_baseline }\OtherTok{\textless{}{-}}\NormalTok{ prediction\_rows\_prepared }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(phase }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(participant\_id) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{baseline\_confidence =} \FunctionTok{mean}\NormalTok{(confidence\_rating, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(baseline\_confidence))}
+
+\NormalTok{h1\_phase2\_condition }\OtherTok{\textless{}{-}}\NormalTok{ prediction\_rows\_prepared }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(phase }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(condition\_number }\SpecialCharTok{\%in\%}\NormalTok{ TREATMENT\_CONDITIONS) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(vis\_type), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(interaction\_group), }\FunctionTok{is.finite}\NormalTok{(condition\_number)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(participant\_id, condition\_number, condition\_name, vis\_type, interaction\_group) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{confidence\_rating =} \FunctionTok{mean}\NormalTok{(confidence\_rating, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(confidence\_rating))}
+
+\NormalTok{h1\_data }\OtherTok{\textless{}{-}}\NormalTok{ h1\_phase2\_condition }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{inner\_join}\NormalTok{(h1\_baseline, }\AttributeTok{by =} \StringTok{"participant\_id"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{confidence\_shift =}\NormalTok{ confidence\_rating }\SpecialCharTok{{-}}\NormalTok{ baseline\_confidence,}
+    \AttributeTok{participant\_id =} \FunctionTok{factor}\NormalTok{(participant\_id),}
+    \AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{)),}
+    \AttributeTok{interaction\_group =} \FunctionTok{factor}\NormalTok{(interaction\_group, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Static"}\NormalTok{, }\StringTok{"Interactive"}\NormalTok{, }\StringTok{"Buggy"}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(confidence\_shift)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{droplevels}\NormalTok{()}
+
+\NormalTok{h1\_summary }\OtherTok{\textless{}{-}}\NormalTok{ h1\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(vis\_type) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{n =} \FunctionTok{n\_distinct}\NormalTok{(participant\_id),}
+    \AttributeTok{mean\_shift =} \FunctionTok{mean}\NormalTok{(confidence\_shift, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{sd\_shift =} \FunctionTok{sd}\NormalTok{(confidence\_shift, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{se\_shift =}\NormalTok{ sd\_shift }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{pmax}\NormalTok{(n, }\DecValTok{1}\NormalTok{)),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{group\_category =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{), }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(group\_category)}
+
+\NormalTok{h1\_data }\OtherTok{\textless{}{-}}\NormalTok{ h1\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{droplevels}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Sample Flow and Cell
+Counts}\label{sample-flow-and-cell-counts}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample\_flow }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{stage =} \FunctionTok{c}\NormalTok{(}
+    \StringTok{"Participant CSV files"}\NormalTok{,}
+    \StringTok{"Participants after dropping test IDs"}\NormalTok{,}
+    \StringTok{"Prediction rows (all)"}\NormalTok{,}
+    \StringTok{"Trust{-}survey rows (all)"}\NormalTok{,}
+    \StringTok{"Participants with complete treatment rows (Static + Interactive + Buggy)"}\NormalTok{,}
+    \StringTok{"H1 rows used"}\NormalTok{,}
+    \StringTok{"H2 rows used"}\NormalTok{,}
+    \StringTok{"H3 rows used"}
+\NormalTok{  ),}
+  \AttributeTok{value =} \FunctionTok{c}\NormalTok{(}
+    \FunctionTok{length}\NormalTok{(csv\_files),}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{n\_distinct}\NormalTok{(raw\_data}\SpecialCharTok{$}\NormalTok{participant\_id),}
+    \FunctionTok{nrow}\NormalTok{(prediction\_rows\_raw),}
+    \FunctionTok{nrow}\NormalTok{(trust\_rows\_raw),}
+    \FunctionTok{length}\NormalTok{(complete\_participants),}
+    \FunctionTok{nrow}\NormalTok{(h1\_data),}
+    \FunctionTok{nrow}\NormalTok{(h2\_data),}
+    \FunctionTok{nrow}\NormalTok{(h3\_data)}
+\NormalTok{  )}
+\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(sample\_flow, }\AttributeTok{align =} \FunctionTok{c}\NormalTok{(}\StringTok{"l"}\NormalTok{, }\StringTok{"r"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.9241}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.0759}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+stage
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+value
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Participant CSV files & 337 \\
+Participants after dropping test IDs & 337 \\
+Prediction rows (all) & 1340 \\
+Trust-survey rows (all) & 1340 \\
+Participants with complete treatment rows (Static + Interactive + Buggy)
+& 335 \\
+H1 rows used & 1005 \\
+H2 rows used & 1005 \\
+H3 rows used & 1005 \\
+\end{longtable}
+}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h1\_cell\_counts }\OtherTok{\textless{}{-}}\NormalTok{ h1\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(vis\_type, }\AttributeTok{name =} \StringTok{"n"}\NormalTok{)}
+
+\NormalTok{h2\_cell\_counts }\OtherTok{\textless{}{-}}\NormalTok{ h2\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(interaction\_group, vis\_type, }\AttributeTok{name =} \StringTok{"n"}\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(h1\_cell\_counts, }\AttributeTok{caption =} \StringTok{"H1 Cell Counts: Confidence Shift Rows by Visualization Family"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{H1 Cell Counts: Confidence Shift Rows by Visualization
+Family}\tabularnewline
+\toprule\noalign{}
+vis\_type & n \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+vis\_type & n \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PI & 340 \\
+Ensemble & 330 \\
+PI + Ensemble & 335 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(h2\_cell\_counts, }\AttributeTok{caption =} \StringTok{"H2/H3 Cell Counts: Trust{-}Survey Rows by Interaction Group and Visualization Family"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}llr@{}}
+\caption{H2/H3 Cell Counts: Trust-Survey Rows by Interaction Group and
+Visualization Family}\tabularnewline
+\toprule\noalign{}
+interaction\_group & vis\_type & n \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+interaction\_group & vis\_type & n \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Static & PI & 114 \\
+Static & Ensemble & 109 \\
+Static & PI + Ensemble & 112 \\
+Interactive & PI & 117 \\
+Interactive & Ensemble & 109 \\
+Interactive & PI + Ensemble & 109 \\
+Buggy & PI & 109 \\
+Buggy & Ensemble & 112 \\
+Buggy & PI + Ensemble & 114 \\
+\end{longtable}
+
+\subsection{Preprocessing Validation}\label{preprocessing-validation}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{range\_check }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(}
+  \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{scale =} \StringTok{"Trust composite items (normalized)"}\NormalTok{,}
+    \AttributeTok{item =}\NormalTok{ TRUST\_ITEM\_KEYS,}
+    \AttributeTok{min\_value =} \FunctionTok{vapply}\NormalTok{(TRUST\_ITEM\_KEYS, }\ControlFlowTok{function}\NormalTok{(k) }\FunctionTok{safe\_min}\NormalTok{(trust\_treatment[[k]]), }\FunctionTok{numeric}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
+    \AttributeTok{max\_value =} \FunctionTok{vapply}\NormalTok{(TRUST\_ITEM\_KEYS, }\ControlFlowTok{function}\NormalTok{(k) }\FunctionTok{safe\_max}\NormalTok{(trust\_treatment[[k]]), }\FunctionTok{numeric}\NormalTok{(}\DecValTok{1}\NormalTok{))}
+\NormalTok{  ),}
+  \FunctionTok{data.frame}\NormalTok{(}
+    \AttributeTok{scale =} \StringTok{"Interaction composite items (normalized)"}\NormalTok{,}
+    \AttributeTok{item =}\NormalTok{ INTERACTION\_ITEM\_KEYS,}
+    \AttributeTok{min\_value =} \FunctionTok{vapply}\NormalTok{(INTERACTION\_ITEM\_KEYS, }\ControlFlowTok{function}\NormalTok{(k) }\FunctionTok{safe\_min}\NormalTok{(trust\_treatment[[k]]), }\FunctionTok{numeric}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
+    \AttributeTok{max\_value =} \FunctionTok{vapply}\NormalTok{(INTERACTION\_ITEM\_KEYS, }\ControlFlowTok{function}\NormalTok{(k) }\FunctionTok{safe\_max}\NormalTok{(trust\_treatment[[k]]), }\FunctionTok{numeric}\NormalTok{(}\DecValTok{1}\NormalTok{))}
+\NormalTok{  )}
+\NormalTok{)}
+
+\NormalTok{condition\_mapping\_check }\OtherTok{\textless{}{-}}\NormalTok{ trust\_treatment }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{distinct}\NormalTok{(condition\_number, condition\_name, interaction\_group, vis\_type) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(condition\_number)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(range\_check, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{, }\AttributeTok{caption =} \StringTok{"Likert Range Checks After 0{-}6 {-}\textgreater{} 1{-}7 Normalization"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2252}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3694}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2252}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0901}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0901}}@{}}
+\caption{Likert Range Checks After 0-6 -\textgreater{} 1-7
+Normalization}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+scale
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+item
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+min\_value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+max\_value
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+scale
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+item
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+min\_value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+max\_value
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+skeptical\_rating & Trust composite items (normalized) &
+skeptical\_rating & 1 & 7 \\
+data\_trust & Trust composite items (normalized) & data\_trust & 1 &
+7 \\
+usability\_difficulty & Trust composite items (normalized) &
+usability\_difficulty & 1 & 7 \\
+comprehension\_ease & Trust composite items (normalized) &
+comprehension\_ease & 1 & 7 \\
+navigation\_control & Interaction composite items (normalized) &
+navigation\_control & 1 & 7 \\
+content\_control & Interaction composite items (normalized) &
+content\_control & 1 & 7 \\
+pace\_control & Interaction composite items (normalized) & pace\_control
+& 1 & 7 \\
+interface\_exploration & Interaction composite items (normalized) &
+interface\_exploration & 1 & 7 \\
+interface\_responsiveness & Interaction composite items (normalized) &
+interface\_responsiveness & 1 & 7 \\
+user\_communication & Interaction composite items (normalized) &
+user\_communication & 1 & 7 \\
+personal\_conversation & Interaction composite items (normalized) &
+personal\_conversation & 1 & 7 \\
+interface\_interaction & Interaction composite items (normalized) &
+interface\_interaction & 1 & 7 \\
+interface\_sensitivity & Interaction composite items (normalized) &
+interface\_sensitivity & 1 & 7 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(condition\_mapping\_check, }\AttributeTok{caption =} \StringTok{"Condition Mapping Check"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2329}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3288}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2466}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1918}}@{}}
+\caption{Condition Mapping Check}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+condition\_number
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+condition\_name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_type
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedleft
+condition\_number
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+condition\_name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_type
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+2 & PI Plot & Static & PI \\
+3 & Ensemble Plot & Static & Ensemble \\
+4 & Ensemble + Hover & Interactive & Ensemble \\
+5 & PI Plot + Hover & Interactive & PI \\
+6 & PI to Ensemble & Interactive & PI + Ensemble \\
+9 & Combined PI + Ensemble & Static & PI + Ensemble \\
+18 & Glitch Ensemble + Hover & Buggy & Ensemble \\
+19 & Glitch PI Plot + Hover & Buggy & PI \\
+20 & Glitch PI to Ensemble & Buggy & PI + Ensemble \\
+\end{longtable}
+
+\subsection{H1: Confidence Shift from Baseline by Visualization
+Family}\label{h1-confidence-shift-from-baseline-by-visualization-family}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h1\_participant\_means }\OtherTok{\textless{}{-}}\NormalTok{ h1\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(participant\_id, vis\_type) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{baseline\_confidence =} \FunctionTok{mean}\NormalTok{(baseline\_confidence, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{treatment\_confidence =} \FunctionTok{mean}\NormalTok{(confidence\_rating, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{confidence\_shift =} \FunctionTok{mean}\NormalTok{(confidence\_shift, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}
+    \FunctionTok{is.finite}\NormalTok{(baseline\_confidence),}
+    \FunctionTok{is.finite}\NormalTok{(treatment\_confidence),}
+    \FunctionTok{is.finite}\NormalTok{(confidence\_shift)}
+\NormalTok{  )}
+
+\NormalTok{h1\_anova\_data }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(}
+\NormalTok{  h1\_participant\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{distinct}\NormalTok{(participant\_id, baseline\_confidence) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      participant\_id,}
+      \AttributeTok{vis\_type =} \StringTok{"Baseline"}\NormalTok{,}
+      \AttributeTok{confidence =}\NormalTok{ baseline\_confidence}
+\NormalTok{    ),}
+\NormalTok{  h1\_participant\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      participant\_id,}
+      \AttributeTok{vis\_type =} \FunctionTok{as.character}\NormalTok{(vis\_type),}
+      \AttributeTok{confidence =}\NormalTok{ treatment\_confidence}
+\NormalTok{    )}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{participant\_id =} \FunctionTok{factor}\NormalTok{(participant\_id),}
+    \AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Baseline"}\NormalTok{, }\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{is.finite}\NormalTok{(confidence))}
+
+\NormalTok{h1\_model\_data }\OtherTok{\textless{}{-}} \FunctionTok{set\_sum\_contrasts}\NormalTok{(h1\_anova\_data, }\AttributeTok{factors =} \FunctionTok{c}\NormalTok{(}\StringTok{"vis\_type"}\NormalTok{))}
+
+\NormalTok{h1\_anova\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}
+\NormalTok{  confidence }\SpecialCharTok{\textasciitilde{}}\NormalTok{ vis\_type }\SpecialCharTok{+}\NormalTok{ participant\_id,}
+  \AttributeTok{data =}\NormalTok{ h1\_model\_data}
+\NormalTok{)}
+
+\NormalTok{h1\_anova }\OtherTok{\textless{}{-}} \FunctionTok{anova}\NormalTok{(h1\_anova\_model)}
+
+\NormalTok{h1\_emmeans }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h1\_anova\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ vis\_type), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{h1\_singular }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(h1\_summary, }\AttributeTok{digits =} \DecValTok{4}\NormalTok{, }\AttributeTok{caption =} \StringTok{"H1 Summary: Confidence Shift from Baseline by Visualization Family"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrrl@{}}
+\caption{H1 Summary: Confidence Shift from Baseline by Visualization
+Family}\tabularnewline
+\toprule\noalign{}
+vis\_type & n & mean\_shift & sd\_shift & se\_shift & group\_category \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+vis\_type & n & mean\_shift & sd\_shift & se\_shift & group\_category \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PI & 226 & -0.2147 & 1.0799 & 0.0718 & PI \\
+Ensemble & 221 & -0.3061 & 1.3948 & 0.0938 & Ensemble \\
+PI + Ensemble & 335 & -0.4418 & 1.3499 & 0.0738 & PI + Ensemble \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h1\_anova}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: confidence
+##                 Df  Sum Sq Mean Sq F value    Pr(>F)    
+## vis_type         3   36.58 12.1940  15.901  4.83e-10 ***
+## participant_id 334 1514.56  4.5346   5.913 < 2.2e-16 ***
+## Residuals      779  597.40  0.7669                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h1\_emmeans }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      vis\_type,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H1 Estimated Marginal Means by Visualization Family (including Baseline)"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{H1 Estimated Marginal Means by Visualization Family (including
+Baseline)}\tabularnewline
+\toprule\noalign{}
+vis\_type & mean & se \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+vis\_type & mean & se \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Baseline & 4.4000 & 0.0478 \\
+PI & 4.1882 & 0.0617 \\
+Ensemble & 4.1089 & 0.0625 \\
+PI + Ensemble & 3.9582 & 0.0478 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h1\_plot\_data }\OtherTok{\textless{}{-}}\NormalTok{ h1\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{), }\AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{))}
+
+\FunctionTok{ggplot}\NormalTok{(h1\_plot\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ vis\_type, }\AttributeTok{x =}\NormalTok{ mean\_shift)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\AttributeTok{fill =} \StringTok{"\#9CA3AF"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.72}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbarh}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{xmin =}\NormalTok{ mean\_shift }\SpecialCharTok{{-}}\NormalTok{ se\_shift, }\AttributeTok{xmax =}\NormalTok{ mean\_shift }\SpecialCharTok{+}\NormalTok{ se\_shift),}
+    \AttributeTok{height =} \FloatTok{0.18}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"\#4B5563"}\NormalTok{,}
+    \AttributeTok{linewidth =} \FloatTok{0.8}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#6c757d"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{, }\AttributeTok{linewidth =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"H1: Confidence Shift from Baseline by Visualization Family (mean +/{-} SE)"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Confidence shift from baseline"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Visualization family"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{panel.grid =} \FunctionTok{element\_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{analysis_hypotheses_files/figure-latex/h1-plot-1.pdf}}
+
+\subsection{H2: Trust Composite and Interaction Availability by
+Visualization
+Family}\label{h2-trust-composite-and-interaction-availability-by-visualization-family}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h2\_model\_data }\OtherTok{\textless{}{-}} \FunctionTok{set\_sum\_contrasts}\NormalTok{(h2\_data, }\AttributeTok{factors =} \FunctionTok{c}\NormalTok{(}\StringTok{"interaction\_group"}\NormalTok{, }\StringTok{"vis\_type"}\NormalTok{))}
+
+\NormalTok{h2\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}
+\NormalTok{  trust\_composite }\SpecialCharTok{\textasciitilde{}}\NormalTok{ interaction\_group }\SpecialCharTok{*}\NormalTok{ vis\_type }\SpecialCharTok{+}\NormalTok{ participant\_id,}
+  \AttributeTok{data =}\NormalTok{ h2\_model\_data,}
+  \AttributeTok{na.action =}\NormalTok{ na.exclude}
+\NormalTok{)}
+
+\NormalTok{h2\_singular }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+
+\NormalTok{h2\_condition\_means }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h2\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ interaction\_group }\SpecialCharTok{*}\NormalTok{ vis\_type), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{condition =} \FunctionTok{paste}\NormalTok{(interaction\_group, vis\_type)}
+\NormalTok{  )}
+
+\NormalTok{h2\_interaction\_means }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h2\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ interaction\_group), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{h2\_vis\_means }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h2\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ vis\_type), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h2\_condition\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      condition,}
+\NormalTok{      interaction\_group,}
+\NormalTok{      vis\_type,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H2 Estimated Means by Individual Condition (Interaction x Visualization)"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3611}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1944}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0972}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0972}}@{}}
+\caption{H2 Estimated Means by Individual Condition (Interaction x
+Visualization)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+se
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+se
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Static PI & Static & PI & 4.9118 & 0.0950 \\
+Interactive PI & Interactive & PI & 4.9671 & 0.0937 \\
+Buggy PI & Buggy & PI & 4.5950 & 0.0973 \\
+Static Ensemble & Static & Ensemble & 4.0459 & 0.0973 \\
+Interactive Ensemble & Interactive & Ensemble & 4.6800 & 0.0973 \\
+Buggy Ensemble & Buggy & Ensemble & 4.3967 & 0.0959 \\
+Static PI + Ensemble & Static & PI + Ensemble & 4.0496 & 0.0959 \\
+Interactive PI + Ensemble & Interactive & PI + Ensemble & 4.5571 &
+0.0973 \\
+Buggy PI + Ensemble & Buggy & PI + Ensemble & 4.2650 & 0.0950 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h2\_interaction\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      interaction\_group,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H2 Estimated Means by Interaction Group"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{H2 Estimated Means by Interaction Group}\tabularnewline
+\toprule\noalign{}
+interaction\_group & mean & se \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+interaction\_group & mean & se \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Static & 4.3358 & 0.0462 \\
+Interactive & 4.7347 & 0.0462 \\
+Buggy & 4.4189 & 0.0462 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h2\_vis\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      vis\_type,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H2 Estimated Means by Visualization Family"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{H2 Estimated Means by Visualization Family}\tabularnewline
+\toprule\noalign{}
+vis\_type & mean & se \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+vis\_type & mean & se \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PI & 4.8246 & 0.0549 \\
+Ensemble & 4.3742 & 0.0560 \\
+PI + Ensemble & 4.2906 & 0.0462 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h2\_plot\_data }\OtherTok{\textless{}{-}}\NormalTok{ h2\_condition\_means }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{ymin =} \FunctionTok{pmax}\NormalTok{(}\DecValTok{1}\NormalTok{, emmean }\SpecialCharTok{{-}}\NormalTok{ SE),}
+    \AttributeTok{ymax =} \FunctionTok{pmin}\NormalTok{(}\DecValTok{7}\NormalTok{, emmean }\SpecialCharTok{+}\NormalTok{ SE)}
+\NormalTok{  )}
+
+\FunctionTok{ggplot}\NormalTok{(h2\_plot\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ interaction\_group, }\AttributeTok{y =}\NormalTok{ emmean, }\AttributeTok{group =} \DecValTok{1}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \FloatTok{2.8}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#1B5E20"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{color =} \StringTok{"\#1B5E20"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ ymin, }\AttributeTok{ymax =}\NormalTok{ ymax), }\AttributeTok{width =} \FloatTok{0.15}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#1B5E20"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ vis\_type, }\AttributeTok{nrow =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{7}\NormalTok{), }\AttributeTok{breaks =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"H2: Trust Composite by Interaction Group Within Visualization Family"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Interaction group"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Estimated mean trust composite (+/{-} SE)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{analysis_hypotheses_files/figure-latex/h2-plot-1.pdf}}
+
+\subsection{H3: Interaction Experience Composite Across Interaction
+Availability}\label{h3-interaction-experience-composite-across-interaction-availability}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h3\_model\_data }\OtherTok{\textless{}{-}} \FunctionTok{set\_sum\_contrasts}\NormalTok{(h3\_data, }\AttributeTok{factors =} \FunctionTok{c}\NormalTok{(}\StringTok{"interaction\_group"}\NormalTok{, }\StringTok{"vis\_type"}\NormalTok{))}
+
+\NormalTok{h3\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}
+\NormalTok{  interaction\_composite }\SpecialCharTok{\textasciitilde{}}\NormalTok{ interaction\_group }\SpecialCharTok{*}\NormalTok{ vis\_type }\SpecialCharTok{+}\NormalTok{ participant\_id,}
+  \AttributeTok{data =}\NormalTok{ h3\_model\_data,}
+  \AttributeTok{na.action =}\NormalTok{ na.exclude}
+\NormalTok{)}
+
+\NormalTok{h3\_singular }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+
+\NormalTok{h3\_condition\_means }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h3\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ interaction\_group }\SpecialCharTok{*}\NormalTok{ vis\_type), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{condition =} \FunctionTok{paste}\NormalTok{(interaction\_group, vis\_type)}
+\NormalTok{  )}
+
+\NormalTok{h3\_interaction\_means }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h3\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ interaction\_group), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{h3\_vis\_means }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{summary}\NormalTok{(}\FunctionTok{emmeans}\NormalTok{(h3\_model, }\SpecialCharTok{\textasciitilde{}}\NormalTok{ vis\_type), }\AttributeTok{infer =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h3\_condition\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      condition,}
+\NormalTok{      interaction\_group,}
+\NormalTok{      vis\_type,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H3 Estimated Means by Individual Condition (Interaction x Visualization)"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3611}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1944}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0972}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0972}}@{}}
+\caption{H3 Estimated Means by Individual Condition (Interaction x
+Visualization)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+se
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+se
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Static PI & Static & PI & 3.6256 & 0.0648 \\
+Interactive PI & Interactive & PI & 3.8459 & 0.0639 \\
+Buggy PI & Buggy & PI & 3.8254 & 0.0664 \\
+Static Ensemble & Static & Ensemble & 3.3838 & 0.0664 \\
+Interactive Ensemble & Interactive & Ensemble & 3.9451 & 0.0664 \\
+Buggy Ensemble & Buggy & Ensemble & 3.7114 & 0.0654 \\
+Static PI + Ensemble & Static & PI + Ensemble & 3.3082 & 0.0654 \\
+Interactive PI + Ensemble & Interactive & PI + Ensemble & 3.7779 &
+0.0664 \\
+Buggy PI + Ensemble & Buggy & PI + Ensemble & 3.6679 & 0.0648 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h3\_interaction\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      interaction\_group,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H3 Estimated Means by Interaction Group"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{H3 Estimated Means by Interaction Group}\tabularnewline
+\toprule\noalign{}
+interaction\_group & mean & se \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+interaction\_group & mean & se \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Static & 3.4392 & 0.0315 \\
+Interactive & 3.8563 & 0.0315 \\
+Buggy & 3.7349 & 0.0315 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  h3\_vis\_means }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{transmute}\NormalTok{(}
+\NormalTok{      vis\_type,}
+      \AttributeTok{mean =}\NormalTok{ emmean,}
+      \AttributeTok{se =}\NormalTok{ SE}
+\NormalTok{    ),}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"H3 Estimated Means by Visualization Family"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{H3 Estimated Means by Visualization Family}\tabularnewline
+\toprule\noalign{}
+vis\_type & mean & se \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+vis\_type & mean & se \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PI & 3.7656 & 0.0374 \\
+Ensemble & 3.6801 & 0.0382 \\
+PI + Ensemble & 3.5847 & 0.0315 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h3\_plot\_data }\OtherTok{\textless{}{-}}\NormalTok{ h3\_interaction\_means }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{ymin =} \FunctionTok{pmax}\NormalTok{(}\DecValTok{1}\NormalTok{, emmean }\SpecialCharTok{{-}}\NormalTok{ SE),}
+    \AttributeTok{ymax =} \FunctionTok{pmin}\NormalTok{(}\DecValTok{7}\NormalTok{, emmean }\SpecialCharTok{+}\NormalTok{ SE)}
+\NormalTok{  )}
+
+\FunctionTok{ggplot}\NormalTok{(h3\_plot\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ interaction\_group, }\AttributeTok{y =}\NormalTok{ emmean)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#4A148C"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ ymin, }\AttributeTok{ymax =}\NormalTok{ ymax), }\AttributeTok{width =} \FloatTok{0.15}\NormalTok{, }\AttributeTok{color =} \StringTok{"\#4A148C"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{7}\NormalTok{), }\AttributeTok{breaks =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"H3: Interaction Experience Composite by Interaction Group"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Interaction group"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Estimated mean interaction composite (+/{-} SE)"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{(}\AttributeTok{base\_size =} \DecValTok{12}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{analysis_hypotheses_files/figure-latex/h3-plot-1.pdf}}
+
+\subsection{Model Execution Checks}\label{model-execution-checks}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model\_checks }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{hypothesis =} \FunctionTok{c}\NormalTok{(}\StringTok{"H1"}\NormalTok{, }\StringTok{"H2"}\NormalTok{, }\StringTok{"H3"}\NormalTok{),}
+  \AttributeTok{rows\_used =} \FunctionTok{c}\NormalTok{(}\FunctionTok{nrow}\NormalTok{(h1\_data), }\FunctionTok{nrow}\NormalTok{(h2\_data), }\FunctionTok{nrow}\NormalTok{(h3\_data)),}
+  \AttributeTok{participants =} \FunctionTok{c}\NormalTok{(}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{n\_distinct}\NormalTok{(h1\_data}\SpecialCharTok{$}\NormalTok{participant\_id),}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{n\_distinct}\NormalTok{(h2\_data}\SpecialCharTok{$}\NormalTok{participant\_id),}
+\NormalTok{    dplyr}\SpecialCharTok{::}\FunctionTok{n\_distinct}\NormalTok{(h3\_data}\SpecialCharTok{$}\NormalTok{participant\_id)}
+\NormalTok{  ),}
+  \AttributeTok{vis\_levels\_present =} \FunctionTok{c}\NormalTok{(}
+    \FunctionTok{all}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{levels}\NormalTok{(h1\_data}\SpecialCharTok{$}\NormalTok{vis\_type)),}
+    \FunctionTok{all}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{levels}\NormalTok{(h2\_data}\SpecialCharTok{$}\NormalTok{vis\_type)),}
+    \FunctionTok{all}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{levels}\NormalTok{(h3\_data}\SpecialCharTok{$}\NormalTok{vis\_type))}
+\NormalTok{  ),}
+  \AttributeTok{interaction\_levels\_present =} \FunctionTok{c}\NormalTok{(}
+    \FunctionTok{all}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Static"}\NormalTok{, }\StringTok{"Interactive"}\NormalTok{, }\StringTok{"Buggy"}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{levels}\NormalTok{(h1\_data}\SpecialCharTok{$}\NormalTok{interaction\_group)),}
+    \FunctionTok{all}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Static"}\NormalTok{, }\StringTok{"Interactive"}\NormalTok{, }\StringTok{"Buggy"}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{levels}\NormalTok{(h2\_data}\SpecialCharTok{$}\NormalTok{interaction\_group)),}
+    \FunctionTok{all}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Static"}\NormalTok{, }\StringTok{"Interactive"}\NormalTok{, }\StringTok{"Buggy"}\NormalTok{) }\SpecialCharTok{\%in\%} \FunctionTok{levels}\NormalTok{(h3\_data}\SpecialCharTok{$}\NormalTok{interaction\_group))}
+\NormalTok{  ),}
+  \AttributeTok{singular\_lmm =} \FunctionTok{c}\NormalTok{(h1\_singular, h2\_singular, h3\_singular)}
+\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(model\_checks, }\AttributeTok{caption =} \StringTok{"Model Execution Validation"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1183}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1075}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1398}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2043}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2903}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1398}}@{}}
+\caption{Model Execution Validation}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hypothesis
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+rows\_used
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+participants
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_levels\_present
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_levels\_present
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+singular\_lmm
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+hypothesis
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+rows\_used
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+participants
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+vis\_levels\_present
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+interaction\_levels\_present
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+singular\_lmm
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+H1 & 1005 & 335 & TRUE & TRUE & NA \\
+H2 & 1005 & 335 & TRUE & TRUE & NA \\
+H3 & 1005 & 335 & TRUE & TRUE & NA \\
+\end{longtable}
+
+\subsection{Additional ANOVA: Visualization Family Within Interactive
+Availability
+Only}\label{additional-anova-visualization-family-within-interactive-availability-only}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{interactive\_vis\_data }\OtherTok{\textless{}{-}}\NormalTok{ h2\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(interaction\_group }\SpecialCharTok{==} \StringTok{"Interactive"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{vis\_type =} \FunctionTok{factor}\NormalTok{(vis\_type, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"PI"}\NormalTok{, }\StringTok{"Ensemble"}\NormalTok{, }\StringTok{"PI + Ensemble"}\NormalTok{))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{droplevels}\NormalTok{()}
+
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{nrow}\NormalTok{(interactive\_vis\_data) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+  \FunctionTok{stop}\NormalTok{(}\StringTok{"No rows found for interaction\_group == \textquotesingle{}Interactive\textquotesingle{}."}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{interactive\_vis\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(trust\_composite }\SpecialCharTok{\textasciitilde{}}\NormalTok{ vis\_type, }\AttributeTok{data =}\NormalTok{ interactive\_vis\_data)}
+\NormalTok{interactive\_vis\_anova }\OtherTok{\textless{}{-}} \FunctionTok{anova}\NormalTok{(interactive\_vis\_model)}
+
+\NormalTok{interactive\_vis\_summary }\OtherTok{\textless{}{-}}\NormalTok{ interactive\_vis\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(vis\_type) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{n =} \FunctionTok{n}\NormalTok{(),}
+    \AttributeTok{mean =} \FunctionTok{mean}\NormalTok{(trust\_composite, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{sd =} \FunctionTok{sd}\NormalTok{(trust\_composite, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{se =}\NormalTok{ sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{pmax}\NormalTok{(n, }\DecValTok{1}\NormalTok{)),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+\NormalTok{interactive\_vis\_anova}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Response: trust_composite
+##            Df Sum Sq Mean Sq F value   Pr(>F)   
+## vis_type    2  14.30  7.1512  5.1143 0.006492 **
+## Residuals 332 464.23  1.3983                    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
+\NormalTok{  interactive\_vis\_summary,}
+  \AttributeTok{digits =} \DecValTok{4}\NormalTok{,}
+  \AttributeTok{caption =} \StringTok{"Interactive{-}only Trust Composite by Visualization Family"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lrrrr@{}}
+\caption{Interactive-only Trust Composite by Visualization
+Family}\tabularnewline
+\toprule\noalign{}
+vis\_type & n & mean & sd & se \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+vis\_type & n & mean & sd & se \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PI & 117 & 4.9872 & 1.0916 & 0.1009 \\
+Ensemble & 109 & 4.7317 & 1.1137 & 0.1067 \\
+PI + Ensemble & 109 & 4.4839 & 1.3335 & 0.1277 \\
+\end{longtable}
+
+\end{document}

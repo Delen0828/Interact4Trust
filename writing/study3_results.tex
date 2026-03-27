@@ -1,0 +1,20 @@
+\subsection{Study 3 Results}
+We analyzed the Experiment 2 dataset using the same loading and preprocessing pipeline as the 0325 notebook. After removing test IDs and four attention-check failures, 87 participants remained in the analysis. The trust-survey data contributed 870 rows in total, and 783 treatment rows were retained after applying the complete-condition requirement and Cousineau--Morey normalization across the nine treatment conditions. Each treatment condition therefore contributed 87 observations to the condition-level summaries.
+
+\noindent\textbf{Results: Condition-Level Trust and Interaction Experience.}
+We first took an overview of trust and interaction experience across the CI condition and the 2--9 line ensemble conditions. Descriptively, trust remained in a narrow range across conditions, from 5 Lines ($M=4.91$, $SE=0.07$) to CI ($M=5.24$, $SE=0.10$). Among the line-based conditions, 6 Lines produced the highest mean trust ($M=5.21$, $SE=0.06$). Interaction experience was similarly stable, ranging from 9 Lines ($M=3.76$, $SE=0.05$) to 6 Lines ($M=3.87$, $SE=0.04$), with CI at $M=3.79$ ($SE=0.06$). Across both outcomes, the condition means fluctuated slightly but did not suggest a monotonic decline as the displays included more lines.
+
+\noindent\textbf{Takeaway.}
+Across the CI and 2--9 line conditions, both trust and interaction experience were relatively stable, with no obvious descriptive pattern of deterioration as more lines were added.
+
+\noindent\textbf{Results: Trust Model Comparison.}
+Next, we compared four models predicting condition-level trust from the ordered treatment sequence, with CI coded as 1 and the ensemble conditions coded as 2--9 lines: an intercept-only model, a linear model, and quadratic and cubic polynomial models. The intercept-only model achieved the lowest leave-one-out cross-validation error (LOOCV-MSE $=0.01495$), outperforming the quadratic model ($0.01518$), the linear model ($0.01596$), and the cubic model ($0.02222$). It also had the best BIC ($-10.01$), AIC ($-10.41$), and lasso-regularized MSE ($0.01181$). Although the cubic model fit the nine observed condition means best in-sample ($MSE=0.00760$), its worse cross-validated performance indicated overfitting rather than a reliable trend.
+
+\noindent\textbf{Takeaway.}
+Adding linear or higher-order trend terms did not improve prediction of trust over a constant-mean model.
+
+\noindent\textbf{Results: Interpreting the Lines Comparison.}
+Finally, we used the model comparison to assess whether trust changed systematically as the displays became more complex. Because the intercept-only model was preferred over the linear, quadratic, and cubic alternatives, the analysis provides no evidence that trust followed a reliable monotonic or curved function across the ordered CI-to-9-lines treatment sequence. Put differently, the small differences between individual conditions are better described as local fluctuations than as a stable trend with more lines.
+
+\noindent\textbf{Takeaway.}
+In Study 3, trust was resilient to the increasing-number-of-lines manipulation at the level of global trend, even though individual conditions still varied slightly in their mean ratings.

@@ -1,6 +1,8 @@
 ---
-title: "Experiment 3 Section 7/8 Replication: Trust and Interaction Experience ANOVA"
-output: html_document
+title: "Experiment 3 Section 7/8 Replication: Trust and Interaction Experience Regression"
+output:
+  html_document: default
+  pdf_document: default
 params:
   data_dirs:
     - "../data/0318/data"
@@ -20,12 +22,34 @@ knitr::opts_chunk$set(
 set.seed(params$seed)
 ```
 
+```{r table-spacing-style, results='asis', echo=FALSE}
+table_column_padding_html <- "2rem"
+table_column_padding_latex <- "10pt"
+
+if (knitr::is_html_output()) {
+  cat(
+    "<style>\n",
+    "table th,\n",
+    "table td {\n",
+    "  padding-left: ", table_column_padding_html, " !important;\n",
+    "  padding-right: ", table_column_padding_html, " !important;\n",
+    "}\n",
+    "</style>\n",
+    sep = ""
+  )
+}
+
+if (knitr::is_latex_output()) {
+  cat("\\setlength{\\tabcolsep}{", table_column_padding_latex, "}\n", sep = "")
+}
+```
+
 ## Goal
 
-Replicate Experiment 3 notebook Section 7 and Section 8 analysis structure with two ANOVAs:
+Replicate Experiment 3 notebook Section 7 and Section 8 analysis structure with two regression outcomes:
 
-- `composite_trust_score ~ interaction + detail_presentation + vis_type`
-- `interaction_experience ~ interaction + detail_presentation + vis_type`
+- `composite_trust_score ~ vis_type * interaction * detail_presentation`
+- `interaction_experience ~ vis_type * interaction * detail_presentation`
 
 This report follows the same trust-survey preprocessing used in `analysis-0318.ipynb`, including:
 
@@ -39,9 +63,9 @@ This report follows the same trust-survey preprocessing used in `analysis-0318.i
 ```{r packages}
 required_packages <- c(
   "dplyr",
-  "tidyr",
   "jsonlite",
-  "knitr"
+  "knitr",
+  "emmeans"
 )
 
 missing_packages <- required_packages[
@@ -285,6 +309,15 @@ normalize_likert_0_6_to_1_7 <- function(values) {
   numeric_values
 }
 
+set_sum_contrasts <- function(data, factors) {
+  out <- data
+  for (factor_name in factors) {
+    out[[factor_name]] <- factor(out[[factor_name]])
+    contrasts(out[[factor_name]]) <- contr.sum(length(levels(out[[factor_name]])))
+  }
+  out
+}
+
 identify_attention_check_failures <- function(data) {
   if (!all(c("trial_type", "participant_id") %in% names(data))) {
     return(character(0))
@@ -464,7 +497,7 @@ trust_survey <- trust_survey %>%
 trust_survey$composite_trust_score[is.nan(trust_survey$composite_trust_score)] <- NA_real_
 trust_survey$interaction_experience[is.nan(trust_survey$interaction_experience)] <- NA_real_
 
-anova_input_raw <- trust_survey %>%
+model_input_raw <- trust_survey %>%
   dplyr::filter(condition_number %in% TREATMENT_CONDITIONS) %>%
   dplyr::filter(
     !is.na(interaction),
@@ -475,7 +508,7 @@ anova_input_raw <- trust_survey %>%
   )
 
 # Aggregate if duplicate rows exist for a participant x condition cell.
-anova_input <- anova_input_raw %>%
+model_input <- model_input_raw %>%
   dplyr::group_by(participant_id, vis_type, interaction, detail_presentation) %>%
   dplyr::summarise(
     composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
@@ -484,14 +517,14 @@ anova_input <- anova_input_raw %>%
   )
 
 # Complete within-subject grid for interaction (3) x detail_presentation (2) = 6 cells.
-participant_cell_counts <- anova_input %>%
+participant_cell_counts <- model_input %>%
   dplyr::count(participant_id, name = "n_cells")
 
 complete_participants <- participant_cell_counts %>%
   dplyr::filter(n_cells == 6) %>%
   dplyr::pull(participant_id)
 
-anova_data <- anova_input %>%
+model_data <- model_input %>%
   dplyr::filter(participant_id %in% complete_participants) %>%
   dplyr::mutate(
     participant_id = factor(participant_id),
@@ -501,14 +534,14 @@ anova_data <- anova_input %>%
   )
 
 cat("Trust-survey rows (raw): ", nrow(trust_survey), "\n", sep = "")
-cat("ANOVA rows after filtering: ", nrow(anova_data), "\n", sep = "")
-cat("ANOVA participants (complete 6-cell within-subject grid): ", dplyr::n_distinct(anova_data$participant_id), "\n", sep = "")
+cat("Model rows after filtering: ", nrow(model_data), "\n", sep = "")
+cat("Model participants (complete 6-cell within-subject grid): ", dplyr::n_distinct(model_data$participant_id), "\n", sep = "")
 ```
 
 ## Section 7: Cross-Interaction Technique Summary
 
 ```{r section-7-summary}
-section7_summary <- anova_data %>%
+section7_summary <- model_data %>%
   dplyr::group_by(interaction, detail_presentation) %>%
   dplyr::summarise(
     n = dplyr::n(),
@@ -528,7 +561,7 @@ knitr::kable(section7_summary, digits = 3, caption = "Section 7 summary by inter
 ## Section 8: Interaction x Visualization Grid Summary
 
 ```{r section-8-summary}
-section8_summary <- anova_data %>%
+section8_summary <- model_data %>%
   dplyr::group_by(vis_type, interaction, detail_presentation) %>%
   dplyr::summarise(
     n = dplyr::n(),
@@ -545,128 +578,86 @@ section8_summary <- anova_data %>%
 knitr::kable(section8_summary, digits = 3, caption = "Section 8 summary by vis_type x interaction condition")
 ```
 
-## ANOVA 1: Trust
+## Regression 1: Trust
 
-```{r anova-trust}
-trust_aov <- aov(
-  composite_trust_score ~
-    vis_type + interaction + detail_presentation +
-    Error(participant_id / (interaction + detail_presentation)),
-  data = anova_data
+```{r regression-trust}
+regression_model_data <- set_sum_contrasts(
+  model_data,
+  factors = c("vis_type", "interaction", "detail_presentation")
 )
 
-summary(trust_aov)
-```
-
-## ANOVA 1: Trust (Joint Effects)
-
-```{r anova-trust-joint-effects}
-trust_joint_aov <- aov(
-  composite_trust_score ~
-    vis_type * interaction * detail_presentation +
-    Error(participant_id / (interaction * detail_presentation)),
-  data = anova_data
+trust_lm <- lm(
+  composite_trust_score ~ vis_type + interaction + detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
 )
 
-summary(trust_joint_aov)
+trust_anova <- anova(trust_lm)
+trust_anova
 ```
 
-## ANOVA 2: Interaction Experience
+## Regression 1: Trust (Joint Effects)
 
-```{r anova-interaction-experience}
-interaction_aov <- aov(
-  interaction_experience ~
-    vis_type + interaction + detail_presentation +
-    Error(participant_id / (interaction + detail_presentation)),
-  data = anova_data
+```{r regression-trust-joint-effects}
+trust_joint_lm <- lm(
+  composite_trust_score ~ vis_type * interaction * detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
 )
 
-summary(interaction_aov)
+trust_joint_anova <- anova(trust_joint_lm)
+trust_joint_anova
 ```
 
-## ANOVA 2: Interaction Experience (Joint Effects)
+## Regression 2: Interaction Experience
 
-```{r anova-interaction-experience-joint-effects}
-interaction_joint_aov <- aov(
-  interaction_experience ~
-    vis_type + interaction + detail_presentation +
-	vis_type*interaction + vis_type*detail_presentation + interaction*detail_presentation + vis_type*interaction*detail_presentation +
-    Error(participant_id / (interaction * detail_presentation)),
-  data = anova_data
+```{r regression-interaction-experience}
+interaction_lm <- lm(
+  interaction_experience ~ vis_type + interaction + detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
 )
 
-summary(interaction_joint_aov)
+interaction_anova <- anova(interaction_lm)
+interaction_anova
 ```
 
-## Paired t-tests: Interaction
+## Regression 2: Interaction Experience (Joint Effects)
 
-```{r paired-ttest-interaction}
-run_paired_test <- function(data, participant_col, condition_col, value_col, level_a, level_b) {
-  working <- data %>%
-    dplyr::filter(.data[[condition_col]] %in% c(level_a, level_b)) %>%
-    dplyr::select(dplyr::all_of(c(participant_col, condition_col, value_col))) %>%
-    tidyr::pivot_wider(
-      names_from = dplyr::all_of(condition_col),
-      values_from = dplyr::all_of(value_col)
+```{r regression-interaction-experience-joint-effects}
+interaction_joint_lm <- lm(
+  interaction_experience ~ vis_type * interaction * detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
+)
+
+interaction_joint_anova <- anova(interaction_joint_lm)
+interaction_joint_anova
+```
+
+## EMMs: Interaction
+
+```{r emmeans-interaction}
+extract_emmean_with_sd <- function(model, factor_name, sd_data, value_col) {
+  emmean_tbl <- emmeans::emmeans(
+    model,
+    specs = stats::as.formula(paste0("~ ", factor_name))
+  ) %>%
+    as.data.frame() %>%
+    dplyr::select(dplyr::all_of(factor_name), emmean, SE)
+
+  sd_tbl <- sd_data %>%
+    dplyr::group_by(.data[[factor_name]]) %>%
+    dplyr::summarise(
+      sd = stats::sd(.data[[value_col]], na.rm = TRUE),
+      .groups = "drop"
     )
 
-  if (!(level_a %in% names(working)) || !(level_b %in% names(working))) {
-    return(
-      tibble::tibble(
-        comparison = paste(level_a, "vs", level_b),
-        n_pairs = 0,
-        mean_a = NA_real_,
-        mean_b = NA_real_,
-        mean_diff = NA_real_,
-        t_stat = NA_real_,
-        df = NA_real_,
-        p_value = NA_real_,
-        conf_low = NA_real_,
-        conf_high = NA_real_
-      )
-    )
-  }
-
-  working <- working %>%
-    dplyr::filter(!is.na(.data[[level_a]]), !is.na(.data[[level_b]]))
-
-  if (nrow(working) < 2) {
-    return(
-      tibble::tibble(
-        comparison = paste(level_a, "vs", level_b),
-        n_pairs = nrow(working),
-        mean_a = mean(working[[level_a]], na.rm = TRUE),
-        mean_b = mean(working[[level_b]], na.rm = TRUE),
-        mean_diff = mean(working[[level_a]] - working[[level_b]], na.rm = TRUE),
-        t_stat = NA_real_,
-        df = NA_real_,
-        p_value = NA_real_,
-        conf_low = NA_real_,
-        conf_high = NA_real_
-      )
-    )
-  }
-
-  test <- stats::t.test(working[[level_a]], working[[level_b]], paired = TRUE)
-
-  tibble::tibble(
-    comparison = paste(level_a, "vs", level_b),
-    n_pairs = nrow(working),
-    mean_a = mean(working[[level_a]], na.rm = TRUE),
-    mean_b = mean(working[[level_b]], na.rm = TRUE),
-    mean_diff = mean(working[[level_a]] - working[[level_b]], na.rm = TRUE),
-    t_stat = unname(test$statistic),
-    df = unname(test$parameter),
-    p_value = test$p.value,
-    conf_low = test$conf.int[[1]],
-    conf_high = test$conf.int[[2]]
-  )
+  emmean_tbl %>%
+    dplyr::left_join(sd_tbl, by = factor_name)
 }
 
-interaction_levels <- c("hover", "click", "animation")
-interaction_pairs <- combn(interaction_levels, 2, simplify = FALSE)
-
-interaction_level_scores <- anova_data %>%
+interaction_level_scores <- model_data %>%
   dplyr::group_by(participant_id, interaction) %>%
   dplyr::summarise(
     composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
@@ -674,48 +665,28 @@ interaction_level_scores <- anova_data %>%
     .groups = "drop"
   )
 
-trust_interaction_ttests <- dplyr::bind_rows(
-  lapply(
-    interaction_pairs,
-    function(pair_levels) {
-      run_paired_test(
-        interaction_level_scores,
-        participant_col = "participant_id",
-        condition_col = "interaction",
-        value_col = "composite_trust_score",
-        level_a = pair_levels[[1]],
-        level_b = pair_levels[[2]]
-      )
-    }
-  )
-) %>%
-  dplyr::mutate(p_adjust_holm = stats::p.adjust(p_value, method = "holm"))
+trust_interaction_emmeans <- extract_emmean_with_sd(
+  model = trust_joint_lm,
+  factor_name = "interaction",
+  sd_data = interaction_level_scores,
+  value_col = "composite_trust_score"
+)
 
-interactionexp_interaction_ttests <- dplyr::bind_rows(
-  lapply(
-    interaction_pairs,
-    function(pair_levels) {
-      run_paired_test(
-        interaction_level_scores,
-        participant_col = "participant_id",
-        condition_col = "interaction",
-        value_col = "interaction_experience",
-        level_a = pair_levels[[1]],
-        level_b = pair_levels[[2]]
-      )
-    }
-  )
-) %>%
-  dplyr::mutate(p_adjust_holm = stats::p.adjust(p_value, method = "holm"))
+interactionexp_interaction_emmeans <- extract_emmean_with_sd(
+  model = interaction_joint_lm,
+  factor_name = "interaction",
+  sd_data = interaction_level_scores,
+  value_col = "interaction_experience"
+)
 
-knitr::kable(trust_interaction_ttests, digits = 4, caption = "Paired t-tests for interaction (trust)")
-knitr::kable(interactionexp_interaction_ttests, digits = 4, caption = "Paired t-tests for interaction (interaction experience)")
+knitr::kable(trust_interaction_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for interaction (trust)")
+knitr::kable(interactionexp_interaction_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for interaction (interaction experience)")
 ```
 
-## Paired t-tests: Detail Presentation
+## EMMs: Detail Presentation
 
-```{r paired-ttest-detail-presentation}
-detail_level_scores <- anova_data %>%
+```{r emmeans-detail-presentation}
+detail_level_scores <- model_data %>%
   dplyr::group_by(participant_id, detail_presentation) %>%
   dplyr::summarise(
     composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
@@ -723,26 +694,20 @@ detail_level_scores <- anova_data %>%
     .groups = "drop"
   )
 
-trust_detail_ttest <- run_paired_test(
-  detail_level_scores,
-  participant_col = "participant_id",
-  condition_col = "detail_presentation",
-  value_col = "composite_trust_score",
-  level_a = "show_one",
-  level_b = "show_all"
-) %>%
-  dplyr::mutate(p_adjust_holm = p_value)
+trust_detail_emmeans <- extract_emmean_with_sd(
+  model = trust_joint_lm,
+  factor_name = "detail_presentation",
+  sd_data = detail_level_scores,
+  value_col = "composite_trust_score"
+)
 
-interactionexp_detail_ttest <- run_paired_test(
-  detail_level_scores,
-  participant_col = "participant_id",
-  condition_col = "detail_presentation",
-  value_col = "interaction_experience",
-  level_a = "show_one",
-  level_b = "show_all"
-) %>%
-  dplyr::mutate(p_adjust_holm = p_value)
+interactionexp_detail_emmeans <- extract_emmean_with_sd(
+  model = interaction_joint_lm,
+  factor_name = "detail_presentation",
+  sd_data = detail_level_scores,
+  value_col = "interaction_experience"
+)
 
-knitr::kable(trust_detail_ttest, digits = 4, caption = "Paired t-test for detail_presentation (trust)")
-knitr::kable(interactionexp_detail_ttest, digits = 4, caption = "Paired t-test for detail_presentation (interaction experience)")
+knitr::kable(trust_detail_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for detail_presentation (trust)")
+knitr::kable(interactionexp_detail_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for detail_presentation (interaction experience)")
 ```

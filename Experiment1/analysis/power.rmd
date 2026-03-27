@@ -1,6 +1,8 @@
 ---
 title: "Composite Trust Regression and Power Analysis"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 params:
   data_dir: "../data/0306/data"
   csv_pattern: "^user_.*\\.csv$"
@@ -18,6 +20,28 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
+```
+
+```{r table-spacing-style, results='asis', echo=FALSE}
+table_column_padding_html <- "2rem"
+table_column_padding_latex <- "10pt"
+
+if (knitr::is_html_output()) {
+  cat(
+    "<style>\n",
+    "table th,\n",
+    "table td {\n",
+    "  padding-left: ", table_column_padding_html, " !important;\n",
+    "  padding-right: ", table_column_padding_html, " !important;\n",
+    "}\n",
+    "</style>\n",
+    sep = ""
+  )
+}
+
+if (knitr::is_latex_output()) {
+  cat("\\setlength{\\tabcolsep}{", table_column_padding_latex, "}\n", sep = "")
+}
 ```
 
 ## Goal
