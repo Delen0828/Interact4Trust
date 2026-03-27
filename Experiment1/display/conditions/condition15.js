@@ -174,14 +174,12 @@ export default class Condition15 {
                     }
                 });
                 
-                // Show the group
-                this.alternativesGroupA.transition().duration(200)
-                    .style('opacity', 0.6);
+                // Show selected lines with standard alternative-line opacity.
+                this.interactionManager.setAlternativeLinesVisibility(this.alternativesGroupA, true, 200);
             });
             
             hoverZoneA.on('mouseleave', () => {
-                this.alternativesGroupA.transition().duration(200)
-                    .style('opacity', 0);
+                this.interactionManager.setAlternativeLinesVisibility(this.alternativesGroupA, false, 200);
             });
         }
 
@@ -204,14 +202,12 @@ export default class Condition15 {
                     }
                 });
                 
-                // Show the group
-                this.alternativesGroupB.transition().duration(200)
-                    .style('opacity', 0.6);
+                // Show selected lines with standard alternative-line opacity.
+                this.interactionManager.setAlternativeLinesVisibility(this.alternativesGroupB, true, 200);
             });
             
             hoverZoneB.on('mouseleave', () => {
-                this.alternativesGroupB.transition().duration(200)
-                    .style('opacity', 0);
+                this.interactionManager.setAlternativeLinesVisibility(this.alternativesGroupB, false, 200);
             });
         }
     }

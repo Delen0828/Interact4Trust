@@ -19,6 +19,57 @@ export class InteractionManager {
     }
 
     /**
+     * Whether a selection is (or contains) prediction lines.
+     */
+    hasPredictionLines(targetElement) {
+        if (!targetElement || typeof targetElement.selectAll !== 'function') {
+            return false;
+        }
+
+        if (typeof targetElement.classed === 'function' && targetElement.classed('prediction-line')) {
+            return true;
+        }
+
+        const predictionLines = targetElement.selectAll('.prediction-line');
+        return typeof predictionLines.empty === 'function' && !predictionLines.empty();
+    }
+
+    /**
+     * Show/hide alternative line groups without multiplying opacity.
+     * Group opacity controls visibility; line opacity controls perceived intensity.
+     */
+    setAlternativeLinesVisibility(targetElement, isVisible, duration = 0, explicitLineOpacity = null) {
+        const { alternativeOpacity } = this.getOpacityValues();
+        const lineOpacity = isVisible ? (explicitLineOpacity ?? alternativeOpacity) : 0;
+        const groupOpacity = isVisible ? 1 : 0;
+
+        const targetLines = (typeof targetElement.classed === 'function' && targetElement.classed('prediction-line'))
+            ? targetElement
+            : targetElement.selectAll('.prediction-line');
+
+        if (duration > 0) {
+            targetElement.transition()
+                .duration(duration)
+                .style('opacity', groupOpacity)
+                .attr('opacity', groupOpacity);
+
+            targetLines.transition()
+                .duration(duration)
+                .style('opacity', lineOpacity)
+                .attr('opacity', lineOpacity);
+            return;
+        }
+
+        targetElement.interrupt()
+            .style('opacity', groupOpacity)
+            .attr('opacity', groupOpacity);
+
+        targetLines.interrupt()
+            .style('opacity', lineOpacity)
+            .attr('opacity', lineOpacity);
+    }
+
+    /**
      * Create hover zone for a line/area
      */
     createHoverZone(container, data, className, lineGenerator, strokeWidth = 15) {
@@ -63,26 +114,26 @@ export class InteractionManager {
                     ? this.getOpacityValues().alternativeOpacity 
                     : this.getOpacityValues().shadeOpacity);
 
-                if (targetElement.transition) {
-                    targetElement.transition()
-                        .duration(showDuration)
-                        .style("opacity", opacity);
-                } else {
-                    targetElement.transition()
-                        .duration(showDuration)
-                        .attr("opacity", opacity);
+                if (useAlternativeOpacity && this.hasPredictionLines(targetElement)) {
+                    this.setAlternativeLinesVisibility(targetElement, true, showDuration, opacity);
+                    return;
                 }
+
+                targetElement.transition()
+                    .duration(showDuration)
+                    .style("opacity", opacity)
+                    .attr("opacity", opacity);
             })
             .on("mouseleave", () => {
-                if (targetElement.transition) {
-                    targetElement.transition()
-                        .duration(hideDuration)
-                        .style("opacity", 0);
-                } else {
-                    targetElement.transition()
-                        .duration(hideDuration)
-                        .attr("opacity", 0);
+                if (useAlternativeOpacity && this.hasPredictionLines(targetElement)) {
+                    this.setAlternativeLinesVisibility(targetElement, false, hideDuration);
+                    return;
                 }
+
+                targetElement.transition()
+                    .duration(hideDuration)
+                    .style("opacity", 0)
+                    .attr("opacity", 0);
             });
     }
 
@@ -103,10 +154,15 @@ export class InteractionManager {
                 elementToHide.transition()
                     .duration(duration)
                     .attr("opacity", 0);
-                
-                elementToShow.transition()
-                    .duration(duration)
-                    .style("opacity", alternativeOpacity);
+
+                if (this.hasPredictionLines(elementToShow)) {
+                    this.setAlternativeLinesVisibility(elementToShow, true, duration, alternativeOpacity);
+                } else {
+                    elementToShow.transition()
+                        .duration(duration)
+                        .style("opacity", alternativeOpacity)
+                        .attr("opacity", alternativeOpacity);
+                }
             })
             .on("mouseleave", () => {
                 const { shadeOpacity } = this.getOpacityValues();
@@ -115,10 +171,15 @@ export class InteractionManager {
                 elementToHide.transition()
                     .duration(duration)
                     .attr("opacity", shadeOpacity);
-                
-                elementToShow.transition()
-                    .duration(duration)
-                    .style("opacity", 0);
+
+                if (this.hasPredictionLines(elementToShow)) {
+                    this.setAlternativeLinesVisibility(elementToShow, false, duration);
+                } else {
+                    elementToShow.transition()
+                        .duration(duration)
+                        .style("opacity", 0)
+                        .attr("opacity", 0);
+                }
             });
     }
 
@@ -136,9 +197,14 @@ export class InteractionManager {
         hoverZoneA
             .on("mouseenter", () => {
                 // Show B's data but with A's color (extra confusing!)
-                targetB.transition()
-                    .duration(duration)
-                    .style("opacity", alternativeOpacity);
+                if (this.hasPredictionLines(targetB)) {
+                    this.setAlternativeLinesVisibility(targetB, true, duration, alternativeOpacity);
+                } else {
+                    targetB.transition()
+                        .duration(duration)
+                        .style("opacity", alternativeOpacity)
+                        .attr("opacity", alternativeOpacity);
+                }
                 
                 // Change all path elements within targetB to wrong color
                 targetB.selectAll('path')
@@ -148,9 +214,14 @@ export class InteractionManager {
             })
             .on("mouseleave", () => {
                 // Hide and restore B's original color
-                targetB.transition()
-                    .duration(duration)
-                    .style("opacity", 0);
+                if (this.hasPredictionLines(targetB)) {
+                    this.setAlternativeLinesVisibility(targetB, false, duration);
+                } else {
+                    targetB.transition()
+                        .duration(duration)
+                        .style("opacity", 0)
+                        .attr("opacity", 0);
+                }
                     
                 targetB.selectAll('path')
                     .transition()
@@ -162,9 +233,14 @@ export class InteractionManager {
         hoverZoneB
             .on("mouseenter", () => {
                 // Show A's data but with B's color (extra confusing!)
-                targetA.transition()
-                    .duration(duration)
-                    .style("opacity", alternativeOpacity);
+                if (this.hasPredictionLines(targetA)) {
+                    this.setAlternativeLinesVisibility(targetA, true, duration, alternativeOpacity);
+                } else {
+                    targetA.transition()
+                        .duration(duration)
+                        .style("opacity", alternativeOpacity)
+                        .attr("opacity", alternativeOpacity);
+                }
                 
                 // Change all path elements within targetA to wrong color
                 targetA.selectAll('path')
@@ -174,9 +250,14 @@ export class InteractionManager {
             })
             .on("mouseleave", () => {
                 // Hide and restore A's original color
-                targetA.transition()
-                    .duration(duration)
-                    .style("opacity", 0);
+                if (this.hasPredictionLines(targetA)) {
+                    this.setAlternativeLinesVisibility(targetA, false, duration);
+                } else {
+                    targetA.transition()
+                        .duration(duration)
+                        .style("opacity", 0)
+                        .attr("opacity", 0);
+                }
                     
                 targetA.selectAll('path')
                     .transition()

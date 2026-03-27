@@ -887,11 +887,123 @@ spaced_kable(
 cat("Best model by LOOCV-MSE:", best_model_name, "\n")
 ```
 
+## Regression Dataset (`interaction experience ~ lines`)
+
+```{r interaction-regression-dataset}
+interaction_regression_data <- condition_level_summary %>%
+  dplyr::transmute(
+    condition_number = as.numeric(condition_number),
+    condition_label = as.character(condition_label),
+    lines = condition_number - 1,
+    interaction = interaction_mean
+  ) %>%
+  dplyr::arrange(lines)
+
+spaced_kable(
+  interaction_regression_data %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ round(.x, 4)))
+)
+```
+
+## Fit Interaction Models and Compare (MSE, LOOCV-MSE, BIC, AIC, Lasso-Regularized MSE)
+
+```{r interaction-model-comparison}
+interaction_model_specs <- list(
+  "Intercept-only (minimal)" = function(df) lm(interaction ~ 1, data = df),
+  "Linear" = function(df) lm(interaction ~ lines, data = df),
+  "Quadratic" = function(df) lm(interaction ~ poly(lines, 2, raw = TRUE), data = df),
+  "Cubic" = function(df) lm(interaction ~ poly(lines, 3, raw = TRUE), data = df)
+)
+
+loocv_mse_interaction <- function(data, fit_fn) {
+  n <- nrow(data)
+  squared_errors <- rep(NA_real_, n)
+
+  for (i in seq_len(n)) {
+    train <- data[-i, , drop = FALSE]
+    test <- data[i, , drop = FALSE]
+
+    fit <- tryCatch(fit_fn(train), error = function(e) NULL)
+    if (is.null(fit)) {
+      next
+    }
+
+    prediction <- tryCatch(
+      as.numeric(predict(fit, newdata = test)),
+      error = function(e) NA_real_
+    )
+
+    squared_errors[i] <- (test$interaction - prediction)^2
+  }
+
+  mean(squared_errors, na.rm = TRUE)
+}
+
+evaluate_interaction_model <- function(model_name, fit_fn, data) {
+  fit <- fit_fn(data)
+  fitted_values <- as.numeric(predict(fit, newdata = data))
+  mse <- mean((data$interaction - fitted_values)^2, na.rm = TRUE)
+  loocv <- loocv_mse_interaction(data, fit_fn)
+  bic_value <- get_bic_value(fit, data$interaction, fitted_values)
+  aic_value <- get_aic_value(fit, data$interaction, fitted_values)
+  lasso_reg_mse <- calc_lasso_regularized_mse(fit, mse)
+
+  list(
+    fit = fit,
+    metrics = data.frame(
+      model = model_name,
+      mse = mse,
+      loocv_mse = loocv,
+      bic = bic_value,
+      aic = aic_value,
+      lasso_regularized_mse = lasso_reg_mse,
+      stringsAsFactors = FALSE
+    )
+  )
+}
+
+interaction_evaluated_models <- lapply(
+  names(interaction_model_specs),
+  function(model_name) evaluate_interaction_model(
+    model_name,
+    interaction_model_specs[[model_name]],
+    interaction_regression_data
+  )
+)
+names(interaction_evaluated_models) <- names(interaction_model_specs)
+
+interaction_model_comparison <- dplyr::bind_rows(
+  lapply(interaction_evaluated_models, function(x) x$metrics)
+) %>%
+  dplyr::arrange(loocv_mse)
+
+interaction_best_model_name <- interaction_model_comparison$model[[1]]
+
+interaction_model_comparison_pretty <- interaction_model_comparison %>%
+  dplyr::mutate(
+    mse = round(mse, 6),
+    loocv_mse = round(loocv_mse, 6),
+    bic = round(bic, 6),
+    aic = round(aic, 6),
+    lasso_regularized_mse = round(lasso_regularized_mse, 6)
+  )
+
+spaced_kable(
+  interaction_model_comparison_pretty,
+  col.names = c("Model", "MSE", "LOOCV-MSE", "BIC", "AIC", "Lasso-Regularized MSE")
+)
+
+cat("Best interaction model by LOOCV-MSE:", interaction_best_model_name, "\n")
+```
+
 ## Plot Fitted Curves Over Observed Data
 
 ```{r fitted-curves-plot, fig.width=11, fig.height=6}
+plot_data <- regression_data %>%
+  dplyr::filter(lines != 1)
+
 prediction_grid <- data.frame(
-  lines = seq(min(regression_data$lines), max(regression_data$lines), length.out = 250)
+  lines = seq(min(plot_data$lines), max(plot_data$lines), length.out = 250)
 )
 
 fitted_curves <- dplyr::bind_rows(
@@ -908,7 +1020,7 @@ fitted_curves <- dplyr::bind_rows(
   })
 )
 
-ggplot(regression_data, aes(x = lines, y = trust)) +
+p <- ggplot(plot_data, aes(x = lines, y = trust)) +
   geom_point(size = 3.2, color = "#1f1f1f") +
   geom_line(
     data = fitted_curves,
@@ -916,15 +1028,25 @@ ggplot(regression_data, aes(x = lines, y = trust)) +
     linewidth = 1.05,
     alpha = 0.95
   ) +
-  scale_x_continuous(breaks = regression_data$lines) +
+  scale_x_continuous(breaks = sort(unique(plot_data$lines))) +
   scale_y_continuous(breaks = seq(1, 7, by = 1)) +
   coord_cartesian(ylim = c(1, 7)) +
   labs(
     title = "Experiment 2: trust ~ lines",
     subtitle = paste("Best model by LOOCV-MSE:", best_model_name),
-    x = "Lines (CI coded as 1; 2-9 Lines coded as 2-9)",
+    x = "Lines (2-9)",
     y = "Trust (condition-level mean, Cousineau-normalized)",
     color = "Model"
   ) +
   theme_minimal(base_size = 12)
+
+print(p)
+
+ggplot2::ggsave(
+  filename = "exp3regression.pdf",
+  plot = p,
+  width = 11,
+  height = 6,
+  units = "in"
+)
 ```

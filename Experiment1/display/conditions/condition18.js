@@ -12,8 +12,7 @@ export default class Condition18 extends Condition4 {
     }
 
     setAlternativesVisibility(targetGroup, isVisible) {
-        const { alternativeOpacity } = this.interactionManager.getOpacityValues();
-        targetGroup.interrupt().style("opacity", isVisible ? alternativeOpacity : 0);
+        this.interactionManager.setAlternativeLinesVisibility(targetGroup, isVisible);
     }
 
     addGlitchHoverInteraction(hoverZone, targetGroup, key) {

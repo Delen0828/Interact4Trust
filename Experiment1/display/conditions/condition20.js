@@ -12,10 +12,10 @@ export default class Condition20 extends Condition6 {
     }
 
     setTransformationState(confidenceBounds, alternativesGroup, isVisible) {
-        const { alternativeOpacity, shadeOpacity } = this.interactionManager.getOpacityValues();
+        const { shadeOpacity } = this.interactionManager.getOpacityValues();
 
         confidenceBounds.interrupt().attr("opacity", isVisible ? 0 : shadeOpacity);
-        alternativesGroup.interrupt().style("opacity", isVisible ? alternativeOpacity : 0);
+        this.interactionManager.setAlternativeLinesVisibility(alternativesGroup, isVisible);
     }
 
     addGlitchTransformationHover(hoverZone, confidenceBounds, alternativesGroup, key) {
