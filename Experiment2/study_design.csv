@@ -3,3 +3,5 @@ even_hover,even,hover_show_one,"2|4|6|8","baseline first; CI + ensemble order sh
 odd_hover,odd,hover_show_one,"3|5|7|9","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
 even_click,even,click_show_one,"2|4|6|8","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
 odd_click,odd,click_show_one,"3|5|7|9","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
+even_static,even,static_show_all,"2|4|6|8","baseline first; CI + ensemble order shuffled; datasets randomized per condition"
+odd_static,odd,static_show_all,"3|5|7|9","baseline first; CI + ensemble order shuffled; datasets randomized per condition"

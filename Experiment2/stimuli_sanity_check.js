@@ -76,7 +76,9 @@ const versionSettingsById = Object.freeze({
   even_hover: Object.freeze({ parity: 'even', interactionMode: 'hover_show_one' }),
   odd_hover: Object.freeze({ parity: 'odd', interactionMode: 'hover_show_one' }),
   even_click: Object.freeze({ parity: 'even', interactionMode: 'click_show_one' }),
-  odd_click: Object.freeze({ parity: 'odd', interactionMode: 'click_show_one' })
+  odd_click: Object.freeze({ parity: 'odd', interactionMode: 'click_show_one' }),
+  even_static: Object.freeze({ parity: 'even', interactionMode: 'static_show_all' }),
+  odd_static: Object.freeze({ parity: 'odd', interactionMode: 'static_show_all' })
 });
 
 const baseDatasetFiles = Object.freeze(Object.keys(datasetConfigByFile));
@@ -109,20 +111,27 @@ function getInteractionHint(interactionMode) {
   if (interactionMode === 'click_show_one') {
     return 'Hint: Use the two city checkboxes below the chart to show or hide details.';
   }
+  if (interactionMode === 'static_show_all') {
+    return 'Hint: This is a static view. All forecast details are shown by default.';
+  }
   return 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
 }
 
 function buildCiDescription(interactionMode) {
   const interactionText = interactionMode === 'click_show_one'
     ? 'Details are revealed with city checkboxes.'
-    : 'Details are revealed by hovering over each city line.';
+    : interactionMode === 'static_show_all'
+      ? 'All details are shown statically (no interaction).'
+      : 'Details are revealed by hovering over each city line.';
   return `Both cities show 95% confidence intervals around the aggregated line. ${interactionText}`;
 }
 
 function buildEnsembleDescription(lineCount, interactionMode) {
   const interactionText = interactionMode === 'click_show_one'
     ? 'Details are revealed with city checkboxes.'
-    : 'Details are revealed by hovering over each city line.';
+    : interactionMode === 'static_show_all'
+      ? 'All details are shown statically (no interaction).'
+      : 'Details are revealed by hovering over each city line.';
   return `Both cities show ${lineCount} sampled ensemble prediction lines plus aggregated line. ${interactionText}`;
 }
 
@@ -349,9 +358,14 @@ function addLegendAndInstructions(chartContainer, cityLabels, condition) {
   let hintText = instructionLines.find((line) => /^hint\s*:/i.test(line)) || '';
 
   if (!hintText && condition?.displayFormat === 'exp2_parameterized' && !isExp2StaticBaselineCondition(condition)) {
-    hintText = isExp2ClickShowOneMode(condition)
-      ? 'Hint: Use the two city checkboxes below the chart to show or hide details.'
-      : 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+    const interactionMode = String(condition?.interactionMode || '').toLowerCase();
+    if (interactionMode === 'static_show_all') {
+      hintText = 'Hint: This is a static view. All forecast details are shown by default.';
+    } else if (isExp2ClickShowOneMode(condition)) {
+      hintText = 'Hint: Use the two city checkboxes below the chart to show or hide details.';
+    } else {
+      hintText = 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+    }
   }
 
   if (!descriptionText && instructionLines.length > 0) {

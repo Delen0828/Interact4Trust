@@ -9,6 +9,7 @@
  * Interaction mode options:
  * - hover_show_one: hover each city's dashed line to reveal only that city's details
  * - click_show_one: use two city checkboxes to toggle each city's details
+ * - static_show_all: no interaction; show all configured details for both cities
  */
 import { ChartRenderer } from '../base/chartRenderer.js';
 import { DataProcessor } from '../base/dataProcessor.js';
@@ -30,6 +31,7 @@ export default class Exp2Condition {
 
         this.isStaticBaseline = this.isStaticBaselineCondition();
         this.interactionMode = this.resolveInteractionMode();
+        this.isStaticShowAllMode = this.interactionMode === 'static_show_all';
 
         this.chartRenderer = new ChartRenderer(svgId, config, phase);
         this.interactionManager = new InteractionManager(svgId);
@@ -46,6 +48,7 @@ export default class Exp2Condition {
         const candidate = String(
             this.conditionConfig?.interactionMode || this.conditionConfig?.displayFormat || 'hover_show_one'
         ).toLowerCase();
+        if (candidate === 'static_show_all') return 'static_show_all';
         if (candidate === 'click_show_one') return 'click_show_one';
         return 'hover_show_one';
     }
@@ -133,7 +136,7 @@ export default class Exp2Condition {
                 .datum(areaData)
                 .attr('class', `confidence-bounds confidence-bounds-${city.toLowerCase()}`)
                 .attr('fill', color)
-                .attr('opacity', 0)
+                .attr('opacity', this.isStaticShowAllMode ? this.interactionManager.getOpacityValues().shadeOpacity : 0)
                 .attr('d', area);
 
             return predictionGroup.select(`.confidence-bounds-${city.toLowerCase()}`);
@@ -163,7 +166,7 @@ export default class Exp2Condition {
 
             this.cityInteractionState[city].aggregatedLine = predictionGroup.select(`.aggregated-stock-${city.toLowerCase()}-line`);
 
-            if (!this.isStaticBaseline) {
+            if (!this.isStaticBaseline && !this.isStaticShowAllMode) {
                 const hoverZone = this.interactionManager.createHoverZone(
                     predictionGroup,
                     fullAggregatedData,
@@ -220,7 +223,10 @@ export default class Exp2Condition {
         // Create ensemble lines group
         const ensembleGroup = predictionGroup.append('g')
             .attr('class', `alternatives-group-${city.toLowerCase()}`)
-            .style('opacity', 0);
+            .style(
+                'opacity',
+                this.isStaticShowAllMode ? this.interactionManager.getOpacityValues().alternativeOpacity : 0
+            );
 
         // Draw each scenario line
         rankedScenarioIds.forEach((scenarioId, index) => {
@@ -372,7 +378,7 @@ export default class Exp2Condition {
     }
 
     setupInteractions() {
-        if (this.isStaticBaseline) return;
+        if (this.isStaticBaseline || this.isStaticShowAllMode) return;
 
         if (this.interactionMode === 'click_show_one') {
             // Checkbox interaction handlers are attached during control creation.

@@ -1,11 +1,11 @@
 // Humidity Prediction Visualization Trust Study - Experiment 2
-// Version even_hover: even x hover_show_one
+// Version even_static: even x static_show_all
 
 const VERSION_SETTINGS = Object.freeze({
-    versionId: 'even_hover',
-    versionNumber: 1,
+    versionId: 'even_static',
+    versionNumber: 5,
     parity: 'even',
-    interactionMode: 'hover_show_one'
+    interactionMode: 'static_show_all'
 });
 
 function getInteractionHint(interactionMode) {

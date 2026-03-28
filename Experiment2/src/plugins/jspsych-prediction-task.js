@@ -1315,9 +1315,13 @@ var jsPsychPredictionTask = (function (jspsych) {
         let hintText = instructionLines.find((line) => /^hint\s*:/i.test(line)) || '';
 
         if (!hintText && this.condition?.displayFormat === 'exp2_parameterized' && !this.isExp2StaticBaselineCondition()) {
-          hintText = this.isExp2ClickShowOneMode()
-            ? 'Hint: Use the two city checkboxes below the chart to show or hide details.'
-            : 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+          if (this.isExp2StaticShowAllMode()) {
+            hintText = 'Hint: This is a static view. All forecast details are shown by default.';
+          } else if (this.isExp2ClickShowOneMode()) {
+            hintText = 'Hint: Use the two city checkboxes below the chart to show or hide details.';
+          } else {
+            hintText = 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
+          }
         }
 
         // Fallback if legacy text has no explicit Hint line.
@@ -1411,6 +1415,13 @@ var jsPsychPredictionTask = (function (jspsych) {
         };
       }
 
+      if (this.isExp2StaticShowAllMode()) {
+        return {
+          required: false,
+          reason: 'no_interaction_required_exp2_static_show_all'
+        };
+      }
+
       const nonInteractiveDisplayFormats = new Set([
         'aggregation_only',       // Condition 1
         'confidence_bounds',      // Condition 2
@@ -1465,6 +1476,14 @@ var jsPsychPredictionTask = (function (jspsych) {
       }
       const interactionMode = String(this.condition?.interactionMode || '').toLowerCase();
       return interactionMode === 'click_show_one';
+    }
+
+    isExp2StaticShowAllMode() {
+      if (this.condition?.displayFormat !== 'exp2_parameterized') {
+        return false;
+      }
+      const interactionMode = String(this.condition?.interactionMode || '').toLowerCase();
+      return interactionMode === 'static_show_all';
     }
 
     isMeaningfulHoverTarget(target, rootContainer) {

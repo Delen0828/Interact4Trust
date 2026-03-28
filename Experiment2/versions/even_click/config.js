@@ -12,20 +12,27 @@ function getInteractionHint(interactionMode) {
     if (interactionMode === 'click_show_one') {
         return 'Hint: Use the two city checkboxes below the chart to show or hide details.';
     }
+    if (interactionMode === 'static_show_all') {
+        return 'Hint: This is a static view. All forecast details are shown by default.';
+    }
     return 'Hint: Hover on a city\'s dashed prediction line to reveal details.';
 }
 
 function buildCiDescription(interactionMode) {
     const interactionText = interactionMode === 'click_show_one'
         ? 'Details are revealed with city checkboxes.'
-        : 'Details are revealed by hovering over each city line.';
+        : interactionMode === 'static_show_all'
+            ? 'All details are shown statically (no interaction).'
+            : 'Details are revealed by hovering over each city line.';
     return `Both cities show 95% confidence intervals around the aggregated line. ${interactionText}`;
 }
 
 function buildEnsembleDescription(lineCount, interactionMode) {
     const interactionText = interactionMode === 'click_show_one'
         ? 'Details are revealed with city checkboxes.'
-        : 'Details are revealed by hovering over each city line.';
+        : interactionMode === 'static_show_all'
+            ? 'All details are shown statically (no interaction).'
+            : 'Details are revealed by hovering over each city line.';
     return `Both cities show ${lineCount} sampled ensemble prediction lines plus aggregated line. ${interactionText}`;
 }
 
