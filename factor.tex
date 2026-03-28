@@ -1,0 +1,77 @@
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{
+>{\raggedright\arraybackslash}p{0.72cm}
+>{\centering\arraybackslash}p{0.62cm}
+>{\centering\arraybackslash}p{0.62cm}
+*{4}{Y}
+}
+
+\toprule
+Exp. & Sol. & Factor & \multicolumn{4}{c}{\textbf{Trust}} \\
+\cmidrule(lr){4-7}
+ &  &  & I was skeptical of the visualization output. & I trusted the data shown by the visualization. & The visualization was difficult to use. & The visualization made the task easier to understand. \\
+\midrule
+Exp1 & 1f & f1 & -0.428 & 0.435 & -0.918 & 0.846 \\
+ & 2f & f1 & -0.458 & 0.534 & -0.949 & 0.779 \\
+ &  & f2 &  & -0.377 & -0.413 &  \\
+\midrule
+Exp2 & 1f & f1 & 0.494 & -0.440 & 0.939 & -0.726 \\
+ & 2f & f1 & 0.570 & -0.504 & 0.920 & -0.706 \\
+ &  & f2 & -0.337 &  & 0.400 & -0.337 \\
+\midrule
+Exp3 & 1f & f1 & -0.564 & 0.471 & -0.686 & 0.680 \\
+ & 2f & f1 & -0.597 & 0.500 & -0.696 & 0.684 \\
+ &  & f2 &  &  & -0.306 &  \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{
+>{\raggedright\arraybackslash}p{0.72cm}
+>{\centering\arraybackslash}p{0.62cm}
+>{\centering\arraybackslash}p{0.62cm}
+*{9}{Y}
+}
+
+\toprule
+Exp. & Sol. & Factor & \multicolumn{9}{c}{\textbf{Interaction Experience}} \\
+\cmidrule(lr){4-12}
+ &  &  & I was in control of my navigation through this interface. & I had control over the content I wanted to inspect. & I was in control of the pace of my visit to this interface. & The interface supported the way I wanted to explore the visualization. & The interface responded quickly and efficiently to what I wanted to inspect. & The interface supported communication with other users who shared my interests. & Interacting with the interface felt like a personal conversation. & I felt that I could interact meaningfully with the interface. & The interface felt sensitive to my actions. \\
+\midrule
+Exp1 & 1f & f1 & -0.481 & -0.651 & -0.408 & -0.556 & -0.520 &  & -0.360 & -0.445 & -0.481 \\
+ & 2f & f1 & -0.494 & -0.828 & -0.401 & -0.549 & -0.467 &  & -0.312 & -0.401 & -0.442 \\
+ &  & f2 &  & 0.340 &  &  &  &  &  &  &  \\
+ & 4f & f1 & -0.506 & -0.704 & -0.412 & -0.567 & -0.520 &  & -0.367 & -0.447 & -0.468 \\
+ &  & f2 &  & 0.386 &  &  &  &  &  &  &  \\
+ &  & f3 &  &  &  & 0.304 &  &  &  &  &  \\
+ &  & f4 &  &  &  &  &  &  &  &  &  \\
+\midrule
+Exp2 & 1f & f1 & -1.013 & -1.099 & -0.798 & -0.840 & -0.651 &  & -0.334 & -0.404 & -0.516 \\
+ & 2f & f1 & -1.026 & -1.114 & -0.794 & -0.827 & -0.649 &  & -0.351 & -0.422 & -0.519 \\
+ &  & f2 &  & -0.340 &  &  &  & 0.312 & 0.357 & 0.369 &  \\
+ & 4f & f1 & -1.053 & -1.089 & -0.786 & -0.855 & -0.650 &  & -0.350 & -0.442 & -0.518 \\
+ &  & f2 & 0.302 & 0.314 &  &  &  & -0.341 & -0.326 & -0.439 &  \\
+ &  & f3 &  &  &  & 0.467 &  &  &  &  &  \\
+ &  & f4 &  &  &  &  &  &  &  &  &  \\
+\midrule
+Exp3 & 1f & f1 & -0.353 & -0.330 &  & -0.346 & -0.440 &  & -0.301 & -0.304 &  \\
+ & 2f & f1 & -0.472 & -0.372 & -0.303 & -0.314 & -0.381 &  &  &  &  \\
+ &  & f2 &  &  &  &  &  &  &  &  &  \\
+ & 4f & f1 & -0.436 & -0.353 &  & -0.351 & -0.473 &  &  &  &  \\
+ &  & f2 & 0.308 &  &  &  & -0.320 &  &  &  &  \\
+ &  & f3 &  &  &  &  &  &  &  &  &  \\
+ &  & f4 &  &  &  &  &  &  &  &  &  \\
+\bottomrule
+\end{tabularx}
+\end{table*}

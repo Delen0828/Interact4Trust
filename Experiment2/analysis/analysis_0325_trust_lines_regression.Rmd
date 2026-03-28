@@ -998,7 +998,7 @@ cat("Best interaction model by LOOCV-MSE:", interaction_best_model_name, "\n")
 
 ## Plot Fitted Curves Over Observed Data
 
-```{r fitted-curves-plot, fig.width=11, fig.height=6}
+```{r fitted-curves-plot, fig.width=9, fig.height=8}
 plot_data <- regression_data %>%
   dplyr::filter(lines != 1)
 
@@ -1025,8 +1025,8 @@ p <- ggplot(plot_data, aes(x = lines, y = trust)) +
   geom_line(
     data = fitted_curves,
     aes(x = lines, y = trust, color = model),
-    linewidth = 1.05,
-    alpha = 0.95
+    linewidth = 0.7,
+    alpha = 0.5
   ) +
   scale_x_continuous(breaks = sort(unique(plot_data$lines))) +
   scale_y_continuous(breaks = seq(1, 7, by = 1)) +
@@ -1038,15 +1038,54 @@ p <- ggplot(plot_data, aes(x = lines, y = trust)) +
     y = "Trust (condition-level mean, Cousineau-normalized)",
     color = "Model"
   ) +
-  theme_minimal(base_size = 12)
+  guides(color = ggplot2::guide_legend(nrow = 1, byrow = TRUE)) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    aspect.ratio = 1,
+    plot.background = ggplot2::element_rect(fill = "white", color = NA),
+    panel.background = ggplot2::element_rect(fill = "white", color = NA),
+    legend.background = ggplot2::element_rect(fill = "white", color = NA),
+    legend.key = ggplot2::element_rect(fill = "white", color = NA)
+  )
 
 print(p)
 
-ggplot2::ggsave(
-  filename = "exp3regression.pdf",
-  plot = p,
-  width = 11,
-  height = 6,
-  units = "in"
+saved_svg_path <- "regression.svg"
+saved_png_path <- "regression.png"
+svg_saved <- TRUE
+
+tryCatch(
+  {
+    ggplot2::ggsave(
+      filename = saved_svg_path,
+      plot = p,
+      width = 9,
+      height = 8,
+      units = "in",
+      bg = "white"
+    )
+  },
+  error = function(e) {
+    svg_saved <<- FALSE
+    cat("SVG export failed:", conditionMessage(e), "\n")
+  }
 )
+
+ggplot2::ggsave(
+  filename = saved_png_path,
+  plot = p,
+  width = 9,
+  height = 8,
+  units = "in",
+  dpi = 300,
+  bg = "white"
+)
+
+if (svg_saved) {
+  cat("Saved regression figures to:", saved_svg_path, "and", saved_png_path, "\n")
+} else {
+  cat("Saved regression figure to:", saved_png_path, "\n")
+}
 ```
