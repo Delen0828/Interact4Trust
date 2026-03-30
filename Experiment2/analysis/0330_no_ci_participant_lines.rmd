@@ -1,0 +1,1352 @@
+---
+title: "Experiment 2: Trust/Interaction/Confidence ~ Lines by Interaction Mode (0330, No CI, Participant Trajectories)"
+output:
+  html_document: default
+params:
+  data_dir_candidates:
+    - "../data/0325/data"
+    - "../data/0328/data"
+  csv_pattern: "^user_.*\\.csv$"
+  seed: 20260328
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE
+)
+set.seed(params$seed)
+```
+
+## Goal
+
+Recreate Experiment 2 preprocessing (same as `analysis_0325_trust_lines_regression.Rmd`) and produce only:
+
+- `Trust ~ number of lines` with participant trajectories, separated into `click`, `hover`, `static`
+- `Interactive experience ~ number of lines` with participant trajectories, separated into `click`, `hover`, `static`
+- `Confidence ~ number of lines` with participant trajectories, separated into `click`, `hover`, `static`
+- Exclude CI condition (`condition 2`) from analysis/modeling
+
+Output:
+
+- 9 participant-trajectory plots (3 outcomes x 3 interaction modes)
+- 9 model-comparison tables (3 interaction modes x 3 outcomes)
+- 9 optimal-model summaries (best model for each interaction mode x outcome)
+
+## Packages
+
+```{r packages}
+required_packages <- c(
+  "dplyr",
+  "jsonlite",
+  "ggplot2",
+  "knitr"
+)
+
+missing_packages <- required_packages[
+  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages) > 0) {
+  stop(
+    "Missing required packages: ",
+    paste(missing_packages, collapse = ", "),
+    ". Install them before rendering."
+  )
+}
+
+lapply(required_packages, library, character.only = TRUE)
+```
+
+## Paths
+
+```{r paths}
+report_dir <- local({
+  current_input <- tryCatch(
+    knitr::current_input(),
+    error = function(e) character(0)
+  )
+
+  if (length(current_input) == 1 && nzchar(current_input)) {
+    input_path <- current_input
+
+    if (!grepl("^(/|[A-Za-z]:[/\\\\])", input_path)) {
+      input_path <- file.path(getwd(), input_path)
+    }
+
+    if (grepl("\\.[Rr]md$", input_path) || file.exists(input_path)) {
+      return(normalizePath(dirname(input_path), winslash = "/", mustWork = TRUE))
+    }
+  }
+
+  fallback_dir <- file.path(getwd(), "Experiment2", "analysis")
+  normalizePath(fallback_dir, winslash = "/", mustWork = TRUE)
+})
+
+resolve_report_path <- function(path_value) {
+  if (grepl("^(/|[A-Za-z]:[/\\\\])", path_value)) {
+    return(normalizePath(path_value, winslash = "/", mustWork = TRUE))
+  }
+
+  normalizePath(
+    file.path(report_dir, path_value),
+    winslash = "/",
+    mustWork = TRUE
+  )
+}
+
+data_dir_candidates <- vapply(params$data_dir_candidates, resolve_report_path, character(1))
+existing_data_dirs <- data_dir_candidates[dir.exists(data_dir_candidates)]
+
+if (length(existing_data_dirs) != length(data_dir_candidates)) {
+  missing_dirs <- setdiff(data_dir_candidates, existing_data_dirs)
+  stop(
+    "Missing required data directory(ies): ",
+    paste(missing_dirs, collapse = ", ")
+  )
+}
+```
+
+## Constants
+
+```{r constants}
+CONDITION_LABELS <- c(
+  "1" = "Baseline",
+  "2" = "CI",
+  "3" = "2 Lines",
+  "4" = "3 Lines",
+  "5" = "4 Lines",
+  "6" = "5 Lines",
+  "7" = "6 Lines",
+  "8" = "7 Lines",
+  "9" = "8 Lines",
+  "10" = "9 Lines"
+)
+
+BASELINE_CONDITION_NUMBER <- 1
+TREATMENT_CONDITION_NUMBERS <- c(3, 4, 5, 6, 7, 8, 9, 10)
+TREATMENT_ORDER <- c("2 Lines", "3 Lines", "4 Lines", "5 Lines", "6 Lines", "7 Lines", "8 Lines", "9 Lines")
+
+TRUST_QUESTION_KEYS <- c(
+  "skeptical_rating",
+  "data_trust",
+  "usability_difficulty",
+  "comprehension_ease"
+)
+
+INTERACTION_QUESTION_KEYS <- c(
+  "navigation_control",
+  "content_control",
+  "pace_control",
+  "interface_exploration",
+  "interface_responsiveness",
+  "user_communication",
+  "personal_conversation",
+  "interface_interaction",
+  "interface_sensitivity"
+)
+
+CONFIDENCE_QUESTION_KEYS <- c("confidence_rating")
+
+NORMALIZED_FLAG_COLUMN <- "_cousineau_normalized"
+MOREY_FACTOR_COLUMN <- "_morey_factor"
+K_CONDITIONS_COLUMN <- "_k_conditions"
+LASSO_LAMBDA <- 0.05
+```
+
+## Helper Functions
+
+```{r helpers}
+extract_condition_number <- function(condition_id) {
+  if (is.na(condition_id) || !nzchar(as.character(condition_id))) {
+    return(NA_real_)
+  }
+
+  raw <- sub(".*condition_([0-9]+).*", "\\1", as.character(condition_id), perl = TRUE)
+  if (!grepl("^[0-9]+$", raw)) {
+    return(NA_real_)
+  }
+
+  as.numeric(raw)
+}
+
+map_condition_labels <- function(condition_numbers) {
+  vapply(
+    condition_numbers,
+    function(x) {
+      key <- as.character(suppressWarnings(as.integer(x)))
+      if (is.na(x) || !(key %in% names(CONDITION_LABELS))) {
+        return("Other")
+      }
+      CONDITION_LABELS[[key]]
+    },
+    character(1)
+  )
+}
+
+extract_participant_id_from_filename <- function(file_path) {
+  parts <- strsplit(tools::file_path_sans_ext(basename(file_path)), "_", fixed = TRUE)[[1]]
+  if (length(parts) >= 2) {
+    return(parts[[2]])
+  }
+  NA_character_
+}
+
+parse_response_json <- function(value) {
+  if (is.null(value) || length(value) == 0 || is.na(value) || !nzchar(as.character(value))) {
+    return(list())
+  }
+
+  if (is.list(value) && !is.null(names(value))) {
+    return(value)
+  }
+
+  parsed <- tryCatch(
+    jsonlite::fromJSON(as.character(value), simplifyVector = TRUE),
+    error = function(e) NULL
+  )
+
+  if (is.null(parsed) || !is.list(parsed)) {
+    return(list())
+  }
+
+  parsed
+}
+
+safe_get_scalar <- function(x) {
+  if (is.null(x) || length(x) == 0) {
+    return(NA_character_)
+  }
+
+  as.character(x[[1]])
+}
+
+expand_response_columns <- function(data, response_col = "response") {
+  if (!(response_col %in% names(data))) {
+    return(data)
+  }
+
+  parsed_list <- lapply(data[[response_col]], parse_response_json)
+  all_keys <- unique(unlist(lapply(parsed_list, names), use.names = FALSE))
+
+  if (length(all_keys) == 0) {
+    return(data)
+  }
+
+  expanded <- data.frame(
+    lapply(all_keys, function(key) {
+      vapply(parsed_list, function(item) safe_get_scalar(item[[key]]), character(1))
+    }),
+    stringsAsFactors = FALSE,
+    check.names = FALSE
+  )
+  names(expanded) <- all_keys
+
+  merged <- data
+  for (col in names(expanded)) {
+    parsed_values <- expanded[[col]]
+
+    if (col %in% names(merged)) {
+      existing <- merged[[col]]
+      existing_chr <- trimws(as.character(existing))
+      fill_mask <- is.na(existing) | existing_chr == ""
+      existing[fill_mask] <- parsed_values[fill_mask]
+      merged[[col]] <- existing
+    } else {
+      merged[[col]] <- parsed_values
+    }
+  }
+
+  merged
+}
+
+identify_attention_check_failures <- function(
+  data,
+  trust_keys = TRUST_QUESTION_KEYS,
+  interaction_keys = INTERACTION_QUESTION_KEYS,
+  survey_trial_type = "trust-survey"
+) {
+  empty_result <- list(ids = character(0), details = data.frame())
+
+  if (is.null(data) || nrow(data) == 0) {
+    return(empty_result)
+  }
+
+  if (!all(c("trial_type", "participant_id") %in% names(data))) {
+    return(empty_result)
+  }
+
+  survey_rows <- data[data$trial_type == survey_trial_type, , drop = FALSE]
+  if (nrow(survey_rows) == 0) {
+    return(empty_result)
+  }
+
+  survey_rows <- expand_response_columns(survey_rows)
+  parsed_response <- if ("response" %in% names(survey_rows)) {
+    lapply(survey_rows$response, parse_response_json)
+  } else {
+    replicate(nrow(survey_rows), list(), simplify = FALSE)
+  }
+
+  for (key in c(trust_keys, interaction_keys)) {
+    existing <- if (key %in% names(survey_rows)) {
+      suppressWarnings(as.numeric(survey_rows[[key]]))
+    } else {
+      rep(NA_real_, nrow(survey_rows))
+    }
+
+    if (sum(!is.na(existing)) == 0) {
+      extracted <- vapply(parsed_response, function(item) safe_get_scalar(item[[key]]), character(1))
+      existing <- suppressWarnings(as.numeric(extracted))
+    }
+
+    survey_rows[[key]] <- existing
+  }
+
+  trust_complete <- rowSums(is.na(survey_rows[, trust_keys, drop = FALSE])) == 0
+  interaction_complete <- rowSums(is.na(survey_rows[, interaction_keys, drop = FALSE])) == 0
+
+  trust_uniform <- apply(
+    survey_rows[, trust_keys, drop = FALSE],
+    1,
+    function(row) {
+      values <- unique(row[!is.na(row)])
+      length(values) == 1
+    }
+  )
+
+  interaction_uniform <- apply(
+    survey_rows[, interaction_keys, drop = FALSE],
+    1,
+    function(row) {
+      values <- unique(row[!is.na(row)])
+      length(values) == 1
+    }
+  )
+
+  failure_mask <- trust_complete & interaction_complete & trust_uniform & interaction_uniform
+  failure_rows <- survey_rows[failure_mask & !is.na(survey_rows$participant_id), , drop = FALSE]
+
+  if (nrow(failure_rows) == 0) {
+    return(empty_result)
+  }
+
+  failure_rows$participant_id <- as.character(failure_rows$participant_id)
+  detail_columns <- c(
+    "participant_id",
+    "condition_id",
+    "condition_number",
+    trust_keys,
+    interaction_keys
+  )
+  available_detail_columns <- detail_columns[detail_columns %in% names(failure_rows)]
+
+  list(
+    ids = unique(failure_rows$participant_id),
+    details = failure_rows[, available_detail_columns, drop = FALSE]
+  )
+}
+
+normalize_scores_cousineau_morey <- function(
+  data,
+  metric_columns,
+  baseline_condition = BASELINE_CONDITION_NUMBER,
+  drop_baseline = TRUE,
+  normalization_conditions = NULL,
+  require_complete_participants = TRUE
+) {
+  if (is.null(data) || nrow(data) == 0) {
+    normalized <- if (is.null(data)) data.frame() else data
+    if (nrow(normalized) > 0) {
+      normalized[[NORMALIZED_FLAG_COLUMN]] <- FALSE
+      normalized[[MOREY_FACTOR_COLUMN]] <- NA_real_
+      normalized[[K_CONDITIONS_COLUMN]] <- NA_real_
+    }
+    return(normalized)
+  }
+
+  normalized <- data
+
+  if (!all(c("participant_id", "condition_number") %in% names(normalized))) {
+    normalized[[NORMALIZED_FLAG_COLUMN]] <- FALSE
+    normalized[[MOREY_FACTOR_COLUMN]] <- NA_real_
+    normalized[[K_CONDITIONS_COLUMN]] <- NA_real_
+    return(normalized)
+  }
+
+  available_columns <- metric_columns[metric_columns %in% names(normalized)]
+  normalized$condition_number <- suppressWarnings(as.numeric(normalized$condition_number))
+  normalized$.row_id <- seq_len(nrow(normalized))
+  normalized[[NORMALIZED_FLAG_COLUMN]] <- FALSE
+  normalized[[MOREY_FACTOR_COLUMN]] <- NA_real_
+  normalized[[K_CONDITIONS_COLUMN]] <- NA_real_
+
+  return_without_norm <- function(df) {
+    df$.row_id <- NULL
+    if (drop_baseline) {
+      df <- df[df$condition_number != baseline_condition, , drop = FALSE]
+    }
+    df
+  }
+
+  if (length(available_columns) == 0) {
+    return(return_without_norm(normalized))
+  }
+
+  if (is.null(normalization_conditions)) {
+    observed_conditions <- sort(unique(stats::na.omit(as.integer(normalized$condition_number))))
+    normalization_conditions <- observed_conditions[observed_conditions != as.integer(baseline_condition)]
+  } else {
+    normalization_conditions <- sort(unique(as.integer(normalization_conditions)))
+  }
+
+  if (length(normalization_conditions) == 0) {
+    return(return_without_norm(normalized))
+  }
+
+  normalization_data <- normalized[normalized$condition_number %in% normalization_conditions, , drop = FALSE]
+  if (nrow(normalization_data) == 0) {
+    return(return_without_norm(normalized))
+  }
+
+  expected_k <- length(normalization_conditions)
+
+  if (require_complete_participants) {
+    participant_condition_counts <- stats::aggregate(
+      condition_number ~ participant_id,
+      data = normalization_data,
+      FUN = function(x) length(unique(x[!is.na(x)]))
+    )
+
+    complete_participants <- as.character(
+      participant_condition_counts$participant_id[
+        participant_condition_counts$condition_number >= expected_k
+      ]
+    )
+
+    normalization_data <- normalization_data[
+      as.character(normalization_data$participant_id) %in% complete_participants,
+      ,
+      drop = FALSE
+    ]
+  }
+
+  if (nrow(normalization_data) == 0) {
+    return(return_without_norm(normalized))
+  }
+
+  normalization_row_ids <- normalization_data$.row_id
+
+  for (col in available_columns) {
+    numeric_values <- suppressWarnings(as.numeric(normalization_data[[col]]))
+    participant_means <- ave(
+      numeric_values,
+      normalization_data$participant_id,
+      FUN = function(x) {
+        mean_value <- mean(x, na.rm = TRUE)
+        if (is.nan(mean_value)) {
+          return(NA_real_)
+        }
+        mean_value
+      }
+    )
+
+    grand_mean <- mean(numeric_values, na.rm = TRUE)
+    if (is.nan(grand_mean)) {
+      grand_mean <- NA_real_
+    }
+
+    normalized_values <- numeric_values - participant_means + grand_mean
+    normalized[[col]][normalization_row_ids] <- normalized_values
+  }
+
+  morey_factor <- if (expected_k > 1) sqrt(expected_k / (expected_k - 1)) else NA_real_
+  normalized[[NORMALIZED_FLAG_COLUMN]][normalization_row_ids] <- TRUE
+  normalized[[MOREY_FACTOR_COLUMN]][normalization_row_ids] <- morey_factor
+  normalized[[K_CONDITIONS_COLUMN]][normalization_row_ids] <- expected_k
+
+  return_without_norm(normalized)
+}
+
+ensure_likert_columns <- function(data, keys) {
+  if (is.null(data) || nrow(data) == 0) {
+    return(data)
+  }
+
+  working <- data
+  parsed <- if ("response" %in% names(working)) {
+    lapply(working$response, parse_response_json)
+  } else {
+    replicate(nrow(working), list(), simplify = FALSE)
+  }
+
+  for (key in keys) {
+    existing <- if (key %in% names(working)) {
+      suppressWarnings(as.numeric(working[[key]]))
+    } else {
+      rep(NA_real_, nrow(working))
+    }
+
+    if (!(key %in% names(working)) || sum(!is.na(existing)) == 0) {
+      extracted <- suppressWarnings(as.numeric(
+        vapply(parsed, function(item) safe_get_scalar(item[[key]]), character(1))
+      ))
+
+      valid <- extracted[!is.na(extracted)]
+      if (length(valid) > 0 && all(valid >= 0 & valid <= 6)) {
+        extracted <- extracted + 1
+      }
+
+      working[[key]] <- extracted
+    } else {
+      working[[key]] <- existing
+    }
+  }
+
+  working
+}
+
+compute_composite_scores <- function(data) {
+  if (is.null(data) || nrow(data) == 0) {
+    return(data.frame())
+  }
+
+  working <- data
+  for (col in c(TRUST_QUESTION_KEYS, INTERACTION_QUESTION_KEYS, CONFIDENCE_QUESTION_KEYS)) {
+    if (col %in% names(working)) {
+      working[[col]] <- suppressWarnings(as.numeric(working[[col]]))
+    }
+  }
+
+  if (all(c(
+    "skeptical_rating",
+    "data_trust",
+    "usability_difficulty",
+    "comprehension_ease"
+  ) %in% names(working))) {
+    working$skeptical_rating_rev <- 8 - working$skeptical_rating
+    working$usability_difficulty_rev <- 8 - working$usability_difficulty
+    working$composite_trust_score <- rowMeans(
+      working[, c(
+        "skeptical_rating_rev",
+        "data_trust",
+        "usability_difficulty_rev",
+        "comprehension_ease"
+      ), drop = FALSE],
+      na.rm = FALSE
+    )
+  }
+
+  if (all(INTERACTION_QUESTION_KEYS %in% names(working))) {
+    working$composite_interaction_score <- rowMeans(
+      working[, INTERACTION_QUESTION_KEYS, drop = FALSE],
+      na.rm = FALSE
+    )
+  }
+
+  if (all(CONFIDENCE_QUESTION_KEYS %in% names(working))) {
+    working$confidence_score <- rowMeans(
+      working[, CONFIDENCE_QUESTION_KEYS, drop = FALSE],
+      na.rm = FALSE
+    )
+  }
+
+  working
+}
+
+classify_interaction_mode <- function(condition_name) {
+  name_value <- tolower(as.character(condition_name))
+
+  mode <- ifelse(
+    grepl("click", name_value),
+    "click",
+    ifelse(
+      grepl("hover", name_value),
+      "hover",
+      ifelse(grepl("static", name_value), "static", NA_character_)
+    )
+  )
+
+  mode
+}
+
+spaced_kable <- function(x, ...) {
+  knitr::kable(
+    x,
+    format = "html",
+    table.attr = 'style="border-collapse: separate; border-spacing: 18px 6px;"',
+    ...
+  )
+}
+
+build_condition_level_summary <- function(composite_treatment_data, modes) {
+  filtered <- composite_treatment_data %>%
+    dplyr::filter(
+      condition_number %in% TREATMENT_CONDITION_NUMBERS,
+      interaction_mode %in% modes,
+      !is.na(composite_trust_score),
+      !is.na(composite_interaction_score)
+    )
+
+  if (nrow(filtered) == 0) {
+    stop("No rows available for interaction mode subset: ", paste(modes, collapse = ", "))
+  }
+
+  condition_level_summary <- filtered %>%
+    dplyr::group_by(condition_number, condition_label) %>%
+    dplyr::summarise(
+      trust_mean = mean(composite_trust_score, na.rm = TRUE),
+      trust_sd = stats::sd(composite_trust_score, na.rm = TRUE),
+      interaction_mean = mean(composite_interaction_score, na.rm = TRUE),
+      interaction_sd = stats::sd(composite_interaction_score, na.rm = TRUE),
+      n = dplyr::n(),
+      .groups = "drop"
+    )
+
+  available_morey <- if (MOREY_FACTOR_COLUMN %in% names(filtered)) {
+    suppressWarnings(as.numeric(filtered[[MOREY_FACTOR_COLUMN]]))
+  } else {
+    numeric(0)
+  }
+  available_morey <- available_morey[!is.na(available_morey)]
+  morey_factor <- if (length(available_morey) > 0) available_morey[[1]] else NA_real_
+
+  if (!is.na(morey_factor)) {
+    condition_level_summary$trust_sd <- condition_level_summary$trust_sd * morey_factor
+    condition_level_summary$interaction_sd <- condition_level_summary$interaction_sd * morey_factor
+  }
+
+  condition_level_summary$trust_se <- condition_level_summary$trust_sd / sqrt(pmax(condition_level_summary$n, 1))
+  condition_level_summary$interaction_se <- condition_level_summary$interaction_sd / sqrt(pmax(condition_level_summary$n, 1))
+
+  condition_level_summary$condition_label <- factor(
+    condition_level_summary$condition_label,
+    levels = TREATMENT_ORDER,
+    ordered = TRUE
+  )
+
+  condition_level_summary %>%
+    dplyr::arrange(condition_label)
+}
+
+prepare_regression_data <- function(condition_level_summary, target_col) {
+  condition_level_summary %>%
+    dplyr::transmute(
+      condition_number = as.numeric(condition_number),
+      condition_label = as.character(condition_label),
+      lines = condition_number - 1,
+      y = .data[[target_col]]
+    ) %>%
+    dplyr::arrange(lines)
+}
+
+loocv_mse <- function(data, fit_fn) {
+  n <- nrow(data)
+  squared_errors <- rep(NA_real_, n)
+
+  for (i in seq_len(n)) {
+    train <- data[-i, , drop = FALSE]
+    test <- data[i, , drop = FALSE]
+
+    fit <- tryCatch(fit_fn(train), error = function(e) NULL)
+    if (is.null(fit)) {
+      next
+    }
+
+    prediction <- tryCatch(
+      as.numeric(predict(fit, newdata = test)),
+      error = function(e) NA_real_
+    )
+
+    squared_errors[i] <- (test$y - prediction)^2
+  }
+
+  mean(squared_errors, na.rm = TRUE)
+}
+
+calc_approx_aic <- function(y, y_hat, k) {
+  n <- length(y)
+  rss <- sum((y - y_hat)^2)
+  rss <- max(rss, .Machine$double.eps)
+  n * log(rss / n) + n * (1 + log(2 * pi)) + 2 * k
+}
+
+calc_approx_bic <- function(y, y_hat, k) {
+  n <- length(y)
+  rss <- sum((y - y_hat)^2)
+  rss <- max(rss, .Machine$double.eps)
+  n * log(rss / n) + n * (1 + log(2 * pi)) + log(n) * k
+}
+
+get_bic_value <- function(model, y, y_hat) {
+  bic_value <- tryCatch(as.numeric(BIC(model)), error = function(e) NA_real_)
+  if (is.finite(bic_value)) {
+    return(bic_value)
+  }
+
+  effective_k <- length(stats::coef(model)) + 1
+  calc_approx_bic(y, y_hat, effective_k)
+}
+
+get_aic_value <- function(model, y, y_hat) {
+  aic_value <- tryCatch(as.numeric(AIC(model)), error = function(e) NA_real_)
+  if (is.finite(aic_value)) {
+    return(aic_value)
+  }
+
+  effective_k <- length(stats::coef(model)) + 1
+  calc_approx_aic(y, y_hat, effective_k)
+}
+
+calc_lasso_regularized_mse <- function(model, mse, lambda = LASSO_LAMBDA) {
+  coefs <- tryCatch(stats::coef(model), error = function(e) numeric(0))
+  if (length(coefs) == 0) {
+    return(NA_real_)
+  }
+
+  coef_names <- names(coefs)
+  if (is.null(coef_names)) {
+    penalty <- sum(abs(coefs), na.rm = TRUE)
+  } else {
+    penalty <- sum(abs(coefs[coef_names != "(Intercept)"]), na.rm = TRUE)
+  }
+
+  mse + lambda * penalty
+}
+
+fit_model_suite <- function(regression_data) {
+  model_specs <- list(
+    "Intercept-only (minimal)" = function(df) lm(y ~ 1, data = df),
+    "Linear" = function(df) lm(y ~ lines, data = df),
+    "Quadratic" = function(df) lm(y ~ poly(lines, 2, raw = TRUE), data = df),
+    "Cubic" = function(df) lm(y ~ poly(lines, 3, raw = TRUE), data = df)
+  )
+
+  evaluate_model <- function(model_name, fit_fn, data) {
+    fit <- fit_fn(data)
+    fitted_values <- as.numeric(predict(fit, newdata = data))
+    mse <- mean((data$y - fitted_values)^2, na.rm = TRUE)
+    loocv <- loocv_mse(data, fit_fn)
+    bic_value <- get_bic_value(fit, data$y, fitted_values)
+    aic_value <- get_aic_value(fit, data$y, fitted_values)
+    lasso_reg_mse <- calc_lasso_regularized_mse(fit, mse)
+
+    list(
+      fit = fit,
+      metrics = data.frame(
+        model = model_name,
+        mse = mse,
+        loocv_mse = loocv,
+        bic = bic_value,
+        aic = aic_value,
+        lasso_regularized_mse = lasso_reg_mse,
+        stringsAsFactors = FALSE
+      )
+    )
+  }
+
+  evaluated_models <- lapply(
+    names(model_specs),
+    function(model_name) evaluate_model(model_name, model_specs[[model_name]], regression_data)
+  )
+  names(evaluated_models) <- names(model_specs)
+
+  model_comparison <- dplyr::bind_rows(
+    lapply(evaluated_models, function(x) x$metrics)
+  ) %>%
+    dplyr::arrange(loocv_mse)
+
+  best_model_name <- model_comparison$model[[1]]
+
+  model_comparison_pretty <- model_comparison %>%
+    dplyr::mutate(
+      mse = round(mse, 6),
+      loocv_mse = round(loocv_mse, 6),
+      bic = round(bic, 6),
+      aic = round(aic, 6),
+      lasso_regularized_mse = round(lasso_regularized_mse, 6)
+    )
+
+  list(
+    evaluated_models = evaluated_models,
+    model_comparison_pretty = model_comparison_pretty,
+    best_model_name = best_model_name
+  )
+}
+
+render_best_model_summary <- function(model_results) {
+  best_model_name <- model_results$best_model_name
+  best_fit <- model_results$evaluated_models[[best_model_name]]$fit
+  summary_lines <- capture.output(summary(best_fit))
+
+  cat("Best model by LOOCV-MSE: `", best_model_name, "`\n\n", sep = "")
+  cat("```text\n")
+  cat(paste(summary_lines, collapse = "\n"))
+  cat("\n```\n\n")
+}
+
+plot_fitted_curves <- function(
+  regression_data,
+  evaluated_models,
+  best_model_name,
+  title_text,
+  y_label_text
+) {
+  plot_data <- regression_data %>%
+    dplyr::filter(lines != 1)
+
+  prediction_grid <- data.frame(
+    lines = seq(min(plot_data$lines), max(plot_data$lines), length.out = 250)
+  )
+
+  fitted_curves <- dplyr::bind_rows(
+    lapply(names(evaluated_models), function(model_name) {
+      fit <- evaluated_models[[model_name]]$fit
+      preds <- suppressWarnings(as.numeric(predict(fit, newdata = prediction_grid)))
+
+      data.frame(
+        model = model_name,
+        lines = prediction_grid$lines,
+        y = preds,
+        stringsAsFactors = FALSE
+      )
+    })
+  )
+
+  ggplot(plot_data, aes(x = lines, y = y)) +
+    geom_point(size = 3.2, color = "#1f1f1f") +
+    geom_line(
+      data = fitted_curves,
+      aes(x = lines, y = y, color = model),
+      linewidth = 0.7,
+      alpha = 0.5
+    ) +
+    scale_x_continuous(breaks = sort(unique(plot_data$lines))) +
+    scale_y_continuous(breaks = seq(1, 7, by = 1)) +
+    coord_cartesian(ylim = c(1, 7)) +
+    labs(
+      title = title_text,
+      subtitle = paste("Best model by LOOCV-MSE:", best_model_name),
+      x = "Lines (2-9)",
+      y = y_label_text,
+      color = "Model"
+    ) +
+    guides(color = ggplot2::guide_legend(nrow = 1, byrow = TRUE)) +
+    theme_minimal(base_size = 12) +
+    theme(
+      legend.position = "bottom",
+      legend.box = "horizontal",
+      aspect.ratio = 1,
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA),
+      legend.background = ggplot2::element_rect(fill = "white", color = NA),
+      legend.key = ggplot2::element_rect(fill = "white", color = NA)
+    )
+}
+
+run_regression_analysis <- function(
+  composite_treatment_data,
+  subset_modes,
+  subset_label,
+  target_col,
+  metric_label,
+  y_axis_label,
+  file_prefix
+) {
+  condition_level_summary <- build_condition_level_summary(composite_treatment_data, subset_modes)
+  regression_data <- prepare_regression_data(condition_level_summary, target_col)
+
+  if (nrow(regression_data) < 4) {
+    stop("Need at least 4 condition points for model comparison in subset: ", subset_label)
+  }
+
+  model_results <- fit_model_suite(regression_data)
+
+  plot_title <- paste0(
+    "Experiment 2 (0325 + 0328): ",
+    metric_label,
+    " ~ lines (",
+    subset_label,
+    ")"
+  )
+
+  plot_object <- plot_fitted_curves(
+    regression_data,
+    model_results$evaluated_models,
+    model_results$best_model_name,
+    title_text = plot_title,
+    y_label_text = y_axis_label
+  )
+
+  saved_svg_path <- paste0(file_prefix, ".svg")
+  saved_png_path <- paste0(file_prefix, ".png")
+  svg_saved <- TRUE
+
+  tryCatch(
+    {
+      ggplot2::ggsave(
+        filename = saved_svg_path,
+        plot = plot_object,
+        width = 9,
+        height = 8,
+        units = "in",
+        bg = "white"
+      )
+    },
+    error = function(e) {
+      svg_saved <<- FALSE
+      cat("SVG export failed for", file_prefix, ":", conditionMessage(e), "\\n")
+    }
+  )
+
+  ggplot2::ggsave(
+    filename = saved_png_path,
+    plot = plot_object,
+    width = 9,
+    height = 8,
+    units = "in",
+    dpi = 300,
+    bg = "white"
+  )
+
+  list(
+    model_comparison_pretty = model_results$model_comparison_pretty,
+    best_model_name = model_results$best_model_name,
+    plot_object = plot_object,
+    saved_svg_path = if (svg_saved) saved_svg_path else NA_character_,
+    saved_png_path = saved_png_path
+  )
+}
+```
+
+## Data Loading and Preprocessing (0325 + 0328)
+
+```{r data-loading-and-preprocessing}
+csv_manifest <- do.call(
+  rbind,
+  lapply(existing_data_dirs, function(data_dir) {
+    batch_id <- basename(dirname(data_dir))
+    files <- sort(list.files(
+      data_dir,
+      pattern = params$csv_pattern,
+      full.names = TRUE
+    ))
+
+    if (length(files) == 0) {
+      return(data.frame())
+    }
+
+    data.frame(
+      data_batch = batch_id,
+      file_path = files,
+      stringsAsFactors = FALSE
+    )
+  })
+)
+
+if (nrow(csv_manifest) == 0) {
+  stop("No CSV files found in any required data directory.")
+}
+
+all_data <- lapply(seq_len(nrow(csv_manifest)), function(i) {
+  file_path <- csv_manifest$file_path[[i]]
+  batch_id <- csv_manifest$data_batch[[i]]
+
+  df <- read.csv(file_path, stringsAsFactors = FALSE)
+  df$source_file <- basename(file_path)
+  df$data_batch <- batch_id
+
+  if (!("participant_id" %in% names(df)) || all(is.na(df$participant_id))) {
+    df$participant_id <- extract_participant_id_from_filename(file_path)
+  }
+
+  if (!("condition_id" %in% names(df))) {
+    df$condition_id <- NA_character_
+  }
+
+  if (!("condition_name" %in% names(df))) {
+    df$condition_name <- NA_character_
+  }
+
+  df$condition_number <- vapply(df$condition_id, extract_condition_number, numeric(1))
+  df$condition_label <- map_condition_labels(df$condition_number)
+  df
+})
+
+combined_data <- bind_rows(all_data)
+
+before_participants <- dplyr::n_distinct(combined_data$participant_id, na.rm = TRUE)
+combined_data <- combined_data[!is.na(combined_data$participant_id), , drop = FALSE]
+combined_data <- combined_data[
+  tolower(as.character(combined_data$participant_id)) != "test",
+  ,
+  drop = FALSE
+]
+
+attention_failures <- identify_attention_check_failures(combined_data)
+if (length(attention_failures$ids) > 0) {
+  combined_data <- combined_data[
+    !(as.character(combined_data$participant_id) %in% attention_failures$ids),
+    ,
+    drop = FALSE
+  ]
+}
+
+after_participants <- dplyr::n_distinct(combined_data$participant_id, na.rm = TRUE)
+
+cat("Data directories used:\n")
+cat(paste0("- ", existing_data_dirs), sep = "\n")
+cat("\nFound CSV files:", nrow(csv_manifest), "\n")
+cat("Combined shape:", paste(dim(combined_data), collapse = " x "), "\n")
+cat("Participants:", before_participants, "->", after_participants, "\n")
+cat("Attention-check exclusions:", length(attention_failures$ids), "\n")
+if (length(attention_failures$ids) > 0) {
+  cat("Attention-check failure IDs:\n")
+  cat(paste0("- ", sort(unique(as.character(attention_failures$ids)))), sep = "\n")
+  cat("\n\n")
+} else {
+  cat("Attention-check failure IDs: none\n\n")
+}
+
+batch_counts <- combined_data %>%
+  dplyr::filter(trial_type == "trust-survey") %>%
+  dplyr::group_by(data_batch) %>%
+  dplyr::summarise(
+    participants = dplyr::n_distinct(participant_id),
+    trust_survey_rows = dplyr::n(),
+    .groups = "drop"
+  )
+
+cat("Trust-survey counts by batch:\n")
+for (i in seq_len(nrow(batch_counts))) {
+  cat(
+    "-",
+    batch_counts$data_batch[[i]],
+    ": participants =",
+    batch_counts$participants[[i]],
+    ", rows =",
+    batch_counts$trust_survey_rows[[i]],
+    "\n"
+  )
+}
+
+trust_survey_rows <- combined_data %>%
+  dplyr::filter(trial_type == "trust-survey")
+
+trust_survey_expanded <- ensure_likert_columns(
+  trust_survey_rows,
+  c(TRUST_QUESTION_KEYS, INTERACTION_QUESTION_KEYS)
+)
+
+analysis_metric_columns <- c(TRUST_QUESTION_KEYS, INTERACTION_QUESTION_KEYS)
+analysis_metric_columns <- analysis_metric_columns[
+  analysis_metric_columns %in% names(trust_survey_expanded)
+]
+
+analysis_trust_survey_expanded <- normalize_scores_cousineau_morey(
+  trust_survey_expanded,
+  metric_columns = analysis_metric_columns,
+  baseline_condition = BASELINE_CONDITION_NUMBER,
+  drop_baseline = FALSE,
+  normalization_conditions = TREATMENT_CONDITION_NUMBERS,
+  require_complete_participants = TRUE
+)
+
+analysis_treatment_survey <- analysis_trust_survey_expanded %>%
+  dplyr::filter(
+    condition_number %in% TREATMENT_CONDITION_NUMBERS,
+    !is.na(.data[[NORMALIZED_FLAG_COLUMN]]) & .data[[NORMALIZED_FLAG_COLUMN]]
+  )
+
+prediction_task_rows <- combined_data %>%
+  dplyr::filter(trial_type == "prediction-task")
+
+prediction_task_expanded <- ensure_likert_columns(
+  prediction_task_rows,
+  CONFIDENCE_QUESTION_KEYS
+)
+
+analysis_confidence_expanded <- normalize_scores_cousineau_morey(
+  prediction_task_expanded,
+  metric_columns = CONFIDENCE_QUESTION_KEYS,
+  baseline_condition = BASELINE_CONDITION_NUMBER,
+  drop_baseline = FALSE,
+  normalization_conditions = TREATMENT_CONDITION_NUMBERS,
+  require_complete_participants = TRUE
+)
+
+confidence_treatment <- analysis_confidence_expanded %>%
+  dplyr::filter(
+    condition_number %in% TREATMENT_CONDITION_NUMBERS,
+    !is.na(.data[[NORMALIZED_FLAG_COLUMN]]) & .data[[NORMALIZED_FLAG_COLUMN]]
+  ) %>%
+  dplyr::transmute(
+    participant_id = as.character(participant_id),
+    condition_number = as.numeric(condition_number),
+    confidence_score = suppressWarnings(as.numeric(confidence_rating))
+  ) %>%
+  dplyr::group_by(participant_id, condition_number) %>%
+  dplyr::summarise(
+    confidence_score = mean(confidence_score, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+confidence_treatment$confidence_score[is.nan(confidence_treatment$confidence_score)] <- NA_real_
+
+cat("Trust-survey rows:", nrow(trust_survey_rows), "\n")
+cat("Rows with parsed Likert columns:", nrow(trust_survey_expanded), "\n")
+cat("Normalized treatment rows kept:", nrow(analysis_treatment_survey), "\n")
+cat("Prediction-task rows:", nrow(prediction_task_rows), "\n")
+cat("Normalized confidence treatment rows kept:", nrow(confidence_treatment), "\n")
+cat(
+  "Participants retained after complete-condition requirement:",
+  dplyr::n_distinct(analysis_treatment_survey$participant_id),
+  "\n"
+)
+
+composite_treatment <- compute_composite_scores(analysis_treatment_survey)
+composite_treatment <- composite_treatment %>%
+  dplyr::left_join(
+    confidence_treatment,
+    by = c("participant_id", "condition_number"),
+    suffix = c("", "_from_prediction")
+  ) %>%
+  dplyr::mutate(
+    confidence_score = dplyr::coalesce(confidence_score_from_prediction, confidence_score)
+  ) %>%
+  dplyr::select(-confidence_score_from_prediction)
+
+composite_treatment$condition_label <- map_condition_labels(composite_treatment$condition_number)
+composite_treatment$interaction_mode <- classify_interaction_mode(composite_treatment$condition_name)
+
+mode_counts <- composite_treatment %>%
+  dplyr::filter(!is.na(interaction_mode)) %>%
+  dplyr::group_by(interaction_mode) %>%
+  dplyr::summarise(
+    participants = dplyr::n_distinct(participant_id),
+    rows = dplyr::n(),
+    .groups = "drop"
+  ) %>%
+  dplyr::arrange(interaction_mode)
+
+cat("\nNormalized treatment counts by interaction mode:\n")
+for (i in seq_len(nrow(mode_counts))) {
+  cat(
+    "-",
+    mode_counts$interaction_mode[[i]],
+    ": participants =",
+    mode_counts$participants[[i]],
+    ", rows =",
+    mode_counts$rows[[i]],
+    "\n"
+  )
+}
+
+unknown_mode_rows <- composite_treatment %>%
+  dplyr::filter(is.na(interaction_mode))
+
+if (nrow(unknown_mode_rows) > 0) {
+  cat("Rows with unknown interaction mode:", nrow(unknown_mode_rows), "\n")
+}
+```
+
+## Participant-Trajectory Line Analyses by Interaction Mode (9 Plots + 9 Tables + 9 Best-Model Summaries)
+
+```{r participant-trajectory-lines-analyses-by-mode, results='asis', fig.width=9, fig.height=6}
+MODE_LEVELS <- c("click", "hover", "static")
+MODE_COLORS <- c("click" = "#1f78b4", "hover" = "#33a02c", "static" = "#e15759")
+
+analysis_lines_data <- composite_treatment %>%
+  dplyr::filter(
+    interaction_mode %in% MODE_LEVELS,
+    condition_number %in% TREATMENT_CONDITION_NUMBERS
+  ) %>%
+  dplyr::mutate(
+    participant_id = as.character(participant_id),
+    lines = condition_number - 1,
+    interaction_mode = factor(interaction_mode, levels = MODE_LEVELS, ordered = TRUE)
+  )
+
+if (nrow(analysis_lines_data) == 0) {
+  stop("No rows available for line analyses by interaction mode.")
+}
+
+fit_best_models_by_mode <- function(raw_data, y_col, mode_levels) {
+  mode_results <- list()
+  mode_predictions <- list()
+
+  for (mode_name in mode_levels) {
+    regression_data <- raw_data %>%
+      dplyr::filter(interaction_mode == mode_name, !is.na(.data[[y_col]])) %>%
+      dplyr::transmute(
+        lines = as.numeric(lines),
+        y = as.numeric(.data[[y_col]])
+      ) %>%
+      dplyr::arrange(lines)
+
+    if (nrow(regression_data) < 4 || dplyr::n_distinct(regression_data$lines) < 4) {
+      stop(
+        "Need at least 4 observations and 4 distinct line values for mode: ",
+        mode_name,
+        " (",
+        y_col,
+        ")"
+      )
+    }
+
+    model_results <- fit_model_suite(regression_data)
+    best_model_name <- model_results$best_model_name
+    best_fit <- model_results$evaluated_models[[best_model_name]]$fit
+
+    prediction_grid <- data.frame(
+      lines = seq(min(regression_data$lines), max(regression_data$lines), length.out = 250)
+    )
+    prediction_grid$y <- suppressWarnings(as.numeric(stats::predict(best_fit, newdata = prediction_grid)))
+
+    mode_results[[mode_name]] <- model_results
+    mode_predictions[[mode_name]] <- list(
+      prediction_data = prediction_grid,
+      best_model_name = best_model_name
+    )
+  }
+
+  list(
+    mode_results = mode_results,
+    mode_predictions = mode_predictions
+  )
+}
+
+plot_participant_trajectories_by_mode <- function(
+  raw_data,
+  mode_prediction,
+  y_col,
+  mode_name,
+  title_text,
+  y_label_text
+) {
+  plotting_data <- raw_data %>%
+    dplyr::filter(interaction_mode == mode_name, !is.na(.data[[y_col]]))
+
+  if (nrow(plotting_data) == 0) {
+    stop("No rows available for plotting in mode: ", mode_name, " (", y_col, ")")
+  }
+
+  ggplot2::ggplot(
+    plotting_data,
+    ggplot2::aes(
+      x = lines,
+      y = .data[[y_col]],
+      group = participant_id
+    )
+  ) +
+    ggplot2::geom_line(
+      color = MODE_COLORS[[mode_name]],
+      alpha = 0.22,
+      linewidth = 0.55
+    ) +
+    ggplot2::geom_point(
+      color = MODE_COLORS[[mode_name]],
+      alpha = 0.45,
+      size = 1.9
+    ) +
+    ggplot2::geom_line(
+      data = mode_prediction$prediction_data,
+      ggplot2::aes(x = lines, y = y),
+      color = "#111111",
+      linewidth = 1.1,
+      inherit.aes = FALSE
+    ) +
+    ggplot2::scale_x_continuous(breaks = sort(unique(plotting_data$lines))) +
+    ggplot2::scale_y_continuous(breaks = seq(1, 7, by = 1)) +
+    ggplot2::coord_cartesian(ylim = c(1, 7)) +
+    ggplot2::labs(
+      title = title_text,
+      subtitle = paste("Best model by LOOCV-MSE:", mode_prediction$best_model_name),
+      x = "Number of Lines",
+      y = y_label_text
+    ) +
+    ggplot2::theme_minimal(base_size = 12) +
+    ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "white", color = NA),
+      panel.background = ggplot2::element_rect(fill = "white", color = NA)
+    )
+}
+
+metric_specs <- list(
+  list(
+    key = "trust",
+    display_name = "Trust",
+    y_col = "composite_trust_score",
+    y_axis_label = "Trust (Cousineau-normalized score)"
+  ),
+  list(
+    key = "interaction",
+    display_name = "Interactive Experience",
+    y_col = "composite_interaction_score",
+    y_axis_label = "Interactive Experience (Cousineau-normalized score)"
+  ),
+  list(
+    key = "confidence",
+    display_name = "Confidence",
+    y_col = "confidence_score",
+    y_axis_label = "Confidence (Cousineau-normalized score)"
+  )
+)
+
+for (metric_spec in metric_specs) {
+  available_rows <- analysis_lines_data %>%
+    dplyr::filter(!is.na(.data[[metric_spec$y_col]]))
+
+  if (nrow(available_rows) == 0) {
+    stop("No rows available for metric: ", metric_spec$display_name)
+  }
+
+  cat("### ", metric_spec$display_name, " ~ number of lines (No CI)\n\n", sep = "")
+
+  mode_analysis <- fit_best_models_by_mode(
+    raw_data = analysis_lines_data,
+    y_col = metric_spec$y_col,
+    mode_levels = MODE_LEVELS
+  )
+
+  for (mode_name in MODE_LEVELS) {
+    cat("#### ", metric_spec$display_name, " participant trajectories | ", mode_name, "\n\n", sep = "")
+
+    plot_object <- plot_participant_trajectories_by_mode(
+      raw_data = analysis_lines_data,
+      mode_prediction = mode_analysis$mode_predictions[[mode_name]],
+      y_col = metric_spec$y_col,
+      mode_name = mode_name,
+      title_text = paste0(
+        "Experiment 2 (0325 + 0328): ",
+        metric_spec$display_name,
+        " ~ number of lines (",
+        mode_name,
+        ")"
+      ),
+      y_label_text = metric_spec$y_axis_label
+    )
+
+    print(plot_object)
+    cat("\n")
+
+    model_results <- mode_analysis$mode_results[[mode_name]]
+
+    cat("#### ", metric_spec$display_name, " model comparison | ", mode_name, "\n\n", sep = "")
+    cat(
+      as.character(
+        spaced_kable(
+          model_results$model_comparison_pretty,
+          col.names = c("Model", "MSE", "LOOCV-MSE", "BIC", "AIC", "Lasso-Regularized MSE")
+        )
+      ),
+      sep = "\n"
+    )
+    cat("\n\n")
+
+    cat("#### ", metric_spec$display_name, " optimal model summary | ", mode_name, "\n\n", sep = "")
+    render_best_model_summary(model_results)
+  }
+}
+```
