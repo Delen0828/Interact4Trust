@@ -645,8 +645,12 @@ h1_vis_emmeans_model <- lm(
   data = h1_vis_emmeans_data
 )
 
+h1_vis_emm <- emmeans(h1_vis_emmeans_model, ~ vis_type)
 h1_vis_emmeans <- as.data.frame(
-  summary(emmeans(h1_vis_emmeans_model, ~ vis_type), infer = FALSE)
+  summary(h1_vis_emm, infer = FALSE)
+)
+h1_vis_pairs <- as.data.frame(
+  summary(pairs(h1_vis_emm, adjust = "tukey"))
 )
 
 h1_interaction_emmeans_data <- bind_rows(
@@ -678,8 +682,12 @@ h1_interaction_emmeans_model <- lm(
   data = h1_interaction_emmeans_data
 )
 
+h1_interaction_emm <- emmeans(h1_interaction_emmeans_model, ~ interaction_availability)
 h1_interaction_emmeans <- as.data.frame(
-  summary(emmeans(h1_interaction_emmeans_model, ~ interaction_availability), infer = FALSE)
+  summary(h1_interaction_emm, infer = FALSE)
+)
+h1_interaction_pairs <- as.data.frame(
+  summary(pairs(h1_interaction_emm, adjust = "tukey"))
 )
 
 h1_singular <- NA
@@ -705,6 +713,16 @@ knitr::kable(
     ),
   digits = 4,
   caption = "H1 Estimated Marginal Means by Interaction Availability (including Baseline)"
+)
+knitr::kable(
+  h1_vis_pairs,
+  digits = 4,
+  caption = "H1 Tukey-adjusted Pairwise Comparisons by Visualization Family"
+)
+knitr::kable(
+  h1_interaction_pairs,
+  digits = 4,
+  caption = "H1 Tukey-adjusted Pairwise Comparisons by Interaction Availability"
 )
 ```
 
@@ -745,19 +763,31 @@ h2_model <- lm(
 h2_anova <- anova(h2_model)
 h2_singular <- NA
 
+h2_condition_emm <- emmeans(h2_model, ~ interaction_group * vis_type)
 h2_condition_means <- as.data.frame(
-  summary(emmeans(h2_model, ~ interaction_group * vis_type), infer = FALSE)
+  summary(h2_condition_emm, infer = FALSE)
 ) %>%
   mutate(
     condition = paste(interaction_group, vis_type)
   )
-
-h2_interaction_means <- as.data.frame(
-  summary(emmeans(h2_model, ~ interaction_group), infer = FALSE)
+h2_condition_pairs <- as.data.frame(
+  summary(pairs(h2_condition_emm, adjust = "tukey"))
 )
 
+h2_interaction_emm <- emmeans(h2_model, ~ interaction_group)
+h2_interaction_means <- as.data.frame(
+  summary(h2_interaction_emm, infer = FALSE)
+)
+h2_interaction_pairs <- as.data.frame(
+  summary(pairs(h2_interaction_emm, adjust = "tukey"))
+)
+
+h2_vis_emm <- emmeans(h2_model, ~ vis_type)
 h2_vis_means <- as.data.frame(
-  summary(emmeans(h2_model, ~ vis_type), infer = FALSE)
+  summary(h2_vis_emm, infer = FALSE)
+)
+h2_vis_pairs <- as.data.frame(
+  summary(pairs(h2_vis_emm, adjust = "tukey"))
 )
 
 h2_anova
@@ -792,6 +822,21 @@ knitr::kable(
     ),
   digits = 4,
   caption = "H2 Estimated Means by Visualization Family"
+)
+knitr::kable(
+  h2_condition_pairs,
+  digits = 4,
+  caption = "H2 Tukey-adjusted Pairwise Comparisons by Individual Condition (Interaction x Visualization)"
+)
+knitr::kable(
+  h2_interaction_pairs,
+  digits = 4,
+  caption = "H2 Tukey-adjusted Pairwise Comparisons by Interaction Group"
+)
+knitr::kable(
+  h2_vis_pairs,
+  digits = 4,
+  caption = "H2 Tukey-adjusted Pairwise Comparisons by Visualization Family"
 )
 ```
 
@@ -830,19 +875,31 @@ h3_model <- lm(
 h3_anova <- anova(h3_model)
 h3_singular <- NA
 
+h3_condition_emm <- emmeans(h3_model, ~ interaction_group * vis_type)
 h3_condition_means <- as.data.frame(
-  summary(emmeans(h3_model, ~ interaction_group * vis_type), infer = FALSE)
+  summary(h3_condition_emm, infer = FALSE)
 ) %>%
   mutate(
     condition = paste(interaction_group, vis_type)
   )
-
-h3_interaction_means <- as.data.frame(
-  summary(emmeans(h3_model, ~ interaction_group), infer = FALSE)
+h3_condition_pairs <- as.data.frame(
+  summary(pairs(h3_condition_emm, adjust = "tukey"))
 )
 
+h3_interaction_emm <- emmeans(h3_model, ~ interaction_group)
+h3_interaction_means <- as.data.frame(
+  summary(h3_interaction_emm, infer = FALSE)
+)
+h3_interaction_pairs <- as.data.frame(
+  summary(pairs(h3_interaction_emm, adjust = "tukey"))
+)
+
+h3_vis_emm <- emmeans(h3_model, ~ vis_type)
 h3_vis_means <- as.data.frame(
-  summary(emmeans(h3_model, ~ vis_type), infer = FALSE)
+  summary(h3_vis_emm, infer = FALSE)
+)
+h3_vis_pairs <- as.data.frame(
+  summary(pairs(h3_vis_emm, adjust = "tukey"))
 )
 
 h3_anova
@@ -877,6 +934,21 @@ knitr::kable(
     ),
   digits = 4,
   caption = "H3 Estimated Means by Visualization Family"
+)
+knitr::kable(
+  h3_condition_pairs,
+  digits = 4,
+  caption = "H3 Tukey-adjusted Pairwise Comparisons by Individual Condition (Interaction x Visualization)"
+)
+knitr::kable(
+  h3_interaction_pairs,
+  digits = 4,
+  caption = "H3 Tukey-adjusted Pairwise Comparisons by Interaction Group"
+)
+knitr::kable(
+  h3_vis_pairs,
+  digits = 4,
+  caption = "H3 Tukey-adjusted Pairwise Comparisons by Visualization Family"
 )
 ```
 
@@ -1059,55 +1131,55 @@ q123_q1_lmer <- lmer(
 
 anova(q123_q1_lmer, type = 3)
 
-q123_q1_baseline_emm <- as.data.frame(
-  summary(
-    emmeans(
-      q123_q1_lmer,
-      ~ 1,
-      at = list(
-        is_baseline = "Yes",
-        interaction_availability = "Static",
-        vistype = "PI"
-      )
-    ),
-    infer = c(TRUE, FALSE)
+q123_q1_baseline_emm_grid <- emmeans(
+  q123_q1_lmer,
+  ~ 1,
+  at = list(
+    is_baseline = "Yes",
+    interaction_availability = "Static",
+    vistype = "PI"
   )
-) %>%
-  mutate(
-    condition_label = "Baseline",
-    is_baseline = "Yes"
-  )
+)
+q123_q1_baseline_emm_grid@grid$condition_label <- "Baseline"
 
-q123_q1_nonbaseline_emm <- as.data.frame(
-  summary(
-    emmeans(
-      q123_q1_lmer,
-      ~ 1,
-      at = list(is_baseline = "No"),
-      weights = "proportional"
-    ),
-    infer = c(TRUE, FALSE)
-  )
-) %>%
-  mutate(
-    condition_label = "Non-baseline",
-    is_baseline = "No"
-  )
+q123_q1_nonbaseline_emm_grid <- emmeans(
+  q123_q1_lmer,
+  ~ 1,
+  at = list(is_baseline = "No"),
+  weights = "proportional"
+)
+q123_q1_nonbaseline_emm_grid@grid$condition_label <- "Non-baseline"
 
-q123_q1_condition_emmeans <- bind_rows(
-  q123_q1_baseline_emm,
-  q123_q1_nonbaseline_emm
+q123_q1_condition_emm <- rbind(
+  q123_q1_baseline_emm_grid,
+  q123_q1_nonbaseline_emm_grid,
+  adjust = "none"
+)
+q123_q1_condition_emm <- update(q123_q1_condition_emm, pri.vars = "condition_label")
+
+q123_q1_condition_emmeans <- as.data.frame(
+  summary(q123_q1_condition_emm, infer = c(TRUE, FALSE))
 ) %>%
   mutate(
-    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline"))
+    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline")),
+    is_baseline = ifelse(condition_label == "Baseline", "Yes", "No")
   ) %>%
   arrange(condition_label) %>%
   select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+q123_q1_condition_pairs <- as.data.frame(
+  summary(pairs(q123_q1_condition_emm, adjust = "tukey"))
+)
 
 knitr::kable(
   q123_q1_condition_emmeans,
   digits = 3,
   caption = "Q1 EMMs for Baseline vs Non-baseline (Non-baseline averaged across conditions)"
+)
+knitr::kable(
+  q123_q1_condition_pairs,
+  digits = 3,
+  caption = "Q1 Tukey-adjusted Pairwise Comparisons for Baseline and Non-baseline EMMs"
 )
 ```
 
@@ -1129,55 +1201,55 @@ q123_q2_lmer <- lmer(
 
 anova(q123_q2_lmer, type = 3)
 
-q123_q2_baseline_emm <- as.data.frame(
-  summary(
-    emmeans(
-      q123_q2_lmer,
-      ~ 1,
-      at = list(
-        is_baseline = "Yes",
-        interaction_availability = "Static",
-        vistype = "PI"
-      )
-    ),
-    infer = c(TRUE, FALSE)
+q123_q2_baseline_emm_grid <- emmeans(
+  q123_q2_lmer,
+  ~ 1,
+  at = list(
+    is_baseline = "Yes",
+    interaction_availability = "Static",
+    vistype = "PI"
   )
-) %>%
-  mutate(
-    condition_label = "Baseline",
-    is_baseline = "Yes"
-  )
+)
+q123_q2_baseline_emm_grid@grid$condition_label <- "Baseline"
 
-q123_q2_nonbaseline_emm <- as.data.frame(
-  summary(
-    emmeans(
-      q123_q2_lmer,
-      ~ 1,
-      at = list(is_baseline = "No"),
-      weights = "proportional"
-    ),
-    infer = c(TRUE, FALSE)
-  )
-) %>%
-  mutate(
-    condition_label = "Non-baseline",
-    is_baseline = "No"
-  )
+q123_q2_nonbaseline_emm_grid <- emmeans(
+  q123_q2_lmer,
+  ~ 1,
+  at = list(is_baseline = "No"),
+  weights = "proportional"
+)
+q123_q2_nonbaseline_emm_grid@grid$condition_label <- "Non-baseline"
 
-q123_q2_condition_emmeans <- bind_rows(
-  q123_q2_baseline_emm,
-  q123_q2_nonbaseline_emm
+q123_q2_condition_emm <- rbind(
+  q123_q2_baseline_emm_grid,
+  q123_q2_nonbaseline_emm_grid,
+  adjust = "none"
+)
+q123_q2_condition_emm <- update(q123_q2_condition_emm, pri.vars = "condition_label")
+
+q123_q2_condition_emmeans <- as.data.frame(
+  summary(q123_q2_condition_emm, infer = c(TRUE, FALSE))
 ) %>%
   mutate(
-    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline"))
+    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline")),
+    is_baseline = ifelse(condition_label == "Baseline", "Yes", "No")
   ) %>%
   arrange(condition_label) %>%
   select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+q123_q2_condition_pairs <- as.data.frame(
+  summary(pairs(q123_q2_condition_emm, adjust = "tukey"))
+)
 
 knitr::kable(
   q123_q2_condition_emmeans,
   digits = 3,
   caption = "Q2 EMMs for Baseline vs Non-baseline (Non-baseline averaged across conditions)"
+)
+knitr::kable(
+  q123_q2_condition_pairs,
+  digits = 3,
+  caption = "Q2 Tukey-adjusted Pairwise Comparisons for Baseline and Non-baseline EMMs"
 )
 ```
 

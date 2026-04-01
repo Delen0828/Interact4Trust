@@ -1294,8 +1294,12 @@ h1_vis_emmeans_model &lt;- lm(
   data = h1_vis_emmeans_data
 )
 
+h1_vis_emm &lt;- emmeans(h1_vis_emmeans_model, ~ vis_type)
 h1_vis_emmeans &lt;- as.data.frame(
-  summary(emmeans(h1_vis_emmeans_model, ~ vis_type), infer = FALSE)
+  summary(h1_vis_emm, infer = FALSE)
+)
+h1_vis_pairs &lt;- as.data.frame(
+  summary(pairs(h1_vis_emm, adjust = &quot;tukey&quot;))
 )
 
 h1_interaction_emmeans_data &lt;- bind_rows(
@@ -1327,8 +1331,12 @@ h1_interaction_emmeans_model &lt;- lm(
   data = h1_interaction_emmeans_data
 )
 
+h1_interaction_emm &lt;- emmeans(h1_interaction_emmeans_model, ~ interaction_availability)
 h1_interaction_emmeans &lt;- as.data.frame(
-  summary(emmeans(h1_interaction_emmeans_model, ~ interaction_availability), infer = FALSE)
+  summary(h1_interaction_emm, infer = FALSE)
+)
+h1_interaction_pairs &lt;- as.data.frame(
+  summary(pairs(h1_interaction_emm, adjust = &quot;tukey&quot;))
 )
 
 h1_singular &lt;- NA
@@ -1472,6 +1480,144 @@ Baseline)</caption>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>knitr::kable(
+  h1_vis_pairs,
+  digits = 4,
+  caption = &quot;H1 Tukey-adjusted Pairwise Comparisons by Visualization Family&quot;
+)</code></pre>
+<table>
+<caption>H1 Tukey-adjusted Pairwise Comparisons by Visualization
+Family</caption>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Baseline - PI</td>
+<td align="right">0.2163</td>
+<td align="right">0.0752</td>
+<td align="right">1002</td>
+<td align="right">2.8767</td>
+<td align="right">0.0213</td>
+</tr>
+<tr>
+<td align="left">Baseline - Ensemble</td>
+<td align="right">0.3044</td>
+<td align="right">0.0759</td>
+<td align="right">1002</td>
+<td align="right">4.0088</td>
+<td align="right">0.0004</td>
+</tr>
+<tr>
+<td align="left">Baseline - (PI + Ensemble)</td>
+<td align="right">0.4418</td>
+<td align="right">0.0712</td>
+<td align="right">1002</td>
+<td align="right">6.2009</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">PI - Ensemble</td>
+<td align="right">0.0881</td>
+<td align="right">0.0872</td>
+<td align="right">1002</td>
+<td align="right">1.0103</td>
+<td align="right">0.7434</td>
+</tr>
+<tr>
+<td align="left">PI - (PI + Ensemble)</td>
+<td align="right">0.2255</td>
+<td align="right">0.0752</td>
+<td align="right">1002</td>
+<td align="right">2.9992</td>
+<td align="right">0.0147</td>
+</tr>
+<tr>
+<td align="left">Ensemble - (PI + Ensemble)</td>
+<td align="right">0.1374</td>
+<td align="right">0.0759</td>
+<td align="right">1002</td>
+<td align="right">1.8089</td>
+<td align="right">0.2697</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  h1_interaction_pairs,
+  digits = 4,
+  caption = &quot;H1 Tukey-adjusted Pairwise Comparisons by Interaction Availability&quot;
+)</code></pre>
+<table>
+<caption>H1 Tukey-adjusted Pairwise Comparisons by Interaction
+Availability</caption>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Baseline - Static</td>
+<td align="right">0.4388</td>
+<td align="right">0.0713</td>
+<td align="right">1002</td>
+<td align="right">6.1546</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Baseline - Interactive</td>
+<td align="right">0.2657</td>
+<td align="right">0.0713</td>
+<td align="right">1002</td>
+<td align="right">3.7263</td>
+<td align="right">0.0012</td>
+</tr>
+<tr>
+<td align="left">Baseline - Buggy</td>
+<td align="right">0.2567</td>
+<td align="right">0.0713</td>
+<td align="right">1002</td>
+<td align="right">3.6007</td>
+<td align="right">0.0019</td>
+</tr>
+<tr>
+<td align="left">Static - Interactive</td>
+<td align="right">-0.1731</td>
+<td align="right">0.0713</td>
+<td align="right">1002</td>
+<td align="right">-2.4284</td>
+<td align="right">0.0725</td>
+</tr>
+<tr>
+<td align="left">Static - Buggy</td>
+<td align="right">-0.1821</td>
+<td align="right">0.0713</td>
+<td align="right">1002</td>
+<td align="right">-2.5540</td>
+<td align="right">0.0526</td>
+</tr>
+<tr>
+<td align="left">Interactive - Buggy</td>
+<td align="right">-0.0090</td>
+<td align="right">0.0713</td>
+<td align="right">1002</td>
+<td align="right">-0.1256</td>
+<td align="right">0.9993</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>h1_plot_data &lt;- h1_summary %&gt;%
   mutate(vis_type = factor(vis_type, levels = c(&quot;PI&quot;, &quot;Ensemble&quot;, &quot;PI + Ensemble&quot;), ordered = TRUE))
 
@@ -1508,19 +1654,31 @@ h2_model &lt;- lm(
 h2_anova &lt;- anova(h2_model)
 h2_singular &lt;- NA
 
+h2_condition_emm &lt;- emmeans(h2_model, ~ interaction_group * vis_type)
 h2_condition_means &lt;- as.data.frame(
-  summary(emmeans(h2_model, ~ interaction_group * vis_type), infer = FALSE)
+  summary(h2_condition_emm, infer = FALSE)
 ) %&gt;%
   mutate(
     condition = paste(interaction_group, vis_type)
   )
-
-h2_interaction_means &lt;- as.data.frame(
-  summary(emmeans(h2_model, ~ interaction_group), infer = FALSE)
+h2_condition_pairs &lt;- as.data.frame(
+  summary(pairs(h2_condition_emm, adjust = &quot;tukey&quot;))
 )
 
+h2_interaction_emm &lt;- emmeans(h2_model, ~ interaction_group)
+h2_interaction_means &lt;- as.data.frame(
+  summary(h2_interaction_emm, infer = FALSE)
+)
+h2_interaction_pairs &lt;- as.data.frame(
+  summary(pairs(h2_interaction_emm, adjust = &quot;tukey&quot;))
+)
+
+h2_vis_emm &lt;- emmeans(h2_model, ~ vis_type)
 h2_vis_means &lt;- as.data.frame(
-  summary(emmeans(h2_model, ~ vis_type), infer = FALSE)
+  summary(h2_vis_emm, infer = FALSE)
+)
+h2_vis_pairs &lt;- as.data.frame(
+  summary(pairs(h2_vis_emm, adjust = &quot;tukey&quot;))
 )
 
 h2_anova</code></pre>
@@ -1707,6 +1865,415 @@ Visualization)</caption>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>knitr::kable(
+  h2_condition_pairs,
+  digits = 4,
+  caption = &quot;H2 Tukey-adjusted Pairwise Comparisons by Individual Condition (Interaction x Visualization)&quot;
+)</code></pre>
+<table>
+<caption>H2 Tukey-adjusted Pairwise Comparisons by Individual Condition
+(Interaction x Visualization)</caption>
+<colgroup>
+<col width="59%" />
+<col width="10%" />
+<col width="7%" />
+<col width="4%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Static PI - Interactive PI</td>
+<td align="right">-0.0553</td>
+<td align="right">0.1275</td>
+<td align="right">662</td>
+<td align="right">-0.4335</td>
+<td align="right">1.0000</td>
+</tr>
+<tr>
+<td align="left">Static PI - Buggy PI</td>
+<td align="right">0.3168</td>
+<td align="right">0.1315</td>
+<td align="right">662</td>
+<td align="right">2.4091</td>
+<td align="right">0.2806</td>
+</tr>
+<tr>
+<td align="left">Static PI - Static Ensemble</td>
+<td align="right">0.8660</td>
+<td align="right">0.1461</td>
+<td align="right">662</td>
+<td align="right">5.9287</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Static PI - Interactive Ensemble</td>
+<td align="right">0.2318</td>
+<td align="right">0.1461</td>
+<td align="right">662</td>
+<td align="right">1.5871</td>
+<td align="right">0.8118</td>
+</tr>
+<tr>
+<td align="left">Static PI - Buggy Ensemble</td>
+<td align="right">0.5151</td>
+<td align="right">0.1452</td>
+<td align="right">662</td>
+<td align="right">3.5464</td>
+<td align="right">0.0124</td>
+</tr>
+<tr>
+<td align="left">Static PI - (Static PI + Ensemble)</td>
+<td align="right">0.8622</td>
+<td align="right">0.1452</td>
+<td align="right">662</td>
+<td align="right">5.9364</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Static PI - (Interactive PI + Ensemble)</td>
+<td align="right">0.3547</td>
+<td align="right">0.1315</td>
+<td align="right">662</td>
+<td align="right">2.6967</td>
+<td align="right">0.1509</td>
+</tr>
+<tr>
+<td align="left">Static PI - (Buggy PI + Ensemble)</td>
+<td align="right">0.6468</td>
+<td align="right">0.1279</td>
+<td align="right">662</td>
+<td align="right">5.0549</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Buggy PI</td>
+<td align="right">0.3721</td>
+<td align="right">0.1453</td>
+<td align="right">662</td>
+<td align="right">2.5609</td>
+<td align="right">0.2054</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Static Ensemble</td>
+<td align="right">0.9213</td>
+<td align="right">0.1453</td>
+<td align="right">662</td>
+<td align="right">6.3397</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Interactive Ensemble</td>
+<td align="right">0.2871</td>
+<td align="right">0.1453</td>
+<td align="right">662</td>
+<td align="right">1.9757</td>
+<td align="right">0.5609</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Buggy Ensemble</td>
+<td align="right">0.5704</td>
+<td align="right">0.1293</td>
+<td align="right">662</td>
+<td align="right">4.4099</td>
+<td align="right">0.0004</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - (Static PI + Ensemble)</td>
+<td align="right">0.9175</td>
+<td align="right">0.1293</td>
+<td align="right">662</td>
+<td align="right">7.0937</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - (Interactive PI + Ensemble)</td>
+<td align="right">0.4100</td>
+<td align="right">0.1453</td>
+<td align="right">662</td>
+<td align="right">2.8212</td>
+<td align="right">0.1111</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - (Buggy PI + Ensemble)</td>
+<td align="right">0.7021</td>
+<td align="right">0.1275</td>
+<td align="right">662</td>
+<td align="right">5.5044</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - Static Ensemble</td>
+<td align="right">0.5491</td>
+<td align="right">0.1473</td>
+<td align="right">662</td>
+<td align="right">3.7268</td>
+<td align="right">0.0065</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - Interactive Ensemble</td>
+<td align="right">-0.0850</td>
+<td align="right">0.1316</td>
+<td align="right">662</td>
+<td align="right">-0.6464</td>
+<td align="right">0.9993</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - Buggy Ensemble</td>
+<td align="right">0.1982</td>
+<td align="right">0.1465</td>
+<td align="right">662</td>
+<td align="right">1.3528</td>
+<td align="right">0.9147</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - (Static PI + Ensemble)</td>
+<td align="right">0.5454</td>
+<td align="right">0.1311</td>
+<td align="right">662</td>
+<td align="right">4.1596</td>
+<td align="right">0.0012</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - (Interactive PI + Ensemble)</td>
+<td align="right">0.0378</td>
+<td align="right">0.1322</td>
+<td align="right">662</td>
+<td align="right">0.2860</td>
+<td align="right">1.0000</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - (Buggy PI + Ensemble)</td>
+<td align="right">0.3299</td>
+<td align="right">0.1461</td>
+<td align="right">662</td>
+<td align="right">2.2587</td>
+<td align="right">0.3690</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - Interactive Ensemble</td>
+<td align="right">-0.6341</td>
+<td align="right">0.1322</td>
+<td align="right">662</td>
+<td align="right">-4.7954</td>
+<td align="right">0.0001</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - Buggy Ensemble</td>
+<td align="right">-0.3509</td>
+<td align="right">0.1311</td>
+<td align="right">662</td>
+<td align="right">-2.6762</td>
+<td align="right">0.1583</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - (Static PI + Ensemble)</td>
+<td align="right">-0.0038</td>
+<td align="right">0.1465</td>
+<td align="right">662</td>
+<td align="right">-0.0256</td>
+<td align="right">1.0000</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - (Interactive PI + Ensemble)</td>
+<td align="right">-0.5113</td>
+<td align="right">0.1316</td>
+<td align="right">662</td>
+<td align="right">-3.8865</td>
+<td align="right">0.0036</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - (Buggy PI + Ensemble)</td>
+<td align="right">-0.2192</td>
+<td align="right">0.1315</td>
+<td align="right">662</td>
+<td align="right">-1.6666</td>
+<td align="right">0.7667</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - Buggy Ensemble</td>
+<td align="right">0.2833</td>
+<td align="right">0.1465</td>
+<td align="right">662</td>
+<td align="right">1.9331</td>
+<td align="right">0.5909</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - (Static PI + Ensemble)</td>
+<td align="right">0.6304</td>
+<td align="right">0.1311</td>
+<td align="right">662</td>
+<td align="right">4.8082</td>
+<td align="right">0.0001</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - (Interactive PI + Ensemble)</td>
+<td align="right">0.1229</td>
+<td align="right">0.1473</td>
+<td align="right">662</td>
+<td align="right">0.8338</td>
+<td align="right">0.9958</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - (Buggy PI + Ensemble)</td>
+<td align="right">0.4150</td>
+<td align="right">0.1315</td>
+<td align="right">662</td>
+<td align="right">3.1551</td>
+<td align="right">0.0440</td>
+</tr>
+<tr>
+<td align="left">Buggy Ensemble - (Static PI + Ensemble)</td>
+<td align="right">0.3471</td>
+<td align="right">0.1300</td>
+<td align="right">662</td>
+<td align="right">2.6698</td>
+<td align="right">0.1607</td>
+</tr>
+<tr>
+<td align="left">Buggy Ensemble - (Interactive PI + Ensemble)</td>
+<td align="right">-0.1604</td>
+<td align="right">0.1311</td>
+<td align="right">662</td>
+<td align="right">-1.2235</td>
+<td align="right">0.9512</td>
+</tr>
+<tr>
+<td align="left">Buggy Ensemble - (Buggy PI + Ensemble)</td>
+<td align="right">0.1317</td>
+<td align="right">0.1452</td>
+<td align="right">662</td>
+<td align="right">0.9066</td>
+<td align="right">0.9926</td>
+</tr>
+<tr>
+<td align="left">(Static PI + Ensemble) - (Interactive PI +
+Ensemble)</td>
+<td align="right">-0.5075</td>
+<td align="right">0.1465</td>
+<td align="right">662</td>
+<td align="right">-3.4635</td>
+<td align="right">0.0165</td>
+</tr>
+<tr>
+<td align="left">(Static PI + Ensemble) - (Buggy PI + Ensemble)</td>
+<td align="right">-0.2154</td>
+<td align="right">0.1452</td>
+<td align="right">662</td>
+<td align="right">-1.4833</td>
+<td align="right">0.8632</td>
+</tr>
+<tr>
+<td align="left">(Interactive PI + Ensemble) - (Buggy PI +
+Ensemble)</td>
+<td align="right">0.2921</td>
+<td align="right">0.1461</td>
+<td align="right">662</td>
+<td align="right">1.9998</td>
+<td align="right">0.5440</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  h2_interaction_pairs,
+  digits = 4,
+  caption = &quot;H2 Tukey-adjusted Pairwise Comparisons by Interaction Group&quot;
+)</code></pre>
+<table>
+<caption>H2 Tukey-adjusted Pairwise Comparisons by Interaction
+Group</caption>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Static - Interactive</td>
+<td align="right">-0.3990</td>
+<td align="right">0.0653</td>
+<td align="right">662</td>
+<td align="right">-6.1117</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Static - Buggy</td>
+<td align="right">-0.0832</td>
+<td align="right">0.0653</td>
+<td align="right">662</td>
+<td align="right">-1.2740</td>
+<td align="right">0.4104</td>
+</tr>
+<tr>
+<td align="left">Interactive - Buggy</td>
+<td align="right">0.3158</td>
+<td align="right">0.0653</td>
+<td align="right">662</td>
+<td align="right">4.8379</td>
+<td align="right">0.0000</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  h2_vis_pairs,
+  digits = 4,
+  caption = &quot;H2 Tukey-adjusted Pairwise Comparisons by Visualization Family&quot;
+)</code></pre>
+<table>
+<caption>H2 Tukey-adjusted Pairwise Comparisons by Visualization
+Family</caption>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">PI - Ensemble</td>
+<td align="right">0.4504</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">5.0227</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">PI - (PI + Ensemble)</td>
+<td align="right">0.5340</td>
+<td align="right">0.0717</td>
+<td align="right">662</td>
+<td align="right">7.4453</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Ensemble - (PI + Ensemble)</td>
+<td align="right">0.0836</td>
+<td align="right">0.0726</td>
+<td align="right">662</td>
+<td align="right">1.1518</td>
+<td align="right">0.4826</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>h2_plot_data &lt;- h2_condition_means %&gt;%
   mutate(
     ymin = pmax(1, emmean - SE),
@@ -1741,19 +2308,31 @@ h3_model &lt;- lm(
 h3_anova &lt;- anova(h3_model)
 h3_singular &lt;- NA
 
+h3_condition_emm &lt;- emmeans(h3_model, ~ interaction_group * vis_type)
 h3_condition_means &lt;- as.data.frame(
-  summary(emmeans(h3_model, ~ interaction_group * vis_type), infer = FALSE)
+  summary(h3_condition_emm, infer = FALSE)
 ) %&gt;%
   mutate(
     condition = paste(interaction_group, vis_type)
   )
-
-h3_interaction_means &lt;- as.data.frame(
-  summary(emmeans(h3_model, ~ interaction_group), infer = FALSE)
+h3_condition_pairs &lt;- as.data.frame(
+  summary(pairs(h3_condition_emm, adjust = &quot;tukey&quot;))
 )
 
+h3_interaction_emm &lt;- emmeans(h3_model, ~ interaction_group)
+h3_interaction_means &lt;- as.data.frame(
+  summary(h3_interaction_emm, infer = FALSE)
+)
+h3_interaction_pairs &lt;- as.data.frame(
+  summary(pairs(h3_interaction_emm, adjust = &quot;tukey&quot;))
+)
+
+h3_vis_emm &lt;- emmeans(h3_model, ~ vis_type)
 h3_vis_means &lt;- as.data.frame(
-  summary(emmeans(h3_model, ~ vis_type), infer = FALSE)
+  summary(h3_vis_emm, infer = FALSE)
+)
+h3_vis_pairs &lt;- as.data.frame(
+  summary(pairs(h3_vis_emm, adjust = &quot;tukey&quot;))
 )
 
 h3_anova</code></pre>
@@ -1936,6 +2515,415 @@ Visualization)</caption>
 <td align="left">PI + Ensemble</td>
 <td align="right">3.5847</td>
 <td align="right">0.0315</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  h3_condition_pairs,
+  digits = 4,
+  caption = &quot;H3 Tukey-adjusted Pairwise Comparisons by Individual Condition (Interaction x Visualization)&quot;
+)</code></pre>
+<table>
+<caption>H3 Tukey-adjusted Pairwise Comparisons by Individual Condition
+(Interaction x Visualization)</caption>
+<colgroup>
+<col width="59%" />
+<col width="10%" />
+<col width="7%" />
+<col width="4%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Static PI - Interactive PI</td>
+<td align="right">-0.2203</td>
+<td align="right">0.0870</td>
+<td align="right">662</td>
+<td align="right">-2.5330</td>
+<td align="right">0.2181</td>
+</tr>
+<tr>
+<td align="left">Static PI - Buggy PI</td>
+<td align="right">-0.1998</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">-2.2280</td>
+<td align="right">0.3886</td>
+</tr>
+<tr>
+<td align="left">Static PI - Static Ensemble</td>
+<td align="right">0.2417</td>
+<td align="right">0.0996</td>
+<td align="right">662</td>
+<td align="right">2.4266</td>
+<td align="right">0.2712</td>
+</tr>
+<tr>
+<td align="left">Static PI - Interactive Ensemble</td>
+<td align="right">-0.3195</td>
+<td align="right">0.0996</td>
+<td align="right">662</td>
+<td align="right">-3.2075</td>
+<td align="right">0.0376</td>
+</tr>
+<tr>
+<td align="left">Static PI - Buggy Ensemble</td>
+<td align="right">-0.0858</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">-0.8662</td>
+<td align="right">0.9946</td>
+</tr>
+<tr>
+<td align="left">Static PI - (Static PI + Ensemble)</td>
+<td align="right">0.3174</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">3.2042</td>
+<td align="right">0.0379</td>
+</tr>
+<tr>
+<td align="left">Static PI - (Interactive PI + Ensemble)</td>
+<td align="right">-0.1524</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">-1.6987</td>
+<td align="right">0.7474</td>
+</tr>
+<tr>
+<td align="left">Static PI - (Buggy PI + Ensemble)</td>
+<td align="right">-0.0423</td>
+<td align="right">0.0873</td>
+<td align="right">662</td>
+<td align="right">-0.4847</td>
+<td align="right">0.9999</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Buggy PI</td>
+<td align="right">0.0205</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">0.2068</td>
+<td align="right">1.0000</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Static Ensemble</td>
+<td align="right">0.4621</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">4.6623</td>
+<td align="right">0.0001</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Interactive Ensemble</td>
+<td align="right">-0.0992</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">-1.0007</td>
+<td align="right">0.9858</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - Buggy Ensemble</td>
+<td align="right">0.1345</td>
+<td align="right">0.0882</td>
+<td align="right">662</td>
+<td align="right">1.5251</td>
+<td align="right">0.8436</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - (Static PI + Ensemble)</td>
+<td align="right">0.5377</td>
+<td align="right">0.0882</td>
+<td align="right">662</td>
+<td align="right">6.0959</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - (Interactive PI + Ensemble)</td>
+<td align="right">0.0680</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">0.6858</td>
+<td align="right">0.9990</td>
+</tr>
+<tr>
+<td align="left">Interactive PI - (Buggy PI + Ensemble)</td>
+<td align="right">0.1780</td>
+<td align="right">0.0870</td>
+<td align="right">662</td>
+<td align="right">2.0468</td>
+<td align="right">0.5111</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - Static Ensemble</td>
+<td align="right">0.4416</td>
+<td align="right">0.1005</td>
+<td align="right">662</td>
+<td align="right">4.3943</td>
+<td align="right">0.0004</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - Interactive Ensemble</td>
+<td align="right">-0.1197</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">-1.3338</td>
+<td align="right">0.9210</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - Buggy Ensemble</td>
+<td align="right">0.1140</td>
+<td align="right">0.0999</td>
+<td align="right">662</td>
+<td align="right">1.1411</td>
+<td align="right">0.9677</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - (Static PI + Ensemble)</td>
+<td align="right">0.5172</td>
+<td align="right">0.0894</td>
+<td align="right">662</td>
+<td align="right">5.7845</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - (Interactive PI + Ensemble)</td>
+<td align="right">0.0475</td>
+<td align="right">0.0902</td>
+<td align="right">662</td>
+<td align="right">0.5265</td>
+<td align="right">0.9999</td>
+</tr>
+<tr>
+<td align="left">Buggy PI - (Buggy PI + Ensemble)</td>
+<td align="right">0.1576</td>
+<td align="right">0.0996</td>
+<td align="right">662</td>
+<td align="right">1.5816</td>
+<td align="right">0.8147</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - Interactive Ensemble</td>
+<td align="right">-0.5612</td>
+<td align="right">0.0902</td>
+<td align="right">662</td>
+<td align="right">-6.2229</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - Buggy Ensemble</td>
+<td align="right">-0.3275</td>
+<td align="right">0.0894</td>
+<td align="right">662</td>
+<td align="right">-3.6629</td>
+<td align="right">0.0082</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - (Static PI + Ensemble)</td>
+<td align="right">0.0757</td>
+<td align="right">0.0999</td>
+<td align="right">662</td>
+<td align="right">0.7571</td>
+<td align="right">0.9979</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - (Interactive PI + Ensemble)</td>
+<td align="right">-0.3941</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">-4.3923</td>
+<td align="right">0.0004</td>
+</tr>
+<tr>
+<td align="left">Static Ensemble - (Buggy PI + Ensemble)</td>
+<td align="right">-0.2840</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">-3.1664</td>
+<td align="right">0.0425</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - Buggy Ensemble</td>
+<td align="right">0.2337</td>
+<td align="right">0.0999</td>
+<td align="right">662</td>
+<td align="right">2.3385</td>
+<td align="right">0.3205</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - (Static PI + Ensemble)</td>
+<td align="right">0.6369</td>
+<td align="right">0.0894</td>
+<td align="right">662</td>
+<td align="right">7.1229</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - (Interactive PI + Ensemble)</td>
+<td align="right">0.1671</td>
+<td align="right">0.1005</td>
+<td align="right">662</td>
+<td align="right">1.6634</td>
+<td align="right">0.7687</td>
+</tr>
+<tr>
+<td align="left">Interactive Ensemble - (Buggy PI + Ensemble)</td>
+<td align="right">0.2772</td>
+<td align="right">0.0897</td>
+<td align="right">662</td>
+<td align="right">3.0906</td>
+<td align="right">0.0532</td>
+</tr>
+<tr>
+<td align="left">Buggy Ensemble - (Static PI + Ensemble)</td>
+<td align="right">0.4032</td>
+<td align="right">0.0887</td>
+<td align="right">662</td>
+<td align="right">4.5470</td>
+<td align="right">0.0002</td>
+</tr>
+<tr>
+<td align="left">Buggy Ensemble - (Interactive PI + Ensemble)</td>
+<td align="right">-0.0666</td>
+<td align="right">0.0894</td>
+<td align="right">662</td>
+<td align="right">-0.7444</td>
+<td align="right">0.9981</td>
+</tr>
+<tr>
+<td align="left">Buggy Ensemble - (Buggy PI + Ensemble)</td>
+<td align="right">0.0435</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">0.4392</td>
+<td align="right">1.0000</td>
+</tr>
+<tr>
+<td align="left">(Static PI + Ensemble) - (Interactive PI +
+Ensemble)</td>
+<td align="right">-0.4698</td>
+<td align="right">0.0999</td>
+<td align="right">662</td>
+<td align="right">-4.7003</td>
+<td align="right">0.0001</td>
+</tr>
+<tr>
+<td align="left">(Static PI + Ensemble) - (Buggy PI + Ensemble)</td>
+<td align="right">-0.3597</td>
+<td align="right">0.0991</td>
+<td align="right">662</td>
+<td align="right">-3.6311</td>
+<td align="right">0.0092</td>
+</tr>
+<tr>
+<td align="left">(Interactive PI + Ensemble) - (Buggy PI +
+Ensemble)</td>
+<td align="right">0.1101</td>
+<td align="right">0.0996</td>
+<td align="right">662</td>
+<td align="right">1.1050</td>
+<td align="right">0.9735</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  h3_interaction_pairs,
+  digits = 4,
+  caption = &quot;H3 Tukey-adjusted Pairwise Comparisons by Interaction Group&quot;
+)</code></pre>
+<table>
+<caption>H3 Tukey-adjusted Pairwise Comparisons by Interaction
+Group</caption>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Static - Interactive</td>
+<td align="right">-0.4171</td>
+<td align="right">0.0445</td>
+<td align="right">662</td>
+<td align="right">-9.3683</td>
+<td align="right">0.000</td>
+</tr>
+<tr>
+<td align="left">Static - Buggy</td>
+<td align="right">-0.2957</td>
+<td align="right">0.0445</td>
+<td align="right">662</td>
+<td align="right">-6.6424</td>
+<td align="right">0.000</td>
+</tr>
+<tr>
+<td align="left">Interactive - Buggy</td>
+<td align="right">0.1214</td>
+<td align="right">0.0445</td>
+<td align="right">662</td>
+<td align="right">2.7272</td>
+<td align="right">0.018</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  h3_vis_pairs,
+  digits = 4,
+  caption = &quot;H3 Tukey-adjusted Pairwise Comparisons by Visualization Family&quot;
+)</code></pre>
+<table>
+<caption>H3 Tukey-adjusted Pairwise Comparisons by Visualization
+Family</caption>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">PI - Ensemble</td>
+<td align="right">0.0855</td>
+<td align="right">0.0612</td>
+<td align="right">662</td>
+<td align="right">1.3984</td>
+<td align="right">0.3423</td>
+</tr>
+<tr>
+<td align="left">PI - (PI + Ensemble)</td>
+<td align="right">0.1810</td>
+<td align="right">0.0489</td>
+<td align="right">662</td>
+<td align="right">3.6995</td>
+<td align="right">0.0007</td>
+</tr>
+<tr>
+<td align="left">Ensemble - (PI + Ensemble)</td>
+<td align="right">0.0954</td>
+<td align="right">0.0495</td>
+<td align="right">662</td>
+<td align="right">1.9281</td>
+<td align="right">0.1316</td>
 </tr>
 </tbody>
 </table>
@@ -2218,50 +3206,45 @@ anova(q123_q1_lmer, type = 3)</code></pre>
 ## vistype:is_baseline                                        
 ## interaction_availability:is_baseline                       
 ## vistype:interaction_availability:is_baseline</code></pre>
-<pre class="r"><code>q123_q1_baseline_emm &lt;- as.data.frame(
-  summary(
-    emmeans(
-      q123_q1_lmer,
-      ~ 1,
-      at = list(
-        is_baseline = &quot;Yes&quot;,
-        interaction_availability = &quot;Static&quot;,
-        vistype = &quot;PI&quot;
-      )
-    ),
-    infer = c(TRUE, FALSE)
+<pre class="r"><code>q123_q1_baseline_emm_grid &lt;- emmeans(
+  q123_q1_lmer,
+  ~ 1,
+  at = list(
+    is_baseline = &quot;Yes&quot;,
+    interaction_availability = &quot;Static&quot;,
+    vistype = &quot;PI&quot;
   )
-) %&gt;%
-  mutate(
-    condition_label = &quot;Baseline&quot;,
-    is_baseline = &quot;Yes&quot;
-  )
+)
+q123_q1_baseline_emm_grid@grid$condition_label &lt;- &quot;Baseline&quot;
 
-q123_q1_nonbaseline_emm &lt;- as.data.frame(
-  summary(
-    emmeans(
-      q123_q1_lmer,
-      ~ 1,
-      at = list(is_baseline = &quot;No&quot;),
-      weights = &quot;proportional&quot;
-    ),
-    infer = c(TRUE, FALSE)
-  )
-) %&gt;%
-  mutate(
-    condition_label = &quot;Non-baseline&quot;,
-    is_baseline = &quot;No&quot;
-  )
+q123_q1_nonbaseline_emm_grid &lt;- emmeans(
+  q123_q1_lmer,
+  ~ 1,
+  at = list(is_baseline = &quot;No&quot;),
+  weights = &quot;proportional&quot;
+)
+q123_q1_nonbaseline_emm_grid@grid$condition_label &lt;- &quot;Non-baseline&quot;
 
-q123_q1_condition_emmeans &lt;- bind_rows(
-  q123_q1_baseline_emm,
-  q123_q1_nonbaseline_emm
+q123_q1_condition_emm &lt;- rbind(
+  q123_q1_baseline_emm_grid,
+  q123_q1_nonbaseline_emm_grid,
+  adjust = &quot;none&quot;
+)
+q123_q1_condition_emm &lt;- update(q123_q1_condition_emm, pri.vars = &quot;condition_label&quot;)
+
+q123_q1_condition_emmeans &lt;- as.data.frame(
+  summary(q123_q1_condition_emm, infer = c(TRUE, FALSE))
 ) %&gt;%
   mutate(
-    condition_label = factor(condition_label, levels = c(&quot;Baseline&quot;, &quot;Non-baseline&quot;))
+    condition_label = factor(condition_label, levels = c(&quot;Baseline&quot;, &quot;Non-baseline&quot;)),
+    is_baseline = ifelse(condition_label == &quot;Baseline&quot;, &quot;Yes&quot;, &quot;No&quot;)
   ) %&gt;%
   arrange(condition_label) %&gt;%
   select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+q123_q1_condition_pairs &lt;- as.data.frame(
+  summary(pairs(q123_q1_condition_emm, adjust = &quot;tukey&quot;))
+)
 
 knitr::kable(
   q123_q1_condition_emmeans,
@@ -2312,6 +3295,46 @@ across conditions)</caption>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>knitr::kable(
+  q123_q1_condition_pairs,
+  digits = 3,
+  caption = &quot;Q1 Tukey-adjusted Pairwise Comparisons for Baseline and Non-baseline EMMs&quot;
+)</code></pre>
+<table>
+<caption>Q1 Tukey-adjusted Pairwise Comparisons for Baseline and
+Non-baseline EMMs</caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="12%" />
+<col width="8%" />
+<col width="12%" />
+<col width="10%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="left">1</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Baseline - (Non-baseline)</td>
+<td align="left">overall</td>
+<td align="right">1.468</td>
+<td align="right">1.241</td>
+<td align="right">1012.359</td>
+<td align="right">1.183</td>
+<td align="right">0.237</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="q2-estimated-prediction-value-continuous" class="section level3">
 <h3>Q2: Estimated Prediction Value (Continuous)</h3>
@@ -2348,50 +3371,45 @@ anova(q123_q2_lmer, type = 3)</code></pre>
 ## vistype:interaction_availability:is_baseline                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<pre class="r"><code>q123_q2_baseline_emm &lt;- as.data.frame(
-  summary(
-    emmeans(
-      q123_q2_lmer,
-      ~ 1,
-      at = list(
-        is_baseline = &quot;Yes&quot;,
-        interaction_availability = &quot;Static&quot;,
-        vistype = &quot;PI&quot;
-      )
-    ),
-    infer = c(TRUE, FALSE)
+<pre class="r"><code>q123_q2_baseline_emm_grid &lt;- emmeans(
+  q123_q2_lmer,
+  ~ 1,
+  at = list(
+    is_baseline = &quot;Yes&quot;,
+    interaction_availability = &quot;Static&quot;,
+    vistype = &quot;PI&quot;
   )
-) %&gt;%
-  mutate(
-    condition_label = &quot;Baseline&quot;,
-    is_baseline = &quot;Yes&quot;
-  )
+)
+q123_q2_baseline_emm_grid@grid$condition_label &lt;- &quot;Baseline&quot;
 
-q123_q2_nonbaseline_emm &lt;- as.data.frame(
-  summary(
-    emmeans(
-      q123_q2_lmer,
-      ~ 1,
-      at = list(is_baseline = &quot;No&quot;),
-      weights = &quot;proportional&quot;
-    ),
-    infer = c(TRUE, FALSE)
-  )
-) %&gt;%
-  mutate(
-    condition_label = &quot;Non-baseline&quot;,
-    is_baseline = &quot;No&quot;
-  )
+q123_q2_nonbaseline_emm_grid &lt;- emmeans(
+  q123_q2_lmer,
+  ~ 1,
+  at = list(is_baseline = &quot;No&quot;),
+  weights = &quot;proportional&quot;
+)
+q123_q2_nonbaseline_emm_grid@grid$condition_label &lt;- &quot;Non-baseline&quot;
 
-q123_q2_condition_emmeans &lt;- bind_rows(
-  q123_q2_baseline_emm,
-  q123_q2_nonbaseline_emm
+q123_q2_condition_emm &lt;- rbind(
+  q123_q2_baseline_emm_grid,
+  q123_q2_nonbaseline_emm_grid,
+  adjust = &quot;none&quot;
+)
+q123_q2_condition_emm &lt;- update(q123_q2_condition_emm, pri.vars = &quot;condition_label&quot;)
+
+q123_q2_condition_emmeans &lt;- as.data.frame(
+  summary(q123_q2_condition_emm, infer = c(TRUE, FALSE))
 ) %&gt;%
   mutate(
-    condition_label = factor(condition_label, levels = c(&quot;Baseline&quot;, &quot;Non-baseline&quot;))
+    condition_label = factor(condition_label, levels = c(&quot;Baseline&quot;, &quot;Non-baseline&quot;)),
+    is_baseline = ifelse(condition_label == &quot;Baseline&quot;, &quot;Yes&quot;, &quot;No&quot;)
   ) %&gt;%
   arrange(condition_label) %&gt;%
   select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+q123_q2_condition_pairs &lt;- as.data.frame(
+  summary(pairs(q123_q2_condition_emm, adjust = &quot;tukey&quot;))
+)
 
 knitr::kable(
   q123_q2_condition_emmeans,
@@ -2439,6 +3457,46 @@ across conditions)</caption>
 <td align="right">569.472</td>
 <td align="right">45.931</td>
 <td align="right">54.236</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>knitr::kable(
+  q123_q2_condition_pairs,
+  digits = 3,
+  caption = &quot;Q2 Tukey-adjusted Pairwise Comparisons for Baseline and Non-baseline EMMs&quot;
+)</code></pre>
+<table>
+<caption>Q2 Tukey-adjusted Pairwise Comparisons for Baseline and
+Non-baseline EMMs</caption>
+<colgroup>
+<col width="35%" />
+<col width="10%" />
+<col width="12%" />
+<col width="8%" />
+<col width="12%" />
+<col width="10%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr>
+<th align="left">contrast</th>
+<th align="left">1</th>
+<th align="right">estimate</th>
+<th align="right">SE</th>
+<th align="right">df</th>
+<th align="right">t.ratio</th>
+<th align="right">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Baseline - (Non-baseline)</td>
+<td align="left">overall</td>
+<td align="right">13.163</td>
+<td align="right">4.178</td>
+<td align="right">1011.641</td>
+<td align="right">3.151</td>
+<td align="right">0.002</td>
 </tr>
 </tbody>
 </table>
