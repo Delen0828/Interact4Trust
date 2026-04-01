@@ -48,8 +48,8 @@ if (knitr::is_latex_output()) {
 
 Replicate Experiment 3 notebook Section 7 and Section 8 analysis structure with two regression outcomes:
 
-- `composite_trust_score ~ vis_type * interaction * detail_presentation`
-- `interaction_experience ~ vis_type * interaction * detail_presentation`
+- `composite_trust_score ~ vis_type * interaction * detail_presentation + general_trust_composite + participant_id`
+- `interaction_experience ~ vis_type * interaction * detail_presentation + participant_id`
 
 This report follows the same trust-survey preprocessing used in `analysis-0318.ipynb`, including:
 
@@ -168,6 +168,13 @@ INTERACTION_ITEM_KEYS <- c(
   "personal_conversation",
   "interface_interaction",
   "interface_sensitivity"
+)
+
+PERSONALITY_ITEM_KEYS <- c(
+  "respect_others",
+  "good_word_everyone",
+  "retreat_from_others",
+  "avoid_contacts"
 )
 ```
 
@@ -460,6 +467,52 @@ cat("Participants: ", before_n, " -> ", after_n, "\n", sep = "")
 cat("Attention-check exclusions: ", length(attention_failures), "\n", sep = "")
 ```
 
+## Personality-Survey Preprocessing (Participant Covariate)
+
+```{r preprocess-personality-survey}
+personality_rows_expanded <- combined_data %>%
+  dplyr::filter(trial_type == "personality-survey") %>%
+  expand_response_columns("response")
+
+for (key in PERSONALITY_ITEM_KEYS) {
+  if (!(key %in% names(personality_rows_expanded))) {
+    personality_rows_expanded[[key]] <- NA_real_
+  }
+  personality_rows_expanded[[key]] <- suppressWarnings(as.numeric(personality_rows_expanded[[key]])) + 1
+}
+
+personality_participant <- personality_rows_expanded %>%
+  dplyr::mutate(
+    participant_id = as.character(participant_id),
+    general_trust_composite = rowMeans(
+      dplyr::select(., dplyr::all_of(PERSONALITY_ITEM_KEYS)),
+      na.rm = TRUE
+    )
+  ) %>%
+  dplyr::mutate(
+    general_trust_composite = ifelse(
+      is.finite(general_trust_composite),
+      general_trust_composite,
+      NA_real_
+    )
+  ) %>%
+  dplyr::group_by(participant_id) %>%
+  dplyr::summarise(
+    general_trust_composite = mean(general_trust_composite, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    general_trust_composite = ifelse(
+      is.finite(general_trust_composite),
+      general_trust_composite,
+      NA_real_
+    )
+  )
+
+cat("Personality-survey rows (raw): ", nrow(personality_rows_expanded), "\n", sep = "")
+cat("Participants with finite general_trust_composite: ", sum(is.finite(personality_participant$general_trust_composite)), "\n", sep = "")
+```
+
 ## Trust-Survey Preprocessing
 
 ```{r preprocess-trust-survey}
@@ -589,9 +642,27 @@ regression_model_data <- set_sum_contrasts(
   factors = c("vis_type", "interaction", "detail_presentation")
 )
 
+trust_rows_before_covariate <- nrow(regression_model_data)
+trust_participants_before_covariate <- dplyr::n_distinct(regression_model_data$participant_id)
+
+trust_model_data <- regression_model_data %>%
+  dplyr::mutate(participant_id = as.character(participant_id)) %>%
+  dplyr::left_join(personality_participant, by = "participant_id") %>%
+  dplyr::filter(is.finite(general_trust_composite)) %>%
+  dplyr::mutate(participant_id = factor(participant_id))
+
+trust_rows_after_covariate <- nrow(trust_model_data)
+trust_participants_after_covariate <- dplyr::n_distinct(trust_model_data$participant_id)
+trust_rows_lost_covariate <- trust_rows_before_covariate - trust_rows_after_covariate
+
+cat("Trust model rows before covariate join: ", trust_rows_before_covariate, "\n", sep = "")
+cat("Trust model rows after covariate join: ", trust_rows_after_covariate, "\n", sep = "")
+cat("Trust model row loss from covariate filter: ", trust_rows_lost_covariate, "\n", sep = "")
+cat("Trust model participants before/after covariate join: ", trust_participants_before_covariate, " -> ", trust_participants_after_covariate, "\n", sep = "")
+
 trust_lm <- lm(
-  composite_trust_score ~ vis_type + interaction + detail_presentation,
-  data = regression_model_data,
+  composite_trust_score ~ vis_type * interaction * detail_presentation + general_trust_composite + participant_id,
+  data = trust_model_data,
   na.action = na.exclude
 )
 
@@ -602,13 +673,8 @@ trust_anova
 ## Regression 1: Trust (Joint Effects)
 
 ```{r regression-trust-joint-effects}
-trust_joint_lm <- lm(
-  composite_trust_score ~ vis_type * interaction * detail_presentation,
-  data = regression_model_data,
-  na.action = na.exclude
-)
-
-trust_joint_anova <- anova(trust_joint_lm)
+trust_joint_lm <- trust_lm
+trust_joint_anova <- trust_anova
 trust_joint_anova
 ```
 
@@ -616,7 +682,7 @@ trust_joint_anova
 
 ```{r regression-interaction-experience}
 interaction_lm <- lm(
-  interaction_experience ~ vis_type + interaction + detail_presentation,
+  interaction_experience ~ vis_type * interaction * detail_presentation + participant_id,
   data = regression_model_data,
   na.action = na.exclude
 )
@@ -628,13 +694,8 @@ interaction_anova
 ## Regression 2: Interaction Experience (Joint Effects)
 
 ```{r regression-interaction-experience-joint-effects}
-interaction_joint_lm <- lm(
-  interaction_experience ~ vis_type * interaction * detail_presentation,
-  data = regression_model_data,
-  na.action = na.exclude
-)
-
-interaction_joint_anova <- anova(interaction_joint_lm)
+interaction_joint_lm <- interaction_lm
+interaction_joint_anova <- interaction_anova
 interaction_joint_anova
 ```
 

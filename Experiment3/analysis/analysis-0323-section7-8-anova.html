@@ -366,8 +366,8 @@ padding-right: 2rem !important;
 <p>Replicate Experiment 3 notebook Section 7 and Section 8 analysis
 structure with two regression outcomes:</p>
 <ul>
-<li><code>composite_trust_score ~ vis_type * interaction * detail_presentation</code></li>
-<li><code>interaction_experience ~ vis_type * interaction * detail_presentation</code></li>
+<li><code>composite_trust_score ~ vis_type * interaction * detail_presentation + general_trust_composite + participant_id</code></li>
+<li><code>interaction_experience ~ vis_type * interaction * detail_presentation + participant_id</code></li>
 </ul>
 <p>This report follows the same trust-survey preprocessing used in
 <code>analysis-0318.ipynb</code>, including:</p>
@@ -514,6 +514,13 @@ INTERACTION_ITEM_KEYS &lt;- c(
   &quot;personal_conversation&quot;,
   &quot;interface_interaction&quot;,
   &quot;interface_sensitivity&quot;
+)
+
+PERSONALITY_ITEM_KEYS &lt;- c(
+  &quot;respect_others&quot;,
+  &quot;good_word_everyone&quot;,
+  &quot;retreat_from_others&quot;,
+  &quot;avoid_contacts&quot;
 )</code></pre>
 </div>
 <div id="helper-functions" class="section level2">
@@ -808,6 +815,52 @@ cat(&quot;Data directories:\n&quot;)</code></pre>
 <pre><code>## Participants: 142 -&gt; 140</code></pre>
 <pre class="r"><code>cat(&quot;Attention-check exclusions: &quot;, length(attention_failures), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
 <pre><code>## Attention-check exclusions: 2</code></pre>
+</div>
+<div id="personality-survey-preprocessing-participant-covariate" class="section level2">
+<h2>Personality-Survey Preprocessing (Participant Covariate)</h2>
+<pre class="r"><code>personality_rows_expanded &lt;- combined_data %&gt;%
+  dplyr::filter(trial_type == &quot;personality-survey&quot;) %&gt;%
+  expand_response_columns(&quot;response&quot;)
+
+for (key in PERSONALITY_ITEM_KEYS) {
+  if (!(key %in% names(personality_rows_expanded))) {
+    personality_rows_expanded[[key]] &lt;- NA_real_
+  }
+  personality_rows_expanded[[key]] &lt;- suppressWarnings(as.numeric(personality_rows_expanded[[key]])) + 1
+}
+
+personality_participant &lt;- personality_rows_expanded %&gt;%
+  dplyr::mutate(
+    participant_id = as.character(participant_id),
+    general_trust_composite = rowMeans(
+      dplyr::select(., dplyr::all_of(PERSONALITY_ITEM_KEYS)),
+      na.rm = TRUE
+    )
+  ) %&gt;%
+  dplyr::mutate(
+    general_trust_composite = ifelse(
+      is.finite(general_trust_composite),
+      general_trust_composite,
+      NA_real_
+    )
+  ) %&gt;%
+  dplyr::group_by(participant_id) %&gt;%
+  dplyr::summarise(
+    general_trust_composite = mean(general_trust_composite, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  dplyr::mutate(
+    general_trust_composite = ifelse(
+      is.finite(general_trust_composite),
+      general_trust_composite,
+      NA_real_
+    )
+  )
+
+cat(&quot;Personality-survey rows (raw): &quot;, nrow(personality_rows_expanded), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Personality-survey rows (raw): 140</code></pre>
+<pre class="r"><code>cat(&quot;Participants with finite general_trust_composite: &quot;, sum(is.finite(personality_participant$general_trust_composite)), &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Participants with finite general_trust_composite: 140</code></pre>
 </div>
 <div id="trust-survey-preprocessing" class="section level2">
 <h2>Trust-Survey Preprocessing</h2>
@@ -1277,9 +1330,30 @@ knitr::kable(section8_summary, digits = 3, caption = &quot;Section 8 summary by 
   factors = c(&quot;vis_type&quot;, &quot;interaction&quot;, &quot;detail_presentation&quot;)
 )
 
-trust_lm &lt;- lm(
-  composite_trust_score ~ vis_type + interaction + detail_presentation,
-  data = regression_model_data,
+trust_rows_before_covariate &lt;- nrow(regression_model_data)
+trust_participants_before_covariate &lt;- dplyr::n_distinct(regression_model_data$participant_id)
+
+trust_model_data &lt;- regression_model_data %&gt;%
+  dplyr::mutate(participant_id = as.character(participant_id)) %&gt;%
+  dplyr::left_join(personality_participant, by = &quot;participant_id&quot;) %&gt;%
+  dplyr::filter(is.finite(general_trust_composite)) %&gt;%
+  dplyr::mutate(participant_id = factor(participant_id))
+
+trust_rows_after_covariate &lt;- nrow(trust_model_data)
+trust_participants_after_covariate &lt;- dplyr::n_distinct(trust_model_data$participant_id)
+trust_rows_lost_covariate &lt;- trust_rows_before_covariate - trust_rows_after_covariate
+
+cat(&quot;Trust model rows before covariate join: &quot;, trust_rows_before_covariate, &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Trust model rows before covariate join: 840</code></pre>
+<pre class="r"><code>cat(&quot;Trust model rows after covariate join: &quot;, trust_rows_after_covariate, &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Trust model rows after covariate join: 840</code></pre>
+<pre class="r"><code>cat(&quot;Trust model row loss from covariate filter: &quot;, trust_rows_lost_covariate, &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Trust model row loss from covariate filter: 0</code></pre>
+<pre class="r"><code>cat(&quot;Trust model participants before/after covariate join: &quot;, trust_participants_before_covariate, &quot; -&gt; &quot;, trust_participants_after_covariate, &quot;\n&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## Trust model participants before/after covariate join: 140 -&gt; 140</code></pre>
+<pre class="r"><code>trust_lm &lt;- lm(
+  composite_trust_score ~ vis_type * interaction * detail_presentation + general_trust_composite + participant_id,
+  data = trust_model_data,
   na.action = na.exclude
 )
 
@@ -1288,41 +1362,57 @@ trust_anova</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: composite_trust_score
-##                      Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## vis_type              2   10.28  5.1410  3.6075   0.02754 *  
-## interaction           2   53.72 26.8619 18.8492 9.852e-09 ***
-## detail_presentation   1    3.50  3.5036  2.4585   0.11727    
-## Residuals           834 1188.53  1.4251                      
+##                                           Df Sum Sq Mean Sq F value    Pr(&gt;F)
+## vis_type                                   2  10.28  5.1410  8.6417 0.0001966
+## interaction                                2  53.72 26.8619 45.1527 &lt; 2.2e-16
+## detail_presentation                        1   3.50  3.5036  5.8893 0.0154897
+## general_trust_composite                    1   0.01  0.0148  0.0249 0.8745791
+## participant_id                           136 771.13  5.6701  9.5309 &lt; 2.2e-16
+## vis_type:interaction                       4   4.97  1.2421  2.0878 0.0807689
+## vis_type:detail_presentation               2   1.12  0.5578  0.9376 0.3920764
+## interaction:detail_presentation            2   0.80  0.4021  0.6759 0.5090526
+## vis_type:interaction:detail_presentation   4   2.98  0.7461  1.2541 0.2867597
+## Residuals                                685 407.51  0.5949                  
+##                                             
+## vis_type                                 ***
+## interaction                              ***
+## detail_presentation                      *  
+## general_trust_composite                     
+## participant_id                           ***
+## vis_type:interaction                     .  
+## vis_type:detail_presentation                
+## interaction:detail_presentation             
+## vis_type:interaction:detail_presentation    
+## Residuals                                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="regression-1-trust-joint-effects" class="section level2">
 <h2>Regression 1: Trust (Joint Effects)</h2>
-<pre class="r"><code>trust_joint_lm &lt;- lm(
-  composite_trust_score ~ vis_type * interaction * detail_presentation,
-  data = regression_model_data,
-  na.action = na.exclude
-)
-
-trust_joint_anova &lt;- anova(trust_joint_lm)
+<pre class="r"><code>trust_joint_lm &lt;- trust_lm
+trust_joint_anova &lt;- trust_anova
 trust_joint_anova</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: composite_trust_score
-##                                           Df  Sum Sq Mean Sq F value    Pr(&gt;F)
-## vis_type                                   2   10.28  5.1410  3.5854   0.02816
-## interaction                                2   53.72 26.8619 18.7336 1.107e-08
-## detail_presentation                        1    3.50  3.5036  2.4435   0.11840
-## vis_type:interaction                       4    4.97  1.2421  0.8662   0.48371
-## vis_type:detail_presentation               2    1.12  0.5578  0.3890   0.67786
-## interaction:detail_presentation            2    0.80  0.4021  0.2804   0.75554
-## vis_type:interaction:detail_presentation   4    2.98  0.7461  0.5203   0.72085
-## Residuals                                822 1178.66  1.4339                  
+##                                           Df Sum Sq Mean Sq F value    Pr(&gt;F)
+## vis_type                                   2  10.28  5.1410  8.6417 0.0001966
+## interaction                                2  53.72 26.8619 45.1527 &lt; 2.2e-16
+## detail_presentation                        1   3.50  3.5036  5.8893 0.0154897
+## general_trust_composite                    1   0.01  0.0148  0.0249 0.8745791
+## participant_id                           136 771.13  5.6701  9.5309 &lt; 2.2e-16
+## vis_type:interaction                       4   4.97  1.2421  2.0878 0.0807689
+## vis_type:detail_presentation               2   1.12  0.5578  0.9376 0.3920764
+## interaction:detail_presentation            2   0.80  0.4021  0.6759 0.5090526
+## vis_type:interaction:detail_presentation   4   2.98  0.7461  1.2541 0.2867597
+## Residuals                                685 407.51  0.5949                  
 ##                                             
-## vis_type                                 *  
+## vis_type                                 ***
 ## interaction                              ***
-## detail_presentation                         
-## vis_type:interaction                        
+## detail_presentation                      *  
+## general_trust_composite                     
+## participant_id                           ***
+## vis_type:interaction                     .  
 ## vis_type:detail_presentation                
 ## interaction:detail_presentation             
 ## vis_type:interaction:detail_presentation    
@@ -1333,7 +1423,7 @@ trust_joint_anova</code></pre>
 <div id="regression-2-interaction-experience" class="section level2">
 <h2>Regression 2: Interaction Experience</h2>
 <pre class="r"><code>interaction_lm &lt;- lm(
-  interaction_experience ~ vis_type + interaction + detail_presentation,
+  interaction_experience ~ vis_type * interaction * detail_presentation + participant_id,
   data = regression_model_data,
   na.action = na.exclude
 )
@@ -1343,40 +1433,52 @@ interaction_anova</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: interaction_experience
-##                      Df  Sum Sq Mean Sq F value  Pr(&gt;F)    
-## vis_type              2    1.22   0.611  0.4682 0.62631    
-## interaction           2  126.86  63.429 48.6262 &lt; 2e-16 ***
-## detail_presentation   1    7.02   7.018  5.3799 0.02061 *  
-## Residuals           834 1087.88   1.304                    
+##                                           Df Sum Sq Mean Sq  F value    Pr(&gt;F)
+## vis_type                                   2   1.22   0.611   1.4479    0.2358
+## interaction                                2 126.86  63.429 150.3891 &lt; 2.2e-16
+## detail_presentation                        1   7.02   7.018  16.6388 5.053e-05
+## participant_id                           137 795.39   5.806  13.7655 &lt; 2.2e-16
+## vis_type:interaction                       4   1.73   0.433   1.0261    0.3929
+## vis_type:detail_presentation               2   0.05   0.024   0.0565    0.9451
+## interaction:detail_presentation            2   0.43   0.217   0.5156    0.5974
+## vis_type:interaction:detail_presentation   4   1.37   0.342   0.8108    0.5185
+## Residuals                                685 288.91   0.422                   
+##                                             
+## vis_type                                    
+## interaction                              ***
+## detail_presentation                      ***
+## participant_id                           ***
+## vis_type:interaction                        
+## vis_type:detail_presentation                
+## interaction:detail_presentation             
+## vis_type:interaction:detail_presentation    
+## Residuals                                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
 <div id="regression-2-interaction-experience-joint-effects" class="section level2">
 <h2>Regression 2: Interaction Experience (Joint Effects)</h2>
-<pre class="r"><code>interaction_joint_lm &lt;- lm(
-  interaction_experience ~ vis_type * interaction * detail_presentation,
-  data = regression_model_data,
-  na.action = na.exclude
-)
-
-interaction_joint_anova &lt;- anova(interaction_joint_lm)
+<pre class="r"><code>interaction_joint_lm &lt;- interaction_lm
+interaction_joint_anova &lt;- interaction_anova
 interaction_joint_anova</code></pre>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: interaction_experience
-##                                           Df  Sum Sq Mean Sq F value  Pr(&gt;F)
-## vis_type                                   2    1.22   0.611  0.4630 0.62958
-## interaction                                2  126.86  63.429 48.0849 &lt; 2e-16
-## detail_presentation                        1    7.02   7.018  5.3200 0.02133
-## vis_type:interaction                       4    1.73   0.433  0.3281 0.85919
-## vis_type:detail_presentation               2    0.05   0.024  0.0181 0.98211
-## interaction:detail_presentation            2    0.43   0.217  0.1649 0.84803
-## vis_type:interaction:detail_presentation   4    1.37   0.342  0.2592 0.90405
-## Residuals                                822 1084.30   1.319                
+##                                           Df Sum Sq Mean Sq  F value    Pr(&gt;F)
+## vis_type                                   2   1.22   0.611   1.4479    0.2358
+## interaction                                2 126.86  63.429 150.3891 &lt; 2.2e-16
+## detail_presentation                        1   7.02   7.018  16.6388 5.053e-05
+## participant_id                           137 795.39   5.806  13.7655 &lt; 2.2e-16
+## vis_type:interaction                       4   1.73   0.433   1.0261    0.3929
+## vis_type:detail_presentation               2   0.05   0.024   0.0565    0.9451
+## interaction:detail_presentation            2   0.43   0.217   0.5156    0.5974
+## vis_type:interaction:detail_presentation   4   1.37   0.342   0.8108    0.5185
+## Residuals                                685 288.91   0.422                   
 ##                                             
 ## vis_type                                    
 ## interaction                              ***
-## detail_presentation                      *  
+## detail_presentation                      ***
+## participant_id                           ***
 ## vis_type:interaction                        
 ## vis_type:detail_presentation                
 ## interaction:detail_presentation             
@@ -1442,20 +1544,20 @@ knitr::kable(trust_interaction_emmeans, digits = 4, caption = &quot;EMMs (emmean
 <tbody>
 <tr>
 <td align="left">hover</td>
-<td align="right">4.8482</td>
-<td align="right">0.0716</td>
+<td align="right">4.8499</td>
+<td align="right">0.0461</td>
 <td align="right">0.9962</td>
 </tr>
 <tr>
 <td align="left">click</td>
-<td align="right">4.9217</td>
-<td align="right">0.0716</td>
+<td align="right">4.9234</td>
+<td align="right">0.0461</td>
 <td align="right">1.0883</td>
 </tr>
 <tr>
 <td align="left">animation</td>
-<td align="right">4.3522</td>
-<td align="right">0.0716</td>
+<td align="right">4.3539</td>
+<td align="right">0.0461</td>
 <td align="right">1.2025</td>
 </tr>
 </tbody>
@@ -1476,19 +1578,19 @@ experience)</caption>
 <tr>
 <td align="left">hover</td>
 <td align="right">3.8657</td>
-<td align="right">0.0687</td>
+<td align="right">0.0388</td>
 <td align="right">1.0179</td>
 </tr>
 <tr>
 <td align="left">click</td>
 <td align="right">3.9779</td>
-<td align="right">0.0687</td>
+<td align="right">0.0388</td>
 <td align="right">1.0235</td>
 </tr>
 <tr>
 <td align="left">animation</td>
 <td align="right">3.1036</td>
-<td align="right">0.0687</td>
+<td align="right">0.0388</td>
 <td align="right">1.2054</td>
 </tr>
 </tbody>
@@ -1532,14 +1634,14 @@ knitr::kable(trust_detail_emmeans, digits = 4, caption = &quot;EMMs (emmean, SE,
 <tbody>
 <tr>
 <td align="left">show_one</td>
-<td align="right">4.7725</td>
-<td align="right">0.0585</td>
+<td align="right">4.7742</td>
+<td align="right">0.0377</td>
 <td align="right">0.9944</td>
 </tr>
 <tr>
 <td align="left">show_all</td>
-<td align="right">4.6422</td>
-<td align="right">0.0585</td>
+<td align="right">4.6439</td>
+<td align="right">0.0377</td>
 <td align="right">1.0237</td>
 </tr>
 </tbody>
@@ -1560,13 +1662,13 @@ experience)</caption>
 <tr>
 <td align="left">show_one</td>
 <td align="right">3.7402</td>
-<td align="right">0.0561</td>
+<td align="right">0.0317</td>
 <td align="right">1.0216</td>
 </tr>
 <tr>
 <td align="left">show_all</td>
 <td align="right">3.5579</td>
-<td align="right">0.0561</td>
+<td align="right">0.0317</td>
 <td align="right">0.9853</td>
 </tr>
 </tbody>
