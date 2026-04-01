@@ -65,7 +65,10 @@ required_packages <- c(
   "dplyr",
   "jsonlite",
   "knitr",
-  "emmeans"
+  "emmeans",
+  "ggplot2",
+  "lme4",
+  "lmerTest"
 )
 
 missing_packages <- required_packages[
@@ -710,4 +713,502 @@ interactionexp_detail_emmeans <- extract_emmean_with_sd(
 
 knitr::kable(trust_detail_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for detail_presentation (trust)")
 knitr::kable(interactionexp_detail_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for detail_presentation (interaction experience)")
+```
+
+## Additional Analysis: Q1-Q3 (Baseline + Click/Hover x Detail Presentation x Visualization Type)
+
+```{r q1-q3-data-prep}
+prediction_q123_raw <- combined_data %>%
+  dplyr::filter(trial_type == "prediction-task") %>%
+  dplyr::mutate(
+    is_baseline = condition_number == BASELINE_CONDITION_NUMBER,
+    probability = suppressWarnings(as.numeric(probability_estimate)),
+    city_a_estimate = suppressWarnings(as.numeric(city_a_estimate)),
+    city_b_estimate = suppressWarnings(as.numeric(city_b_estimate)),
+    estimated_value_row = rowMeans(cbind(city_a_estimate, city_b_estimate), na.rm = TRUE),
+    estimated_value_row = ifelse(is.finite(estimated_value_row), estimated_value_row, NA_real_),
+    interaction_mode = dplyr::case_when(
+      is_baseline ~ "hover",
+      TRUE ~ map_interaction_factor(condition_number)
+    ),
+    detail_presentation = dplyr::case_when(
+      is_baseline ~ "show_one",
+      TRUE ~ map_detail_factor(condition_number)
+    ),
+    vistype = dplyr::case_when(
+      is_baseline ~ "CI",
+      TRUE ~ map_vis_type(visualization_group)
+    ),
+    decision_result_row = dplyr::case_when(
+      !is.na(travel_choice) & !is.na(city_a_label) & travel_choice == city_a_label ~ "A",
+      !is.na(travel_choice) & !is.na(city_b_label) & travel_choice == city_b_label ~ "B",
+      tolower(trimws(as.character(travel_choice))) == "no preference" ~ "No Preference",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  dplyr::filter(condition_number %in% c(BASELINE_CONDITION_NUMBER, TREATMENT_CONDITIONS)) %>%
+  dplyr::filter(interaction_mode %in% c("hover", "click")) %>%
+  dplyr::filter(!is.na(vistype), !is.na(detail_presentation), !is.na(interaction_mode))
+
+mode_or_na <- function(x) {
+  x <- as.character(x)
+  x <- x[!is.na(x) & nzchar(x)]
+  if (length(x) == 0) {
+    return(NA_character_)
+  }
+  names(sort(table(x), decreasing = TRUE))[1]
+}
+
+prediction_q123_condition <- prediction_q123_raw %>%
+  dplyr::group_by(participant_id, condition_number, condition_name, vistype, interaction_mode, detail_presentation) %>%
+  dplyr::summarise(
+    probability = mean(probability, na.rm = TRUE),
+    estimated_value = mean(estimated_value_row, na.rm = TRUE),
+    decision_result = mode_or_na(decision_result_row),
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    probability = ifelse(is.finite(probability), probability, NA_real_),
+    estimated_value = ifelse(is.finite(estimated_value), estimated_value, NA_real_),
+    participant_id = factor(participant_id),
+    is_baseline = factor(ifelse(condition_number == BASELINE_CONDITION_NUMBER, "Yes", "No"), levels = c("No", "Yes")),
+    vistype = factor(vistype, levels = c("CI", "EP", "CIEP")),
+    interaction_mode = factor(interaction_mode, levels = c("hover", "click")),
+    detail_presentation = factor(detail_presentation, levels = c("show_one", "show_all")),
+    decision_result = factor(decision_result, levels = c("A", "B", "No Preference"))
+  ) %>%
+  droplevels()
+
+# Require complete within-subject grid for baseline + click/hover x detail (1 + 2 x 2 = 5 cells).
+q123_participant_cell_counts <- prediction_q123_condition %>%
+  dplyr::count(participant_id, name = "n_cells")
+
+q123_complete_participants <- q123_participant_cell_counts %>%
+  dplyr::filter(n_cells == 5) %>%
+  dplyr::pull(participant_id)
+
+prediction_q123_model_base <- prediction_q123_condition %>%
+  dplyr::filter(participant_id %in% q123_complete_participants) %>%
+  droplevels()
+
+q123_q1_data <- prediction_q123_model_base %>%
+  dplyr::filter(is.finite(probability))
+
+q123_q2_data <- prediction_q123_model_base %>%
+  dplyr::filter(is.finite(estimated_value))
+
+q123_q3_data <- prediction_q123_model_base %>%
+  dplyr::filter(!is.na(decision_result)) %>%
+  droplevels()
+
+cat("Q1/Q2/Q3 rows after filtering: ", nrow(prediction_q123_model_base), "\n", sep = "")
+cat("Q1/Q2/Q3 participants (complete 5-cell grid): ", dplyr::n_distinct(prediction_q123_model_base$participant_id), "\n", sep = "")
+```
+
+### Q1: Probability (Continuous)
+
+```{r q1-models}
+q123_q1_model_data <- set_sum_contrasts(
+  q123_q1_data,
+  factors = c("vistype", "interaction_mode", "detail_presentation", "is_baseline")
+)
+
+# Repeated-measures best-practice model
+q123_q1_lmer <- lmer(
+  probability ~ vistype * interaction_mode * detail_presentation * is_baseline + (1 | participant_id),
+  data = q123_q1_model_data,
+  REML = FALSE,
+  na.action = na.exclude
+)
+
+anova(q123_q1_lmer, type = 3)
+
+q123_q1_baseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q1_lmer,
+      ~ 1,
+      at = list(
+        is_baseline = "Yes",
+        interaction_mode = "hover",
+        detail_presentation = "show_one",
+        vistype = "CI"
+      )
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  dplyr::mutate(
+    condition_label = "Baseline",
+    is_baseline = "Yes"
+  )
+
+q123_q1_nonbaseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q1_lmer,
+      ~ 1,
+      at = list(is_baseline = "No"),
+      weights = "proportional"
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  dplyr::mutate(
+    condition_label = "Non-baseline",
+    is_baseline = "No"
+  )
+
+q123_q1_condition_emmeans <- dplyr::bind_rows(
+  q123_q1_baseline_emm,
+  q123_q1_nonbaseline_emm
+) %>%
+  dplyr::mutate(
+    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline"))
+  ) %>%
+  dplyr::arrange(condition_label) %>%
+  dplyr::select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+knitr::kable(
+  q123_q1_condition_emmeans,
+  digits = 3,
+  caption = "Q1 EMMs for Baseline vs Non-baseline (Non-baseline averaged across conditions)"
+)
+```
+
+### Q2: Estimated Prediction Value (Continuous)
+
+```{r q2-models}
+q123_q2_model_data <- set_sum_contrasts(
+  q123_q2_data,
+  factors = c("vistype", "interaction_mode", "detail_presentation", "is_baseline")
+)
+
+# Repeated-measures best-practice model
+q123_q2_lmer <- lmer(
+  estimated_value ~ vistype * interaction_mode * detail_presentation * is_baseline + (1 | participant_id),
+  data = q123_q2_model_data,
+  REML = FALSE,
+  na.action = na.exclude
+)
+
+anova(q123_q2_lmer, type = 3)
+
+q123_q2_baseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q2_lmer,
+      ~ 1,
+      at = list(
+        is_baseline = "Yes",
+        interaction_mode = "hover",
+        detail_presentation = "show_one",
+        vistype = "CI"
+      )
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  dplyr::mutate(
+    condition_label = "Baseline",
+    is_baseline = "Yes"
+  )
+
+q123_q2_nonbaseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q2_lmer,
+      ~ 1,
+      at = list(is_baseline = "No"),
+      weights = "proportional"
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  dplyr::mutate(
+    condition_label = "Non-baseline",
+    is_baseline = "No"
+  )
+
+q123_q2_condition_emmeans <- dplyr::bind_rows(
+  q123_q2_baseline_emm,
+  q123_q2_nonbaseline_emm
+) %>%
+  dplyr::mutate(
+    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline"))
+  ) %>%
+  dplyr::arrange(condition_label) %>%
+  dplyr::select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+knitr::kable(
+  q123_q2_condition_emmeans,
+  digits = 3,
+  caption = "Q2 EMMs for Baseline vs Non-baseline (Non-baseline averaged across conditions)"
+)
+```
+
+### Q3: Decision Result (A, B, No Preference; Nominal)
+
+```{r q3-models}
+q123_q3_model_data <- q123_q3_data %>%
+  dplyr::mutate(
+    decision_result = factor(decision_result, levels = c("A", "B", "No Preference")),
+    interaction_mode = factor(as.character(interaction_mode), levels = c("hover", "click")),
+    detail_presentation = factor(as.character(detail_presentation), levels = c("show_one", "show_all")),
+    vistype = factor(
+      dplyr::recode(
+        as.character(vistype),
+        "CI" = "PI",
+        "EP" = "Ensemble",
+        "CIEP" = "PI + Ensemble"
+      ),
+      levels = c("PI", "Ensemble", "PI + Ensemble")
+    )
+  ) %>%
+  droplevels()
+
+condition_levels <- c(
+  "Baseline",
+  paste0(
+    "Condition ",
+    sort(unique(q123_q3_model_data$condition_number[q123_q3_model_data$is_baseline == "No"]))
+  )
+)
+
+q123_q3_model_data <- q123_q3_model_data %>%
+  dplyr::mutate(
+    condition_label = ifelse(is_baseline == "Yes", "Baseline", paste0("Condition ", condition_number)),
+    condition_label = factor(condition_label, levels = condition_levels)
+  )
+
+q3_condition_portion <- q123_q3_model_data %>%
+  dplyr::count(condition_label, decision_result, .drop = FALSE, name = "n") %>%
+  dplyr::group_by(condition_label) %>%
+  dplyr::mutate(
+    total = sum(n),
+    portion = ifelse(total > 0, n / total, 0)
+  ) %>%
+  dplyr::ungroup()
+
+ggplot(q3_condition_portion, aes(x = condition_label, y = portion, fill = decision_result)) +
+  geom_col(position = "stack", width = 0.7) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    labels = function(x) paste0(round(x * 100), "%")
+  ) +
+  labs(
+    title = "Q3 Decision Portion by Condition",
+    x = "Condition",
+    y = "Decision Portion",
+    fill = "Decision"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+q3_condition_portion_table <- q3_condition_portion %>%
+  dplyr::group_by(condition_label) %>%
+  dplyr::summarise(
+    A = portion[decision_result == "A"][1],
+    B = portion[decision_result == "B"][1],
+    `No preference` = portion[decision_result == "No Preference"][1],
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    dplyr::across(c(A, B, `No preference`), ~ round(ifelse(is.na(.x), 0, .x), 4))
+  )
+
+knitr::kable(
+  q3_condition_portion_table,
+  caption = "Q3 Decision Portion Table by Condition"
+)
+
+q3_treatment_data <- q123_q3_model_data %>%
+  dplyr::filter(is_baseline == "No") %>%
+  droplevels()
+
+q3_interaction_mode_portion <- q3_treatment_data %>%
+  dplyr::count(interaction_mode, decision_result, .drop = FALSE, name = "n") %>%
+  dplyr::group_by(interaction_mode) %>%
+  dplyr::mutate(
+    total = sum(n),
+    portion = ifelse(total > 0, n / total, 0)
+  ) %>%
+  dplyr::ungroup()
+
+ggplot(q3_interaction_mode_portion, aes(x = interaction_mode, y = portion, fill = decision_result)) +
+  geom_col(position = "stack", width = 0.7) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    labels = function(x) paste0(round(x * 100), "%")
+  ) +
+  labs(
+    title = "Q3 Decision Portion by Interaction Type (Treatment Only)",
+    x = "Interaction Type",
+    y = "Decision Portion",
+    fill = "Decision"
+  ) +
+  theme_minimal()
+
+q3_interaction_mode_portion_table <- q3_interaction_mode_portion %>%
+  dplyr::group_by(interaction_mode) %>%
+  dplyr::summarise(
+    A = portion[decision_result == "A"][1],
+    B = portion[decision_result == "B"][1],
+    `No preference` = portion[decision_result == "No Preference"][1],
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    dplyr::across(c(A, B, `No preference`), ~ round(ifelse(is.na(.x), 0, .x), 4))
+  )
+
+knitr::kable(
+  q3_interaction_mode_portion_table,
+  caption = "Q3 Decision Portion Table by Interaction Type (hover vs click; treatment only)"
+)
+
+q3_detail_portion <- q3_treatment_data %>%
+  dplyr::count(detail_presentation, decision_result, .drop = FALSE, name = "n") %>%
+  dplyr::group_by(detail_presentation) %>%
+  dplyr::mutate(
+    total = sum(n),
+    portion = ifelse(total > 0, n / total, 0)
+  ) %>%
+  dplyr::ungroup()
+
+ggplot(q3_detail_portion, aes(x = detail_presentation, y = portion, fill = decision_result)) +
+  geom_col(position = "stack", width = 0.7) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    labels = function(x) paste0(round(x * 100), "%")
+  ) +
+  labs(
+    title = "Q3 Decision Portion by Detail Presentation Type (Treatment Only)",
+    x = "Detail Presentation Type",
+    y = "Decision Portion",
+    fill = "Decision"
+  ) +
+  theme_minimal()
+
+q3_detail_portion_table <- q3_detail_portion %>%
+  dplyr::group_by(detail_presentation) %>%
+  dplyr::summarise(
+    A = portion[decision_result == "A"][1],
+    B = portion[decision_result == "B"][1],
+    `No preference` = portion[decision_result == "No Preference"][1],
+    .groups = "drop"
+  ) %>%
+  dplyr::mutate(
+    dplyr::across(c(A, B, `No preference`), ~ round(ifelse(is.na(.x), 0, .x), 4))
+  )
+
+knitr::kable(
+  q3_detail_portion_table,
+  caption = "Q3 Decision Portion Table by Detail Presentation Type (show_one vs show_all; treatment only)"
+)
+
+q3_interaction_mode_frequency <- q3_treatment_data %>%
+  dplyr::filter(!is.na(interaction_mode), !is.na(decision_result)) %>%
+  dplyr::count(interaction_mode, decision_result, .drop = FALSE, name = "n")
+
+q3_interaction_mode_frequency_xtab <- xtabs(
+  n ~ interaction_mode + decision_result,
+  data = q3_interaction_mode_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(q3_interaction_mode_frequency_xtab),
+  caption = "Q3 Frequency Table (A/B/No Preference) by Interaction Type (hover vs click; treatment only)"
+)
+
+q3_interaction_mode_chisq <- NULL
+if (
+  nrow(q3_interaction_mode_frequency_xtab) > 1 &&
+  ncol(q3_interaction_mode_frequency_xtab) > 1 &&
+  all(rowSums(q3_interaction_mode_frequency_xtab) > 0) &&
+  all(colSums(q3_interaction_mode_frequency_xtab) > 0)
+) {
+  q3_interaction_mode_chisq <- suppressWarnings(chisq.test(q3_interaction_mode_frequency_xtab))
+}
+
+q3_interaction_mode_chisq_summary <- if (!is.null(q3_interaction_mode_chisq)) {
+  data.frame(
+    predictor = "Interaction type (hover vs click)",
+    chi_square = unname(q3_interaction_mode_chisq$statistic),
+    df = unname(q3_interaction_mode_chisq$parameter),
+    p_value = unname(q3_interaction_mode_chisq$p.value),
+    note = ""
+  )
+} else {
+  data.frame(
+    predictor = "Interaction type (hover vs click)",
+    chi_square = NA_real_,
+    df = NA_real_,
+    p_value = NA_real_,
+    note = "Chi-square test skipped: not enough non-zero cells."
+  )
+}
+
+q3_interaction_mode_chisq_summary <- q3_interaction_mode_chisq_summary %>%
+  dplyr::mutate(
+    chi_square = round(chi_square, 4),
+    p_value = signif(p_value, 4)
+  )
+
+knitr::kable(
+  q3_interaction_mode_chisq_summary,
+  caption = "Q3 Chi-square Test by Interaction Type (hover vs click; treatment only)"
+)
+
+q3_detail_frequency <- q3_treatment_data %>%
+  dplyr::filter(!is.na(detail_presentation), !is.na(decision_result)) %>%
+  dplyr::count(detail_presentation, decision_result, .drop = FALSE, name = "n")
+
+q3_detail_frequency_xtab <- xtabs(
+  n ~ detail_presentation + decision_result,
+  data = q3_detail_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(q3_detail_frequency_xtab),
+  caption = "Q3 Frequency Table (A/B/No Preference) by Detail Presentation Type (show_one vs show_all; treatment only)"
+)
+
+q3_detail_chisq <- NULL
+if (
+  nrow(q3_detail_frequency_xtab) > 1 &&
+  ncol(q3_detail_frequency_xtab) > 1 &&
+  all(rowSums(q3_detail_frequency_xtab) > 0) &&
+  all(colSums(q3_detail_frequency_xtab) > 0)
+) {
+  q3_detail_chisq <- suppressWarnings(chisq.test(q3_detail_frequency_xtab))
+}
+
+q3_detail_chisq_summary <- if (!is.null(q3_detail_chisq)) {
+  data.frame(
+    predictor = "Detail presentation type (show_one vs show_all)",
+    chi_square = unname(q3_detail_chisq$statistic),
+    df = unname(q3_detail_chisq$parameter),
+    p_value = unname(q3_detail_chisq$p.value),
+    note = ""
+  )
+} else {
+  data.frame(
+    predictor = "Detail presentation type (show_one vs show_all)",
+    chi_square = NA_real_,
+    df = NA_real_,
+    p_value = NA_real_,
+    note = "Chi-square test skipped: not enough non-zero cells."
+  )
+}
+
+q3_detail_chisq_summary <- q3_detail_chisq_summary %>%
+  dplyr::mutate(
+    chi_square = round(chi_square, 4),
+    p_value = signif(p_value, 4)
+  )
+
+knitr::kable(
+  q3_detail_chisq_summary,
+  caption = "Q3 Chi-square Test by Detail Presentation Type (show_one vs show_all; treatment only)"
+)
 ```

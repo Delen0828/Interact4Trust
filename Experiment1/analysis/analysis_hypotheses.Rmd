@@ -132,6 +132,13 @@ INTERACTION_ITEM_KEYS <- c(
   "interface_sensitivity"
 )
 
+PERSONALITY_ITEM_KEYS <- c(
+  "respect_others",
+  "good_word_everyone",
+  "retreat_from_others",
+  "avoid_contacts"
+)
+
 extract_condition_number <- function(condition_id) {
   if (is.na(condition_id) || !nzchar(condition_id)) {
     return(NA_real_)
@@ -310,7 +317,46 @@ prediction_rows_raw <- raw_data %>%
 trust_rows_raw <- raw_data %>%
   filter(trial_type == "trust-survey")
 
+personality_rows_raw <- raw_data %>%
+  filter(trial_type == "personality-survey")
+
 trust_rows_expanded <- expand_response_columns(trust_rows_raw)
+personality_rows_expanded <- expand_response_columns(personality_rows_raw)
+
+for (col in PERSONALITY_ITEM_KEYS) {
+  if (!col %in% names(personality_rows_expanded)) {
+    personality_rows_expanded[[col]] <- NA_real_
+  }
+  personality_rows_expanded[[col]] <- suppressWarnings(as.numeric(personality_rows_expanded[[col]])) + 1
+}
+
+personality_participant <- personality_rows_expanded %>%
+  mutate(
+    participant_id = as.character(participant_id),
+    general_trust_composite = rowMeans(
+      dplyr::select(., dplyr::all_of(PERSONALITY_ITEM_KEYS)),
+      na.rm = TRUE
+    )
+  ) %>%
+  mutate(
+    general_trust_composite = ifelse(
+      is.finite(general_trust_composite),
+      general_trust_composite,
+      NA_real_
+    )
+  ) %>%
+  group_by(participant_id) %>%
+  summarise(
+    general_trust_composite = mean(general_trust_composite, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    general_trust_composite = ifelse(
+      is.finite(general_trust_composite),
+      general_trust_composite,
+      NA_real_
+    )
+  )
 
 for (col in c(TRUST_ITEM_KEYS, INTERACTION_ITEM_KEYS)) {
   if (col %in% names(trust_rows_expanded)) {
@@ -369,6 +415,8 @@ complete_participants <- trust_treatment %>%
 h2_data <- trust_treatment %>%
   filter(participant_id %in% complete_participants) %>%
   filter(is.finite(trust_composite)) %>%
+  left_join(personality_participant, by = "participant_id") %>%
+  filter(is.finite(general_trust_composite)) %>%
   mutate(
     participant_id = factor(participant_id),
     vis_type = factor(vis_type, levels = c("PI", "Ensemble", "PI + Ensemble")),
@@ -519,7 +567,7 @@ knitr::kable(condition_mapping_check, caption = "Condition Mapping Check")
 
 ```{r h1-model}
 h1_participant_means <- h1_data %>%
-  group_by(participant_id, vis_type) %>%
+  group_by(participant_id, vis_type, interaction_group) %>%
   summarise(
     baseline_confidence = mean(baseline_confidence, na.rm = TRUE),
     treatment_confidence = mean(confidence_rating, na.rm = TRUE),
@@ -533,6 +581,45 @@ h1_participant_means <- h1_data %>%
   )
 
 h1_anova_data <- bind_rows(
+  h1_participant_means %>%
+    distinct(participant_id, baseline_confidence) %>%
+    transmute(
+      participant_id,
+      vis_type = "Baseline",
+      interaction_availability = "Static",
+      confidence = baseline_confidence
+    ),
+  h1_participant_means %>%
+    transmute(
+      participant_id,
+      vis_type = as.character(vis_type),
+      interaction_availability = as.character(interaction_group),
+      confidence = treatment_confidence
+    )
+) %>%
+  mutate(
+    participant_id = factor(participant_id),
+    vis_type = factor(vis_type, levels = c("Baseline", "PI", "Ensemble", "PI + Ensemble")),
+    interaction_availability = factor(
+      interaction_availability,
+      levels = c("Static", "Interactive", "Buggy")
+    )
+  ) %>%
+  filter(is.finite(confidence))
+
+h1_model_data <- set_sum_contrasts(
+  h1_anova_data,
+  factors = c("vis_type", "interaction_availability")
+)
+
+h1_anova_model <- lm(
+  confidence ~ vis_type * interaction_availability + participant_id,
+  data = h1_model_data
+)
+
+h1_anova <- anova(h1_anova_model)
+
+h1_vis_emmeans_data <- bind_rows(
   h1_participant_means %>%
     distinct(participant_id, baseline_confidence) %>%
     transmute(
@@ -553,17 +640,46 @@ h1_anova_data <- bind_rows(
   ) %>%
   filter(is.finite(confidence))
 
-h1_model_data <- set_sum_contrasts(h1_anova_data, factors = c("vis_type"))
-
-h1_anova_model <- lm(
+h1_vis_emmeans_model <- lm(
   confidence ~ vis_type + participant_id,
-  data = h1_model_data
+  data = h1_vis_emmeans_data
 )
 
-h1_anova <- anova(h1_anova_model)
+h1_vis_emmeans <- as.data.frame(
+  summary(emmeans(h1_vis_emmeans_model, ~ vis_type), infer = FALSE)
+)
 
-h1_emmeans <- as.data.frame(
-  summary(emmeans(h1_anova_model, ~ vis_type), infer = FALSE)
+h1_interaction_emmeans_data <- bind_rows(
+  h1_participant_means %>%
+    distinct(participant_id, baseline_confidence) %>%
+    transmute(
+      participant_id,
+      interaction_availability = "Baseline",
+      confidence = baseline_confidence
+    ),
+  h1_participant_means %>%
+    transmute(
+      participant_id,
+      interaction_availability = as.character(interaction_group),
+      confidence = treatment_confidence
+    )
+) %>%
+  mutate(
+    participant_id = factor(participant_id),
+    interaction_availability = factor(
+      interaction_availability,
+      levels = c("Baseline", "Static", "Interactive", "Buggy")
+    )
+  ) %>%
+  filter(is.finite(confidence))
+
+h1_interaction_emmeans_model <- lm(
+  confidence ~ interaction_availability + participant_id,
+  data = h1_interaction_emmeans_data
+)
+
+h1_interaction_emmeans <- as.data.frame(
+  summary(emmeans(h1_interaction_emmeans_model, ~ interaction_availability), infer = FALSE)
 )
 
 h1_singular <- NA
@@ -571,7 +687,7 @@ h1_singular <- NA
 knitr::kable(h1_summary, digits = 4, caption = "H1 Summary: Confidence Shift from Baseline by Visualization Family")
 h1_anova
 knitr::kable(
-  h1_emmeans %>%
+  h1_vis_emmeans %>%
     transmute(
       vis_type,
       mean = emmean,
@@ -579,6 +695,16 @@ knitr::kable(
     ),
   digits = 4,
   caption = "H1 Estimated Marginal Means by Visualization Family (including Baseline)"
+)
+knitr::kable(
+  h1_interaction_emmeans %>%
+    transmute(
+      interaction_availability,
+      mean = emmean,
+      se = SE
+    ),
+  digits = 4,
+  caption = "H1 Estimated Marginal Means by Interaction Availability (including Baseline)"
 )
 ```
 
@@ -611,11 +737,12 @@ ggplot(h1_plot_data, aes(y = vis_type, x = mean_shift)) +
 h2_model_data <- set_sum_contrasts(h2_data, factors = c("interaction_group", "vis_type"))
 
 h2_model <- lm(
-  trust_composite ~ interaction_group * vis_type + participant_id,
+  trust_composite ~ interaction_group * vis_type + general_trust_composite + participant_id,
   data = h2_model_data,
   na.action = na.exclude
 )
 
+h2_anova <- anova(h2_model)
 h2_singular <- NA
 
 h2_condition_means <- as.data.frame(
@@ -633,6 +760,7 @@ h2_vis_means <- as.data.frame(
   summary(emmeans(h2_model, ~ vis_type), infer = FALSE)
 )
 
+h2_anova
 knitr::kable(
   h2_condition_means %>%
     transmute(
@@ -699,6 +827,7 @@ h3_model <- lm(
   na.action = na.exclude
 )
 
+h3_anova <- anova(h3_model)
 h3_singular <- NA
 
 h3_condition_means <- as.data.frame(
@@ -716,6 +845,7 @@ h3_vis_means <- as.data.frame(
   summary(emmeans(h3_model, ~ vis_type), infer = FALSE)
 )
 
+h3_anova
 knitr::kable(
   h3_condition_means %>%
     transmute(
@@ -828,5 +958,481 @@ knitr::kable(
   interactive_vis_summary,
   digits = 4,
   caption = "Interactive-only Trust Composite by Visualization Family"
+)
+```
+
+## Additional Analysis: Q1-Q3 Models by Visualization Type and Interaction Availability (with Baseline)
+
+```{r q1-q3-data-prep}
+prediction_q123_raw <- prediction_rows_prepared %>%
+  filter(phase %in% c(1, 2, 3, 4)) %>%
+  mutate(
+    is_baseline_phase = phase == 1,
+    q123_vis_type = case_when(
+      is_baseline_phase ~ "PI",
+      condition_number %in% TREATMENT_CONDITIONS ~ vis_type,
+      TRUE ~ NA_character_
+    ),
+    q123_interaction_availability = case_when(
+      is_baseline_phase ~ "Static",
+      condition_number %in% TREATMENT_CONDITIONS ~ interaction_group,
+      TRUE ~ NA_character_
+    ),
+    q123_condition_number = case_when(
+      is_baseline_phase ~ 1,
+      TRUE ~ condition_number
+    ),
+    q123_condition_name = case_when(
+      is_baseline_phase ~ "Baseline",
+      TRUE ~ as.character(condition_name)
+    ),
+    probability = suppressWarnings(as.numeric(probability_estimate)),
+    city_a_estimate = suppressWarnings(as.numeric(city_a_estimate)),
+    city_b_estimate = suppressWarnings(as.numeric(city_b_estimate)),
+    estimated_value_row = rowMeans(cbind(city_a_estimate, city_b_estimate), na.rm = TRUE),
+    estimated_value_row = ifelse(is.finite(estimated_value_row), estimated_value_row, NA_real_),
+    decision_result_row = case_when(
+      !is.na(travel_choice) & !is.na(city_a_label) & travel_choice == city_a_label ~ "A",
+      !is.na(travel_choice) & !is.na(city_b_label) & travel_choice == city_b_label ~ "B",
+      tolower(trimws(as.character(travel_choice))) == "no preference" ~ "No Preference",
+      TRUE ~ NA_character_
+    )
+  ) %>%
+  filter(!is.na(q123_vis_type), !is.na(q123_interaction_availability))
+
+mode_or_na <- function(x) {
+  x <- as.character(x)
+  x <- x[!is.na(x) & nzchar(x)]
+  if (length(x) == 0) {
+    return(NA_character_)
+  }
+  names(sort(table(x), decreasing = TRUE))[1]
+}
+
+prediction_q123_condition <- prediction_q123_raw %>%
+  group_by(participant_id, q123_condition_number, q123_condition_name, q123_vis_type, q123_interaction_availability) %>%
+  summarise(
+    probability = mean(probability, na.rm = TRUE),
+    estimated_value = mean(estimated_value_row, na.rm = TRUE),
+    decision_result = mode_or_na(decision_result_row),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    probability = ifelse(is.finite(probability), probability, NA_real_),
+    estimated_value = ifelse(is.finite(estimated_value), estimated_value, NA_real_),
+    participant_id = factor(participant_id),
+    is_baseline = factor(ifelse(q123_condition_number == 1, "Yes", "No"), levels = c("No", "Yes")),
+    condition_number = suppressWarnings(as.numeric(q123_condition_number)),
+    condition_name = q123_condition_name,
+    vistype = factor(q123_vis_type, levels = c("PI", "Ensemble", "PI + Ensemble")),
+    interaction_availability = factor(q123_interaction_availability, levels = c("Static", "Interactive", "Buggy")),
+    decision_result = factor(decision_result, levels = c("A", "B", "No Preference"))
+  ) %>%
+  droplevels()
+
+q123_q1_data <- prediction_q123_condition %>%
+  filter(is.finite(probability))
+
+q123_q2_data <- prediction_q123_condition %>%
+  filter(is.finite(estimated_value))
+
+q123_q3_data <- prediction_q123_condition %>%
+  filter(!is.na(decision_result)) %>%
+  droplevels()
+```
+
+### Q1: Probability (Continuous)
+
+```{r q1-models}
+q123_q1_model_data <- set_sum_contrasts(
+  q123_q1_data,
+  factors = c("vistype", "interaction_availability", "is_baseline")
+)
+
+# Repeated-measures best-practice model
+q123_q1_lmer <- lmer(
+  probability ~ vistype * interaction_availability * is_baseline + (1 | participant_id),
+  data = q123_q1_model_data,
+  REML = FALSE,
+  na.action = na.exclude
+)
+
+anova(q123_q1_lmer, type = 3)
+
+q123_q1_baseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q1_lmer,
+      ~ 1,
+      at = list(
+        is_baseline = "Yes",
+        interaction_availability = "Static",
+        vistype = "PI"
+      )
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  mutate(
+    condition_label = "Baseline",
+    is_baseline = "Yes"
+  )
+
+q123_q1_nonbaseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q1_lmer,
+      ~ 1,
+      at = list(is_baseline = "No"),
+      weights = "proportional"
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  mutate(
+    condition_label = "Non-baseline",
+    is_baseline = "No"
+  )
+
+q123_q1_condition_emmeans <- bind_rows(
+  q123_q1_baseline_emm,
+  q123_q1_nonbaseline_emm
+) %>%
+  mutate(
+    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline"))
+  ) %>%
+  arrange(condition_label) %>%
+  select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+knitr::kable(
+  q123_q1_condition_emmeans,
+  digits = 3,
+  caption = "Q1 EMMs for Baseline vs Non-baseline (Non-baseline averaged across conditions)"
+)
+```
+
+### Q2: Estimated Prediction Value (Continuous)
+
+```{r q2-models}
+q123_q2_model_data <- set_sum_contrasts(
+  q123_q2_data,
+  factors = c("vistype", "interaction_availability", "is_baseline")
+)
+
+# Repeated-measures best-practice model
+q123_q2_lmer <- lmer(
+  estimated_value ~ vistype * interaction_availability * is_baseline + (1 | participant_id),
+  data = q123_q2_model_data,
+  REML = FALSE,
+  na.action = na.exclude
+)
+
+anova(q123_q2_lmer, type = 3)
+
+q123_q2_baseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q2_lmer,
+      ~ 1,
+      at = list(
+        is_baseline = "Yes",
+        interaction_availability = "Static",
+        vistype = "PI"
+      )
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  mutate(
+    condition_label = "Baseline",
+    is_baseline = "Yes"
+  )
+
+q123_q2_nonbaseline_emm <- as.data.frame(
+  summary(
+    emmeans(
+      q123_q2_lmer,
+      ~ 1,
+      at = list(is_baseline = "No"),
+      weights = "proportional"
+    ),
+    infer = c(TRUE, FALSE)
+  )
+) %>%
+  mutate(
+    condition_label = "Non-baseline",
+    is_baseline = "No"
+  )
+
+q123_q2_condition_emmeans <- bind_rows(
+  q123_q2_baseline_emm,
+  q123_q2_nonbaseline_emm
+) %>%
+  mutate(
+    condition_label = factor(condition_label, levels = c("Baseline", "Non-baseline"))
+  ) %>%
+  arrange(condition_label) %>%
+  select(condition_label, is_baseline, emmean, SE, df, lower.CL, upper.CL)
+
+knitr::kable(
+  q123_q2_condition_emmeans,
+  digits = 3,
+  caption = "Q2 EMMs for Baseline vs Non-baseline (Non-baseline averaged across conditions)"
+)
+```
+
+### Q3: Decision Result (A, B, No Preference; Nominal)
+
+```{r q3-models}
+q123_q3_model_data <- q123_q3_data %>%
+  mutate(
+    decision_result = factor(decision_result, levels = c("A", "B", "No Preference")),
+    interaction_availability = factor(
+      interaction_availability,
+      levels = c("Static", "Interactive", "Buggy")
+    ),
+    vistype = factor(vistype, levels = c("PI", "Ensemble", "PI + Ensemble"))
+  ) %>%
+  droplevels()
+
+condition_levels <- c(
+  "Baseline",
+  paste0(
+    "Condition ",
+    sort(unique(q123_q3_model_data$condition_number[q123_q3_model_data$is_baseline == "No"]))
+  )
+)
+
+q123_q3_model_data <- q123_q3_model_data %>%
+  mutate(
+    condition_label = ifelse(is_baseline == "Yes", "Baseline", paste0("Condition ", condition_number)),
+    condition_label = factor(condition_label, levels = condition_levels)
+  )
+
+q3_condition_portion <- q123_q3_model_data %>%
+  count(condition_label, decision_result, .drop = FALSE, name = "n") %>%
+  group_by(condition_label) %>%
+  mutate(
+    total = sum(n),
+    portion = ifelse(total > 0, n / total, 0)
+  ) %>%
+  ungroup()
+
+ggplot(q3_condition_portion, aes(x = condition_label, y = portion, fill = decision_result)) +
+  geom_col(position = "stack", width = 0.7) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    labels = function(x) paste0(round(x * 100), "%")
+  ) +
+  labs(
+    title = "Q3 Decision Portion by Condition",
+    x = "Condition",
+    y = "Decision Portion",
+    fill = "Decision"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+q3_condition_portion_table <- q3_condition_portion %>%
+  group_by(condition_label) %>%
+  summarise(
+    A = portion[decision_result == "A"][1],
+    B = portion[decision_result == "B"][1],
+    `No preference` = portion[decision_result == "No Preference"][1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    across(c(A, B, `No preference`), ~ round(ifelse(is.na(.x), 0, .x), 4))
+  )
+
+knitr::kable(
+  q3_condition_portion_table,
+  caption = "Q3 Decision Portion Table by Condition"
+)
+
+q3_interaction_portion <- q123_q3_model_data %>%
+  count(interaction_availability, decision_result, .drop = FALSE, name = "n") %>%
+  group_by(interaction_availability) %>%
+  mutate(
+    total = sum(n),
+    portion = ifelse(total > 0, n / total, 0)
+  ) %>%
+  ungroup()
+
+ggplot(q3_interaction_portion, aes(x = interaction_availability, y = portion, fill = decision_result)) +
+  geom_col(position = "stack", width = 0.7) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    labels = function(x) paste0(round(x * 100), "%")
+  ) +
+  labs(
+    title = "Q3 Decision Portion by Interaction Availability",
+    x = "Interaction Availability",
+    y = "Decision Portion",
+    fill = "Decision"
+  ) +
+  theme_minimal()
+
+q3_interaction_portion_table <- q3_interaction_portion %>%
+  group_by(interaction_availability) %>%
+  summarise(
+    A = portion[decision_result == "A"][1],
+    B = portion[decision_result == "B"][1],
+    `No preference` = portion[decision_result == "No Preference"][1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    across(c(A, B, `No preference`), ~ round(ifelse(is.na(.x), 0, .x), 4))
+  )
+
+knitr::kable(
+  q3_interaction_portion_table,
+  caption = "Q3 Decision Portion Table by Interaction Availability"
+)
+
+q3_vistype_portion <- q123_q3_model_data %>%
+  count(vistype, decision_result, .drop = FALSE, name = "n") %>%
+  group_by(vistype) %>%
+  mutate(
+    total = sum(n),
+    portion = ifelse(total > 0, n / total, 0)
+  ) %>%
+  ungroup()
+
+ggplot(q3_vistype_portion, aes(x = vistype, y = portion, fill = decision_result)) +
+  geom_col(position = "stack", width = 0.7) +
+  scale_y_continuous(
+    limits = c(0, 1),
+    labels = function(x) paste0(round(x * 100), "%")
+  ) +
+  labs(
+    title = "Q3 Decision Portion by Visualization Type",
+    x = "Visualization Type",
+    y = "Decision Portion",
+    fill = "Decision"
+  ) +
+  theme_minimal()
+
+q3_vistype_portion_table <- q3_vistype_portion %>%
+  group_by(vistype) %>%
+  summarise(
+    A = portion[decision_result == "A"][1],
+    B = portion[decision_result == "B"][1],
+    `No preference` = portion[decision_result == "No Preference"][1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    across(c(A, B, `No preference`), ~ round(ifelse(is.na(.x), 0, .x), 4))
+  )
+
+knitr::kable(
+  q3_vistype_portion_table,
+  caption = "Q3 Decision Portion Table by Visualization Type"
+)
+
+q3_interaction_frequency <- q123_q3_model_data %>%
+  filter(!is.na(interaction_availability), !is.na(decision_result)) %>%
+  count(interaction_availability, decision_result, .drop = FALSE, name = "n")
+
+q3_interaction_frequency_xtab <- xtabs(
+  n ~ interaction_availability + decision_result,
+  data = q3_interaction_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(q3_interaction_frequency_xtab),
+  caption = "Q3 Frequency Table (A/B/No Preference) by Interaction Availability"
+)
+
+q3_interaction_chisq <- NULL
+if (
+  nrow(q3_interaction_frequency_xtab) > 1 &&
+  ncol(q3_interaction_frequency_xtab) > 1 &&
+  all(rowSums(q3_interaction_frequency_xtab) > 0) &&
+  all(colSums(q3_interaction_frequency_xtab) > 0)
+) {
+  q3_interaction_chisq <- suppressWarnings(chisq.test(q3_interaction_frequency_xtab))
+}
+
+q3_interaction_chisq_summary <- if (!is.null(q3_interaction_chisq)) {
+  data.frame(
+    predictor = "Interaction availability",
+    chi_square = unname(q3_interaction_chisq$statistic),
+    df = unname(q3_interaction_chisq$parameter),
+    p_value = unname(q3_interaction_chisq$p.value),
+    note = ""
+  )
+} else {
+  data.frame(
+    predictor = "Interaction availability",
+    chi_square = NA_real_,
+    df = NA_real_,
+    p_value = NA_real_,
+    note = "Chi-square test skipped: not enough non-zero cells."
+  )
+}
+
+q3_interaction_chisq_summary <- q3_interaction_chisq_summary %>%
+  mutate(
+    chi_square = round(chi_square, 4),
+    p_value = signif(p_value, 4)
+  )
+
+knitr::kable(
+  q3_interaction_chisq_summary,
+  caption = "Q3 Chi-square Test by Interaction Availability"
+)
+
+q3_vistype_frequency <- q123_q3_model_data %>%
+  filter(!is.na(vistype), !is.na(decision_result)) %>%
+  count(vistype, decision_result, .drop = FALSE, name = "n")
+
+q3_vistype_frequency_xtab <- xtabs(
+  n ~ vistype + decision_result,
+  data = q3_vistype_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(q3_vistype_frequency_xtab),
+  caption = "Q3 Frequency Table (A/B/No Preference) by Visualization Type"
+)
+
+q3_vistype_chisq <- NULL
+if (
+  nrow(q3_vistype_frequency_xtab) > 1 &&
+  ncol(q3_vistype_frequency_xtab) > 1 &&
+  all(rowSums(q3_vistype_frequency_xtab) > 0) &&
+  all(colSums(q3_vistype_frequency_xtab) > 0)
+) {
+  q3_vistype_chisq <- suppressWarnings(chisq.test(q3_vistype_frequency_xtab))
+}
+
+q3_vistype_chisq_summary <- if (!is.null(q3_vistype_chisq)) {
+  data.frame(
+    predictor = "Visualization type",
+    chi_square = unname(q3_vistype_chisq$statistic),
+    df = unname(q3_vistype_chisq$parameter),
+    p_value = unname(q3_vistype_chisq$p.value),
+    note = ""
+  )
+} else {
+  data.frame(
+    predictor = "Visualization type",
+    chi_square = NA_real_,
+    df = NA_real_,
+    p_value = NA_real_,
+    note = "Chi-square test skipped: not enough non-zero cells."
+  )
+}
+
+q3_vistype_chisq_summary <- q3_vistype_chisq_summary %>%
+  mutate(
+    chi_square = round(chi_square, 4),
+    p_value = signif(p_value, 4)
+  )
+
+knitr::kable(
+  q3_vistype_chisq_summary,
+  caption = "Q3 Chi-square Test by Visualization Type"
 )
 ```
