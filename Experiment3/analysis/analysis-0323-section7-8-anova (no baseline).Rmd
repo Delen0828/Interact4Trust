@@ -721,6 +721,36 @@ extract_emmean_with_sd <- function(model, factor_name, sd_data, value_col) {
     dplyr::left_join(sd_tbl, by = factor_name)
 }
 
+extract_tukey_pairwise <- function(model, factor_name) {
+  emmean_obj <- emmeans::emmeans(
+    model,
+    specs = stats::as.formula(paste0("~ ", factor_name))
+  )
+
+  as.data.frame(
+    summary(
+      emmeans::contrast(emmean_obj, method = "pairwise", adjust = "tukey"),
+      infer = c(TRUE, TRUE)
+    )
+  )
+}
+
+label_q123_condition <- function(interaction_mode, detail_presentation) {
+  interaction_label <- dplyr::case_when(
+    interaction_mode == "hover" ~ "Hover",
+    interaction_mode == "click" ~ "Click",
+    TRUE ~ as.character(interaction_mode)
+  )
+
+  detail_label <- dplyr::case_when(
+    detail_presentation == "show_one" ~ "Show One",
+    detail_presentation == "show_all" ~ "Show All",
+    TRUE ~ as.character(detail_presentation)
+  )
+
+  paste(interaction_label, detail_label)
+}
+
 interaction_level_scores <- model_data %>%
   dplyr::group_by(participant_id, interaction) %>%
   dplyr::summarise(
@@ -743,8 +773,88 @@ interactionexp_interaction_emmeans <- extract_emmean_with_sd(
   value_col = "interaction_experience"
 )
 
+trust_interaction_tukey <- extract_tukey_pairwise(
+  model = trust_joint_lm,
+  factor_name = "interaction"
+)
+
+interactionexp_interaction_tukey <- extract_tukey_pairwise(
+  model = interaction_joint_lm,
+  factor_name = "interaction"
+)
+
 knitr::kable(trust_interaction_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for interaction (trust)")
 knitr::kable(interactionexp_interaction_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for interaction (interaction experience)")
+knitr::kable(trust_interaction_tukey, digits = 4, caption = "Tukey pairwise comparisons for interaction (trust)")
+knitr::kable(interactionexp_interaction_tukey, digits = 4, caption = "Tukey pairwise comparisons for interaction (interaction experience)")
+```
+
+## EMMs: Visualization Type
+
+```{r emmeans-vis-type}
+# vis_type is between-subject here (one vis_type per participant), so it is
+# non-estimable in models that include participant_id fixed effects.
+# Use equivalent vis_type models without participant_id fixed effects.
+trust_vistype_lm <- lm(
+  composite_trust_score ~ vis_type * interaction * detail_presentation + general_trust_composite,
+  data = trust_model_data,
+  na.action = na.exclude
+)
+
+interactionexp_vistype_lm <- lm(
+  interaction_experience ~ vis_type * interaction * detail_presentation,
+  data = regression_model_data,
+  na.action = na.exclude
+)
+
+cat(
+  "Note: vis_type is nested within participant_id in the joint fixed-effect models; ",
+  "vis_type EMMs and Tukey comparisons below are estimated from models without participant_id fixed effects.\n",
+  sep = ""
+)
+
+trust_vistype_level_scores <- trust_model_data %>%
+  dplyr::group_by(participant_id, vis_type) %>%
+  dplyr::summarise(
+    composite_trust_score = mean(composite_trust_score, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+interactionexp_vistype_level_scores <- regression_model_data %>%
+  dplyr::group_by(participant_id, vis_type) %>%
+  dplyr::summarise(
+    interaction_experience = mean(interaction_experience, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+trust_vistype_emmeans <- extract_emmean_with_sd(
+  model = trust_vistype_lm,
+  factor_name = "vis_type",
+  sd_data = trust_vistype_level_scores,
+  value_col = "composite_trust_score"
+)
+
+interactionexp_vistype_emmeans <- extract_emmean_with_sd(
+  model = interactionexp_vistype_lm,
+  factor_name = "vis_type",
+  sd_data = interactionexp_vistype_level_scores,
+  value_col = "interaction_experience"
+)
+
+trust_vistype_tukey <- extract_tukey_pairwise(
+  model = trust_vistype_lm,
+  factor_name = "vis_type"
+)
+
+interactionexp_vistype_tukey <- extract_tukey_pairwise(
+  model = interactionexp_vistype_lm,
+  factor_name = "vis_type"
+)
+
+knitr::kable(trust_vistype_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for vis_type (trust)")
+knitr::kable(interactionexp_vistype_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for vis_type (interaction experience)")
+knitr::kable(trust_vistype_tukey, digits = 4, caption = "Tukey pairwise comparisons for vis_type (trust)")
+knitr::kable(interactionexp_vistype_tukey, digits = 4, caption = "Tukey pairwise comparisons for vis_type (interaction experience)")
 ```
 
 ## EMMs: Detail Presentation
@@ -772,8 +882,20 @@ interactionexp_detail_emmeans <- extract_emmean_with_sd(
   value_col = "interaction_experience"
 )
 
+trust_detail_tukey <- extract_tukey_pairwise(
+  model = trust_joint_lm,
+  factor_name = "detail_presentation"
+)
+
+interactionexp_detail_tukey <- extract_tukey_pairwise(
+  model = interaction_joint_lm,
+  factor_name = "detail_presentation"
+)
+
 knitr::kable(trust_detail_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for detail_presentation (trust)")
 knitr::kable(interactionexp_detail_emmeans, digits = 4, caption = "EMMs (emmean, SE, SD) for detail_presentation (interaction experience)")
+knitr::kable(trust_detail_tukey, digits = 4, caption = "Tukey pairwise comparisons for detail_presentation (trust)")
+knitr::kable(interactionexp_detail_tukey, digits = 4, caption = "Tukey pairwise comparisons for detail_presentation (interaction experience)")
 ```
 
 ## Additional Analysis: Q1-Q3 (Click/Hover x Detail Presentation x Visualization Type; No Baseline)
@@ -873,26 +995,46 @@ q123_q1_lmer <- lmer(
 
 anova(q123_q1_lmer, type = 3)
 
+q123_q1_treatment_emm_obj <- emmeans(
+  q123_q1_lmer,
+  ~ interaction_mode * detail_presentation,
+  weights = "proportional"
+)
+
 q123_q1_treatment_emm <- as.data.frame(
   summary(
-    emmeans(
-      q123_q1_lmer,
-      ~ 1
-    ),
+    q123_q1_treatment_emm_obj,
     infer = c(TRUE, FALSE)
   )
 ) %>%
   dplyr::mutate(
-    condition_label = "Treatment"
-  )
+    condition_label = label_q123_condition(interaction_mode, detail_presentation),
+    condition_label = factor(
+      condition_label,
+      levels = c("Hover Show One", "Hover Show All", "Click Show One", "Click Show All")
+    )
+  ) %>%
+  dplyr::arrange(condition_label)
 
 q123_q1_condition_emmeans <- q123_q1_treatment_emm %>%
-  dplyr::select(condition_label, emmean, SE, df, lower.CL, upper.CL)
+  dplyr::select(condition_label, interaction_mode, detail_presentation, emmean, SE, df, lower.CL, upper.CL)
+
+q123_q1_tukey_pairwise <- as.data.frame(
+  summary(
+    emmeans::contrast(q123_q1_treatment_emm_obj, method = "pairwise", adjust = "tukey"),
+    infer = c(TRUE, TRUE)
+  )
+)
 
 knitr::kable(
   q123_q1_condition_emmeans,
   digits = 3,
   caption = "Q1 EMMs for Treatment Conditions (No Baseline)"
+)
+knitr::kable(
+  q123_q1_tukey_pairwise,
+  digits = 3,
+  caption = "Q1 Tukey pairwise comparisons for treatment conditions (No Baseline)"
 )
 ```
 
@@ -914,26 +1056,46 @@ q123_q2_lmer <- lmer(
 
 anova(q123_q2_lmer, type = 3)
 
+q123_q2_treatment_emm_obj <- emmeans(
+  q123_q2_lmer,
+  ~ interaction_mode * detail_presentation,
+  weights = "proportional"
+)
+
 q123_q2_treatment_emm <- as.data.frame(
   summary(
-    emmeans(
-      q123_q2_lmer,
-      ~ 1
-    ),
+    q123_q2_treatment_emm_obj,
     infer = c(TRUE, FALSE)
   )
 ) %>%
   dplyr::mutate(
-    condition_label = "Treatment"
-  )
+    condition_label = label_q123_condition(interaction_mode, detail_presentation),
+    condition_label = factor(
+      condition_label,
+      levels = c("Hover Show One", "Hover Show All", "Click Show One", "Click Show All")
+    )
+  ) %>%
+  dplyr::arrange(condition_label)
 
 q123_q2_condition_emmeans <- q123_q2_treatment_emm %>%
-  dplyr::select(condition_label, emmean, SE, df, lower.CL, upper.CL)
+  dplyr::select(condition_label, interaction_mode, detail_presentation, emmean, SE, df, lower.CL, upper.CL)
+
+q123_q2_tukey_pairwise <- as.data.frame(
+  summary(
+    emmeans::contrast(q123_q2_treatment_emm_obj, method = "pairwise", adjust = "tukey"),
+    infer = c(TRUE, TRUE)
+  )
+)
 
 knitr::kable(
   q123_q2_condition_emmeans,
   digits = 3,
   caption = "Q2 EMMs for Treatment Conditions (No Baseline)"
+)
+knitr::kable(
+  q123_q2_tukey_pairwise,
+  digits = 3,
+  caption = "Q2 Tukey pairwise comparisons for treatment conditions (No Baseline)"
 )
 ```
 
@@ -952,7 +1114,7 @@ q123_q3_model_data <- q123_q3_data %>%
         "EP" = "Ensemble",
         "CIEP" = "PI + Ensemble"
       ),
-      levels = c("PI", "Ensemble", "PI + Ensemble")
+      levels = c("PI + Ensemble", "PI", "Ensemble")
     )
   ) %>%
   droplevels()
@@ -1196,5 +1358,111 @@ q3_detail_chisq_summary <- q3_detail_chisq_summary %>%
 knitr::kable(
   q3_detail_chisq_summary,
   caption = "Q3 Chi-square Test by Detail Presentation Type (show_one vs show_all; treatment only)"
+)
+
+# Pairwise comparisons for selecting A by visualization type.
+q3_vistype_a_frequency <- q3_treatment_data %>%
+  dplyr::mutate(
+    vistype_label = factor(
+      dplyr::recode(
+        as.character(vistype),
+        "PI" = "CI",
+        "Ensemble" = "EP",
+        "PI + Ensemble" = "CIEP"
+      ),
+      levels = c("CI", "EP", "CIEP")
+    ),
+    selected_A = factor(
+      ifelse(decision_result == "A", "A", "Not A"),
+      levels = c("A", "Not A")
+    )
+  ) %>%
+  dplyr::count(vistype_label, selected_A, .drop = FALSE, name = "n")
+
+q3_vistype_a_frequency_xtab <- xtabs(
+  n ~ vistype_label + selected_A,
+  data = q3_vistype_a_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(q3_vistype_a_frequency_xtab),
+  caption = "Q3 Frequency Table for Selecting A by Visualization Type"
+)
+
+q3_vistype_a_pair_definitions <- data.frame(
+  first_vistype = c("CI", "CI", "EP"),
+  second_vistype = c("CIEP", "EP", "CIEP"),
+  stringsAsFactors = FALSE
+)
+
+q3_vistype_a_pairwise <- dplyr::bind_rows(lapply(
+  seq_len(nrow(q3_vistype_a_pair_definitions)),
+  function(i) {
+    first_vistype <- q3_vistype_a_pair_definitions$first_vistype[i]
+    second_vistype <- q3_vistype_a_pair_definitions$second_vistype[i]
+
+    comparison_xtab <- q3_vistype_a_frequency_xtab[
+      c(first_vistype, second_vistype),
+      c("A", "Not A"),
+      drop = FALSE
+    ]
+
+    fisher_result <- fisher.test(comparison_xtab)
+
+    first_A <- unname(comparison_xtab[first_vistype, "A"])
+    first_not_A <- unname(comparison_xtab[first_vistype, "Not A"])
+    second_A <- unname(comparison_xtab[second_vistype, "A"])
+    second_not_A <- unname(comparison_xtab[second_vistype, "Not A"])
+
+    first_total <- first_A + first_not_A
+    second_total <- second_A + second_not_A
+
+    first_prop_A <- ifelse(first_total > 0, first_A / first_total, NA_real_)
+    second_prop_A <- ifelse(second_total > 0, second_A / second_total, NA_real_)
+    times_more_likely_A <- ifelse(
+      is.na(second_prop_A) || second_prop_A == 0,
+      NA_real_,
+      first_prop_A / second_prop_A
+    )
+
+    data.frame(
+      comparison = paste(first_vistype, "vs", second_vistype),
+      first_vistype = first_vistype,
+      first_A = first_A,
+      first_not_A = first_not_A,
+      first_prop_A = first_prop_A,
+      second_vistype = second_vistype,
+      second_A = second_A,
+      second_not_A = second_not_A,
+      second_prop_A = second_prop_A,
+      times_more_likely_A = times_more_likely_A,
+      fisher_odds_ratio = unname(fisher_result$estimate),
+      fisher_conf_low = unname(fisher_result$conf.int[1]),
+      fisher_conf_high = unname(fisher_result$conf.int[2]),
+      fisher_p_value = unname(fisher_result$p.value),
+      stringsAsFactors = FALSE
+    )
+  }
+))
+
+q3_vistype_a_pairwise <- q3_vistype_a_pairwise %>%
+  dplyr::mutate(
+    dplyr::across(
+      c(
+        first_prop_A,
+        second_prop_A,
+        times_more_likely_A,
+        fisher_odds_ratio,
+        fisher_conf_low,
+        fisher_conf_high
+      ),
+      ~ round(.x, 4)
+    ),
+    fisher_p_value = signif(fisher_p_value, 4)
+  )
+
+knitr::kable(
+  q3_vistype_a_pairwise,
+  caption = "Q3 Selecting A: Pairwise Times-More-Likely Comparisons and Fisher's Exact Tests"
 )
 ```

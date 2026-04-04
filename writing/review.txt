@@ -1,0 +1,697 @@
+# Review of `writing/almost_ready.pdf` / 双语审稿意见
+
+## 中文审稿意见
+
+### A. 高优先级逻辑冲突与结论漏洞
+
+1. 研究数量前后不一致。摘要写的是 `two crowdsourced studies`，引言写 `three studies`，Section 3 又写 `two online, crowdsourced studies`，Section 6 写 `across all three studies`。读者无法判断第三个 study 到底是什么，也无法判断 factor analysis 的数据来源。
+2. 关于“interaction quality / affordance 不重要”的结论与结果冲突。摘要、Section 3、Section 7、Section 8 都在暗示“只要有 interaction 就会提高 trust，甚至 buggy interaction 也一样”，但 Study 1 明确报告 `Full Interaction > Buggy / No Interaction`，且 `Buggy` 不显著高于 `No Interaction`；Study 2 也明确显示 `click / hover > animation`。这类结论需要全部降调为“某些交互设计与更高 trust 相关”，不能写成“regardless of interaction quality/affordance”。
+3. 关于“decision making / calibrated decisions / trustworthy interpretation”的主张明显过强。两项 study 的 prediction tasks 大多是空结果或接近显著，文中主要支持的是主观 trust / confidence / interaction experience 的变化，而不是决策质量提升。
+4. 关于 `show-one` 提高 `confidence` 的结论没有被正文结果充分支持。Study 2 讨论、摘要、设计启示都说“revealing less information at a time”会提高 trust 和 confidence，但 Study 2 正文没有给出对应的 confidence 统计检验。
+5. 多处把“相关”写成“机制”。例如 “through reducing perceptual load”, “user agency calibrates trust”, “interaction improves trust by giving users control” 都是机制性表述，但文中没有直接测量 perceptual load，也没有做 mediation / mechanism analysis。
+6. 方法上存在明显顺序混淆。Study 1 和 Study 2 的 baseline trial 都固定在第一个，baseline 与后续 trials 同时混杂了练习效应、熟悉度、疲劳和条件差异；后文只加了 baseline indicator，但这不能完全消除 order confound。
+7. Section 6 对“inventory measures trust”的主张过度。这里其实做的是一个 exploratory factor analysis，且题项来自 interaction experience inventory，不是新 trust scale 的完整验证；没有报告 reliability、measurement invariance、confirmatory validation，Table 2 里甚至把单个题项直接当成因子代表。
+8. 存在多处统计或表述错误，会削弱可信度。最明显的包括：Study 2 中 `p=0.12` 却被写成 significant；5.5 把 interaction affordance 与 data complexity 的主效应解释写反；Study 1 有若干 `SE=0.97` 级别的数值疑似小数点错误；4.11 把 interaction experience 误写成 trust ratings；Study 4 / Study 5 的编号残留会让读者怀疑文稿整合还未完成。
+
+### B. 逐段问题
+
+[P00] Figure 1 caption
+- 逻辑/结论：`balances the trade-offs` 说得过满；本文没有证明 interactive condition 在决策质量上真正“平衡”了 clarity 与 completeness。
+- 语法：`between from single forecasts` 明显错误，应重写。
+- 模糊词：`trade-offs` 没有具体指明是 trust、confidence，还是 accuracy。
+
+[P01] Abstract
+- 逻辑/结论：研究数量前后冲突；`regardless of interaction quality` 与 Study 1 trust 结果冲突；`higher trust and confidence` 对 Study 2 的 show-one/show-all 没有充分统计支持；`derive ... to measure trust` 也超过了 EFA 能支持的范围。
+- 语法：句子过长，建议拆成至少 3 句；`interactive visualization can help bridge this gap` 更自然的写法是复数 `interactive visualizations can help...`。
+- 模糊词：`this gap`、`interaction quality`、`this inventory` 都指代不够具体。
+
+[P02] Introduction para 1 (`We can see into multiple possible futures...`)
+- 逻辑/结论：基本成立。
+- 语法：`Multiple forecast visualizations (MFVs) surfaces` 应为 `surface`。
+- 模糊词：`these futures` 建议明确为 `alternative forecast outcomes`。
+
+[P03] Introduction para 2 (`However, presenting more data...`)
+- 逻辑/结论：基本成立，但把 complexity 直接连到 lower confidence / lower trust 时最好写成文献支持下的倾向，而不是普遍规律。
+- 语法：`presenting multiple forecasts negatively impact` 应为 `impacts` 或改写成复数主语。
+- 模糊词：`such increases in complexity` 可以更具体地指向 clutter / line density / concurrent uncertainty cues。
+
+[P04] Introduction para 3 (`Interaction offers a potential way...`)
+- 逻辑/结论：`interaction may increase user agency` 合理，但后文应始终保持“may / may be associated with”，不要在结论里变成已证实机制。
+- 语法：`through encouraging` 前的逗号不自然；`few concrete guidelines` 前后句可简化。
+- 模糊词：`user agency` 建议在首次出现时给出操作化定义。
+
+[P05] Introduction para 4 (`Designing effective interactive visualizations...`)
+- 逻辑/结论：基本成立。
+- 语法：`how encodings marks influence` 应为 `how encoding marks influence` 或 `how visual encodings influence`。
+- 模糊词：`it` / `information` 都可更具体，避免泛指。
+
+[P06] Introduction para 5 (`In contrast, the affordance space of interaction...`)
+- 逻辑/结论：`This is a missed opportunity` 带评价色彩，可以保留，但后面 `interaction can manage visual complexity` 最好写成 `can sometimes help manage`；`critically shape trust` 也应降调。
+- 语法：`presentation choices that changes` 应为 `change`。
+- 模糊词：`This gap`、`presentation choices`、`trust` 的具体层面都不够清晰。
+
+[P07] Introduction para 6 (`We conducted three studies...`)
+- 逻辑/结论：与摘要 / Section 3 冲突；这里也是读者第一次看到“三个 studies”，必须解释第三个 study 是什么。
+- 语法：`interaction availablity` 拼写错误；`one interaction show one and show all` 不通顺；`We test` 时态不统一。
+- 模糊词：`problematic designs`、`preliminary instrument` 都需要更明确界定。
+
+[P08] Contributions
+- 逻辑/结论：`actionable design guidelines` 过强；基于两个 humidity-forecasting studies + preliminary inventory，较稳妥的说法应是 `initial design implications`。
+- 语法：`design choices ... reacts with design choices` 应为 `interact with`；`implement and evaluate a survey inventory` 也不自然。
+- 模糊词：`agency`、`excessive data complexity` 建议具体到实验操作。
+
+[P09] Related Work 2.1 para 1
+- 逻辑/结论：基本成立。
+- 语法：`including ensemble plot, confidence interval, hypothetical outcome plot` 应统一为复数或统一表达。
+- 模糊词：`prediction fidelity` 建议给出更清晰含义。
+
+[P10] Related Work 2.1 para 2 (`Ensemble plot presents...`)
+- 逻辑/结论：基本成立。
+- 语法：`there’s plenty of predictions` 应为 `there are many predictions`；`can eases` 应为 `can ease`。
+- 模糊词：`sampling` 建议明确是 sampling trajectories / forecast members。
+
+[P11] Related Work 2.1 para 3 (`Confidence interval shows...`)
+- 逻辑/结论：基本成立。
+- 语法：`the prediction is most likely falls in`、`misinterpret it an area that all prediction falls in` 都需要重写。
+- 模糊词：`prediction` 应改为 `predicted value` 或 `forecast range`。
+
+[P12] Related Work 2.1 para 4 (`Hypothetical outcome plot...`)
+- 逻辑/结论：基本成立。
+- 语法：`it can not` 应为 `cannot`；`it have perceptual load on people` 应为 `it imposes perceptual load on viewers`。
+- 模糊词：`its media` 不自然，建议明确为 `presentation medium`。
+
+[P13] Related Work 2.1 para 5 (`In this study, we scope down...`)
+- 逻辑/结论：基本成立。
+- 语法：`scope down to studying` 偏口语；`complexity control method` 建议改为 `a way to manage complexity`。
+- 模糊词：`higher complexity` 最好说明是 visual density 还是 cognitive load。
+
+[P14] Related Work 2.2 para 1
+- 逻辑/结论：把 `confidence` 混入 `trust` 维度时要更谨慎，否则后文容易把两者混说。
+- 语法：`correctness in decision`、`People use trust inventory`、`Following practice previous works` 都不自然。
+- 模糊词：`trust` 需要明确是 trust in data、trust in visualization，还是 trust in interaction。
+
+[P15] Related Work 2.2 para 2
+- 逻辑/结论：基本成立。
+- 语法：`Previous researches` 应为 `Previous research`；`infromation` 拼写错误。
+- 模糊词：`too little information` 应更具体。
+
+[P16] Related Work 2.2 para 3
+- 逻辑/结论：基本成立，但最后一句最好写成研究问题而不是预设 interaction 可以缓解 trade-off。
+- 语法：`Matzen et. al.` / `Zou et. al.` 应为 `et al.`；`seeing MFV prediction has cost` 语法错误。
+- 模糊词：`this trade-off` 建议重复写出是什么 trade-off。
+
+[P17] Related Work 2.3 para 1
+- 逻辑/结论：基本成立，但 `two layers of data` 容易误导，detail-on-demand 不是固定“两层”。
+- 语法：`allows user to overviews first`、`It categorized as`、`In a higher level` 都需要重写。
+- 模糊词：`such operation` 指代不够明确。
+
+[P18] Related Work 2.3 para 2
+- 逻辑/结论：基本成立。
+- 语法：`remained unknown` 可，但全段建议更简洁。
+- 模糊词：`different uncertainty visualizations` 建议提前点名 CI / EP / EPCI。
+
+[P19] Section 3 overview para 1
+- 逻辑/结论：再次出现 `two studies`，与前文冲突；`All studies` 也会让冲突更明显。
+- 语法：整体可读，但 `forecasting tasks for two cities` 可以更简洁。
+- 模糊词：`all studies` 指的范围不明。
+
+[P20] Section 3 overview para 2 (`Study4 examines...`)
+- 逻辑/结论：`regardless of the quality of that interaction` 与 Study 1 结果冲突；`interaction likely improves trust by modulating information complexity` 是未经检验的机制推断。
+- 语法：`Study4` 编号错误；`interaction capabilities impacts` 应为 `interaction capability impacts` 或 `interaction capabilities impact`；`the less people trust` 句法错误。
+- 模糊词：`quality of interaction`、`more uncertainty information` 都太宽泛。
+
+[P21] Section 3 overview para 3 (`Study5 investigates...`)
+- 逻辑/结论：`user agency calibrates trust` 过强；Study 2 只能支持 click/hover 与更高 trust 相关，不足以独立识别“agency”机制。
+- 语法：`Study5` 编号错误；`show-one outperform show-all` 应为 `outperforms`。
+- 模糊词：`calibrates trust` 不清楚是 increase、stabilize，还是 align with accuracy。
+
+[P22] Section 3 overview para 4 (`Together, these results suggest...`)
+- 逻辑/结论：`supported by perceived agency` 过强，因为 perceived agency 并未被直接建模为 mediation。
+- 语法：基本可接受。
+- 模糊词：`perceived agency` 建议对应到具体量表项或操作化定义。
+
+[P23] 4.1 Dataset
+- 逻辑/结论：设计说明基本清楚。
+- 语法：基本可接受。
+- 模糊词：`high or low` 的具体幅度未说明。
+
+[P24] 4.2 Independent Variable Conditions（含 Figure 2 caption）
+- 逻辑/结论：条件设置总体清楚，但 `Baseline with Full/Buggy Interaction are not valid` 后，后文最好明确总设计是 `10 conditions total, but 9 factorial experimental cells + 1 baseline`。
+- 语法：`For interactions, we test` 时态不统一；`would provides benefit`、`We permutated through`、`show or interacted with`、`studeis`、Figure 2 caption 中 `The left four figures shows` 都有明显错误。
+- 模糊词：`baseline` 同时被用作 no-uncertainty condition 和 no-interaction reference，容易混淆。
+
+[P25] 4.3 Participants
+- 逻辑/结论：基本成立，但 `insufficient time` 的过滤标准应更明确。
+- 语法：基本可接受。
+- 模糊词：`sufficient power` 若不附效果量假设，会显得空泛。
+
+[P26] 4.4 Study Interface
+- 逻辑/结论：基本成立。
+- 语法：`questions of the prediction tasks` 更自然的写法是 `questions for the prediction tasks`。
+- 模糊词：`left part` / `right part` 可以具体成 panel 或 region。
+
+[P27] 4.5 Study Procedure para 1
+- 逻辑/结论：基本成立。
+- 语法：基本可接受。
+- 模糊词：无大问题。
+
+[P28] 4.5 Study Procedure para 2
+- 逻辑/结论：baseline 固定在第一轮是重要设计漏洞；`3*3 Latin Square` 也不够清楚，读者不容易判断是 participant-level counterbalancing 还是 condition ordering。
+- 语法：`see Section 6 for details` 在此处略跳跃，因为 Section 6 主要讲 inventory adaptation，不是所有 trial measures。
+- 模糊词：`baseline`、`remaining three trials` 的关系建议再明确。
+
+[P29] 4.6 任务定义段（Prediction 1/2/3 + Confidence）
+- 逻辑/结论：任务定义本身清楚。
+- 语法：基本可接受；`see Q3 in Figure 2)` 多了右括号。
+- 模糊词：`No Preference` 建议说明含义，是两城都可，还是无法判断。
+
+[P30] 4.6 Trust Rating 1 相关段
+- 逻辑/结论：这里测量的是 visualization trust + general trust disposition，不是完整的 `trust in data, visualization, and interaction`；应避免与摘要中的三元 trust 说法混同。
+- 语法：`which consists of four items measuring trust in visualizations and four items measuring general trust disposition` 可，但建议更紧凑。
+- 模糊词：`trust in the data` 与 `trust in the visualization` 的边界不够清晰。
+
+[P31] 4.6 Trust Rating 2 段
+- 逻辑/结论：这里更像 interaction experience 而不是 trust；后文若把它当 trust inventory 的一部分，需要明确“supplementary, preliminary, not validated as a trust scale”。
+- 语法：`better capture user perception of their interaction` 建议改为 `better capture users' perceptions of their interactions`。
+- 模糊词：`interaction` 可明确是 interaction quality、control 还是 responsiveness。
+
+[P32] 4.6 Interaction Logs 段
+- 逻辑/结论：logs 可以作为 engagement evidence，但不能 `ensure` 数据质量或真人参与；最多说明 interaction did occur。
+- 语法：`We analyze` 时态与上下文不一致，应为 `We analyzed`。
+- 模糊词：`quality control` 建议说明具体用于什么标准。
+
+[P33] 4.7 Manipulation Check
+- 逻辑/结论：方向正确，但只有 21.19% 的 buggy-condition 参与者主动报告问题，说明 manipulation 虽有效，却未必足够强。
+- 语法：基本可接受。
+- 模糊词：`issues` / `bugs` 是否包括轻微 glitch，建议界定。
+
+[P34] 4.8 Results: Interaction Logs（含 Figure 4 caption）
+- 逻辑/结论：用单个 participant 的 case study 不能 `further support the validity of our results`；这最多是 illustrative evidence。另，文中写 `Study 4` 是严重编号错误。
+- 语法：`The log reveal` 应为 `reveals`；Figure 4 caption 中 `User are switching` 应为 `Users are switching`。
+- 模糊词：`actively interacted` 的判定标准不清楚。
+
+[P35] 4.9 Results: Confidence
+- 逻辑/结论：主要结果清楚，但这里应明确模型是 repeated-measures / mixed model，而不是笼统的 `linear regression`；否则与后文模型书写不一致。
+- 语法：`We perform linear regression` 应为过去式；整体可再压缩。
+- 模糊词：`confidence` 应持续强调是主观 confidence，而不是 calibration/accuracy。
+
+[P36] 4.10 Results: Trust Inventory（含 Figure 3 caption）
+- 逻辑/结论：这是全文最关键的一组结果之一。需要把 `Buggy Interaction` 不显著高于 `No Interaction` 的事实在后文所有 summary/takeaway 中保持一致。Figure 3 caption 里 `interaction improves trust through reducing perception loads` 是未经检验的机制性表述。
+- 语法：`Trust ratings were derived from the Trust Inventory [39], on visualization clarity and data quality` 不自然；Figure 3 caption 中 `perception loads` 应为 `perceptual load`；文中若干 `SE=0.97` 很可能是小数点错误。
+- 模糊词：`trust` 建议明确是 composite trust score，而不是泛指所有信任。
+
+[P37] 4.11 Results: Interaction Experience
+- 逻辑/结论：结果方向清楚，但 `For uncertainty design, CI had significantly higher trust ratings...` 明显写错，应该是 `interaction experience ratings`；否则会与上一节混淆。
+- 语法：`We then run` 应为 `ran`；`higher No Interaction` 缺少 `than`。
+- 模糊词：`interaction experience composite` 建议在首次出现时给公式或 item aggregation 说明。
+
+[P38] 4.12 Results: Prediction Tasks
+- 逻辑/结论：prediction outcomes 大多为空结果，因此不应在摘要、贡献和 design implications 中暗示 interaction 改善了 decision making。Task 2 里 `baseline effect approached significance (p=.063)` 只能算趋势，后面的解释应更保守。
+- 语法：引言段里 `to account for ... to account for ...` 重复；Task 2 解释段句子偏长。
+- 模糊词：`systematically influenced` 建议明确是 mean shift，而不是任何形式的影响。
+
+[P39] 4.13 Discussion and Takeaways
+- 逻辑/结论：第一段把最低 confidence 解释成 visual clutter / lower clarity，是合理猜测，但仍属推断；第二段关于 `full interaction` 的结论基本与结果一致，但必须避免扩展成“buggy 也一样好”。另外 `participants also reported the highest trust trusted visualizations more` 是明显残句。
+- 语法：第二段首句需要重写；`generalizes` 应为 `generalize`。
+- 模糊词：`this benefit` 指向 trust 还是 interaction experience，不够清晰。
+
+[P40] Section 5 intro（Study 2 引入）
+- 逻辑/结论：`Results from Study4` 编号错误；`interaction consistently increased trust` 过强，因为 Study 1 中 buggy 不优于 no interaction；`likely due to increased visual complexity` 仍是机制推断。
+- 语法：编号错误外，整体可读。
+- 模糊词：`user agency plays a critical role` 建议换成更可检验的表述。
+
+[P41] 5.1 Study Conditions
+- 逻辑/结论：Animation 不只是“无 agency”，它还可能改变 pacing、attention、time-on-task，因此不能被当成纯净的 agency baseline。总条件数 `18` 也最好立刻说明是 overall design，而不是每位参与者都看到 18 个。
+- 语法：`Stduy` 拼写错误；`whether agency mattered or providing... was enough` 句法错误；`show detail a series`、`mouse click` 等表述都不自然。
+- 模糊词：`show one` / `show all` 建议具体到 reveal one series vs reveal both series。
+
+[P42] 5.2 Participants
+- 逻辑/结论：基本成立。
+- 语法：`Mage = 38,22` 应为 `38.22`。
+- 模糊词：无大问题。
+
+[P43] 5.3 Study Procedure
+- 逻辑/结论：baseline 仍固定在第一轮，顺序混淆仍在；另外 uncertainty information 是 between-subject，但这一点应更早说清楚。
+- 语法：`participants are randomly assigned` 与全文时态不一致；`This creates a mixed-design experiment ...` 末尾缺句点。
+- 模糊词：`one uncertainty information type` 建议改为 `one uncertainty representation condition`。
+
+[P44] 5.4 Results: Trust Rating
+- 逻辑/结论：主效应方向清楚，但存在两处严重问题。第一，`CI and EP are significantly higher than EPCI (p=0.02, 0.12)` 中 `p=0.12` 不能写成 significant。第二，后文若要说 `generalized across visualization techniques`，更稳妥的是基于交互项不显著写成“no evidence of moderation”，而不是“已证明完全可泛化”。
+- 语法：`We also found a significant effect of data complexity also reached significance` 明显病句；`There’s no significant difference between the trust for CI and EP` 也可更自然。
+- 模糊词：`visualization type`、`uncertainty information` 在此处最好统一术语。
+
+[P45] 5.5 Results: Interaction Experience（含 Figure 5 caption）
+- 逻辑/结论：这里有明显写反。第一段说 `main effect of interaction affordance`，但解释的是 `show one vs. show all`；第二段说 `main effect of data complexity`，却解释的是 `click / hover / animation`。这是结果汇报级别错误，必须修正。另，Figure 5 caption 说 `This suggests interaction helps decision making through user agency` 也过强，因为 decision tasks 并未改善。
+- 语法：`participants’ response` 应为 `responses`；`condition both have` 应为 `conditions both have`；整体有多处主谓对应问题。
+- 模糊词：`generalizable across uncertainty visualization methods` 建议改为 `we found no evidence that the effect differed by visualization method`。
+
+[P46] 5.6 Results: Prediction Tasks
+- 逻辑/结论：Task 3 报告了显著关联 `χ² = 34.48, p < .001`，但没有给自由度、样本量，也没有解释是哪个 manipulation 驱动；而 Discussion 几乎完全忽略这一结果。若保留，应补完整；若不解释，建议弱化。
+- 语法：Task 2 段整体可接受。
+- 模糊词：`visualization type` 指哪一维操作不清楚。
+
+[P47] 5.7 Results: Interaction Logs（含 Figure 6 caption）
+- 逻辑/结论：interaction logs 可以说明尝试交互，但不能 `check whether the data was collected from real humans`；这句话过头了。
+- 语法：基本可接受；Figure 6 caption 也基本可接受。
+- 模糊词：`prior expectations` 建议更具体，例如 `expected clickable legends`。
+
+[P48] 5.8 Discussion and Takeaways
+- 逻辑/结论：第一段把 click/hover vs animation 的差异直接归因为 `user agency`，仍然过强，因为 animation 并非唯一只少了 agency。第二段说 `show-one` 提高 trust 和 confidence，但正文没有对应 confidence analysis；因此 takeaway 需要删去 confidence 或补统计结果。
+- 语法：整体可接受。
+- 模糊词：`best used` 是过强设计建议，建议改为 `may be more effective in our task setting`。
+
+[P49] Section 6 intro
+- 逻辑/结论：开头说 `measure trust in visualizations using two complementary survey inventories`，但第二个 inventory 实际测的是 interaction experience；建议明确说它是 trust 的补充视角，而不是已经成立的 trust measure。
+- 语法：基本可接受。
+- 模糊词：`complementary`、`aspects of interaction that may influence trust` 都可以更具体。
+
+[P50] 6.1 Adapting the Interactive Experience Inventory
+- 逻辑/结论：问题不在语法，而在 construct validity。即使改词，`communication with other users who shared my interests`、`personal conversation` 这类题项与单人 weather-forecast visualization 任务仍不匹配。建议重新写题，而不是只做替换。
+- 语法：主体段可接受。
+- 模糊词：bullet 3-5 把多个概念同时替换，读者很难判断最终题项到底保留了什么心理构念。
+
+[P51] 6.1 变异性 / pooling 段
+- 逻辑/结论：把多个 study 的 response pool 在一起做 EFA 不是不能做，但需要说明 study effect、measurement invariance、以及为什么可以忽略不同实验结构。当前只说“variation is important”不够。
+- 语法：基本可接受。
+- 模糊词：`design fidelity`、`trustworthiness` 在这里都没有操作化说明。
+
+[P52] 6.2 Exploratory Factor Analysis（含 Figure 7 caption）
+- 逻辑/结论：选 3-factor 的论证不充分。BIC/RMR 都只给了视觉性解释，没有报告 extraction method、rotation、parallel analysis、KMO/Bartlett 等常见信息；而且 RMR 随因子数上升本来就容易下降。当前更适合说 `a plausible three-factor solution`，不宜写成 `the most parsimonious and informative representation`。
+- 语法：`The root mean residual measures ..., decreased ...` 时态/主谓不一致。
+- 模糊词：`clear elbow`、`substantially` 都是主观词，建议更定量。
+
+[P53] 6.3 Factor 1: Control
+- 逻辑/结论：解释基本合理，但负载是负号，不是问题本身，只需说明因子方向任意即可。
+- 语法：`We evaluate the strength of association ... with factor loadings` 句子偏笨重。
+- 模糊词：`agency` 与 `control` 的关系最好说明，是同义还是近义。
+
+[P54] 6.3 Factor 2: Meaningfulness
+- 逻辑/结论：这是最弱的一组。题项 6-8 混杂社交、对话感和 meaningful interaction，而且载荷不高；把它上升为 `Meaningfulness` 并纳入 trust inventory 风险很大。
+- 语法：基本可接受。
+- 模糊词：`meaningful and expressive`、`conversational engagement` 在此任务语境下都很模糊。
+
+[P55] 6.3 Factor 3: Responsiveness and Alignment
+- 逻辑/结论：命名基本合理，但文中说 items 4, 5, and 9 loaded on this factor；若 Table 1 中 item 9 只有 0.272，则并不算强加载，至少不应与 4/5 并列强调。
+- 语法：`responds in a way that matches` 可更紧凑。
+- 模糊词：`alignment` 的具体含义不清楚。
+
+[P56] 6.3 综合解释段
+- 逻辑/结论：`positive experience ... is shaped by ...` 仍然太像机制结论；EFA 只能说明 response pattern clustered around these dimensions。
+- 语法：整体可接受。
+- 模糊词：`meaningfully supporting analytic and reasoning processes` 太泛。
+
+[P57] Table 2 / combined inventory paragraph
+- 逻辑/结论：最关键的问题是，Table 2 不是一个已经验证好的新量表，只是一个 preliminary proposal。每个新因子只留一个诊断题项，也无法形成可靠子量表，因此 `a preliminary visualization trust survey` 需要明显降调。
+- 语法：`captures trust in interactive visualizations` 建议改为 `may help capture interaction-related aspects relevant to trust`。
+- 模糊词：`diagnostic` 不等于 `sufficient`，这里容易误导。
+
+[P58] Section 7: Uncertainty Visualization Techniques
+- 逻辑/结论：基本成立。
+- 语法：基本可接受。
+- 模糊词：无大问题。
+
+[P59] Section 7: More Datasets
+- 逻辑/结论：基本成立，且是必要限制说明。
+- 语法：`can be more complex to involve` 可更自然地写成 `may involve`。
+- 模糊词：`larger, real datasets` 最好补一句指 dataset complexity 还是 ecological validity。
+
+[P60] Section 7: Additional Interaction Techniques
+- 逻辑/结论：这里出现全文最严重的自我矛盾之一：`regardless of interaction affordances or quality (i.e., buggy interactions are trusted just as much)` 同时与 Study 1 和 Study 2 冲突。必须删除或彻底改写。
+- 语法：`ser agency` 明显是 typo；整段可读性一般。
+- 模糊词：`just as much` 需要对应具体统计结论，否则过于绝对。
+
+[P61] Section 7: Interaction and Trust Measurement
+- 逻辑/结论：这段比前面稳妥，但建议更明确写出“current evidence is exploratory and not sufficient for validation”。
+- 语法：基本可接受。
+- 模糊词：`reliable and generalizable inventory` 建议说明 across what settings。
+
+[P62] Section 8: Design Implications para 1
+- 逻辑/结论：基本成立，但应强调这是在本任务和本 visual encodings 下观察到的模式。
+- 语法：基本可接受。
+- 模糊词：`more uncertainty information` 建议具体成 `more simultaneously visible uncertainty cues`。
+
+[P63] Section 8: Design Implications para 2
+- 逻辑/结论：`even when the interaction was buggy` 与 Study 1 结果冲突；`higher trust and confidence than showing all the information at once` 中 confidence 仍缺支持。该段必须重写。
+- 语法：整体可接受。
+- 模糊词：`more control`、`engagement` 都应更具体。
+
+[P64] Section 8: Design Implications para 3
+- 逻辑/结论：把 factor analysis 直接升级成 design prescription 仍然太快。更稳妥的表述应是 `our exploratory analysis suggests that designers may want to consider ...`。
+- 语法：`to make sure users experience agency` 稍显口语，可更学术。
+- 模糊词：`meaningful interactions`、`authoring pipeline` 都过宽。
+
+### C. 建议优先修改顺序
+
+1. 先统一 study 数量、编号和数据来源，把 `Study4/Study5`、`two studies / three studies`、`all three studies` 全部改一致。
+2. 全面回收所有过强 takeaway：删掉 `regardless of interaction quality`、删掉 Study 2 中没有统计支持的 `confidence` 结论、删掉所有未检验机制式表述。
+3. 修正所有统计与结果描述错误：`p=0.12`、5.5 主效应解释写反、`trust ratings`/`interaction experience ratings` 混写、疑似错误的 `SE=0.97`。
+4. 把 inventory section 明确降格为 `preliminary exploratory instrument adaptation`，并在 limitation 中补上 validation 缺口。
+5. 最后统一语法、术语和模糊词，特别是 `agency`、`trust`、`confidence`、`visual complexity` 的定义。
+
+## English Review
+
+### A. High-Priority Logical Conflicts and Takeaway Problems
+
+1. The manuscript is inconsistent about the number of studies. The abstract says `two crowdsourced studies`, the introduction says `three studies`, Section 3 again says `two online, crowdsourced studies`, and Section 6 says `across all three studies`. A reader cannot tell what the third study is or where the factor-analysis data came from.
+2. The paper repeatedly overstates the claim that interaction helps trust regardless of quality or affordance. The abstract, Section 3, Section 7, and Section 8 all imply that any interaction helps, even buggy interaction. That is not what the results show. Study 1 reports `Full Interaction > Buggy / No Interaction`, and `Buggy` is not significantly higher than `No Interaction`. Study 2 also shows `click / hover > animation`.
+3. Claims about decision making, calibrated decisions, and trustworthy interpretation are too strong. The studies mostly show changes in subjective trust, confidence, and interaction experience, while the prediction tasks are mostly null or near-null.
+4. The claim that `show-one` increases `confidence` is not adequately supported in the paper. The abstract, discussion, and design implications say that revealing less information at a time improves trust and confidence, but Study 2 does not present the corresponding confidence analysis.
+5. Several sentences state mechanisms rather than associations. Phrases such as `through reducing perceptual load`, `user agency calibrates trust`, and `interaction improves trust by giving users control` all sound causal, but the paper does not directly measure perceptual load and does not run mediation or mechanism analyses.
+6. The fixed-first baseline trial creates an order confound. In both studies, the baseline comes first, so baseline is mixed with practice, familiarity, and sequence effects. Adding a baseline indicator later does not fully solve that problem.
+7. Section 6 overclaims what the inventory can do. The paper runs an exploratory factor analysis on an adapted interaction-experience instrument; it does not validate a new trust scale. Reliability, invariance, and confirmatory validation are missing, and Table 2 reduces each new factor to a single item.
+8. There are several reporting errors that weaken credibility: `p=0.12` is described as significant, the main-effect explanations in 5.5 are swapped, some Study 1 `SE=0.97` values appear to be decimal-point errors, 4.11 accidentally says `trust ratings` instead of `interaction experience ratings`, and the `Study 4 / Study 5` numbering leftovers make the draft look insufficiently integrated.
+
+### B. Paragraph-by-Paragraph Notes
+
+[P00] Figure 1 caption
+- Logic/takeaway: `balances the trade-offs` is too strong; the paper does not show that the interactive condition actually balances clarity and completeness at the level of decision quality.
+- Grammar: `between from single forecasts` is incorrect and should be rewritten.
+- Ambiguous wording: `trade-offs` is not specific enough.
+
+[P01] Abstract
+- Logic/takeaway: The study count is inconsistent; `regardless of interaction quality` conflicts with Study 1; `higher trust and confidence` is not fully supported for the show-one/show-all comparison; `derive ... to measure trust` overstates what an EFA can justify.
+- Grammar: The abstract is overpacked and should be split into shorter sentences; `interactive visualization can help` would read more naturally as plural.
+- Ambiguous wording: `this gap`, `interaction quality`, and `this inventory` are underspecified.
+
+[P02] Introduction para 1
+- Logic/takeaway: Mostly fine.
+- Grammar: `MFVs surfaces` should be `MFVs surface`.
+- Ambiguous wording: `these futures` should be made more concrete.
+
+[P03] Introduction para 2
+- Logic/takeaway: Reasonable, but the complexity-to-trust link should be stated as literature-supported tendency, not universal fact.
+- Grammar: `presenting multiple forecasts negatively impact` should be corrected.
+- Ambiguous wording: `such increases in complexity` should be made more concrete.
+
+[P04] Introduction para 3
+- Logic/takeaway: `interaction may increase user agency` is fine, but later sections should preserve that cautious framing instead of upgrading it into a proven mechanism.
+- Grammar: The comma before `through encouraging` is awkward.
+- Ambiguous wording: `user agency` should be operationalized at first mention.
+
+[P05] Introduction para 4
+- Logic/takeaway: Mostly fine.
+- Grammar: `encodings marks` should be `encoding marks` or `visual encodings`.
+- Ambiguous wording: The paragraph uses several broad references to `information` and `it`.
+
+[P06] Introduction para 5
+- Logic/takeaway: `This is a missed opportunity` is acceptable rhetoric, but `interaction can manage visual complexity` and `critically shape trust` should be toned down.
+- Grammar: `choices that changes` should be `choices that change`.
+- Ambiguous wording: `This gap`, `presentation choices`, and `trust` are still too broad.
+
+[P07] Introduction para 6
+- Logic/takeaway: This is the first place that says `three studies`, which conflicts with the abstract and Section 3 and therefore needs immediate clarification.
+- Grammar: `availablity` is misspelled; `one interaction show one and show all` is ungrammatical; `We test` is inconsistent with the surrounding past tense.
+- Ambiguous wording: `problematic designs` and `preliminary instrument` need sharper definition.
+
+[P08] Contributions
+- Logic/takeaway: `actionable design guidelines` is too strong for two task-specific studies plus a preliminary inventory adaptation.
+- Grammar: `reacts with` should be `interact with`; `implement and evaluate a survey inventory` is awkward.
+- Ambiguous wording: `agency` and `excessive data complexity` should be tied more clearly to the manipulations.
+
+[P09] Related Work 2.1 para 1
+- Logic/takeaway: Mostly fine.
+- Grammar: The list of uncertainty techniques should be made grammatically parallel.
+- Ambiguous wording: `prediction fidelity` is not clearly defined.
+
+[P10] Related Work 2.1 para 2
+- Logic/takeaway: Mostly fine.
+- Grammar: `there’s plenty of predictions` and `can eases` are incorrect.
+- Ambiguous wording: `sampling` should be specified more clearly.
+
+[P11] Related Work 2.1 para 3
+- Logic/takeaway: Mostly fine.
+- Grammar: `the prediction is most likely falls in` and `misinterpret it an area that all prediction falls in` both need rewriting.
+- Ambiguous wording: `prediction` should be replaced with `predicted value` or similar.
+
+[P12] Related Work 2.1 para 4
+- Logic/takeaway: Mostly fine.
+- Grammar: `can not` should be `cannot`; `it have perceptual load` is incorrect.
+- Ambiguous wording: `its media` is unnatural and vague.
+
+[P13] Related Work 2.1 para 5
+- Logic/takeaway: Fine.
+- Grammar: `scope down to studying` is too colloquial.
+- Ambiguous wording: `higher complexity` should be defined more concretely.
+
+[P14] Related Work 2.2 para 1
+- Logic/takeaway: The paragraph blends `confidence` into `trust` without enough distinction, which creates later slippage.
+- Grammar: `correctness in decision`, `People use trust inventory`, and `Following practice previous works` all need revision.
+- Ambiguous wording: `trust` needs a clearer object.
+
+[P15] Related Work 2.2 para 2
+- Logic/takeaway: Fine.
+- Grammar: `Previous researches` and `infromation` are incorrect.
+- Ambiguous wording: `too little information` is too general.
+
+[P16] Related Work 2.2 para 3
+- Logic/takeaway: Reasonable overall, but the final sentence should remain a research question rather than presupposing that interaction mitigates the trade-off.
+- Grammar: `et. al.` should be `et al.`; `seeing MFV prediction has cost` is ungrammatical.
+- Ambiguous wording: `this trade-off` should be restated more explicitly.
+
+[P17] Related Work 2.3 para 1
+- Logic/takeaway: Mostly fine, but `two layers of data` is misleading because detail-on-demand is not inherently a two-layer construct.
+- Grammar: `allows user to overviews first`, `It categorized as`, and `In a higher level` all need rewriting.
+- Ambiguous wording: `such operation` is vague.
+
+[P18] Related Work 2.3 para 2
+- Logic/takeaway: Fine.
+- Grammar: The paragraph can be tightened.
+- Ambiguous wording: `different uncertainty visualizations` should name the actual conditions.
+
+[P19] Section 3 overview para 1
+- Logic/takeaway: This is another place where `two studies` conflicts with earlier `three studies`. `All studies` makes the inconsistency even more visible.
+- Grammar: Mostly fine.
+- Ambiguous wording: `all studies` is unclear because the study count is unclear.
+
+[P20] Section 3 overview para 2
+- Logic/takeaway: `regardless of the quality of that interaction` conflicts with Study 1, and `modulating information complexity` is still a mechanism claim rather than a demonstrated result.
+- Grammar: `Study4` is a numbering error; `interaction capabilities impacts` is incorrect; `the less people trust` is malformed.
+- Ambiguous wording: `quality of interaction` and `more uncertainty information` are too broad.
+
+[P21] Section 3 overview para 3
+- Logic/takeaway: `user agency calibrates trust` is too strong. Study 2 shows an affordance effect, but it does not isolate agency as the only mechanism.
+- Grammar: `Study5` is a numbering error; `show-one outperform show-all` should be corrected.
+- Ambiguous wording: `calibrates trust` is unclear.
+
+[P22] Section 3 overview para 4
+- Logic/takeaway: `supported by perceived agency` is too strong because perceived agency was not modeled as a mediator.
+- Grammar: Acceptable.
+- Ambiguous wording: `perceived agency` should be tied to concrete survey items or manipulations.
+
+[P23] 4.1 Dataset
+- Logic/takeaway: Clear enough.
+- Grammar: Acceptable.
+- Ambiguous wording: `high or low` should be quantified.
+
+[P24] 4.2 Independent Variable Conditions
+- Logic/takeaway: The design is understandable, but after excluding invalid cells the paper should clearly say `10 total conditions = 1 baseline + 9 experimental cells`.
+- Grammar: `We test`, `would provides benefit`, `We permutated through`, `show or interacted with`, `studeis`, and the Figure 2 caption all contain clear errors.
+- Ambiguous wording: `baseline` is used in more than one sense and can be confusing.
+
+[P25] 4.3 Participants
+- Logic/takeaway: Fine overall, but the `insufficient time` exclusion criterion should be defined more clearly.
+- Grammar: Acceptable.
+- Ambiguous wording: `sufficient power` is vague without effect-size assumptions.
+
+[P26] 4.4 Study Interface
+- Logic/takeaway: Fine.
+- Grammar: `questions of the prediction tasks` would read better as `questions for the prediction tasks`.
+- Ambiguous wording: `left part` and `right part` could be made more specific.
+
+[P27] 4.5 Study Procedure para 1
+- Logic/takeaway: Fine.
+- Grammar: Acceptable.
+- Ambiguous wording: No major issue.
+
+[P28] 4.5 Study Procedure para 2
+- Logic/takeaway: The first-trial baseline is an important design weakness; `3*3 Latin Square` is also not explained clearly enough.
+- Grammar: `see Section 6 for details` is not the best pointer here.
+- Ambiguous wording: The relationship between `baseline` and the remaining trials should be clearer.
+
+[P29] 4.6 task-definition paragraphs
+- Logic/takeaway: The tasks are mostly clear.
+- Grammar: Mostly fine; `see Q3 in Figure 2)` contains an extra closing parenthesis.
+- Ambiguous wording: `No Preference` could be defined more explicitly.
+
+[P30] 4.6 Trust Rating 1 paragraphs
+- Logic/takeaway: This measures visualization trust plus general trust disposition, not a full three-way `trust in data, visualization, and interaction`.
+- Grammar: Acceptable, though it could be tighter.
+- Ambiguous wording: The boundary between `trust in data` and `trust in visualization` is not fully clear.
+
+[P31] 4.6 Trust Rating 2 paragraph
+- Logic/takeaway: This is closer to interaction experience than trust. Later sections should be explicit that it is a preliminary supplement, not a validated trust scale.
+- Grammar: `better capture user perception of their interaction` should be revised.
+- Ambiguous wording: `interaction` is underspecified.
+
+[P32] 4.6 Interaction Logs paragraph
+- Logic/takeaway: Logs can provide engagement evidence, but they cannot `ensure` data quality or human participation.
+- Grammar: `We analyze` should be `We analyzed`.
+- Ambiguous wording: `quality control` should be defined more concretely.
+
+[P33] 4.7 Manipulation Check
+- Logic/takeaway: The direction is right, but only 21.19% explicitly reported problems in the buggy condition, which suggests a weaker manipulation than the later narrative implies.
+- Grammar: Acceptable.
+- Ambiguous wording: `issues` / `bugs` should be defined more clearly.
+
+[P34] 4.8 Results: Interaction Logs
+- Logic/takeaway: A single-participant case study cannot `support the validity of our results`; it is illustrative at best. Also, `Study 4` is a major numbering error.
+- Grammar: `The log reveal` should be `reveals`; the Figure 4 caption also has grammar errors.
+- Ambiguous wording: `actively interacted` needs a clearer criterion.
+
+[P35] 4.9 Results: Confidence
+- Logic/takeaway: The section is readable, but the model description should clearly say whether this is a repeated-measures or mixed model rather than only `linear regression`.
+- Grammar: `We perform linear regression` should be past tense.
+- Ambiguous wording: `confidence` should consistently be framed as subjective confidence.
+
+[P36] 4.10 Results: Trust Inventory
+- Logic/takeaway: This is one of the central result sections, and all later summaries must remain consistent with the fact that `Buggy` is not significantly above `No Interaction`. The Figure 3 caption again introduces an unsupported mechanism claim.
+- Grammar: The first sentence is awkward; `perception loads` should be `perceptual load`; some `SE=0.97` values appear implausible.
+- Ambiguous wording: `trust` should be labeled explicitly as the composite trust score.
+
+[P37] 4.11 Results: Interaction Experience
+- Logic/takeaway: The result direction is clear, but `CI had significantly higher trust ratings` is an obvious label error and should say `interaction experience ratings`.
+- Grammar: `We then run` should be `ran`; `higher No Interaction` is missing `than`.
+- Ambiguous wording: `interaction experience composite` should be defined more precisely at first use.
+
+[P38] 4.12 Results: Prediction Tasks
+- Logic/takeaway: Since the prediction outcomes are mostly null, the abstract, contributions, and implications should not imply improved decision making. In Task 2, `p=.063` is only a trend and should be treated more cautiously.
+- Grammar: The introduction to the section repeats `to account for`; the Task 2 explanation is longer than needed.
+- Ambiguous wording: `systematically influenced` is broad.
+
+[P39] 4.13 Discussion and Takeaways
+- Logic/takeaway: The first paragraph offers a plausible interpretation about clutter and clarity, but it is still interpretation. The second paragraph is broadly consistent with the trust results, but the malformed opening sentence needs repair and the paper must avoid expanding this into `buggy works too`.
+- Grammar: `participants also reported the highest trust trusted visualizations more` is broken; `generalizes` should be `generalize`.
+- Ambiguous wording: `this benefit` is unclear.
+
+[P40] Section 5 introduction
+- Logic/takeaway: `Results from Study4` is a numbering error; `interaction consistently increased trust` is too strong; `likely due to increased visual complexity` is still a mechanism claim.
+- Grammar: Mostly readable aside from numbering.
+- Ambiguous wording: `user agency plays a critical role` should be phrased more cautiously.
+
+[P41] 5.1 Study Conditions
+- Logic/takeaway: Animation is not a pure no-agency baseline because it also changes pacing, attention, and time-on-task. The text should also clarify immediately that `18 conditions` refers to the global design, not the per-participant exposure.
+- Grammar: `Stduy` is misspelled; `whether agency mattered or providing... was enough` is malformed; the hover/click descriptions are awkward.
+- Ambiguous wording: `show one` and `show all` should be defined more concretely.
+
+[P42] 5.2 Participants
+- Logic/takeaway: Fine.
+- Grammar: `Mage = 38,22` should use a decimal point.
+- Ambiguous wording: No major issue.
+
+[P43] 5.3 Study Procedure
+- Logic/takeaway: The same first-trial baseline confound remains. The between-subject role of uncertainty representation should be made explicit earlier.
+- Grammar: `participants are randomly assigned` is inconsistent with the surrounding tense; the last sentence needs a period.
+- Ambiguous wording: `one uncertainty information type` should be made more specific.
+
+[P44] 5.4 Results: Trust Rating
+- Logic/takeaway: The main direction is clear, but there are two major problems. First, `CI and EP are significantly higher than EPCI (p=0.02, 0.12)` is statistically inconsistent because `p=0.12` is not significant. Second, later claims of generalizability should be framed as `no evidence of moderation`, not as proof of complete generalization.
+- Grammar: `We also found a significant effect of data complexity also reached significance` is broken.
+- Ambiguous wording: `visualization type` and `uncertainty information` should be standardized.
+
+[P45] 5.5 Results: Interaction Experience
+- Logic/takeaway: This section contains a clear reporting reversal. The paragraph labeled as the main effect of interaction affordance interprets `show one` vs `show all`, while the next paragraph labeled as data complexity interprets `click / hover / animation`. That must be fixed. The Figure 5 caption also overclaims improved decision making through agency.
+- Grammar: `participants’ response` should be plural; `condition both have` is incorrect.
+- Ambiguous wording: `generalizable across uncertainty visualization methods` should be softened to `we found no evidence that the effect differed by method`.
+
+[P46] 5.6 Results: Prediction Tasks
+- Logic/takeaway: Task 3 reports a significant association `χ² = 34.48, p < .001`, but the paper omits degrees of freedom, sample size, and interpretation. If this result stays, it needs fuller reporting and discussion.
+- Grammar: Mostly acceptable.
+- Ambiguous wording: `visualization type` is unclear here.
+
+[P47] 5.7 Results: Interaction Logs
+- Logic/takeaway: Logs can show interaction attempts, but they cannot verify that the data came from `real humans`.
+- Grammar: Acceptable.
+- Ambiguous wording: `prior expectations` should be specified more concretely.
+
+[P48] 5.8 Discussion and Takeaways
+- Logic/takeaway: The first paragraph again attributes the click/hover versus animation difference directly to `user agency`, which is still too strong because animation differs in more than agency. The second paragraph says `show-one` improved trust and confidence, but the confidence part is not supported in the reported results.
+- Grammar: Acceptable.
+- Ambiguous wording: `best used` is too strong for a design implication.
+
+[P49] Section 6 introduction
+- Logic/takeaway: The paper says it measures trust with `two complementary survey inventories`, but the second one is still an interaction-experience inventory. It should be framed as a supplementary perspective related to trust.
+- Grammar: Acceptable.
+- Ambiguous wording: `complementary` and `aspects of interaction that may influence trust` are broad.
+
+[P50] 6.1 Adapting the Interactive Experience Inventory
+- Logic/takeaway: The core issue is construct validity, not syntax. Even after wording substitution, items such as `communication with other users who shared my interests` and `personal conversation` do not fit a single-user weather-forecast visualization task.
+- Grammar: The main prose is acceptable.
+- Ambiguous wording: The bullet list collapses multiple concept substitutions at once, which makes construct preservation unclear.
+
+[P51] 6.1 pooling / variation paragraph
+- Logic/takeaway: Pooling responses across studies for EFA is not inherently wrong, but the paper should discuss study effects, invariance, and why the different designs can be pooled. `Variation is important` is not enough.
+- Grammar: Acceptable.
+- Ambiguous wording: `design fidelity` and `trustworthiness` are not operationalized here.
+
+[P52] 6.2 Exploratory Factor Analysis
+- Logic/takeaway: The argument for the three-factor solution is underdeveloped. The paper relies on visual interpretation of BIC and RMR, without reporting extraction method, rotation, parallel analysis, KMO/Bartlett, or other standard diagnostics. This would support `a plausible three-factor solution`, not a definitive one.
+- Grammar: `The root mean residual measures ..., decreased ...` has agreement and tense problems.
+- Ambiguous wording: `clear elbow` and `substantially` are subjective.
+
+[P53] 6.3 Factor 1: Control
+- Logic/takeaway: The interpretation is reasonable. Negative loading signs are not a problem but the text could briefly note that factor direction is arbitrary.
+- Grammar: The sentence about loadings is clumsy.
+- Ambiguous wording: The relationship between `agency` and `control` should be clarified.
+
+[P54] 6.3 Factor 2: Meaningfulness
+- Logic/takeaway: This is the weakest factor. Items 6-8 mix sociability, conversational feel, and meaningful interaction, and the loadings are modest. Elevating this into a trust dimension is risky.
+- Grammar: Acceptable.
+- Ambiguous wording: `meaningful and expressive` and `conversational engagement` are vague in this task context.
+
+[P55] 6.3 Factor 3: Responsiveness and Alignment
+- Logic/takeaway: The name is reasonable, but if Table 1 shows item 9 at only `0.272`, the text should not treat it as equally loaded with items 4 and 5.
+- Grammar: Acceptable.
+- Ambiguous wording: `alignment` remains broad.
+
+[P56] 6.3 combined interpretation paragraph
+- Logic/takeaway: `positive experience ... is shaped by ...` still sounds too mechanistic. EFA only shows that the responses clustered around these dimensions.
+- Grammar: Acceptable.
+- Ambiguous wording: `meaningfully supporting analytic and reasoning processes` is very broad.
+
+[P57] Table 2 / combined inventory paragraph
+- Logic/takeaway: Table 2 is not yet a validated new scale; it is only a preliminary proposal. Using one diagnostic item per factor also means the new dimensions are not reliable subscales.
+- Grammar: `captures trust in interactive visualizations` should be softened.
+- Ambiguous wording: `diagnostic` does not mean `sufficient`.
+
+[P58] Section 7: Uncertainty Visualization Techniques
+- Logic/takeaway: Fine.
+- Grammar: Acceptable.
+- Ambiguous wording: No major issue.
+
+[P59] Section 7: More Datasets
+- Logic/takeaway: Fine and necessary.
+- Grammar: `can be more complex to involve` would read better as `may involve`.
+- Ambiguous wording: `larger, real datasets` could be more precise.
+
+[P60] Section 7: Additional Interaction Techniques
+- Logic/takeaway: This is one of the strongest contradictions in the paper. `regardless of interaction affordances or quality (i.e., buggy interactions are trusted just as much)` conflicts with both Study 1 and Study 2 and should be removed or fully rewritten.
+- Grammar: `ser agency` is a typo.
+- Ambiguous wording: `just as much` is too absolute without direct statistical support.
+
+[P61] Section 7: Interaction and Trust Measurement
+- Logic/takeaway: This paragraph is more appropriately cautious, but it should state more directly that the current evidence is exploratory and insufficient for validation.
+- Grammar: Acceptable.
+- Ambiguous wording: `reliable and generalizable inventory` should specify across which settings.
+
+[P62] Section 8: Design Implications para 1
+- Logic/takeaway: Reasonable, but the wording should emphasize that this pattern was observed in this specific task and set of visual encodings.
+- Grammar: Acceptable.
+- Ambiguous wording: `more uncertainty information` should be made more concrete.
+
+[P63] Section 8: Design Implications para 2
+- Logic/takeaway: `even when the interaction was buggy` conflicts with Study 1; `higher trust and confidence than showing all the information at once` again overclaims confidence. This paragraph needs rewriting.
+- Grammar: Acceptable.
+- Ambiguous wording: `more control` and `engagement` are still broad.
+
+[P64] Section 8: Design Implications para 3
+- Logic/takeaway: The paragraph moves too quickly from exploratory factor analysis to prescriptive design guidance. A better framing would be `our exploratory analysis suggests that designers may want to consider ...`.
+- Grammar: `to make sure users experience agency` sounds somewhat informal.
+- Ambiguous wording: `meaningful interactions` and `authoring pipeline` are too broad.
+
+### C. Recommended Revision Order
+
+1. First make the study count, study numbering, and data provenance fully consistent.
+2. Then retract all overstrong takeaways: remove `regardless of interaction quality`, remove unsupported `confidence` claims in Study 2, and replace mechanism language with association language unless the mechanism is actually tested.
+3. Fix all reporting errors: `p=0.12`, the swapped main-effect interpretations in 5.5, mixed-up labels (`trust` vs `interaction experience`), and suspicious `SE=0.97` values.
+4. Reframe the inventory section explicitly as a `preliminary exploratory instrument adaptation`, and strengthen the limitations accordingly.
+5. Finally, clean up grammar, terminology, and ambiguous constructs, especially `agency`, `trust`, `confidence`, and `visual complexity`.

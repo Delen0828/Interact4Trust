@@ -563,6 +563,104 @@ knitr::kable(range_check, digits = 2, caption = "Likert Range Checks After 0-6 -
 knitr::kable(condition_mapping_check, caption = "Condition Mapping Check")
 ```
 
+## Manipulation Check: Bug Reports by Interaction Availability
+
+```{r bug-report-manipulation-check}
+interaction_feedback_expanded <- raw_data %>%
+  filter(trial_type == "interaction-feedback") %>%
+  expand_response_columns()
+
+bug_report_by_group <- interaction_feedback_expanded %>%
+  mutate(
+    participant_id = as.character(participant_id),
+    condition_number = suppressWarnings(as.numeric(condition_number)),
+    interaction_group = map_interaction_group(condition_number),
+    encounter_bug = trimws(tolower(as.character(encounter_bug))),
+    reported_bug = case_when(
+      encounter_bug == "yes" ~ 1L,
+      encounter_bug == "no" ~ 0L,
+      TRUE ~ NA_integer_
+    )
+  ) %>%
+  filter(condition_number %in% TREATMENT_CONDITIONS) %>%
+  filter(!is.na(interaction_group), !is.na(reported_bug)) %>%
+  group_by(participant_id, interaction_group) %>%
+  summarise(
+    reported_bug = as.integer(any(reported_bug == 1L)),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    interaction_group = factor(interaction_group, levels = c("Static", "Interactive", "Buggy"))
+  )
+
+bug_report_summary <- bug_report_by_group %>%
+  group_by(interaction_group) %>%
+  summarise(
+    n_participants = n(),
+    n_bug_reports = sum(reported_bug == 1L),
+    pct_bug_reports = 100 * n_bug_reports / n_participants,
+    .groups = "drop"
+  )
+
+knitr::kable(
+  bug_report_summary %>%
+    mutate(pct_bug_reports = round(pct_bug_reports, 2)),
+  caption = "Bug-Report Rate by Interaction Availability (Treatment Conditions)"
+)
+
+bug_report_frequency <- bug_report_by_group %>%
+  count(interaction_group, reported_bug, .drop = FALSE, name = "n")
+
+bug_report_frequency_xtab <- xtabs(
+  n ~ interaction_group + reported_bug,
+  data = bug_report_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(bug_report_frequency_xtab),
+  caption = "Bug-Report Frequency Table by Interaction Availability (0 = No, 1 = Yes)"
+)
+
+bug_report_chisq <- NULL
+if (
+  nrow(bug_report_frequency_xtab) > 1 &&
+  ncol(bug_report_frequency_xtab) > 1 &&
+  all(rowSums(bug_report_frequency_xtab) > 0) &&
+  all(colSums(bug_report_frequency_xtab) > 0)
+) {
+  bug_report_chisq <- suppressWarnings(chisq.test(bug_report_frequency_xtab))
+}
+
+bug_report_chisq_summary <- if (!is.null(bug_report_chisq)) {
+  data.frame(
+    predictor = "Interaction availability",
+    chi_square = unname(bug_report_chisq$statistic),
+    df = unname(bug_report_chisq$parameter),
+    p_value = unname(bug_report_chisq$p.value),
+    note = ""
+  )
+} else {
+  data.frame(
+    predictor = "Interaction availability",
+    chi_square = NA_real_,
+    df = NA_real_,
+    p_value = NA_real_,
+    note = "Chi-square test skipped: not enough non-zero cells."
+  )
+}
+
+bug_report_chisq_summary <- bug_report_chisq_summary %>%
+  mutate(
+    chi_square = round(chi_square, 4),
+    p_value = signif(p_value, 4)
+  )
+
+knitr::kable(
+  bug_report_chisq_summary,
+  caption = "Bug-Report Chi-square Test by Interaction Availability"
+)
+```
+
 ## H1: Confidence Shift from Baseline by Visualization Family
 
 ```{r h1-model}
@@ -1208,7 +1306,11 @@ q123_q3_model_data <- q123_q3_data %>%
       interaction_availability,
       levels = c("Static", "Interactive", "Buggy")
     ),
-    vistype = factor(vistype, levels = c("PI", "Ensemble", "PI + Ensemble"))
+    vistype = factor(
+      vistype,
+      levels = c("PI", "Ensemble", "PI + Ensemble"),
+      labels = c("CI", "EP", "CIEP")
+    )
   ) %>%
   droplevels()
 
@@ -1401,7 +1503,7 @@ knitr::kable(
 )
 
 q3_vistype_frequency <- q123_q3_model_data %>%
-  filter(!is.na(vistype), !is.na(decision_result)) %>%
+  filter(is_baseline == "No", !is.na(vistype), !is.na(decision_result)) %>%
   count(vistype, decision_result, .drop = FALSE, name = "n")
 
 q3_vistype_frequency_xtab <- xtabs(
@@ -1411,7 +1513,7 @@ q3_vistype_frequency_xtab <- xtabs(
 
 knitr::kable(
   as.data.frame.matrix(q3_vistype_frequency_xtab),
-  caption = "Q3 Frequency Table (A/B/No Preference) by Visualization Type"
+  caption = "Q3 Frequency Table (A/B/No Preference) by Visualization Type (Non-baseline)"
 )
 
 q3_vistype_chisq <- NULL
@@ -1426,7 +1528,7 @@ if (
 
 q3_vistype_chisq_summary <- if (!is.null(q3_vistype_chisq)) {
   data.frame(
-    predictor = "Visualization type",
+    predictor = "Visualization type (non-baseline)",
     chi_square = unname(q3_vistype_chisq$statistic),
     df = unname(q3_vistype_chisq$parameter),
     p_value = unname(q3_vistype_chisq$p.value),
@@ -1434,7 +1536,7 @@ q3_vistype_chisq_summary <- if (!is.null(q3_vistype_chisq)) {
   )
 } else {
   data.frame(
-    predictor = "Visualization type",
+    predictor = "Visualization type (non-baseline)",
     chi_square = NA_real_,
     df = NA_real_,
     p_value = NA_real_,
@@ -1450,6 +1552,209 @@ q3_vistype_chisq_summary <- q3_vistype_chisq_summary %>%
 
 knitr::kable(
   q3_vistype_chisq_summary,
-  caption = "Q3 Chi-square Test by Visualization Type"
+  caption = "Q3 Chi-square Test by Visualization Type (Non-baseline)"
+)
+
+compute_q3_city_a_rr <- function(events_treatment, total_treatment, events_reference, total_reference) {
+  a_raw <- events_treatment
+  b_raw <- total_treatment - events_treatment
+  c_raw <- events_reference
+  d_raw <- total_reference - events_reference
+
+  continuity_correction <- any(c(a_raw, b_raw, c_raw, d_raw) == 0)
+
+  a <- a_raw
+  b <- b_raw
+  c <- c_raw
+  d <- d_raw
+  if (continuity_correction) {
+    a <- a + 0.5
+    b <- b + 0.5
+    c <- c + 0.5
+    d <- d + 0.5
+  }
+
+  risk_treatment <- a / (a + b)
+  risk_reference <- c / (c + d)
+  rr <- risk_treatment / risk_reference
+  se_log_rr <- sqrt((1 / a) - (1 / (a + b)) + (1 / c) - (1 / (c + d)))
+
+  fisher_p <- fisher.test(
+    matrix(
+      c(a_raw, b_raw, c_raw, d_raw),
+      nrow = 2,
+      byrow = TRUE
+    )
+  )$p.value
+
+  data.frame(
+    risk_ratio = rr,
+    lower_ci = exp(log(rr) - 1.96 * se_log_rr),
+    upper_ci = exp(log(rr) + 1.96 * se_log_rr),
+    fisher_p_value = fisher_p,
+    continuity_correction = ifelse(continuity_correction, "Yes", "No")
+  )
+}
+
+q3_city_a_by_vistype <- q123_q3_model_data %>%
+  filter(is_baseline == "No", !is.na(vistype), !is.na(decision_result)) %>%
+  mutate(chose_city_a = decision_result == "A") %>%
+  group_by(vistype) %>%
+  summarise(
+    chose_city_a_n = sum(chose_city_a, na.rm = TRUE),
+    total_n = n(),
+    choose_city_a_rate = chose_city_a_n / total_n,
+    .groups = "drop"
+  )
+
+q3_city_a_reference <- q3_city_a_by_vistype %>%
+  filter(vistype == "CI")
+
+if (nrow(q3_city_a_reference) == 1 && q3_city_a_reference$total_n[[1]] > 0) {
+  q3_city_a_likelihood <- bind_rows(
+    lapply(seq_len(nrow(q3_city_a_by_vistype)), function(i) {
+      current_row <- q3_city_a_by_vistype[i, , drop = FALSE]
+
+      if (as.character(current_row$vistype) == "CI") {
+        rr_stats <- data.frame(
+          risk_ratio = 1,
+          lower_ci = 1,
+          upper_ci = 1,
+          fisher_p_value = NA_real_,
+          continuity_correction = "No"
+        )
+      } else {
+        rr_stats <- compute_q3_city_a_rr(
+          events_treatment = current_row$chose_city_a_n[[1]],
+          total_treatment = current_row$total_n[[1]],
+          events_reference = q3_city_a_reference$chose_city_a_n[[1]],
+          total_reference = q3_city_a_reference$total_n[[1]]
+        )
+      }
+
+      cbind(current_row, rr_stats)
+    })
+  ) %>%
+    mutate(
+      choose_city_a_rate = round(choose_city_a_rate, 4),
+      times_as_likely_vs_CI = round(risk_ratio, 4),
+      lower_ci = round(lower_ci, 4),
+      upper_ci = round(upper_ci, 4),
+      fisher_p_value_vs_CI = signif(fisher_p_value, 4)
+    ) %>%
+    select(
+      visualization = vistype,
+      chose_city_a_n,
+      total_n,
+      choose_city_a_rate,
+      times_as_likely_vs_CI,
+      lower_ci,
+      upper_ci,
+      fisher_p_value_vs_CI,
+      continuity_correction
+    ) %>%
+    arrange(factor(visualization, levels = c("CI", "EP", "CIEP")))
+} else {
+  q3_city_a_likelihood <- data.frame(
+    visualization = c("CI", "EP", "CIEP"),
+    chose_city_a_n = NA_real_,
+    total_n = NA_real_,
+    choose_city_a_rate = NA_real_,
+    times_as_likely_vs_CI = NA_real_,
+    lower_ci = NA_real_,
+    upper_ci = NA_real_,
+    fisher_p_value_vs_CI = NA_real_,
+    continuity_correction = "N/A"
+  )
+}
+
+knitr::kable(
+  q3_city_a_likelihood,
+  caption = "Q3 City A Choice Likelihood by Visualization Type (Non-baseline; CI Reference)"
+)
+
+q3_city_a_vis_frequency <- q123_q3_model_data %>%
+  filter(is_baseline == "No", !is.na(vistype), !is.na(decision_result)) %>%
+  mutate(
+    chose_city_a = factor(
+      ifelse(decision_result == "A", "Yes", "No"),
+      levels = c("Yes", "No")
+    )
+  ) %>%
+  count(vistype, chose_city_a, .drop = FALSE, name = "n")
+
+q3_city_a_vis_xtab <- xtabs(
+  n ~ vistype + chose_city_a,
+  data = q3_city_a_vis_frequency
+)
+
+knitr::kable(
+  as.data.frame.matrix(q3_city_a_vis_xtab),
+  caption = "Q3 Frequency Table (Choose City A: Yes/No) by vis_type (Non-baseline)"
+)
+
+q3_city_a_vis_chisq <- NULL
+if (
+  nrow(q3_city_a_vis_xtab) > 1 &&
+  ncol(q3_city_a_vis_xtab) > 1 &&
+  all(rowSums(q3_city_a_vis_xtab) > 0) &&
+  all(colSums(q3_city_a_vis_xtab) > 0)
+) {
+  q3_city_a_vis_chisq <- suppressWarnings(chisq.test(q3_city_a_vis_xtab))
+}
+
+q3_city_a_vis_chisq_summary <- if (!is.null(q3_city_a_vis_chisq)) {
+  data.frame(
+    predictor = "vis_type",
+    chi_square = unname(q3_city_a_vis_chisq$statistic),
+    df = unname(q3_city_a_vis_chisq$parameter),
+    p_value = unname(q3_city_a_vis_chisq$p.value),
+    note = ""
+  )
+} else {
+  data.frame(
+    predictor = "vis_type",
+    chi_square = NA_real_,
+    df = NA_real_,
+    p_value = NA_real_,
+    note = "Chi-square test skipped: not enough non-zero cells."
+  )
+}
+
+q3_city_a_vis_chisq_summary <- q3_city_a_vis_chisq_summary %>%
+  mutate(
+    chi_square = round(chi_square, 4),
+    p_value = signif(p_value, 4)
+  )
+
+knitr::kable(
+  q3_city_a_vis_chisq_summary,
+  caption = "Q3 Chi-square Test for City A Choice by vis_type (Non-baseline)"
+)
+
+q3_city_a_statements <- q3_city_a_likelihood %>%
+  mutate(
+    statement = dplyr::case_when(
+      visualization == "CI" ~ "CI is the reference visualization (1.00x).",
+      is.na(times_as_likely_vs_CI) ~ paste0(visualization, ": estimate unavailable."),
+      TRUE ~ paste0(
+        "With ", visualization, ", participants were ",
+        sprintf("%.2f", times_as_likely_vs_CI),
+        "x as likely to choose City A vs CI (95% CI ",
+        sprintf("%.2f", lower_ci),
+        " to ",
+        sprintf("%.2f", upper_ci),
+        ", Fisher p = ",
+        ifelse(is.na(fisher_p_value_vs_CI), "NA", signif(fisher_p_value_vs_CI, 3)),
+        ")."
+      )
+    )
+  ) %>%
+  select(statement)
+
+knitr::kable(
+  q3_city_a_statements,
+  col.names = "Interpretation",
+  caption = "Q3 City A 'Times More Likely' Interpretation by Visualization Type"
 )
 ```
